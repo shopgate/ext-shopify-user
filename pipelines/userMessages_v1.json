@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "userMessages_v1",
+    "public": true,
+    "input": [
+      {"key": "messages", "id": "1010"}
+    ],
+    "output": [
+      {"key": "messages", "id": "1010"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "shopify-user",
+        "path": "shopify-user/messages/userMessages_v1.js",
+        "input": [
+          {"key": "messages", "id": "1010"}
+        ],
+        "output": [
+          {"key": "messages", "id": "1010"}
+        ]
+      }
+    ]
+  }
+}

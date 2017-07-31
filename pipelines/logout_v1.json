@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "logout_v1",
+    "public": true,
+    "output": [
+      {"key": "success", "id": "1010"}
+    ],
+    "steps": [
+      {
+        "type": "auth",
+        "output": [
+          {"key": "success", "id": "1010"}
+        ]
+      }
+    ]
+  }
+}

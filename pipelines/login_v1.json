@@ -1,0 +1,62 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "login_v1",
+    "public": true,
+    "input": [
+      {"key": "strategy", "id": "1010"},
+      {"key": "parameters", "id": "1020"}
+    ],
+    "output": [
+      {"key": "success", "id": "1030", "optional": true},
+      {"key": "messages", "id": "1040"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "shopify-user",
+        "path": "shopify-user/login/login_v1.js",
+        "input": [
+          {"key": "strategy", "id": "1010"},
+          {"key": "parameters", "id": "1020"}
+        ],
+        "output": [
+          {"key": "success", "id": "1030", "optional": true},
+          {"key": "messages", "id": "1040"},
+          {"key": "userId", "id": "1050", "optional": true}
+        ]
+      },
+      {
+        "type": "conditional",
+        "input": [
+          {"key": "success", "id": "1030", "optional": true}
+        ],
+        "expression": {
+          "ok": [
+            {"name": "success"}
+          ]
+        },
+        "then": {
+          "type": "auth",
+          "input": [
+            {"key": "userId", "id": "1050", "optional": true}
+          ],
+          "output": [
+            {"key": "success", "id": "1030"}
+          ]
+        },
+        "else": {
+          "type": "extension",
+          "id": "shopify-user",
+          "path": "shopify-user/messages/userMessages_v1.js",
+          "input": [
+            {"key": "messages", "id": "1040"}
+          ],
+          "output": [
+            {"key": "messages", "id": "1040"}
+          ]
+        }
+      }
+    ]
+  }
+}

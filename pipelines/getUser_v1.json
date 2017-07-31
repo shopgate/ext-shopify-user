@@ -1,0 +1,38 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "getUser_v1",
+    "public": true,
+    "output": [
+      {"key": "id", "id": "1010"},
+      {"key": "mail", "id": "1020"},
+      {"key": "firstName", "id": "1030"},
+      {"key": "lastName", "id": "1040"},
+      {"key": "gender", "id": "1050"},
+      {"key": "birthday", "id": "1060"},
+      {"key": "phone", "id": "1070"},
+      {"key": "customerGroups", "id": "1080"},
+      {"key": "addresses", "id": "1090"},
+      {"key": "messages", "id": "1100", "optional": true}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "shopify-user",
+        "path": "shopify-user/login/getUser_v1.js",
+        "output": [
+          {"key": "id", "id": "1010"},
+          {"key": "mail", "id": "1020"},
+          {"key": "firstName", "id": "1030"},
+          {"key": "lastName", "id": "1040"},
+          {"key": "gender", "id": "1050"},
+          {"key": "birthday", "id": "1060"},
+          {"key": "phone", "id": "1070"},
+          {"key": "customerGroups", "id": "1080"},
+          {"key": "addresses", "id": "1090"},
+          {"key": "messages", "id": "1100", "optional": true}
+        ]
+      }
+    ]
+  }
+}
