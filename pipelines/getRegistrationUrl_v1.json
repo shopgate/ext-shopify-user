@@ -1,0 +1,20 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "getRegistrationUrl_v1",
+    "public": true,
+    "output": [
+      {"key": "url", "id": "1010"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "interface-shopify",
+        "path": "interface-shopify/user/getRegistrationUrl_v1.js",
+        "output": [
+          {"key": "url", "id": "1010"}
+        ]
+      }
+    ]
+  }
+}
