@@ -14,7 +14,7 @@
       {
         "type": "extension",
         "id": "shopify-user",
-        "path": "shopify-user/login/getUser_v1.js",
+        "path": "shopify-user/user/getUser_v1.js",
         "output": [
           {"key": "user", "id": "1020"}
         ]
@@ -22,7 +22,7 @@
       {
         "type": "extension",
         "id": "shopify-user",
-        "path": "shopify-user/login/transferGuestCart_v1.js",
+        "path": "shopify-user/user/transferGuestCart_v1.js",
         "input": [
           {"key": "id", "id": "1010"},
           {"key": "user", "id": "1020"}
