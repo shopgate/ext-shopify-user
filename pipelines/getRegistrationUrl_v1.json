@@ -9,8 +9,8 @@
     "steps": [
       {
         "type": "extension",
-        "id": "interface-shopify",
-        "path": "interface-shopify/user/getRegistrationUrl_v1.js",
+        "id": "shopify-user",
+        "path": "shopify-user/user/getRegistrationUrl_v1.js",
         "output": [
           {"key": "url", "id": "1010"}
         ]
