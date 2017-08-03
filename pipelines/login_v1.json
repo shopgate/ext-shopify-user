@@ -15,7 +15,7 @@
       {
         "type": "extension",
         "id": "shopify-user",
-        "path": "shopify-user/login/login_v1.js",
+        "path": "shopify-user/user/login_v1.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "parameters", "id": "1020"}

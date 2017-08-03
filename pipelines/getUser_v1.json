@@ -19,7 +19,7 @@
       {
         "type": "extension",
         "id": "shopify-user",
-        "path": "shopify-user/login/getUser_v1.js",
+        "path": "shopify-user/user/getUser_v1.js",
         "output": [
           {"key": "id", "id": "1010"},
           {"key": "mail", "id": "1020"},
