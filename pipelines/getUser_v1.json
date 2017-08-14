@@ -18,8 +18,8 @@
     "steps": [
       {
         "type": "extension",
-        "id": "shopify-user",
-        "path": "shopify-user/user/getUser_v1.js",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/getUser_v1.js",
         "output": [
           {"key": "id", "id": "1010"},
           {"key": "mail", "id": "1020"},

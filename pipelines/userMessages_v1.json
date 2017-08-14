@@ -12,8 +12,8 @@
     "steps": [
       {
         "type": "extension",
-        "id": "shopify-user",
-        "path": "shopify-user/messages/userMessages_v1.js",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/messages/userMessages_v1.js",
         "input": [
           {"key": "messages", "id": "1010"}
         ],
