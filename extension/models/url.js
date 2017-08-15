@@ -1,17 +1,12 @@
 class Url {
   constructor (url, expires) {
-    this._url = url
+    this._url = ''
+    if (url !== null && url !== undefined) {
+      this._url = url
+    }
 
-    this._expires = null
     if (expires !== null && expires !== undefined && expires !== '') {
       this._expires = expires
-    }
-  }
-
-  toJson () {
-    return {
-      url: this._url,
-      expires: this._expires
     }
   }
 
