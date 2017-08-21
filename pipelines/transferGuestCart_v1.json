@@ -13,16 +13,16 @@
     "steps": [
       {
         "type": "extension",
-        "id": "shopify-user",
-        "path": "shopify-user/user/getUser_v1.js",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/getUser_v1.js",
         "output": [
           {"key": "user", "id": "1020"}
         ]
       },
       {
         "type": "extension",
-        "id": "shopify-user",
-        "path": "shopify-user/user/transferGuestCart_v1.js",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/transferGuestCart_v1.js",
         "input": [
           {"key": "id", "id": "1010"},
           {"key": "user", "id": "1020"}

@@ -1,7 +1,7 @@
 
 {
   "version": "1.0.0",
-  "id": "shopify-user",
+  "id": "@shopgate/shopify-user",
   "trusted": true,
 
   "steps": [
