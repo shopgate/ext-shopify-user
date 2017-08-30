@@ -8,54 +8,38 @@
       {"key": "parameters", "id": "1020"}
     ],
     "output": [
-      {"key": "success", "id": "1030", "optional": true},
-      {"key": "messages", "id": "1040"}
+      {"key": "success", "id": "1030"}
     ],
     "steps": [
       {
         "type": "extension",
-        "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/login_v1.js",
+        "id": "shopify-user",
+        "path": "shopify-user/user/login_v1.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "parameters", "id": "1020"}
         ],
         "output": [
-          {"key": "success", "id": "1030", "optional": true},
-          {"key": "messages", "id": "1040"},
-          {"key": "userId", "id": "1050", "optional": true}
+          {"key": "userId", "id": "1050"}
         ]
       },
       {
-        "type": "conditional",
+        "type": "auth",
         "input": [
-          {"key": "success", "id": "1030", "optional": true}
+          {"key": "userId", "id": "1050"}
         ],
-        "expression": {
-          "ok": [
-            {"name": "success"}
-          ]
-        },
-        "then": {
-          "type": "auth",
-          "input": [
-            {"key": "userId", "id": "1050", "optional": true}
-          ],
-          "output": [
-            {"key": "success", "id": "1030"}
-          ]
-        },
-        "else": {
-          "type": "extension",
-          "id": "@shopgate/shopify-user",
-          "path": "@shopgate/shopify-user/messages/userMessages_v1.js",
-          "input": [
-            {"key": "messages", "id": "1040"}
-          ],
-          "output": [
-            {"key": "messages", "id": "1040"}
-          ]
-        }
+        "output": [
+          {"key": "success", "id": "1030"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "shopify-user",
+        "path": "shopify-user/user/checkAuthSuccess_v1.js",
+        "input": [
+          {"key": "authSuccess", "id": "1030"},
+          {"key": "authType", "id": "1010"}
+        ]
       }
     ]
   }
