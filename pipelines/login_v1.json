@@ -40,6 +40,11 @@
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
         ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-cart",
+        "path": "@shopgate/shopify-cart/cart/fetchCartId_v1.js"
       }
     ]
   }
