@@ -16,7 +16,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-cart",
-        "path": "@shopgate/shopify-cart/cart/dropCartId_v1.js"
+        "path": "@shopgate/shopify-cart/cart/dropCheckoutToken_v1.js"
       }
     ]
   }
