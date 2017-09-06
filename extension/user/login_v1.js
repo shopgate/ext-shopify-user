@@ -1,18 +1,23 @@
+const request = require('request')
+
 const Tools = require('../lib/tools')
 const Message = require('../models/messages/message')
 const Login = require('../models/user/login')
-const request = require('request')
+const UnknownError = require('../models/Errors/UnknownError')
 
 module.exports = function (context, input, cb) {
   const Shopify = require('../lib/shopify.api.js')(context.config)
-  let success = true
   let messages = []
 
+  /* Strategy is not supported */
   if (!Login.isValidStrategy(input.strategy)) {
-    success = false
     const message = new Message()
     message.addErrorMessage('no code', 'authentication-strategy: ' + input.strategy + ' no supported')
     messages.push(message.toJson())
+
+    return cb(null, {
+      messages: messages
+    })
   }
 
   const login = new Login(input.strategy)
@@ -28,7 +33,9 @@ module.exports = function (context, input, cb) {
         'content-type': 'application/json'
       },
       body: {
-        query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {customerAccessTokenCreate(input: $input) {userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
+        query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
+          '{customerAccessTokenCreate(input: $input) ' +
+          '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
         variables: {
           input: {
             email: login.login,
@@ -61,64 +68,38 @@ module.exports = function (context, input, cb) {
     messages.push(message.toJson())
   }
 
-  if (success) {
-    login.login = input.parameters.login
-    login.password = input.parameters.password
-    login.strategy = input.strategy
+  login.login = input.parameters.login
+  login.password = input.parameters.password
+  login.strategy = input.strategy
 
-    const requestData = createRequestData()
+  const requestData = createRequestData()
 
-    /* Perform a request against the graphQL-API from Shopify to authenticate login-data */
-    request(requestData, function (err, response, body) {
-      if (err) {
-        success = false
-        addErrorMessage('error', err)
-      }
+  // Perform a request against the graphQL-API from Shopify to authenticate login-data
+  request(requestData, function (err, response, body) {
+    if (err) {
+      context.log.error(input.authType + ': Auth step finished unsuccessfully.')
+      return cb(new UnknownError())
+    }
 
-      /**
-       * @typedef {object} token
-       * @property {object} customerAccessTokenCreate
-       * @property {string} customerAccessTokenCreate.userErrors
-       */
-      let token = body.data
+    /**
+     * @typedef {object} token
+     * @property {object} customerAccessTokenCreate
+     * @property {string} customerAccessTokenCreate.userErrors
+     */
+    const token = body.data
 
-      /* Catch authentication errors here */
-      if (!Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
-        success = false
-        addErrorMessage('error', token.customerAccessTokenCreate.userErrors)
-      }
+    // Catch authentication errors here
+    if (!Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
+      addErrorMessage('error', token.customerAccessTokenCreate.userErrors)
 
-      if (success) {
-        let userErrors = token.customerAccessTokenCreate.userErrors
+      return cb(null, {
+        messages: messages
+      })
+    }
 
-        if (Tools.objectIsEmpty(userErrors)) {
-          if (success) {
-            const message = new Message()
-            message.addSuccessMessage('success', 'successful')
-            messages.push(message.toJson())
-          }
-        }
-      }
-
-      /* Change the values of success to "ok" to be able to use the conditionals-step within the pipeline */
-      if (success) {
-        success = 'ok'
-        cb(null, {
-          success: success,
-          messages: messages,
-          userId: login.login
-        })
-      } else {
-        /* Login was not successful */
-        cb(null, {
-          messages: messages
-        })
-      }
-    })
-  } else {
-    /* Strategy is not supported */
+    // Login successful
     cb(null, {
-      messages: messages
+      userId: login.login
     })
-  }
+  })
 }
