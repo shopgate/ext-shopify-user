@@ -13,15 +13,6 @@
     "steps": [
       {
         "type": "extension",
-        "id": "@shopgate/shopify-cart",
-        "path": "@shopgate/shopify-cart/cart/getShopifyCartData_v1.js",
-        "output": [
-          {"key": "shopifyCartData", "id": "1060"},
-          {"key": "shopifyRequestErr", "id": "101", "optional": true}
-        ]
-      },
-      {
-        "type": "extension",
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/login_v1.js",
         "input": [
@@ -48,24 +39,6 @@
         "input": [
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
-        ]
-      },
-      {
-        "type": "extension",
-        "id": "@shopgate/shopify-cart",
-        "path": "@shopgate/shopify-cart/cart/getShopifyCartData_v1.js",
-        "output": [
-          {"key": "shopifyCartData", "id": "1070"},
-          {"key": "shopifyRequestErr", "id": "101", "optional": true}
-        ]
-      },
-      {
-        "type": "extension",
-        "id": "@shopgate/shopify-cart",
-        "path": "@shopgate/shopify-cart/cart/migrateCartContents_v1.js",
-        "input": [
-          {"key": "sourceCart", "id": "1060"},
-          {"key": "targetCart", "id": "1070"}
         ]
       }
     ]
