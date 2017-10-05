@@ -86,20 +86,30 @@ module.exports = function (context, input, cb) {
      * @property {object} customerAccessTokenCreate
      * @property {string} customerAccessTokenCreate.userErrors
      */
-    const token = body.data
-
-    // Catch authentication errors here
-    if (!Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
-      addErrorMessage('error', token.customerAccessTokenCreate.userErrors)
-
+    if (Tools.isObjectDefined(body, 'errors') &&
+      !Tools.objectIsEmpty(body.errors)) {
+      console.log(body.errors)
+      addErrorMessage('error', body.errors)
       return cb(null, {
+        userId: false,
+        messages: messages
+      })
+    }
+    const token = body.data
+    if (Tools.isObjectDefined(token, 'customerAccessTokenCreate.userErrors') &&
+      !Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
+      addErrorMessage('error', token.customerAccessTokenCreate.userErrors)
+      console.log(token.customerAccessTokenCreate)
+      return cb(null, {
+        userId: false,
         messages: messages
       })
     }
 
     // Login successful
     cb(null, {
-      userId: login.login
+      userId: login.login,
+      messages: messages
     })
   })
 }
