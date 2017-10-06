@@ -48,26 +48,6 @@ module.exports = function (context, input, cb) {
     }
   }
 
-  /**
-   * @typedef {Array|string} errorMessage
-   *
-   * @param code
-   * @param errorMessage
-   */
-  function addErrorMessage (code, errorMessage) {
-    let messageText = ''
-
-    if (Array.isArray(errorMessage)) {
-      messageText = errorMessage[0].message
-    } else {
-      messageText = errorMessage.message
-    }
-
-    const message = new Message()
-    message.addErrorMessage(code, messageText)
-    messages.push(message.toJson())
-  }
-
   login.login = input.parameters.login
   login.password = input.parameters.password
   login.strategy = input.strategy
@@ -80,21 +60,15 @@ module.exports = function (context, input, cb) {
       context.log.error(input.authType + ': Auth step finished unsuccessfully.')
       return cb(new UnknownError())
     }
-
     /**
      * @typedef {object} token
      * @property {object} customerAccessTokenCreate
      * @property {string} customerAccessTokenCreate.userErrors
      */
     const token = body.data
-
-    // Catch authentication errors here
-    if (!Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
-      addErrorMessage('error', token.customerAccessTokenCreate.userErrors)
-
-      return cb(null, {
-        messages: messages
-      })
+    if (Tools.isObjectDefined(token, 'customerAccessTokenCreate.userErrors') &&
+      !Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
+      return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
     }
 
     // Login successful
