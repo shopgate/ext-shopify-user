@@ -8,8 +8,7 @@
       {"key": "parameters", "id": "1020"}
     ],
     "output": [
-      {"key": "success", "id": "1030"},
-      {"key": "messages", "id": "1040", "optional": true}
+      {"key": "success", "id": "1030"}
     ],
     "steps": [
       {
@@ -21,14 +20,13 @@
           {"key": "parameters", "id": "1020"}
         ],
         "output": [
-          {"key": "userId", "id": "1050", "optional": true},
-          {"key": "messages", "id": "1040", "optional": true}
+          {"key": "userId", "id": "1050"}
         ]
       },
       {
         "type": "auth",
         "input": [
-          {"key": "userId", "id": "1050", "optional": true}
+          {"key": "userId", "id": "1050"}
         ],
         "output": [
           {"key": "success", "id": "1030"}
