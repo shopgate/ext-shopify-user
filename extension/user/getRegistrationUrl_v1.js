@@ -2,14 +2,14 @@
  * @param {object} context
  * @param {object} input
  * @param {function} cb
- * @property {string} shopifyShopDomain
+ * @property {string} shopifyShopAlias
  * @property {string} userRegistrationUrl
  */
 module.exports = function (context, input, cb) {
-  const registrationPath = '/account/register'
+  const registrationPath = 'https://' + context.config.shopifyShopAlias + '.myshopify.com/account/register'
   let urlResponse = {
     url: (context.config.userRegistrationUrl === '' || context.config.userRegistrationUrl === undefined
-      ? context.config.shopifyShopDomain + registrationPath
+      ? registrationPath
       : context.config.userRegistrationUrl)
   }
   cb(null, urlResponse)
