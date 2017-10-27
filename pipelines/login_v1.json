@@ -39,7 +39,8 @@
         "input": [
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
-        ]
+        ],
+        "output": []
       }
     ]
   }

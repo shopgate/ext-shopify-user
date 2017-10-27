@@ -3,12 +3,14 @@
   "pipeline": {
     "id": "logout_v1",
     "public": true,
+    "input": [],
     "output": [
       {"key": "success", "id": "1010"}
     ],
     "steps": [
       {
         "type": "auth",
+        "input": [],
         "output": [
           {"key": "success", "id": "1010"}
         ]
