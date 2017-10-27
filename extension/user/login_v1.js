@@ -51,8 +51,8 @@ module.exports = function (context, input, cb) {
        * @property {string} customerAccessTokenCreate.userErrors
        */
       const token = body.data
-      if (Tools.isObjectDefined(token, 'customerAccessTokenCreate.userErrors') &&
-        !Tools.objectIsEmpty(token.customerAccessTokenCreate.userErrors)) {
+      if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
+        !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
         return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
       }
 
