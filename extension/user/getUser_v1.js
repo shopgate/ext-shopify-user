@@ -1,5 +1,4 @@
 const Tools = require('../lib/tools')
-const Message = require('../models/messages/message')
 const UnauthorizedErrorMessage = require('../models/unauthorizedErrorMessage/UnauthorizedErrorMessage')
 const User = require('../models/user/user')
 const Address = require('../models/user/address')
@@ -16,7 +15,7 @@ module.exports = function (context, input, cb) {
   const Shopify = require('../lib/shopify.api.js')(context.config)
 
   /* Check if there is a userId within the context.meta-data, if not the user is not logged */
-  if (Tools.objectIsEmpty(context.meta.userId)) {
+  if (Tools.isEmpty(context.meta.userId)) {
     const unauthorizedErrorMessage = new UnauthorizedErrorMessage('User is not logged in.')
     return cb(unauthorizedErrorMessage, null)
   }
@@ -27,7 +26,7 @@ module.exports = function (context, input, cb) {
   Shopify.get('/admin/customers/search.json' + query, {}, function (err, data) {
     if (err) cb(err, null)
 
-    if (Tools.objectIsEmpty(data.customers)) {
+    if (Tools.isEmpty(data.customers)) {
       let error = new Error()
       error.code = 'no code'
       error.message = 'customer not found'
