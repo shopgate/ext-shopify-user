@@ -13,7 +13,7 @@
     "steps": [
       {
         "type": "pipeline",
-        "id": "fetchShopifyCheckout_v1",
+        "id": "fetchShopifyCheckout_int_v1",
         "trusted": false,
         "input": [],
         "output": [
@@ -53,7 +53,7 @@
       },
       {
         "type": "pipeline",
-        "id": "fetchShopifyCheckout_v1",
+        "id": "fetchShopifyCheckout_int_v1",
         "trusted": false,
         "input": [],
         "output": [
