@@ -17,7 +17,7 @@
         "trusted": false,
         "input": [],
         "output": [
-          {"key": "sourceCart", "id": "1"}
+          {"key": "checkout", "id": "1"}
         ]
       },
       {
@@ -57,7 +57,7 @@
         "trusted": false,
         "input": [],
         "output": [
-          {"key": "targetCart", "id": "2"}
+          {"key": "checkout", "id": "2"}
         ]
       },
       {
