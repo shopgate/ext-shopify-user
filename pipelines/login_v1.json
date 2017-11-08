@@ -12,6 +12,15 @@
     ],
     "steps": [
       {
+        "type": "pipeline",
+        "id": "fetchShopifyCheckout_int_v1",
+        "trusted": false,
+        "input": [],
+        "output": [
+          {"key": "checkout", "id": "1"}
+        ]
+      },
+      {
         "type": "extension",
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/login_v1.js",
@@ -39,6 +48,25 @@
         "input": [
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
+        ],
+        "output": []
+      },
+      {
+        "type": "pipeline",
+        "id": "fetchShopifyCheckout_int_v1",
+        "trusted": false,
+        "input": [],
+        "output": [
+          {"key": "checkout", "id": "2"}
+        ]
+      },
+      {
+        "type": "pipeline",
+        "id": "migrateCartContents_int_v1",
+        "trusted": false,
+        "input": [
+          {"key": "sourceCart", "id": "1"},
+          {"key": "targetCart", "id": "2"}
         ],
         "output": []
       }
