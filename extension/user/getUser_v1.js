@@ -52,6 +52,7 @@ module.exports = function (context, input, cb) {
      * @property {string} address1
      * @property {string} address2
      * @property {string} country_code
+     * @property {string} zip
      */
     customerData.addresses.forEach(function (address) {
       const customerAddress = new Address()
@@ -69,6 +70,8 @@ module.exports = function (context, input, cb) {
       customerAddress.isDefault = address.default
       /* There is no field 'alias' within shopify-respone */
       customerAddress.alias = null
+      customerAddress.zipcode = address.zip
+      customerAddress.country = address.country
 
       user.addresses.push(customerAddress.toJSON())
     })
