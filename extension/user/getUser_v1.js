@@ -14,7 +14,7 @@ const Address = require('../models/user/address')
 module.exports = function (context, input, cb) {
   const Shopify = require('../lib/shopify.api.js')(context.config)
 
-  /* Check if there is a userId within the context.meta-data, if not the user is not logged */
+  // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
     const unauthorizedErrorMessage = new UnauthorizedErrorMessage('User is not logged in.')
     return cb(unauthorizedErrorMessage, null)
