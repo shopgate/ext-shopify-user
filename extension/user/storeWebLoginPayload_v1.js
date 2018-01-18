@@ -8,7 +8,6 @@
  * @returns {*}
  */
 module.exports = function (context, input, cb) {
-  context.log.info('Storing payload: ' + input.payload)
   saveWebLoginPayload(input.payload, context, cb)
 }
 
