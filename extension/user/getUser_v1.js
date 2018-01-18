@@ -30,7 +30,7 @@ module.exports = function (context, input, cb) {
       let error = new Error()
       error.code = 'no code'
       error.message = 'customer not found'
-      cb(error, null)
+      return cb(error, null)
     }
 
     /**
