@@ -16,8 +16,7 @@ module.exports = function (context, input, cb) {
 
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
-    const unauthorizedErrorMessage = new UnauthorizedErrorMessage('User is not logged in.')
-    return cb(unauthorizedErrorMessage, null)
+    return cb(new UnauthorizedErrorMessage('User is not logged in.'))
   }
 
   const currentUserId = context.meta.userId
@@ -27,10 +26,7 @@ module.exports = function (context, input, cb) {
     if (err) cb(err, null)
 
     if (Tools.isEmpty(data.customers)) {
-      let error = new Error()
-      error.code = 'no code'
-      error.message = 'customer not found'
-      return cb(error, null)
+      return cb(new Error('customer not found'))
     }
 
     /**
@@ -57,7 +53,7 @@ module.exports = function (context, input, cb) {
     customerData.addresses.forEach(function (address) {
       const customerAddress = new Address()
       customerAddress.id = address.id
-      /* There is no field 'type' within shopify-response */
+      // There is no field 'type' within shopify-response
       customerAddress.type = null
       customerAddress.firstName = address.first_name
       customerAddress.lastName = address.last_name
@@ -68,7 +64,7 @@ module.exports = function (context, input, cb) {
       customerAddress.state = address.country_code
       customerAddress.phone = address.phone
       customerAddress.isDefault = address.default
-      /* There is no field 'alias' within shopify-respone */
+      // There is no field 'alias' within shopify-respone
       customerAddress.alias = null
       customerAddress.zipcode = address.zip
       customerAddress.country = address.country
