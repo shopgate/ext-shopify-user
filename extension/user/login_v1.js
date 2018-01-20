@@ -1,21 +1,16 @@
 const request = require('request')
 
 const Tools = require('../lib/tools')
-const Message = require('../models/messages/message')
 const Login = require('../models/user/login')
+const InvalidCallError = require('../models/Errors/InvalidCallError')
 const UnknownError = require('../models/Errors/UnknownError')
 
 module.exports = function (context, input, cb) {
   const Shopify = require('../lib/shopify.api.js')(context.config)
-  let messages = []
 
   // strategy is not supported
   if (!Login.isValidStrategy(input.strategy)) {
-    const message = new Message()
-    message.addErrorMessage('no code', 'authentication-strategy: ' + input.strategy + ' no supported')
-    messages.push(message.toJson())
-
-    return cb(null, {messages: messages})
+    return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' no supported`))
   }
 
   Shopify.getStorefrontAccessToken((err, storefrontAccessToken) => {
