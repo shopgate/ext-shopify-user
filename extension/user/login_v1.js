@@ -41,7 +41,6 @@ module.exports = function (context, input, cb) {
           login.password = userData.p
 
           checkCredentials(storefrontAccessToken, login, (err, userId) => {
-            console.log('userId: ' + JSON.stringify(userId))
             return cb(err, userId)
           })
         })
@@ -64,6 +63,7 @@ module.exports = function (context, input, cb) {
         context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
       }
+
       /**
        * @typedef {object} token
        * @property {object} customerAccessTokenCreate
