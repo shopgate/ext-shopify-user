@@ -1,4 +1,5 @@
 const request = require('request')
+const CryptoJS = require('crypto-js')
 
 const Tools = require('../lib/tools')
 const Login = require('../models/user/login')
@@ -10,28 +11,51 @@ module.exports = function (context, input, cb) {
 
   // strategy is not supported
   if (!Login.isStrategyValid(input.strategy)) {
-    return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' no supported`))
+    return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`))
   }
 
   Shopify.getStorefrontAccessToken((err, storefrontAccessToken) => {
     if (err) return cb(err)
 
-    checkCredentials(storefrontAccessToken, (err, userId) => {
-      return cb(err, userId)
-    })
+    const login = new Login(input.strategy)
+
+    switch (input.strategy) {
+      case 'basic':
+        login.login = input.parameters.login
+        login.password = input.parameters.password
+
+        checkCredentials(storefrontAccessToken, login, (err, userId) => {
+          return cb(err, userId)
+        })
+
+        break
+      case 'web':
+        context.storage.device.get('webLoginPayload', (err, payload) => {
+          if (err) return err
+
+          const decodedPhrase = Buffer.from(payload, 'base64').toString('ascii')
+          const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, decodedPhrase).toString(CryptoJS.enc.Utf8)
+          const userData = JSON.parse(decryptedData)
+
+          login.login = userData.u
+          login.password = userData.p
+
+          checkCredentials(storefrontAccessToken, login, (err, userId) => {
+            console.log('userId: ' + JSON.stringify(userId))
+            return cb(err, userId)
+          })
+        })
+
+        break
+    }
   })
 
   /**
    * @param {string} storefrontAccessToken
+   * @param {Login} login
    * @param {function} cb
    */
-  function checkCredentials (storefrontAccessToken, cb) {
-    const login = new Login(input.strategy)
-
-    login.login = input.parameters.login
-    login.password = input.parameters.password
-    login.strategy = input.strategy
-
+  function checkCredentials (storefrontAccessToken, login, cb) {
     const requestData = createRequestData(login, storefrontAccessToken)
 
     // perform a request against the graphQL-API from Shopify to authenticate login-data
