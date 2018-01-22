@@ -9,7 +9,7 @@ module.exports = function (context, input, cb) {
   const Shopify = require('../lib/shopify.api.js')(context.config)
 
   // strategy is not supported
-  if (!Login.isValidStrategy(input.strategy)) {
+  if (!Login.isStrategyValid(input.strategy)) {
     return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' no supported`))
   }
 

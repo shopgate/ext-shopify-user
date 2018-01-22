@@ -24,7 +24,7 @@ class Login {
     }
   }
 
-  static isValidStrategy (strategy) {
+  static isStrategyValid (strategy) {
     return _.contains(possibleStrategies, strategy)
   }
 
