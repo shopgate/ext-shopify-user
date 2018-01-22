@@ -1,5 +1,5 @@
 const _ = require('underscore')
-const possibleStrategies = ['basic', 'facebook', 'twitter']
+const possibleStrategies = ['basic', 'web', 'facebook', 'twitter']
 
 class Login {
   /**
