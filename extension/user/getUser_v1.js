@@ -1,7 +1,7 @@
 const Tools = require('../lib/tools')
-const UnauthorizedErrorMessage = require('../models/unauthorizedErrorMessage/UnauthorizedErrorMessage')
 const User = require('../models/user/user')
 const Address = require('../models/user/address')
+const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
  * @typedef {object} context
@@ -16,7 +16,7 @@ module.exports = function (context, input, cb) {
 
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
-    return cb(new UnauthorizedErrorMessage('User is not logged in.'))
+    return cb(new UnauthorizedError('User is not logged in.'))
   }
 
   const currentUserId = context.meta.userId

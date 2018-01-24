@@ -4,16 +4,16 @@
     "id": "initWebLogin_v1",
     "public": true,
     "input": [
-      {"key": "payload", "id": "1"}
+      {"key": "phrase", "id": "1"}
     ],
     "output": [],
     "steps": [
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/storeWebLoginPayload_v1.js",
+        "path": "@shopgate/shopify-user/user/storeWebLoginPhrase_v1.js",
         "input": [
-          {"key": "payload", "id": "1"}
+          {"key": "phrase", "id": "1"}
         ],
         "output": []
       }

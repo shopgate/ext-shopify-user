@@ -1,5 +1,5 @@
 const _ = require('underscore')
-const possibleStrategies = ['basic', 'facebook', 'twitter']
+const possibleStrategies = ['basic', 'web', 'facebook', 'twitter']
 
 class Login {
   /**
@@ -24,7 +24,7 @@ class Login {
     }
   }
 
-  static isValidStrategy (strategy) {
+  static isStrategyValid (strategy) {
     return _.contains(possibleStrategies, strategy)
   }
 
