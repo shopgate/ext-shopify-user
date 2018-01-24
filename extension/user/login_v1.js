@@ -30,11 +30,10 @@ module.exports = function (context, input, cb) {
 
         break
       case 'web':
-        context.storage.device.get('webLoginPayload', (err, payload) => {
+        context.storage.device.get('webLoginPhrase', (err, phrase) => {
           if (err) return err
 
-          const decodedPhrase = Buffer.from(payload, 'base64').toString('ascii')
-          const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, decodedPhrase).toString(CryptoJS.enc.Utf8)
+          const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase).toString(CryptoJS.enc.Utf8)
           const userData = JSON.parse(decryptedData)
 
           login.login = userData.u
@@ -56,7 +55,6 @@ module.exports = function (context, input, cb) {
    */
   function checkCredentials (storefrontAccessToken, login, cb) {
     const requestData = createRequestData(login, storefrontAccessToken)
-
     // perform a request against the graphQL-API from Shopify to authenticate login-data
     request(requestData, function (err, response, body) {
       if (err) {
