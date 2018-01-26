@@ -1,50 +1,67 @@
 const request = require('request')
+const CryptoJS = require('crypto-js')
 
 const Tools = require('../lib/tools')
-const Message = require('../models/messages/message')
 const Login = require('../models/user/login')
+const InvalidCallError = require('../models/Errors/InvalidCallError')
 const UnknownError = require('../models/Errors/UnknownError')
 
 module.exports = function (context, input, cb) {
   const Shopify = require('../lib/shopify.api.js')(context.config)
-  let messages = []
 
   // strategy is not supported
-  if (!Login.isValidStrategy(input.strategy)) {
-    const message = new Message()
-    message.addErrorMessage('no code', 'authentication-strategy: ' + input.strategy + ' no supported')
-    messages.push(message.toJson())
-
-    return cb(null, {messages: messages})
+  if (!Login.isStrategyValid(input.strategy)) {
+    return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`))
   }
 
   Shopify.getStorefrontAccessToken((err, storefrontAccessToken) => {
     if (err) return cb(err)
 
-    checkCredentials(storefrontAccessToken, (err, userId) => {
-      return cb(err, userId)
-    })
+    const login = new Login(input.strategy)
+
+    switch (input.strategy) {
+      case 'basic':
+        login.login = input.parameters.login
+        login.password = input.parameters.password
+
+        checkCredentials(storefrontAccessToken, login, (err, userId) => {
+          return cb(err, userId)
+        })
+
+        break
+      case 'web':
+        context.storage.device.get('webLoginPhrase', (err, phrase) => {
+          if (err) return err
+
+          const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase).toString(CryptoJS.enc.Utf8)
+          const userData = JSON.parse(decryptedData)
+
+          login.login = userData.u
+          login.password = userData.p
+
+          checkCredentials(storefrontAccessToken, login, (err, userId) => {
+            return cb(err, userId)
+          })
+        })
+
+        break
+    }
   })
 
   /**
    * @param {string} storefrontAccessToken
+   * @param {Login} login
    * @param {function} cb
    */
-  function checkCredentials (storefrontAccessToken, cb) {
-    const login = new Login(input.strategy)
-
-    login.login = input.parameters.login
-    login.password = input.parameters.password
-    login.strategy = input.strategy
-
+  function checkCredentials (storefrontAccessToken, login, cb) {
     const requestData = createRequestData(login, storefrontAccessToken)
-
     // perform a request against the graphQL-API from Shopify to authenticate login-data
     request(requestData, function (err, response, body) {
       if (err) {
         context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
       }
+
       /**
        * @typedef {object} token
        * @property {object} customerAccessTokenCreate
