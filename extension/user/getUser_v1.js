@@ -1,40 +1,59 @@
 const Tools = require('../lib/tools')
+const Shopify = require('../lib/shopify.api.js')
 const User = require('../models/user/user')
 const Address = require('../models/user/address')
+const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
- * @typedef {object} context
- * @property {object} meta
+ * @typedef {Object} SDKContext
+ * @property {Object} meta
  *
- * @param context
- * @param input
- * @param cb
+ * @param {SDKContext} context
+ * @param {Object} input
+ * @param {function} cb
  */
 module.exports = function (context, input, cb) {
-  const Shopify = require('../lib/shopify.api.js')(context.config)
+  const shopify = Shopify(context.config)
 
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
     return cb(new UnauthorizedError('User is not logged in.'))
   }
 
-  const currentUserId = context.meta.userId
-  const query = '?query=' + currentUserId
-
-  Shopify.get('/admin/customers/search.json' + query, {}, function (err, data) {
-    if (err) cb(err, null)
-
-    if (Tools.isEmpty(data.customers)) {
-      return cb(new Error('customer not found'))
+  /**
+   * @typedef {Object} CustomerAddress
+   * @property {number} id
+   * @property {string} first_name
+   * @property {string} last_name
+   * @property {string} company
+   * @property {string} address1
+   * @property {string} address2
+   * @property {string} city
+   * @property {string} country_code
+   * @property {string} phone
+   * @property {number} default
+   * @property {number} zip
+   * @property {string} country
+   */
+  /**
+   * @typedef {Object} CustomerResponseElement
+   * @property {number} id
+   * @property {string} email
+   * @property {string} first_name
+   * @property {string} last_name
+   * @property {string} phone
+   * @property {[CustomerAddress]} addresses
+   */
+  /**
+   * @param {Error} err
+   * @param {CustomerResponseElement} customerData
+   */
+  shopify.getCustomerById(context.meta.userId, (err, customerData) => {
+    if (err) {
+      return cb(new CustomerNotFoundError())
     }
 
-    /**
-     * @typedef {object} customerData
-     * @property {string} first_name
-     * @property {string} last_name
-     */
-    const customerData = data.customers[0]
     const user = new User()
 
     user.id = customerData.id
@@ -43,14 +62,7 @@ module.exports = function (context, input, cb) {
     user.lastName = customerData.last_name
     user.phone = customerData.phone
 
-    /**
-     * @typdef {object} address
-     * @property {string} address1
-     * @property {string} address2
-     * @property {string} country_code
-     * @property {string} zip
-     */
-    customerData.addresses.forEach(function (address) {
+    customerData.addresses.forEach((address) => {
       const customerAddress = new Address()
       customerAddress.id = address.id
       // There is no field 'type' within shopify-response

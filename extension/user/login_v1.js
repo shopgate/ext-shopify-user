@@ -2,19 +2,20 @@ const request = require('request')
 const CryptoJS = require('crypto-js')
 
 const Tools = require('../lib/tools')
+const Shopify = require('../lib/shopify.api.js')
 const Login = require('../models/user/login')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const UnknownError = require('../models/Errors/UnknownError')
 
 module.exports = function (context, input, cb) {
-  const Shopify = require('../lib/shopify.api.js')(context.config)
+  const shopify = Shopify(context.config)
 
   // strategy is not supported
   if (!Login.isStrategyValid(input.strategy)) {
     return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`))
   }
 
-  Shopify.getStorefrontAccessToken((err, storefrontAccessToken) => {
+  shopify.getStorefrontAccessToken((err, storefrontAccessToken) => {
     if (err) return cb(err)
 
     const login = new Login(input.strategy)
@@ -24,7 +25,7 @@ module.exports = function (context, input, cb) {
         login.login = input.parameters.login
         login.password = input.parameters.password
 
-        checkCredentials(storefrontAccessToken, login, (err, userId) => {
+        checkCredentials(shopify, storefrontAccessToken, login, (err, userId) => {
           return cb(err, userId)
         })
 
@@ -33,14 +34,21 @@ module.exports = function (context, input, cb) {
         context.storage.device.get('webLoginPhrase', (err, phrase) => {
           if (err) return err
 
-          const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase).toString(CryptoJS.enc.Utf8)
-          const userData = JSON.parse(decryptedData)
+          /**
+           * @typedef {Object} DecryptedStringData
+           * @property {function(string|null|undefined):string} toString
+           *
+           * @type {DecryptedStringData}
+           */
+          const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase)
+          const decodedPayload = decryptedData.toString(CryptoJS.enc.Utf8)
+          const userData = JSON.parse(decodedPayload)
 
           login.login = userData.u
           login.password = userData.p
 
-          checkCredentials(storefrontAccessToken, login, (err, userId) => {
-            return cb(err, userId)
+          checkCredentials(shopify, storefrontAccessToken, login, (err, customerAccessToken) => {
+            return cb(err, {customerAccessToken})
           })
         })
 
@@ -49,44 +57,68 @@ module.exports = function (context, input, cb) {
   })
 
   /**
+   * @param {Shopify} shopify
    * @param {string} storefrontAccessToken
    * @param {Login} login
    * @param {function} cb
    */
-  function checkCredentials (storefrontAccessToken, login, cb) {
-    const requestData = createRequestData(login, storefrontAccessToken)
-    // perform a request against the graphQL-API from Shopify to authenticate login-data
-    request(requestData, function (err, response, body) {
+  function checkCredentials (shopify, storefrontAccessToken, login, cb) {
+    const requestData = createRequestData(shopify, login, storefrontAccessToken)
+    /**
+     * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
+     *
+     * @typedef {Object} ShopifyCustomerAccessToken
+     * @property {string} accessToken
+     * @property {string} expiresAt
+     */
+    /**
+     * @typedef {Object} ShopifyCustomerAccessTokenCreate
+     * @property {ShopifyCustomerAccessToken} customerAccessToken
+     * @property {[Object]} userErrors
+     */
+    /**
+     * @typedef {Object} ShopifyCustomerAccessTokenData
+     * @property {ShopifyCustomerAccessTokenData} customerAccessTokenCreate
+     */
+    /**
+     * @typedef {Object} ShopifyGraphQLResponseBody
+     * @property {ShopifyCustomerAccessTokenData} data
+     */
+    /**
+     * @param {Error} err
+     * @param {Object} response
+     * @param {ShopifyGraphQLResponseBody} body
+     */
+    request(requestData, (err, response, body) => {
       if (err) {
         context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
       }
 
-      /**
-       * @typedef {object} token
-       * @property {object} customerAccessTokenCreate
-       * @property {string} customerAccessTokenCreate.userErrors
-       */
       const token = body.data
       if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
         !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
         return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
       }
 
-      // login successful
-      cb(null, {userId: login.login})
+      // login successful (pass on the storefront access token to avoid additional requests)
+      cb(null, {
+        customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
+        storefrontAccessToken
+      })
     })
   }
 
   /**
+   * @param {Shopify} shopify
    * @param {object} login
    * @param {string} storefrontAccessToken
    * @return {object}
    */
-  function createRequestData (login, storefrontAccessToken) {
+  function createRequestData (shopify, login, storefrontAccessToken) {
     return {
       method: 'POST',
-      url: Shopify.getGraphQlUrl(),
+      url: shopify.getGraphQlUrl(),
       headers: {
         'cache-control': 'no-cache',
         'x-shopify-storefront-access-token': storefrontAccessToken,
