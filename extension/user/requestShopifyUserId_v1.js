@@ -5,19 +5,16 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @typedef {Object} ShopifyCustomerAccessToken
  * @property {string} accessToken
  * @property {string} expiresAt
- */
-/**
+ *
  * @typedef {Object} LoginParams
  * @property {string} login
  * @property {string} password
- */
-/**
+ *
  * @typedef {Object} RequestShopifyUserIdInputData
  * @property {ShopifyCustomerAccessToken} customerAccessToken
  * @property {string} storefrontAccessToken
  * @property {string} login
- */
-/**
+ *
  * @param {Object} context
  * @param {RequestShopifyUserIdInputData} input
  * @param {function} cb

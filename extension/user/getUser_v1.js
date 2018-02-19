@@ -35,8 +35,7 @@ module.exports = function (context, input, cb) {
    * @property {number} default
    * @property {number} zip
    * @property {string} country
-   */
-  /**
+   *
    * @typedef {Object} CustomerResponseElement
    * @property {number} id
    * @property {string} email
@@ -44,8 +43,7 @@ module.exports = function (context, input, cb) {
    * @property {string} last_name
    * @property {string} phone
    * @property {[CustomerAddress]} addresses
-   */
-  /**
+   *
    * @param {Error} err
    * @param {CustomerResponseElement} customerData
    */

@@ -70,21 +70,17 @@ module.exports = function (context, input, cb) {
      * @typedef {Object} ShopifyCustomerAccessToken
      * @property {string} accessToken
      * @property {string} expiresAt
-     */
-    /**
+     *
      * @typedef {Object} ShopifyCustomerAccessTokenCreate
      * @property {ShopifyCustomerAccessToken} customerAccessToken
      * @property {[Object]} userErrors
-     */
-    /**
+     *
      * @typedef {Object} ShopifyCustomerAccessTokenData
      * @property {ShopifyCustomerAccessTokenData} customerAccessTokenCreate
-     */
-    /**
+     *
      * @typedef {Object} ShopifyGraphQLResponseBody
      * @property {ShopifyCustomerAccessTokenData} data
-     */
-    /**
+     *
      * @param {Error} err
      * @param {Object} response
      * @param {ShopifyGraphQLResponseBody} body
