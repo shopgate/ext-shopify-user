@@ -25,8 +25,8 @@ module.exports = function (context, input, cb) {
         login.login = input.parameters.login
         login.password = input.parameters.password
 
-        checkCredentials(shopify, storefrontAccessToken, login, (err, userId) => {
-          return cb(err, userId)
+        checkCredentials(shopify, storefrontAccessToken, login, (err, checkCredentialsResponse) => {
+          return cb(err, checkCredentialsResponse)
         })
 
         break
@@ -47,8 +47,8 @@ module.exports = function (context, input, cb) {
           login.login = userData.u
           login.password = userData.p
 
-          checkCredentials(shopify, storefrontAccessToken, login, (err, customerAccessToken) => {
-            return cb(err, {customerAccessToken})
+          checkCredentials(shopify, storefrontAccessToken, login, (err, checkCredentialsResponse) => {
+            return cb(err, checkCredentialsResponse)
           })
         })
 
@@ -103,6 +103,7 @@ module.exports = function (context, input, cb) {
 
       // login successful (pass on the storefront access token to avoid additional requests)
       cb(null, {
+        login: login.login,
         customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
         storefrontAccessToken
       })

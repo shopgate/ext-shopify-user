@@ -15,7 +15,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @typedef {Object} RequestShopifyUserIdInputData
  * @property {ShopifyCustomerAccessToken} customerAccessToken
  * @property {string} storefrontAccessToken
- * @property {LoginParams} parameters
+ * @property {string} login
  */
 /**
  * @param {Object} context
@@ -25,7 +25,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 module.exports = function (context, input, cb) {
   const shopify = Shopify(context.config)
 
-  shopify.findUserByEmail(input.parameters.login, (err, customerList) => {
+  shopify.findUserByEmail(input.login, (err, customerList) => {
     /**
      * Ensure the requested data to be available and no request error occurred.
      *

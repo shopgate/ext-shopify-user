@@ -30,7 +30,8 @@
         ],
         "output": [
           {"key": "customerAccessToken", "id": "1060"},
-          {"key": "storefrontAccessToken", "id": "1070"}
+          {"key": "storefrontAccessToken", "id": "1070"},
+          {"key": "login", "id": "1080"}
         ]
       },
       {
@@ -40,7 +41,7 @@
         "input": [
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "parameters", "id": "1020"}
+          {"key": "login", "id": "1080"}
         ],
         "output": [
           {"key": "userId", "id": "1050"}
