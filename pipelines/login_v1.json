@@ -29,6 +29,21 @@
           {"key": "parameters", "id": "1020"}
         ],
         "output": [
+          {"key": "customerAccessToken", "id": "1060"},
+          {"key": "storefrontAccessToken", "id": "1070"},
+          {"key": "login", "id": "1080"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/requestShopifyUserId_v1.js",
+        "input": [
+          {"key": "customerAccessToken", "id": "1060"},
+          {"key": "storefrontAccessToken", "id": "1070"},
+          {"key": "login", "id": "1080"}
+        ],
+        "output": [
           {"key": "userId", "id": "1050"}
         ]
       },
