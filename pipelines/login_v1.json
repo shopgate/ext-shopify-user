@@ -77,6 +77,13 @@
       },
       {
         "type": "pipeline",
+        "id": "trackUserLoggedInEvent_v1",
+        "trusted": true,
+        "input": [],
+        "output": []
+      },
+      {
+        "type": "pipeline",
         "id": "migrateCartContents_int_v1",
         "trusted": false,
         "input": [

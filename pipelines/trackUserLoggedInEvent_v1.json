@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "trackUserLoggedInEvent_v1",
+    "public": true,
+    "input": [],
+    "output": [],
+    "steps": [
+      {
+        "type": "pipeline",
+        "id": "getUser_v1",
+        "trusted": true,
+        "input": [],
+        "output": [
+          {"key": "mail", "id": "1"},
+          {"key": "gender", "id": "2"},
+          {"key": "birthday", "id": "3"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/event/getEventData.js",
+        "input": [
+          {"key": "mail", "id": "1"},
+          {"key": "gender", "id": "2"},
+          {"key": "birthday", "id": "3"}
+        ],
+        "output": [
+          {"key": "eventData", "id": "4"}
+        ]
+      },
+      {
+        "type": "staticValue",
+        "input": [],
+        "values": [{"key": "eventType", "value": "userLoggedIn"}],
+        "output": [{"key": "eventType", "id": "10"}]
+      },
+      {
+        "type": "pipeline",
+        "id": "trackEvent_v1",
+        "input": [
+          { "key": "type", "id": "10" },
+          { "key": "data", "id": "4"}
+        ],
+        "output": []
+      }
+    ]
+  }
+}
