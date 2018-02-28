@@ -35,6 +35,13 @@
       "params" : {
         "value" : ""
       }
+    },
+    "userDataCacheTtl" : {
+      "type" : "static",
+      "destination" : "backend",
+      "params" : {
+        "value" : 6000000
+      }
     }
   }
 }

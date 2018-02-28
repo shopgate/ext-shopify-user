@@ -17,9 +17,12 @@ module.exports = function (context, input, cb) {
   }
 
   // Look user storage first
-  context.storage.user.get('userData', (err, storageUserData) => {
-    if (storageUserData) {
-      return cb(null, storageUserData)
+  context.storage.user.get('userData', (err, storageData) => {
+    if (storageData) {
+      // check TTL for data if still valid
+      if (storageData.ttl > (new Date()).getTime()) {
+        return cb(null, storageData.user)
+      }
     }
     if (err) {
       context.log.error(err, 'User storage error')
@@ -30,8 +33,12 @@ module.exports = function (context, input, cb) {
         return cb(err)
       }
 
+      const storageData = {
+        ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
+        user: shopifyData
+      }
       // Set userData silently
-      context.storage.user.set('userData', shopifyData, (err) => {
+      context.storage.user.set('userData', storageData, (err) => {
         if (err) context.log.error(err, 'User storage error')
       })
 

@@ -4,6 +4,7 @@
  * @property {string} config.shopifyShopAlias
  * @property {string} config.shopifyAccessToken
  * @property {string} config.userRegistrationUrl
+ * @property {string} config.userDataCacheTtl
  * @property {Object} meta
  * @property {string|number} meta.userId
  * @property {Object} storage

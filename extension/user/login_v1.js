@@ -8,12 +8,11 @@ const InvalidCallError = require('../models/Errors/InvalidCallError')
 const UnknownError = require('../models/Errors/UnknownError')
 
 module.exports = function (context, input, cb) {
-  const shopify = Shopify(context.config)
-
   // strategy is not supported
   if (!Login.isStrategyValid(input.strategy)) {
     return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`))
   }
+  const shopify = Shopify(context.config)
 
   shopify.getStorefrontAccessToken((err, storefrontAccessToken) => {
     if (err) return cb(err)
