@@ -14,6 +14,24 @@
         "output": [
           {"key": "success", "id": "1010"}
         ]
+      },
+      {
+        "type": "staticValue",
+        "input": [],
+        "values": [
+          {"key": "eventType", "value": "userLoggedOut"}
+        ],
+        "output": [
+          {"key": "eventType", "id": "1030"}
+        ]
+      },
+      {
+        "type": "pipeline",
+        "id": "trackEvent_v1",
+        "input": [
+          { "key": "type", "id": "1030" }
+        ],
+        "output": []
       }
     ]
   }
