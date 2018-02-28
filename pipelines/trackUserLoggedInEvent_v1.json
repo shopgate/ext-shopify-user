@@ -20,7 +20,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/event/getEventData.js",
+        "path": "@shopgate/shopify-user/event/createEventData.js",
         "input": [
           {"key": "mail", "id": "1"},
           {"key": "gender", "id": "2"},

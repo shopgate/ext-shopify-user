@@ -6,20 +6,46 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
- * @typedef {Object} SDKContext
- * @property {Object} meta
- *
  * @param {SDKContext} context
  * @param {Object} input
  * @param {function} cb
  */
 module.exports = function (context, input, cb) {
-  const shopify = Shopify(context.config)
-
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
     return cb(new UnauthorizedError('User is not logged in.'))
   }
+
+  // Look user storage first
+  context.storage.user.get('userData', (err, storageUserData) => {
+    if (storageUserData) {
+      return cb(null, storageUserData)
+    }
+    if (err) {
+      context.log.error(err, 'User storage error')
+    }
+
+    getUserFromShopify(context, (err, shopifyData) => {
+      if (err) {
+        return cb(err)
+      }
+
+      // Set userData silently
+      context.storage.user.set('userData', shopifyData, (err) => {
+        if (err) context.log.error(err, 'User storage error')
+      })
+
+      cb(null, shopifyData)
+    })
+  })
+}
+
+/**
+ * @param {SDKContext} context
+ * @param {function} cb
+ */
+function getUserFromShopify (context, cb) {
+  const shopify = Shopify(context.config)
 
   /**
    * @typedef {Object} CustomerAddress
@@ -82,7 +108,7 @@ module.exports = function (context, input, cb) {
       user.addresses.push(customerAddress.toJSON())
     })
 
-    cb(null, {
+    return cb(null, {
       'id': user.id.toString(),
       'mail': user.mail,
       'firstName': user.firstName,
