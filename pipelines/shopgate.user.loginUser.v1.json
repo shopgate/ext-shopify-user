@@ -13,7 +13,7 @@
     "steps": [
       {
         "type": "pipeline",
-        "id": "shopgate.checkout.getUrl.v1",
+        "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
         "input": [],
         "output": [
@@ -68,7 +68,7 @@
       },
       {
         "type": "pipeline",
-        "id": "shopgate.checkout.getUrl.v1",
+        "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
         "input": [],
         "output": [
