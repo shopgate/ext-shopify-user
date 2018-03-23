@@ -1,7 +1,7 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "login_v1",
+    "id": "shopgate.user.loginUser.v1",
     "public": true,
     "input": [
       {"key": "strategy", "id": "1010"},
@@ -13,7 +13,7 @@
     "steps": [
       {
         "type": "pipeline",
-        "id": "fetchShopifyCheckout_int_v1",
+        "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
         "input": [],
         "output": [
@@ -68,7 +68,7 @@
       },
       {
         "type": "pipeline",
-        "id": "fetchShopifyCheckout_int_v1",
+        "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
         "input": [],
         "output": [
@@ -77,14 +77,14 @@
       },
       {
         "type": "pipeline",
-        "id": "trackUserLoggedInEvent_v1",
+        "id": "shopgate.user.trackUserLoggedInEvent.v1",
         "trusted": true,
         "input": [],
         "output": []
       },
       {
         "type": "pipeline",
-        "id": "migrateCartContents_int_v1",
+        "id": "shopgate.cart.migrateCartContents.v1",
         "trusted": false,
         "input": [
           {"key": "sourceCart", "id": "1"},

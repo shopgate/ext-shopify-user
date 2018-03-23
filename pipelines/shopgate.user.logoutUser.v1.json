@@ -1,7 +1,7 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "logout_v1",
+    "id": "shopgate.user.logoutUser.v1",
     "public": true,
     "input": [],
     "output": [
@@ -27,7 +27,7 @@
       },
       {
         "type": "pipeline",
-        "id": "trackEvent_v1",
+        "id": "shopgate.tracking.trackEvent.v1",
         "input": [
           { "key": "type", "id": "1030" }
         ],

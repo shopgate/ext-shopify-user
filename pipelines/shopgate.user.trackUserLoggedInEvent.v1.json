@@ -1,14 +1,14 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "trackUserLoggedInEvent_v1",
+    "id": "shopgate.user.trackUserLoggedInEvent.v1",
     "public": true,
     "input": [],
     "output": [],
     "steps": [
       {
         "type": "pipeline",
-        "id": "getUser_v1",
+        "id": "shopgate.user.getUser.v1",
         "trusted": true,
         "input": [],
         "output": [
@@ -38,7 +38,7 @@
       },
       {
         "type": "pipeline",
-        "id": "trackEvent_v1",
+        "id": "shopgate.tracking.trackEvent.v1",
         "input": [
           { "key": "type", "id": "10" },
           { "key": "data", "id": "4"}
