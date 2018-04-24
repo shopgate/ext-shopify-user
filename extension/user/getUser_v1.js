@@ -1,5 +1,5 @@
 const Tools = require('../lib/tools')
-const Shopify = require('../lib/shopify.api.js')
+const SGShopifyApi = require('../lib/shopify.api.class.js')
 const User = require('../models/user/user')
 const Address = require('../models/user/address')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
@@ -52,7 +52,7 @@ module.exports = function (context, input, cb) {
  * @param {function} cb
  */
 function getUserFromShopify (context, cb) {
-  const shopify = Shopify(context.config)
+  const shopify = new SGShopifyApi(context.config)
 
   /**
    * @typedef {Object} CustomerAddress
@@ -107,7 +107,7 @@ function getUserFromShopify (context, cb) {
       customerAddress.state = address.country_code
       customerAddress.phone = address.phone
       customerAddress.isDefault = address.default
-      // There is no field 'alias' within shopify-respone
+      // There is no field 'alias' within shopify-response
       customerAddress.alias = null
       customerAddress.zipcode = address.zip
       customerAddress.country = address.country

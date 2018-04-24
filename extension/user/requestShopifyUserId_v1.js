@@ -1,4 +1,4 @@
-const Shopify = require('../lib/shopify.api.js')
+const SGShopifyApi = require('../lib/shopify.api.class.js')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
@@ -6,7 +6,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @property {string} accessToken
  * @property {string} expiresAt
  *
- * @typedef {Object} LoginParams
+ * @typedef {Object} input
  * @property {string} login
  * @property {string} password
  *
@@ -20,7 +20,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @param {function} cb
  */
 module.exports = function (context, input, cb) {
-  const shopify = Shopify(context.config)
+  const shopify = new SGShopifyApi(context.config)
 
   shopify.findUserByEmail(input.login, (err, customerList) => {
     /**
