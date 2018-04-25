@@ -52,7 +52,7 @@ module.exports = function (context, input, cb) {
  * @param {function} cb
  */
 function getUserFromShopify (context, cb) {
-  const shopify = new SGShopifyApi(context.config)
+  const shopify = new SGShopifyApi(context)
 
   /**
    * @typedef {Object} CustomerAddress

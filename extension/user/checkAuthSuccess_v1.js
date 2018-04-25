@@ -4,6 +4,7 @@ const UnknownError = require('../models/Errors/UnknownError')
  * @typedef {object} input
  * @property {string} authSuccess
  * @property {string} authType
+ * @property {string} login
  *
  * @param context
  * @param input

@@ -9,7 +9,7 @@ module.exports = function (context, input, cb) {
     return cb(new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`))
   }
 
-  const shopify = new SGShopifyApi(context.config)
+  const shopify = new SGShopifyApi(context)
 
   shopify.getStoreFrontAccessToken((err, storefrontAccessToken) => {
     if (err) return cb(err)
@@ -43,7 +43,7 @@ module.exports = function (context, input, cb) {
         break
     }
 
-    shopify.checkCredentials(shopify, storefrontAccessToken, login, (err, checkCredentialsResponse) => {
+    shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
       return cb(err, checkCredentialsResponse)
     })
   })

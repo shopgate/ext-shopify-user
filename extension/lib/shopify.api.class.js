@@ -7,10 +7,11 @@ const request = require('request')
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
  */
 class SGShopifyApi {
-  constructor (config) {
-    this.shop = config.shopifyShopAlias + '.myshopify.com'
+  constructor (context) {
+    this.context = context
+    this.shop = this.context.config.shopifyShopAlias + '.myshopify.com'
     this.shopifyApiKey = null // not required
-    this.accessToken = config.shopifyAccessToken
+    this.accessToken = this.context.config.shopifyAccessToken
     this.verbose = false
 
     this.shopifyApi = ShopifyAPI({
@@ -64,6 +65,7 @@ class SGShopifyApi {
           'title': storefrontAccessTokenTitle
         }
       }
+
       this.postRequest(endpoint, requestBody, (err, response) => {
         if (err) return cb(err)
 
@@ -130,6 +132,10 @@ class SGShopifyApi {
   }
 
   /**
+   * @typedef {Object} userData
+   * @property {Object} customer
+   * @property {Array} customers
+   *
    * @param customersId
    * @param cb
    * @returns {function} cb
@@ -247,9 +253,10 @@ class SGShopifyApi {
    * @param {SGShopifyApi} shopify
    * @param {string} storefrontAccessToken
    * @param {Login} login
+   * @param {Object} input
    * @param {function} cb
    */
-  checkCredentials (shopify, storefrontAccessToken, login, cb) {
+  checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
     /**
      * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
@@ -274,7 +281,7 @@ class SGShopifyApi {
      */
     request(requestData, (err, response, body) => {
       if (err) {
-        context.log.error(input.authType + ': Auth step finished unsuccessfully.')
+        this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
       }
 

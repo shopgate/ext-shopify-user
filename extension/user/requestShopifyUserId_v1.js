@@ -20,7 +20,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @param {function} cb
  */
 module.exports = function (context, input, cb) {
-  const shopify = new SGShopifyApi(context.config)
+  const shopify = new SGShopifyApi(context)
 
   shopify.findUserByEmail(input.login, (err, customerList) => {
     /**
