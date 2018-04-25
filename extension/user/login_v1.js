@@ -24,7 +24,9 @@ module.exports = function (context, input, cb) {
         break
       case 'web':
         context.storage.device.get('webLoginPhrase', (err, phrase) => {
-          if (err) return err
+          if (err) {
+            return err
+          }
 
           /**
            * @typedef {Object} DecryptedStringData
