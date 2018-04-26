@@ -7,19 +7,17 @@
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive test",
     "standard": "./node_modules/.bin/standard"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "crypto-js": "^3.1.9-1",
-    "shopify-node-api": "^1.7.6",
-    "underscore": "1.8.3",
-    "request": "2.81.0",
-    "sleep": "5.1.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "npm-run-all": "^4.1.2",
+    "@shopgate/pwa-common": "^5.2.0",
+    "@shopgate/pwa-common-commerce": "^5.2.0",
+    "@shopgate/eslint-config": "^5.2.0",
+    "@shopgate/tracking-core": "^5.2.0",
     "standard": "^11.0.1"
   },
   "standard": {
