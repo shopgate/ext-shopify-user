@@ -6,7 +6,7 @@ class Price {
   }
 
   /**
-   * @return {{unit: {number}, default: {number}, special: {number}}}
+   * @return {Object}
    */
   toJson () {
     return {
