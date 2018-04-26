@@ -52,9 +52,9 @@ class SGShopifyApi {
        * @property {string} title
        */
       if (Tools.propertyExists(response, 'storefront_access_tokens')) {
-        for (let i = 0; i < response.storefront_access_tokens.length; i++) {
-          if (response.storefront_access_tokens[i].title === storefrontAccessTokenTitle) {
-            return cb(null, response.storefront_access_tokens[i].access_token)
+        for (let token of response.storefront_access_tokens) {
+          if (token.title === storefrontAccessTokenTitle) {
+            return cb(null, token.access_token)
           }
         }
       }
