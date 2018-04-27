@@ -36,7 +36,6 @@ module.exports = function (context, input, cb) {
     // Check if we really got the correct user here
     for (let customer of customerList) {
       if (input.login.toString() === customer.email) {
-        console.log('id: ' + customer.id.toString())
         return cb(null, {userId: customer.id.toString()})
       }
     }
