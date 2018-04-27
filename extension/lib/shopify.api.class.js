@@ -160,7 +160,7 @@ class SGShopifyApi {
    * @returns {function} cb
    */
   findUserByEmail (email, cb) {
-    this.getRequest(`/admin/customers/search.json?query=${email}`, {}, (err, userData) => {
+    this.getRequest(`/admin/customers/search.json?query=email:${email}&fields=id,email&limit=1`, {}, (err, userData) => {
       if (err) {
         return cb(err)
       }

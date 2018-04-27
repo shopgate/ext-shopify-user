@@ -1,6 +1,5 @@
 const SGShopifyApi = require('../lib/shopify.api.class.js')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
-const Sleep = require('sleep')
 
 /**
  * @typedef {Object} ShopifyCustomerAccessToken
@@ -23,11 +22,6 @@ const Sleep = require('sleep')
 module.exports = function (context, input, cb) {
   const shopify = new SGShopifyApi(context)
 
-  /*
-   * In some cases Shopify is not fast enough after registration. Therefor we have to wait a moment here.
-   * Especially if the user registers within the checkout process.
-   */
-  Sleep.msleep(1000)
   shopify.findUserByEmail(input.login, (err, customerList) => {
     /**
      * Ensure the requested data to be available and no request error occurred.
@@ -39,7 +33,14 @@ module.exports = function (context, input, cb) {
       return cb(new CustomerNotFoundError())
     }
 
-    const userId = customerList[0].id.toString()
-    cb(null, {userId})
+    // Check if we really got the correct user here
+    for (let customer of customerList) {
+      if (input.login.toString() === customer.email) {
+        console.log('id: ' + customer.id.toString())
+        return cb(null, {userId: customer.id.toString()})
+      }
+    }
+
+    return cb(new CustomerNotFoundError())
   })
 }
