@@ -41,8 +41,7 @@
         "input": [
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "login", "id": "1080"},
-          {"key": "strategy", "id": "1010"}
+          {"key": "login", "id": "1080"}
         ],
         "output": [
           {"key": "userId", "id": "1050"}
