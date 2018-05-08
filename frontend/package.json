@@ -8,21 +8,15 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive test",
-    "standard": "./node_modules/.bin/standard"
+    "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
   },
-  "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {},
   "devDependencies": {
+    "@shopgate/eslint-config": "^5.2.0",
     "@shopgate/pwa-common": "^5.2.0",
     "@shopgate/pwa-common-commerce": "^5.2.0",
-    "@shopgate/eslint-config": "^5.2.0",
     "@shopgate/tracking-core": "^5.2.0",
-    "standard": "^11.0.1"
-  },
-  "standard": {
-    "env": {
-      "mocha": true
-    }
+    "eslint": "^4.19.1"
   }
 }
