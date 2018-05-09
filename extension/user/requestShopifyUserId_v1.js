@@ -33,13 +33,12 @@ module.exports = function (context, input, cb) {
       return cb(new CustomerNotFoundError())
     }
 
-    // Check if we really got the correct user here
-    for (let customer of customerList) {
-      if (input.login.toString() === customer.email) {
-        return cb(null, {userId: customer.id.toString()})
-      }
-    }
+    const filterResult = (customerList.filter((customer) => {
+      return customer.email === input.login.toString()
+    }))
 
-    return cb(new CustomerNotFoundError())
+    return filterResult.length
+      ? cb(null, {'userId': filterResult[0].id.toString()})
+      : cb(new CustomerNotFoundError())
   })
 }
