@@ -6,6 +6,9 @@
     "type": "git",
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
+  "scripts": {
+    "standard": "./node_modules/.bin/standard"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,12 +18,13 @@
     "request": "2.81.0",
     "sleep": "5.1.1"
   },
+  "devDependencies": {
+    "npm-run-all": "^4.1.2",
+    "standard": "^11.0.1"
+  },
   "standard": {
     "env": {
       "mocha": true
     }
-  },
-  "devDependencies": {
-    "npm-run-all": "^4.1.2"
   }
 }
