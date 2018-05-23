@@ -12,7 +12,7 @@ class AppliedDiscount {
   }
 
   /**
-   * @return {{code: {string}, description: {string}, label: {string}, savedPrice: {number}}}
+   * @return {Object}
    */
   toJson () {
     return {

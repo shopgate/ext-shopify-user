@@ -10,16 +10,7 @@ class Product {
   }
 
   /**
-   * @return {{
-   * id: {number},
-   * name: {string},
-   * featuredImageUrl: {string},
-   * price: {number},
-   * externalId: {string},
-   * properties: {Array},
-   * appliedDiscounts: {appliedDiscounts},
-   * additionalInfo: {additionalInfo}
-   * }}
+   * @return {Object}
    */
   toJson () {
     return {

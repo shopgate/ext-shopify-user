@@ -15,7 +15,7 @@ class CartItem {
   }
 
   /**
-   * @return {{id: {number}, quantity: {number}, type: {string}, product: {product}, coupon: {coupon}}}
+   * @return {Object}
    */
   toJson () {
     return {
