@@ -34,11 +34,11 @@ module.exports = function (context, input, cb) {
     }
 
     const filterResult = (customerList.filter((customer) => {
-      return customer.email === input.login.toString()
+      return customer.email.toLowerCase() === input.login.toString()
     }))
 
     return filterResult.length
-      ? cb(null, {'userId': filterResult[0].id.toString()})
+      ? cb(null, { 'userId': filterResult[0].id.toString() })
       : cb(new CustomerNotFoundError())
   })
 }
