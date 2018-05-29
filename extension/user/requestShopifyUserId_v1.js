@@ -69,23 +69,23 @@ module.exports = function (context, input, cb) {
         ? cb(null, {'userId': filterResult[0].id.toString()})
         : cb(new CustomerNotFoundError())
     })
-  }
+  } else {
+    // Forced login after customer has registered, for example within the checkout process
+    console.log('###  Forced login  ###')
+    const maxTries = 5
+    const sleepDelay = 2000
 
-  // Forced login after customer has registered, for example within the checkout process
-  console.log('###  Forced login  ###')
-  const maxTries = 5
-  const sleepDelay = 2000
-
-  for (let tryCount = 1; tryCount <= maxTries; tryCount++) {
-    console.log('### - Login tryCount: ' + tryCount)
-    const userId = findUserByEmail(input.login, shopify)
-    if (userId) {
-      console.log('!!!!!!!! user found')
-      return cb(null, {userId})
+    for (let tryCount = 1; tryCount <= maxTries; tryCount++) {
+      console.log('### - Login tryCount: ' + tryCount)
+      const userId = findUserByEmail(input.login, shopify)
+      if (userId) {
+        console.log('!!!!!!!! user found')
+        return cb(null, {userId})
+      }
+      Sleep.msleep(sleepDelay)
+      console.log('###########################')
     }
-    Sleep.msleep(sleepDelay)
-    console.log('###########################')
-  }
 
-  cb(new CustomerNotFoundError())
+    cb(new CustomerNotFoundError())
+  }
 }
