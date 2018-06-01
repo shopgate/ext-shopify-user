@@ -16,8 +16,6 @@ module.exports = function (context, input, cb) {
 
     const login = new Login(input.strategy)
 
-    console.log('##### login_v1:' + input.strategy)
-
     switch (input.strategy) {
       case 'basic':
         login.login = input.parameters.login

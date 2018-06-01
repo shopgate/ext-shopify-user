@@ -54,7 +54,6 @@ class SGShopifyApi {
       if (Tools.propertyExists(response, 'storefront_access_tokens')) {
         for (let token of response.storefront_access_tokens) {
           if (token.title === storefrontAccessTokenTitle) {
-            console.log('##### token.access_token:' + token.access_token)
             return cb(null, token.access_token)
           }
         }
@@ -67,13 +66,8 @@ class SGShopifyApi {
         }
       }
 
-      console.log('##### create new access token:' + storefrontAccessTokenTitle)
-
       this.postRequest(endpoint, requestBody, (err, response) => {
         if (err) return cb(err)
-
-        console.log('##### new access token was created:' + response.storefront_access_token.access_token)
-
         return cb(null, response.storefront_access_token.access_token)
       })
     })
@@ -264,10 +258,6 @@ class SGShopifyApi {
   checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
 
-    console.log('###### requestData')
-    console.log(requestData)
-    console.log('######')
-
     /**
      * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
      *
@@ -300,10 +290,6 @@ class SGShopifyApi {
         !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
         return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
       }
-
-      console.log('#######################')
-      console.log(token)
-      console.log('#######################')
 
       // login successful (pass on the storefront access token to avoid additional requests)
       cb(null, {
