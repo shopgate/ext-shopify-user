@@ -4,11 +4,6 @@ const Sleep = require('sleep')
 
 function findUserByEmail (email, shopify) {
   shopify.findUserByEmail(email, (err, customerList) => {
-
-    console.log('+++  CustomerList:')
-    console.log(customerList)
-    console.log('+++  +++ +++ +++ +++')
-
     /**
      * Ensure the requested data to be available and no request error occurred.
      *

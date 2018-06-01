@@ -159,7 +159,6 @@ module.exports = function (config) {
    */
   module.findUserByEmail = function (email, cb) {
     this.get(`/admin/customers/search.json?query=email:${email}&fields=id,email&limit=1`, {}, (err, userData) => {
-
       if (err) {
         return cb(err)
       }
