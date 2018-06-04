@@ -1,5 +1,22 @@
 const SGShopifyApi = require('../lib/shopify.api.class.js')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
+const Sleep = require('sleep')
+
+function findUserByEmail (email, shopify) {
+  shopify.findUserByEmail(email, (err, customerList) => {
+    /**
+     * Ensure the requested data to be available and no request error occurred.
+     *
+     * @typedef {Object} CustomerResponseElement
+     * @property {number} id
+     */
+    if (err || !customerList || customerList.length < 1) {
+      return false
+    }
+
+    return customerList[0].id.toString()
+  })
+}
 
 /**
  * @typedef {Object} ShopifyCustomerAccessToken
@@ -22,23 +39,40 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 module.exports = function (context, input, cb) {
   const shopify = new SGShopifyApi(context)
 
-  shopify.findUserByEmail(input.login, (err, customerList) => {
-    /**
-     * Ensure the requested data to be available and no request error occurred.
-     *
-     * @typedef {Object} CustomerResponseElement
-     * @property {number} id
-     */
-    if (err || !customerList || customerList.length < 1) {
-      return cb(new CustomerNotFoundError())
+  // Default login via login form
+  if (input.strategy === 'basic') {
+    shopify.findUserByEmail(input.login, (err, customerList) => {
+      /**
+       * Ensure the requested data to be available and no request error occurred.
+       *
+       * @typedef {Object} CustomerResponseElement
+       * @property {number} id
+       */
+      if (err || !customerList || customerList.length < 1) {
+        return cb(new CustomerNotFoundError())
+      }
+
+      const filterResult = (customerList.filter((customer) => {
+        return customer.email === input.login.toString()
+      }))
+
+      return filterResult.length
+        ? cb(null, {'userId': filterResult[0].id.toString()})
+        : cb(new CustomerNotFoundError())
+    })
+  } else {
+    // Forced login after customer has registered, for example within the checkout process
+    const maxTries = 5
+    const sleepDelay = 2000
+
+    for (let tryCount = 1; tryCount <= maxTries; tryCount++) {
+      const userId = findUserByEmail(input.login, shopify)
+      if (userId) {
+        return cb(null, {userId})
+      }
+      Sleep.msleep(sleepDelay)
     }
 
-    const filterResult = (customerList.filter((customer) => {
-      return customer.email.toLowerCase() === input.login.toString()
-    }))
-
-    return filterResult.length
-      ? cb(null, { 'userId': filterResult[0].id.toString() })
-      : cb(new CustomerNotFoundError())
-  })
+    cb(new CustomerNotFoundError())
+  }
 }

@@ -68,7 +68,6 @@ class SGShopifyApi {
 
       this.postRequest(endpoint, requestBody, (err, response) => {
         if (err) return cb(err)
-
         return cb(null, response.storefront_access_token.access_token)
       })
     })
@@ -258,6 +257,7 @@ class SGShopifyApi {
    */
   checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
+
     /**
      * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
      *

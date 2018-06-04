@@ -39,6 +39,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/requestShopifyUserId_v1.js",
         "input": [
+          {"key": "strategy", "id": "1010"},
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
           {"key": "login", "id": "1080"}
