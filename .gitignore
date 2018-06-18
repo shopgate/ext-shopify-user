@@ -5,3 +5,5 @@ extension/coverage
 **/extension/config.json
 .idea/
 npm-debug.log
+extension/package-lock.json
+package-lock.json
