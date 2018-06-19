@@ -21,6 +21,9 @@ module.exports = function (context, input, cb) {
         login.login = input.parameters.login
         login.password = input.parameters.password
 
+        shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
+          return cb(err, checkCredentialsResponse)
+        })
         break
       case 'web':
         context.storage.device.get('webLoginPhrase', (err, phrase) => {
@@ -40,13 +43,12 @@ module.exports = function (context, input, cb) {
 
           login.login = userData.u
           login.password = userData.p
-        })
 
+          shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
+            return cb(err, checkCredentialsResponse)
+          })
+        })
         break
     }
-
-    shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
-      return cb(err, checkCredentialsResponse)
-    })
   })
 }
