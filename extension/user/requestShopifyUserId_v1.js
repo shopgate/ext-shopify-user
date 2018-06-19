@@ -1,20 +1,27 @@
 const SGShopifyApi = require('../lib/shopify.api.class.js')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
-const Sleep = require('sleep')
 
-function findUserByEmail (email, shopify) {
-  shopify.findUserByEmail(email, (err, customerList) => {
-    /**
-     * Ensure the requested data to be available and no request error occurred.
-     *
-     * @typedef {Object} CustomerResponseElement
-     * @property {number} id
-     */
-    if (err || !customerList || customerList.length < 1) {
-      return false
-    }
+function findUserByEmail (email, shopify, context) {
+  return new Promise((resolve, reject) => {
+    shopify.findUserByEmail(email, (err, customerList) => {
+      /**
+       * log undefined customer list from shopify Api
+       */
+      if (customerList === 'undefined') {
+        context.log.error(new CustomerNotFoundError(), 'undefined customer list from shopify Api')
+      }
+      /**
+       * Ensure the requested data to be available and no request error occurred.
+       *
+       * @typedef {Object} CustomerResponseElement
+       * @property {number} id
+       */
+      if (err || !customerList || customerList.length < 1 || !customerList[0].id) {
+        return reject(new CustomerNotFoundError())
+      }
 
-    return customerList[0].id.toString()
+      return resolve(customerList[0].id.toString())
+    })
   })
 }
 
@@ -57,22 +64,15 @@ module.exports = function (context, input, cb) {
       }))
 
       return filterResult.length
-        ? cb(null, {'userId': filterResult[0].id.toString()})
+        ? cb(null, { 'userId': filterResult[0].id.toString() })
         : cb(new CustomerNotFoundError())
     })
   } else {
     // Forced login after customer has registered, for example within the checkout process
-    const maxTries = 5
-    const sleepDelay = 2000
-
-    for (let tryCount = 1; tryCount <= maxTries; tryCount++) {
-      const userId = findUserByEmail(input.login, shopify)
-      if (userId) {
-        return cb(null, {userId})
-      }
-      Sleep.msleep(sleepDelay)
-    }
-
-    cb(new CustomerNotFoundError())
+    return findUserByEmail(input.login, shopify, context).then((userId) => {
+      return cb(null, { userId })
+    }).catch((error) => {
+      return cb(error)
+    })
   }
 }
