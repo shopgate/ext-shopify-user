@@ -24,33 +24,32 @@ module.exports = function (context, input, cb) {
   const login = input.login.login
   const customerId = input.login.parameters.customerId
 
-  // Default login via login form
-  if (input.strategy === 'basic') {
-    shopify.findUserByEmail(login, (err, customerList) => {
-      /**
-       * Ensure the requested data to be available and no request error occurred.
-       *
-       * @typedef {Object} CustomerResponseElement
-       * @property {number} id
-       */
-      if (err || !customerList || customerList.length < 1) {
-        return cb(new CustomerNotFoundError())
-      }
-
-      const filterResult = (customerList.filter((customer) => {
-        return customer.email === login.toString()
-      }))
-
-      return filterResult.length
-        ? cb(null, { 'userId': filterResult[0].id.toString() })
-        : cb(new CustomerNotFoundError())
-    })
-  } else {
-    if (customerId) {
-      return cb(null, { userId: customerId.toString() })
-    } else {
+  if (input.strategy === 'web') {
+    if (!customerId) {
       context.log.error('No userId given on input strategy web')
       return cb(new CustomerNotFoundError())
+    } else {
+      return cb(null, { userId: customerId.toString() })
     }
   }
+
+  shopify.findUserByEmail(login, (err, customerList) => {
+    /**
+     * Ensure the requested data to be available and no request error occurred.
+     *
+     * @typedef {Object} CustomerResponseElement
+     * @property {number} id
+     */
+    if (err || !customerList || customerList.length < 1) {
+      return cb(new CustomerNotFoundError())
+    }
+
+    const filterResult = (customerList.filter((customer) => {
+      return customer.email === login.toString()
+    }))
+
+    return filterResult.length
+      ? cb(null, { 'userId': filterResult[0].id.toString() })
+      : cb(new CustomerNotFoundError())
+  })
 }
