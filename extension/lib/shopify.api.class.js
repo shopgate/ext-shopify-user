@@ -234,8 +234,8 @@ class SGShopifyApi {
       },
       body: {
         query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
-        '{customerAccessTokenCreate(input: $input) ' +
-        '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
+          '{customerAccessTokenCreate(input: $input) ' +
+          '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
         variables: {
           input: {
             email: login.login,
@@ -293,7 +293,10 @@ class SGShopifyApi {
 
       // login successful (pass on the storefront access token to avoid additional requests)
       cb(null, {
-        login: login.login,
+        login: {
+          login: login.login,
+          parameters: login.parameters
+        },
         customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
         storefrontAccessToken
       })

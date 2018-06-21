@@ -15,6 +15,7 @@ module.exports = function (context, input, cb) {
     if (err) return cb(err)
 
     const login = new Login(input.strategy)
+    login.parameters = { customerId: input.parameters.customerId ? input.parameters.customerId : null }
 
     switch (input.strategy) {
       case 'basic':

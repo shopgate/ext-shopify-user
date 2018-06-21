@@ -1,30 +1,6 @@
 const SGShopifyApi = require('../lib/shopify.api.class.js')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
-function findUserByEmail (email, shopify, context) {
-  return new Promise((resolve, reject) => {
-    shopify.findUserByEmail(email, (err, customerList) => {
-      /**
-       * log undefined customer list from shopify Api
-       */
-      if (customerList === 'undefined') {
-        context.log.error(new CustomerNotFoundError(), 'undefined customer list from shopify Api')
-      }
-      /**
-       * Ensure the requested data to be available and no request error occurred.
-       *
-       * @typedef {Object} CustomerResponseElement
-       * @property {number} id
-       */
-      if (err || !customerList || customerList.length < 1 || !customerList[0].id) {
-        return reject(new CustomerNotFoundError())
-      }
-
-      return resolve(customerList[0].id.toString())
-    })
-  })
-}
-
 /**
  * @typedef {Object} ShopifyCustomerAccessToken
  * @property {string} accessToken
@@ -45,10 +21,12 @@ function findUserByEmail (email, shopify, context) {
  */
 module.exports = function (context, input, cb) {
   const shopify = new SGShopifyApi(context)
+  const login = input.login.login
+  const customerId = input.login.parameters.customerId
 
   // Default login via login form
   if (input.strategy === 'basic') {
-    shopify.findUserByEmail(input.login, (err, customerList) => {
+    shopify.findUserByEmail(login, (err, customerList) => {
       /**
        * Ensure the requested data to be available and no request error occurred.
        *
@@ -60,7 +38,7 @@ module.exports = function (context, input, cb) {
       }
 
       const filterResult = (customerList.filter((customer) => {
-        return customer.email === input.login.toString()
+        return customer.email === login.toString()
       }))
 
       return filterResult.length
@@ -68,11 +46,10 @@ module.exports = function (context, input, cb) {
         : cb(new CustomerNotFoundError())
     })
   } else {
-    // Forced login after customer has registered, for example within the checkout process
-    return findUserByEmail(input.login, shopify, context).then((userId) => {
-      return cb(null, { userId })
-    }).catch((error) => {
-      return cb(error)
-    })
+    if (customerId) {
+      return cb(null, { userId: customerId.toString() })
+    } else {
+      context.log.error('No userId given on input strategy web')
+    }
   }
 }
