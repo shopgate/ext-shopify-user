@@ -50,6 +50,7 @@ module.exports = function (context, input, cb) {
       return cb(null, { userId: customerId.toString() })
     } else {
       context.log.error('No userId given on input strategy web')
+      return cb(new CustomerNotFoundError())
     }
   }
 }
