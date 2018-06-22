@@ -159,7 +159,7 @@ class SGShopifyApi {
    * @returns {function} cb
    */
   findUserByEmail (email, cb) {
-    this.getRequest(`/admin/customers/search.json?query=email:${email}&fields=id,email&limit=1`, {}, (err, userData) => {
+    this.getRequest(`/admin/customers/search.json?query=email:"${email}"&fields=id,email`, {}, (err, userData) => {
       if (err) {
         return cb(err)
       }
@@ -234,8 +234,8 @@ class SGShopifyApi {
       },
       body: {
         query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
-        '{customerAccessTokenCreate(input: $input) ' +
-        '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
+          '{customerAccessTokenCreate(input: $input) ' +
+          '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
         variables: {
           input: {
             email: login.login,
@@ -286,6 +286,11 @@ class SGShopifyApi {
       }
 
       const token = body.data
+      if (!token) {
+        this.context.log.error('No token received for login credentials: ' + JSON.stringify(login))
+        return cb(new UnknownError())
+      }
+
       if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
         !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
         return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
@@ -293,7 +298,10 @@ class SGShopifyApi {
 
       // login successful (pass on the storefront access token to avoid additional requests)
       cb(null, {
-        login: login.login,
+        login: {
+          login: login.login,
+          parameters: login.parameters
+        },
         customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
         storefrontAccessToken
       })
