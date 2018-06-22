@@ -256,6 +256,8 @@ class SGShopifyApi {
    * @param {function} cb
    */
   checkCredentials (shopify, storefrontAccessToken, login, input, context, cb) {
+    context.log.info('login: ' + JSON.stringify(login))
+    context.log.info('input: ' + JSON.stringify(input))
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
 
     /**
@@ -280,7 +282,6 @@ class SGShopifyApi {
      * @param {ShopifyGraphQLResponseBody} body
      */
     request(requestData, (err, response, body) => {
-      console.log(JSON.stringify(body))
       context.log.info('storefrontAccessToken: ' + JSON.stringify(storefrontAccessToken))
       context.log.info('response: ' + JSON.stringify(response))
       context.log.info('body.data: ' + JSON.stringify(body.data))
