@@ -22,7 +22,7 @@ module.exports = function (context, input, cb) {
         login.login = input.parameters.login
         login.password = input.parameters.password
 
-        shopify.checkCredentials(shopify, storefrontAccessToken, login, input, context, (err, checkCredentialsResponse) => {
+        shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
           return cb(err, checkCredentialsResponse)
         })
         break
@@ -45,7 +45,7 @@ module.exports = function (context, input, cb) {
           login.login = userData.u
           login.password = userData.p
 
-          shopify.checkCredentials(shopify, storefrontAccessToken, login, input, context, (err, checkCredentialsResponse) => {
+          shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
             return cb(err, checkCredentialsResponse)
           })
         })

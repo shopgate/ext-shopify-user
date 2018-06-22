@@ -255,9 +255,7 @@ class SGShopifyApi {
    * @param {Object} input
    * @param {function} cb
    */
-  checkCredentials (shopify, storefrontAccessToken, login, input, context, cb) {
-    context.log.info('login: ' + JSON.stringify(login))
-    context.log.info('input: ' + JSON.stringify(input))
+  checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
 
     /**
@@ -282,15 +280,17 @@ class SGShopifyApi {
      * @param {ShopifyGraphQLResponseBody} body
      */
     request(requestData, (err, response, body) => {
-      context.log.info('storefrontAccessToken: ' + JSON.stringify(storefrontAccessToken))
-      context.log.info('response: ' + JSON.stringify(response))
-      context.log.info('body.data: ' + JSON.stringify(body.data))
       if (err) {
         this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
       }
 
       const token = body.data
+      if (!token) {
+        this.context.log.error('No token received for login credentials: ' + JSON.stringify(login))
+        return cb(new UnknownError())
+      }
+
       if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
         !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
         return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
