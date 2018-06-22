@@ -255,7 +255,7 @@ class SGShopifyApi {
    * @param {Object} input
    * @param {function} cb
    */
-  checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
+  checkCredentials (shopify, storefrontAccessToken, login, input, context, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
 
     /**
@@ -280,6 +280,10 @@ class SGShopifyApi {
      * @param {ShopifyGraphQLResponseBody} body
      */
     request(requestData, (err, response, body) => {
+      console.log(JSON.stringify(body))
+      context.log.info('storefrontAccessToken: ' + JSON.stringify(storefrontAccessToken))
+      context.log.info('response: ' + JSON.stringify(response))
+      context.log.info('body.data: ' + JSON.stringify(body.data))
       if (err) {
         this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
