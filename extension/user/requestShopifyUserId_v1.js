@@ -41,7 +41,7 @@ module.exports = function (context, input, cb) {
      * @property {number} id
      */
     if (err || !customerList || customerList.length !== 1) {
-      if (customerList.length !== 1) {
+      if (customerList && customerList.length > 1) {
         context.log.error('Multiple users accounts returned from API request')
       }
       return cb(new CustomerNotFoundError())
