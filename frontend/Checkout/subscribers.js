@@ -40,8 +40,6 @@ export default function checkout(subscribe) {
         link.open();
         dispatch(goBackHistory(1));
       })
-      .catch(e => {
-        dispatch(goBackHistory(1));
-      });
+      .catch(() => dispatch(goBackHistory(1)));
   });
 }
