@@ -3,7 +3,6 @@ const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
 const ShopifyAddressValidationError = require('../models/Errors/ShopifyAddressValidationError')
-const InvalidCallError = require('../models/Errors/InvalidCallError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
