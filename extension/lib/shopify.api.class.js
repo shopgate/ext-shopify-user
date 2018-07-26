@@ -2,6 +2,8 @@ const ShopifyAPI = require('shopify-node-api')
 const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
+const ShopifyAddressValidationError = require('../models/Errors/ShopifyAddressValidationError')
+const InvalidCallError = require('../models/Errors/InvalidCallError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -19,6 +21,33 @@ class SGShopifyApi {
       shopify_api_key: this.shopifyApiKey, // not required
       access_token: this.accessToken, // not required
       verbose: this.verbose
+    })
+  }
+
+  /**
+   * @param customerId
+   * @param address
+   */
+  async addAddress (customerId, address) {
+    return new Promise((resolve, reject) => {
+      this.postRequest(`/admin/customers/${customerId}/addresses.json`, address, (err, response) => {
+        if (err) {
+          // Some Shopify address validation error occurred
+          if (response.errors) {
+            if (response.errors.signature) {
+              return reject(new ShopifyAddressValidationError(response.errors.signature[0]))
+            } else if (response.errors.country) {
+              return reject(new ShopifyAddressValidationError(response.errors.country[0]))
+            } else {
+              return reject(new UnknownError())
+            }
+          }
+
+          return reject(err)
+        }
+
+        return resolve({success: true})
+      })
     })
   }
 
