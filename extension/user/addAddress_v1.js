@@ -35,7 +35,6 @@ module.exports = async function (context, input, cb) {
       country: address.country,
       zip: address.zipCode,
       name: address.firstName + ' ' + address.lastName, // Not in use yet in the frontend
-      tags: []
     }
   }
 
