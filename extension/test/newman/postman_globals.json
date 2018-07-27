@@ -3,54 +3,6 @@
   "name": "Postman Globals",
   "values": [
     {
-      "key": "echo_digest_realm",
-      "value": "Users",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "echo_digest_nonce",
-      "value": "33N7FfwYwIPZDre4fdzQUxFSwnpU2Qy1",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "endpoint_auth_token",
-      "value": "shopgate/v2/auth/token",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "endpoint_carts",
-      "value": "shopgate/v2/carts",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "endpoint_carts_id_items",
-      "value": "{{endpoint_carts}}/{{cartId}}/items",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "endpoint_carts_id_checkoutUrl",
-      "value": "{{endpoint_carts}}/{{cartId}}/checkoutUrl",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "endpoint_carts_id_customer",
-      "value": "{{endpoint_carts}}/{{cartId}}/customer",
-      "enabled": true,
-      "type": "text"
-    },
-    {
-      "key": "endpoint_products",
-      "value": "shopgate/v2/products",
-      "enabled": true,
-      "type": "text"
-    },
-    {
       "key": "username",
       "value": "ronny.lindner@shopgate.com",
       "enabled": true,
