@@ -31,10 +31,10 @@ module.exports = async function (context, input, cb) {
       first_name: address.firstName,
       last_name: address.lastName,
       phone: address.phone,
-      province: address.province,
-      country: address.country,
+      province_code: address.province,
+      country_code: address.country,
       zip: address.zipCode,
-      name: address.firstName + ' ' + address.lastName, // Not in use yet in the frontend
+      name: address.firstName + ' ' + address.lastName
     }
   }
 
