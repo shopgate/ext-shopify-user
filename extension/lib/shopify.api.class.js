@@ -2,7 +2,7 @@ const ShopifyAPI = require('shopify-node-api')
 const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
-const ShopifyAddressValidationError = require('../models/Errors/ShopifyAddressValidationError')
+const FieldValidationError = require('../models/Errors/FieldValidationError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -24,22 +24,23 @@ class SGShopifyApi {
   }
 
   /**
-   * @param customerId
-   * @param address
+   * @param {string} customerId
+   * @param {ShopifyAddress} address
+   * @returns {Promise.<{success:true}|FieldValidationError>}
    */
   async addAddress (customerId, address) {
     return new Promise((resolve, reject) => {
-      this.postRequest(`/admin/customers/${customerId}/addresses.json`, address, (err, response) => {
+      this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
           if (response.errors) {
-            if (response.errors.signature) {
-              return reject(new ShopifyAddressValidationError(response.errors.signature[0]))
-            } else if (response.errors.country) {
-              return reject(new ShopifyAddressValidationError(response.errors.country[0]))
-            } else {
-              return reject(new UnknownError())
+            const validationError = new FieldValidationError()
+            for (let path in response.errors) {
+              response.errors[path].forEach(message => {
+                validationError.addValidationMessage(path, message, address[path])
+              })
             }
+            return reject(validationError)
           }
 
           return reject(err)
@@ -89,8 +90,8 @@ class SGShopifyApi {
 
       // create a new access token, because no valid token was found at this point
       const requestBody = {
-        'storefront_access_token': {
-          'title': storefrontAccessTokenTitle
+        storefront_access_token: {
+          title: storefrontAccessTokenTitle
         }
       }
 
@@ -130,8 +131,8 @@ class SGShopifyApi {
    */
   setCheckoutProducts (checkoutToken, productList, cb) {
     const data = {
-      'checkout': {
-        'line_items': productList
+      checkout: {
+        line_items: productList
       }
     }
 
@@ -148,8 +149,8 @@ class SGShopifyApi {
    */
   setCheckoutDiscount (checkoutToken, discountCode, cb) {
     const data = {
-      'checkout': {
-        'discount_code': discountCode
+      checkout: {
+        discount_code: discountCode
       }
     }
 

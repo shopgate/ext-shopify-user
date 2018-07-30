@@ -1,7 +1,7 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
-const SGShopifyApi = require('../lib/shopify.api.class.js')
+const SGShopifyApi = require('../lib/shopify.api.class')
 
 /**
  * @param {SDKContext} context
@@ -17,28 +17,39 @@ module.exports = async function (context, input, cb) {
   const userId = context.meta.userId
 
   if (Tools.isEmpty(input.address)) {
-    return cb(InvalidCallError('No or empty address data.'))
+    return cb(new InvalidCallError('Empty address data.'))
   }
 
-  // Map the input address values to fit the shopify specifications for the admin api endpoint
+  // Map the input address values to fit the Shopify specifications for the admin api endpoint
   const address = Object.assign(input.address)
   const newAddress = {
-    address: {
-      address1: address.street1,
-      address2: address.street2,
-      city: address.city,
-      company: address.company,
-      first_name: address.firstName,
-      last_name: address.lastName,
-      phone: address.phone,
-      province_code: address.province,
-      country_code: address.country,
-      zip: address.zipCode,
-      name: address.firstName + ' ' + address.lastName
-    }
+    address1: address.street1,
+    address2: address.street2,
+    city: address.city,
+    company: address.company,
+    first_name: address.firstName,
+    last_name: address.lastName,
+    phone: address.phone,
+    province_code: address.province,
+    zip: address.zipCode,
+    name: address.firstName + ' ' + address.lastName,
+    ...mapCountry(address.country)
   }
 
   const shopify = new SGShopifyApi(context)
 
   return shopify.addAddress(userId, newAddress)
+}
+
+/**
+ * @param {string} [country] - country input
+ *
+ * @returns {Object}
+ */
+function mapCountry (country) {
+  const map = country && {
+    ...(country.length === 2 && {country_code: country}),
+    ...(country.length > 2 && {country})
+  }
+  return map || {}
 }
