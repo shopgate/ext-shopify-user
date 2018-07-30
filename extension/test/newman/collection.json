@@ -6,15 +6,15 @@
 	},
 	"item": [
 		{
-			"_postman_id": "4f03ef30-e8b2-4792-a9d7-02993828942e",
+			"_postman_id": "5daa61f1-a212-4c94-8a7f-7af9c7304816",
 			"name": "addAddress",
 			"item": [
 				{
-					"_postman_id": "4f327f76-2969-4798-9ba8-39eb62320d71",
+					"_postman_id": "fd9f8660-ae58-4568-a5d3-36c51f7ae79e",
 					"name": "Errors",
 					"item": [
 						{
-							"_postman_id": "861a4081-9f59-4b50-83a0-1b94a25ed57e",
+							"_postman_id": "b352bf9b-0474-4f6e-8d43-e5f05d8fcb6a",
 							"name": "Unauthorized",
 							"event": [
 								{
@@ -68,7 +68,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "73f4f30d-49b6-49ef-a2b1-9035934432ce",
+							"_postman_id": "4734fc68-b161-48b5-a076-182fd6490a10",
 							"name": "Login",
 							"request": {
 								"method": "POST",
@@ -96,7 +96,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "385132c2-649b-46fb-863f-b764d62cf94f",
+							"_postman_id": "c56d7ca2-0ddc-476a-80ab-2fc50f2116c8",
 							"name": "missing address data",
 							"event": [
 								{
@@ -149,7 +149,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "80f413e4-6d08-43c7-9464-052d88538df8",
+							"_postman_id": "25e58674-ba87-44b9-b5e5-55d2876ed5d2",
 							"name": "bad country name",
 							"event": [
 								{
@@ -212,7 +212,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "b05ac389-7b97-43fd-bc21-8d097acf00f4",
+							"_postman_id": "25dbedc0-424f-4093-99d5-777caa3b0166",
 							"name": "country is required",
 							"event": [
 								{
@@ -274,7 +274,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "9c094868-4655-44de-8d02-e9af245fa4e4",
+							"_postman_id": "b8f732cb-3ed8-4345-9628-6997e7e4f7cb",
 							"name": "incorrect province",
 							"event": [
 								{
@@ -336,7 +336,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "ff19f79e-6ad2-460c-8339-cb87caf69c81",
+							"_postman_id": "8d83f924-5dbe-4a07-b9a0-71dcef7d4544",
 							"name": "Add GB address",
 							"event": [
 								{
@@ -382,7 +382,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "2883791c-ae06-41c4-9667-7ae7bb1164fa",
+							"_postman_id": "c90edcf3-fb00-4125-ba30-d5126221c284",
 							"name": "Add duplicate",
 							"event": [
 								{
@@ -447,7 +447,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "8f0280f0-a8eb-4faa-a9a1-c4f640e7007b",
+					"_postman_id": "c054632b-c487-42c4-a8a8-199415bb1491",
 					"name": "Login",
 					"request": {
 						"method": "POST",
@@ -475,17 +475,17 @@
 					"response": []
 				},
 				{
-					"_postman_id": "f2005939-3cb6-475f-bfe6-c7d63f5cb754",
+					"_postman_id": "6cb64170-92cd-4a62-bc70-047f0b38bfb6",
 					"name": "Province: Arizona",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "277a482f-d451-4e08-8407-56f4bf506134",
+								"id": "edc199c9-ca81-41fc-b9ae-f6ad9c1dfb51",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						},
@@ -524,17 +524,17 @@
 					"response": []
 				},
 				{
-					"_postman_id": "5d9b1323-9994-4c81-9586-d555f91607b4",
+					"_postman_id": "e7283486-a73a-426d-8d90-a7b3cd60d0a6",
 					"name": "Province: AZ",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "add6cf21-e3f1-4fcf-bee2-e9cfbccaea2b",
+								"id": "2f1a4978-eff1-47a9-ae0e-5d678fdb2958",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						},
@@ -573,17 +573,17 @@
 					"response": []
 				},
 				{
-					"_postman_id": "701f8445-471c-462b-9316-b954473dadfb",
+					"_postman_id": "5a8b1b87-70b1-4016-a821-ca48c7db2b38",
 					"name": "Country: United States",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "add6cf21-e3f1-4fcf-bee2-e9cfbccaea2b",
+								"id": "ad065b1b-1360-4697-bbef-ce64df85a5f2",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						},
