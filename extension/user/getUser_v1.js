@@ -1,7 +1,6 @@
 const Tools = require('../lib/tools')
 const SGShopifyApi = require('../lib/shopify.api.class.js')
 const User = require('../models/user/user')
-const Address = require('../models/user/address')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
@@ -94,25 +93,22 @@ function getUserFromShopify (context, cb) {
     user.phone = customerData.phone
 
     customerData.addresses.forEach((address) => {
-      const customerAddress = new Address()
-      customerAddress.id = address.id
-      // There is no field 'type' within shopify-response
-      customerAddress.type = null
-      customerAddress.firstName = address.first_name
-      customerAddress.lastName = address.last_name
-      customerAddress.company = address.company
-      customerAddress.street1 = address.address1
-      customerAddress.street2 = address.address2
-      customerAddress.city = address.city
-      customerAddress.state = address.country_code
-      customerAddress.phone = address.phone
-      customerAddress.isDefault = address.default
-      // There is no field 'alias' within shopify-response
-      customerAddress.alias = null
-      customerAddress.zipcode = address.zip
-      customerAddress.country = address.country
-
-      user.addresses.push(customerAddress.toJSON())
+      user.addresses.push({
+        id: address.id,
+        type: null,
+        firstName: address.first_name,
+        lastName: address.last_name,
+        company: address.company,
+        street1: address.address1,
+        street2: address.address2,
+        city: address.city,
+        state: address.country_code,
+        phone: address.phone,
+        isDefault: address.default,
+        alias: null,
+        zipcode: address.zip,
+        country: address.country
+      })
     })
 
     return cb(null, {
