@@ -1,18 +1,216 @@
 {
 	"info": {
+		"_postman_id": "d1a47684-968b-4623-aff3-7b812f279a6a",
 		"name": "Shopify Connect",
-		"_postman_id": "6df319f0-11a6-d414-eb3f-aa7f071b5d0f",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "addAddress",
+			"_postman_id": "7a31f4ed-e68f-4196-8bea-186f1646abed",
+			"name": "getUser",
 			"item": [
 				{
+					"_postman_id": "5ea67383-f9e2-46e6-a690-8cb59a3f5387",
 					"name": "Errors",
 					"item": [
 						{
+							"_postman_id": "27f4a145-8e46-4960-8a68-121aa8a4ba3e",
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 500\", function () {",
+											"    pm.response.to.have.status(500);",
+											"});",
+											"",
+											"var jsonData = pm.response.json();",
+											"pm.test(\"User not logged in error\", function () {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"_postman_id": "1e7545b3-4287-4a79-a7dd-9378d88e41af",
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Login successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_login}}",
+							"host": [
+								"{{domain}}{{endpoint_login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"_postman_id": "9fbadcbe-4034-47f7-bf83-a8c4ee035388",
+					"name": "getUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test if repsonse is okay, with body and json\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.with.body;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response have minimum return values\", function() {",
+									"    var response = pm.response.json()",
+									"    pm.expect(response.id).to.not.be.empty;",
+									"    pm.expect(response.firstName).to.not.be.empty;",
+									"    pm.expect(response.lastName).to.not.be.empty;",
+									"    pm.expect(response.mail).to.not.be.empty;",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"_postman_id": "1c26f663-92e4-4b74-89d6-22e83fad0586",
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Logout successful to clear up the login-state for the next tests\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_logout}}",
+							"host": [
+								"{{domain}}{{endpoint_logout}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"_postman_id": "3a2e0ac5-fc24-47b4-bebf-45a38fd9891b",
+			"name": "addAddress",
+			"item": [
+				{
+					"_postman_id": "80eaa353-4500-42a6-9c61-27baf4a0a733",
+					"name": "Errors",
+					"item": [
+						{
+							"_postman_id": "fb57ebb1-2bc1-49b2-945f-ebe2be5dd974",
 							"name": "Unauthorized",
 							"event": [
 								{
@@ -64,6 +262,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "1bb8e1d1-2c48-4912-9588-2080dc80796f",
 							"name": "Login",
 							"request": {
 								"method": "POST",
@@ -91,6 +290,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "07d94ee4-30b1-479e-843c-132dab8f92e1",
 							"name": "missing address data",
 							"event": [
 								{
@@ -133,6 +333,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "5d098a10-7bbe-4e4d-89e0-4e3258fe1425",
 							"name": "bad country name",
 							"event": [
 								{
@@ -184,6 +385,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "18981e29-5802-4df5-afca-052b0c665741",
 							"name": "country is required",
 							"event": [
 								{
@@ -235,6 +437,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "bf004dc9-9842-4850-a2d3-67b3eee120a0",
 							"name": "incorrect province",
 							"event": [
 								{
@@ -286,6 +489,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "18dc6bbe-bedb-46f3-8ef3-a92e89aee5ad",
 							"name": "Add GB address",
 							"request": {
 								"method": "POST",
@@ -309,6 +513,7 @@
 							"response": []
 						},
 						{
+							"_postman_id": "8a2e7665-ac9d-4fc4-ba29-224a8703b406",
 							"name": "Add duplicate",
 							"event": [
 								{
@@ -363,38 +568,13 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Cache-Control",
-								"value": "no-cache"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_login}}",
-							"host": [
-								"{{domain}}{{endpoint_login}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
+					"_postman_id": "e53a21ea-719f-40e6-82f1-4e7cd57260b7",
 					"name": "All field mapping",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "de936b76-024e-4ae6-a18d-10ba3b179074",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -406,10 +586,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "7c00a96b-c08a-4540-96ae-498fcd904066",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						}
@@ -424,7 +605,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"company\": \"{{seed}}-company\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"state\": \"{{seed}}-state\",\n        \"phone\": \"{{seed}}-phone\",\n        \"zipCode\": \"{{seed}}-zip\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
+							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"company\": \"{{seed}}-company\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"state\": \"{{seed}}-state\",\n        \"phone\": \"{{seed}}-phone\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -436,11 +617,63 @@
 					"response": []
 				},
 				{
+					"_postman_id": "e45665e4-57db-4161-8b8b-4d53571e906c",
+					"name": "Check address mapping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a58affc6-dee9-4551-9aae-6aa7007c6281",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Make sure all address data was properly set\", function() {",
+									"    const response = pm.response.json();",
+									"    const address = response.addresses.pop();",
+									"    pm.expect(address.id).to.not.be.empty;",
+									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
+									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
+									"    pm.expect(address.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
+									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
+									"    pm.expect(address.street2).to.be.eq(pm.environment.get(\"seed\") + '-street2');",
+									"    pm.expect(address.city).to.be.eq(pm.environment.get(\"seed\") + '-city');",
+									"    pm.expect(address.state).to.be.eq(pm.environment.get(\"seed\") + '-state');",
+									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zip');",
+									"    pm.expect(address.country).to.be.eq('United States');",
+									"    pm.expect(address.province).to.be.eq('Arizona');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"_postman_id": "176e87d8-2df9-4e0b-a205-995cccef0caf",
 					"name": "Province: Arizona",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "ebcf307b-87a4-4f96-bdd1-7d002abccd30",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -452,10 +685,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "9ee54fe1-ef3e-4c40-a873-050d0bfb07e7",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						}
@@ -482,11 +716,13 @@
 					"response": []
 				},
 				{
+					"_postman_id": "3087889a-dd49-423d-98f0-19288d074587",
 					"name": "Province: AZ",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "0cd96c53-19be-49ff-89fe-69b4c983fd16",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -498,10 +734,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "c669900f-a0e7-4604-950e-b252c10bfc11",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						}
@@ -528,11 +765,13 @@
 					"response": []
 				},
 				{
+					"_postman_id": "5cacf7ed-8600-4b42-852b-9fb0b2dd5945",
 					"name": "Country: United States",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "1ee964bd-2c66-45c6-bddd-ecde976d13f6",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -544,10 +783,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "fd7bd3e5-551f-4e09-9a32-be50a075b6d7",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
-									"pm.variables.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
 								]
 							}
 						}
@@ -574,17 +814,21 @@
 					"response": []
 				},
 				{
-					"name": "Logout",
+					"_postman_id": "1db07254-6cf3-4416-932a-48461070efee",
+					"name": "Logout + clean",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "2ab82189-5479-4c39-8ead-8941a30d0ba9",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Logout successful to clear up the login-state for the next tests\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(true);",
-									"});"
+									"});",
+									"",
+									"pm.environment.unset(\"seed\");"
 								]
 							}
 						}
@@ -611,212 +855,7 @@
 							"host": [
 								"{{domain}}{{endpoint_logout}}"
 							]
-						},
-						"description": null
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "getUser",
-			"description": "",
-			"item": [
-				{
-					"name": "Errors",
-					"description": "",
-					"item": [
-						{
-							"name": "Unauthorized",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
-											"var jsonData = pm.response.json();",
-											"pm.test(\"User not logged in error\", function () {",
-											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
-											"});"
-										]
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"address\": {}\n}"
-								},
-								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
-									"host": [
-										"{{domain}}{{endpoint_address_add}}"
-									]
-								}
-							},
-							"response": []
 						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Login successful\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Cache-Control",
-								"value": "no-cache"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_login}}",
-							"host": [
-								"{{domain}}{{endpoint_login}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getUser",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Test if repsonse is okay, with body and json\", function () {",
-									"    pm.response.to.be.ok;",
-									"    pm.response.to.be.with.body;",
-									"    pm.response.to.be.json;",
-									"});",
-									"",
-									"pm.test(\"Response have minimum return values\", function() {",
-									"    var response = pm.response.json()",
-									"    pm.expect(response.id).to.not.be.empty;",
-									"    pm.expect(response.firstName).to.not.be.empty;",
-									"    pm.expect(response.lastName).to.not.be.empty;",
-									"    pm.expect(response.mail).to.not.be.empty;",
-									"})"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer bbb0913aad2d5b2e531a449c430956ed93258297",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_user_get}}",
-							"host": [
-								"{{domain}}{{endpoint_user_get}}"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Logout successful to clear up the login-state for the next tests\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer bbb0913aad2d5b2e531a449c430956ed93258297",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_logout}}",
-							"host": [
-								"{{domain}}{{endpoint_logout}}"
-							]
-						},
-						"description": null
 					},
 					"response": []
 				}
