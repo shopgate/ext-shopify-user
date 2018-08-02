@@ -12,6 +12,16 @@
       "value": "/trustedPipelines/shopgate.user.loginUser.v1"
     },
     {
+      "enabled": true,
+      "key": "endpoint_user_get",
+      "value": "/trustedPipelines/shopgate.user.getUser.v1"
+    },
+    {
+      "enabled": true,
+      "key": "endpoint_logout",
+      "value": "/trustedPipelines/shopgate.user.logoutUser.v1"
+    },
+    {
       "key": "port",
       "value": "8090",
       "description": "",
