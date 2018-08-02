@@ -1,20 +1,18 @@
 {
 	"info": {
-		"_postman_id": "d1a47684-968b-4623-aff3-7b812f279a6a",
 		"name": "Shopify Connect",
+		"_postman_id": "96696893-f138-5ad3-bc7a-41f9ae8c8096",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"_postman_id": "7a31f4ed-e68f-4196-8bea-186f1646abed",
 			"name": "getUser",
 			"item": [
 				{
-					"_postman_id": "5ea67383-f9e2-46e6-a690-8cb59a3f5387",
 					"name": "Errors",
 					"item": [
 						{
-							"_postman_id": "27f4a145-8e46-4960-8a68-121aa8a4ba3e",
 							"name": "Unauthorized",
 							"event": [
 								{
@@ -57,9 +55,9 @@
 									"raw": "{\n\t\"address\": {}\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_get}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+										"{{domain}}{{endpoint_user_get}}"
 									]
 								}
 							},
@@ -69,7 +67,6 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "1e7545b3-4287-4a79-a7dd-9378d88e41af",
 					"name": "Login",
 					"event": [
 						{
@@ -111,7 +108,6 @@
 					"response": []
 				},
 				{
-					"_postman_id": "9fbadcbe-4034-47f7-bf83-a8c4ee035388",
 					"name": "getUser",
 					"event": [
 						{
@@ -162,7 +158,6 @@
 					"response": []
 				},
 				{
-					"_postman_id": "1c26f663-92e4-4b74-89d6-22e83fad0586",
 					"name": "Logout",
 					"event": [
 						{
@@ -202,15 +197,12 @@
 			]
 		},
 		{
-			"_postman_id": "3a2e0ac5-fc24-47b4-bebf-45a38fd9891b",
 			"name": "addAddress",
 			"item": [
 				{
-					"_postman_id": "80eaa353-4500-42a6-9c61-27baf4a0a733",
 					"name": "Errors",
 					"item": [
 						{
-							"_postman_id": "fb57ebb1-2bc1-49b2-945f-ebe2be5dd974",
 							"name": "Unauthorized",
 							"event": [
 								{
@@ -262,7 +254,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "1bb8e1d1-2c48-4912-9588-2080dc80796f",
 							"name": "Login",
 							"request": {
 								"method": "POST",
@@ -290,7 +281,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "07d94ee4-30b1-479e-843c-132dab8f92e1",
 							"name": "missing address data",
 							"event": [
 								{
@@ -333,7 +323,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "5d098a10-7bbe-4e4d-89e0-4e3258fe1425",
 							"name": "bad country name",
 							"event": [
 								{
@@ -385,7 +374,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "18981e29-5802-4df5-afca-052b0c665741",
 							"name": "country is required",
 							"event": [
 								{
@@ -437,7 +425,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "bf004dc9-9842-4850-a2d3-67b3eee120a0",
 							"name": "incorrect province",
 							"event": [
 								{
@@ -489,7 +476,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "18dc6bbe-bedb-46f3-8ef3-a92e89aee5ad",
 							"name": "Add GB address",
 							"request": {
 								"method": "POST",
@@ -513,7 +499,6 @@
 							"response": []
 						},
 						{
-							"_postman_id": "8a2e7665-ac9d-4fc4-ba29-224a8703b406",
 							"name": "Add duplicate",
 							"event": [
 								{
@@ -568,13 +553,11 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "e53a21ea-719f-40e6-82f1-4e7cd57260b7",
 					"name": "All field mapping",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "de936b76-024e-4ae6-a18d-10ba3b179074",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -586,7 +569,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7c00a96b-c08a-4540-96ae-498fcd904066",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -617,13 +599,11 @@
 					"response": []
 				},
 				{
-					"_postman_id": "e45665e4-57db-4161-8b8b-4d53571e906c",
 					"name": "Check address mapping",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "a58affc6-dee9-4551-9aae-6aa7007c6281",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -667,13 +647,11 @@
 					"response": []
 				},
 				{
-					"_postman_id": "176e87d8-2df9-4e0b-a205-995cccef0caf",
 					"name": "Province: Arizona",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "ebcf307b-87a4-4f96-bdd1-7d002abccd30",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -685,7 +663,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9ee54fe1-ef3e-4c40-a873-050d0bfb07e7",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -716,13 +693,11 @@
 					"response": []
 				},
 				{
-					"_postman_id": "3087889a-dd49-423d-98f0-19288d074587",
 					"name": "Province: AZ",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "0cd96c53-19be-49ff-89fe-69b4c983fd16",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -734,7 +709,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "c669900f-a0e7-4604-950e-b252c10bfc11",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -765,13 +739,11 @@
 					"response": []
 				},
 				{
-					"_postman_id": "5cacf7ed-8600-4b42-852b-9fb0b2dd5945",
 					"name": "Country: United States",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "1ee964bd-2c66-45c6-bddd-ecde976d13f6",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -783,7 +755,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "fd7bd3e5-551f-4e09-9a32-be50a075b6d7",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -814,13 +785,11 @@
 					"response": []
 				},
 				{
-					"_postman_id": "1db07254-6cf3-4416-932a-48461070efee",
 					"name": "Logout + clean",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "2ab82189-5479-4c39-8ead-8941a30d0ba9",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Logout successful to clear up the login-state for the next tests\", function () {",
