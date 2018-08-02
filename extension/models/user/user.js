@@ -4,10 +4,7 @@ class User {
     this._mail = null
     this._firstName = null
     this._lastName = null
-    this._gender = null
-    this._birthday = null
     this._phone = null
-    this._customerGroups = []
     this._addresses = []
   }
 
@@ -30,10 +27,7 @@ class User {
       mail: this._mail,
       firstName: this._firstName,
       lastName: this._lastName,
-      gender: this._gender,
-      birthday: this._birthday,
       phone: this._phone,
-      customerGroups: this._customerGroups,
       addresses: this._addresses
     }
   }
@@ -70,36 +64,12 @@ class User {
     this._lastName = value
   }
 
-  get gender () {
-    return this._gender
-  }
-
-  set gender (value) {
-    this._gender = value
-  }
-
-  get birthday () {
-    return this._birthday
-  }
-
-  set birthday (value) {
-    this._birthday = value
-  }
-
   get phone () {
     return this._phone
   }
 
   set phone (value) {
     this._phone = value
-  }
-
-  get customerGroups () {
-    return this._customerGroups
-  }
-
-  set customerGroups (value) {
-    this._customerGroups = value
   }
 
   get addresses () {
