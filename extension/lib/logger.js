@@ -16,7 +16,7 @@ module.exports = class {
         headers,
         body: response
       },
-      message: 'Request to Shopify'
+      message: 'Request to Shopify - User extension'
     }
     this.logger.debug(logResult)
   }
