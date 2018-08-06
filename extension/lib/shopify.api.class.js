@@ -302,7 +302,7 @@ class SGShopifyApi {
    */
   checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
-    const logRequestData = requestData
+    const logRequestData = JSON.parse(JSON.stringify(requestData))
     logRequestData.body.variables.input.password = 'XXXXXXXX'
     const logRequest = new Logger(this.context.log, logRequestData)
     /**
