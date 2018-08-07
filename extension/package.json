@@ -1,13 +1,14 @@
 {
   "name": "@shopgate/shopify-user",
-  "version": "1.1.6-beta",
+  "version": "1.2.0",
   "description": "",
   "repository": {
     "type": "git",
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
-    "standard": "./node_modules/.bin/standard"
+    "test": "JUNIT_REPORT_PATH=../build/mocha.xmlJUNIT_REPORT_STACK=1 ./node_modules/.bin/mocha --recursive test -R mochawesome --reporter-options reportDir=coverage",
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +19,13 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "assert": "^1.4.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "mochawesome": "^3.0.3",
+    "nock": "^9.4.4",
     "npm-run-all": "^4.1.2",
+    "sinon": "^6.1.4",
     "standard": "^11.0.1"
   },
   "standard": {
