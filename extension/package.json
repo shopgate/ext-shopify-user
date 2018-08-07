@@ -7,7 +7,7 @@
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
-    "test": "JUNIT_REPORT_PATH=../build/mocha.xml JUNIT_REPORT_STACK=1 mocha --recursive test -R mochawesome --reporter-options reportDir=coverage",
+    "test": "JUNIT_REPORT_PATH=../build/mocha.xmlJUNIT_REPORT_STACK=1 ./node_modules/.bin/mocha --recursive test -R mochawesome --reporter-options reportDir=coverage",
     "cover": "istanbul cover _mocha -- --recursive"
   },
   "author": "",
