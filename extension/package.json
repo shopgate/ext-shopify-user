@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "JUNIT_REPORT_PATH=../build/mocha.xmlJUNIT_REPORT_STACK=1 ./node_modules/.bin/mocha --recursive test -R mochawesome --reporter-options reportDir=coverage",
-    "cover": "istanbul cover _mocha -- --recursive"
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive"
   },
   "author": "",
   "license": "ISC",
