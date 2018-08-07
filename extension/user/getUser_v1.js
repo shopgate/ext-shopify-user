@@ -74,7 +74,6 @@ function getUserFromShopify (context, cb) {
    * @property {string} first_name
    * @property {string} last_name
    * @property {string} phone
-   * @property {[CustomerAddress]} addresses
    *
    * @param {Error} err
    * @param {CustomerResponseElement} customerData
@@ -92,30 +91,12 @@ function getUserFromShopify (context, cb) {
     user.mail = customerData.email
     user.phone = customerData.phone
 
-    customerData.addresses.forEach((address) => {
-      user.addresses.push({
-        id: address.id,
-        firstName: address.first_name,
-        lastName: address.last_name,
-        company: address.company,
-        street1: address.address1,
-        street2: address.address2,
-        city: address.city,
-        state: address.country_code,
-        phone: address.phone,
-        isDefault: address.default,
-        zipCode: address.zip,
-        country: address.country
-      })
-    })
-
     return cb(null, {
       'id': user.id.toString(),
       'firstName': user.firstName,
       'lastName': user.lastName,
       'mail': user.mail,
-      'phone': user.phone,
-      'addresses': user.addresses
+      'phone': user.phone
     })
   })
 }

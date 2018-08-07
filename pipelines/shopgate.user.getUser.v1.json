@@ -10,7 +10,6 @@
       {"key": "lastName", "id": "1040"},
       {"key": "mail", "id": "1020"},
       {"key": "phone", "id": "1070"},
-      {"key": "addresses", "id": "1090"},
       {"key": "messages", "id": "1100", "optional": true}
     ],
     "steps": [
@@ -25,7 +24,6 @@
           {"key": "lastName", "id": "1040"},
           {"key": "mail", "id": "1020"},
           {"key": "phone", "id": "1070"},
-          {"key": "addresses", "id": "1090"},
           {"key": "messages", "id": "1100", "optional": true}
         ]
       }
