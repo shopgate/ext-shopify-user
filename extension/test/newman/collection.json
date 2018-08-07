@@ -131,6 +131,7 @@
 									"    pm.expect(response.firstName).to.not.be.empty;",
 									"    pm.expect(response.lastName).to.not.be.empty;",
 									"    pm.expect(response.mail).to.not.be.empty;",
+									"	 pm.response.to.not.have.jsonBody(\"address\");",
 									"})"
 								]
 							}
