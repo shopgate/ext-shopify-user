@@ -3,8 +3,7 @@ const Logger = require('../../../lib/logger')
 const httpCodeSuccess = 200
 let logRequest
 const log = {
-  debug: (message) => {
-  }
+  debug: (message) => {}
 }
 
 describe('Logger', () => {

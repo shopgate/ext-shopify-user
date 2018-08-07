@@ -1,6 +1,6 @@
 const nock = require('nock')
 const sinon = require('sinon')
-const assert = require('assert');
+const assert = require('assert')
 const Logger = require('../../../lib/logger')
 const SGShopifyApi = require('../../../lib/shopify.api.class')
 const shopifyApiUrl = 'https://shopgate.myshopify.com'
@@ -13,24 +13,24 @@ const context = {
     shopifyAccessToken: 'token'
   },
   log: {
-    debug: (message) => {}
+    debug: () => {}
   }
 }
 const logSpy = sinon.spy(context.log, 'debug')
 const Shopify = new SGShopifyApi(context)
+let logRequest
 
 describe('Shopify API', () => {
-
   beforeEach(() => {
     logRequest = new Logger(context.log, {})
-  });
+  })
 
   it('should create logs for all GET requests', () => {
     nock(shopifyApiUrl)
       .get(`${shopifyEndpoint}?`)
       .reply(httpCodeSuccess, {})
 
-    Shopify.getRequest(shopifyEndpoint, {}, (err, response) => {
+    Shopify.getRequest(shopifyEndpoint, {}, () => {
       sinon.assert.calledWith(logSpy, sinon.match.has('duration'))
       sinon.assert.calledWith(logSpy, sinon.match.has('message'))
       sinon.assert.calledWith(logSpy, sinon.match.has('request'))
@@ -44,7 +44,7 @@ describe('Shopify API', () => {
       .post(shopifyEndpoint)
       .reply(httpCodeSuccess, {})
 
-    Shopify.postRequest(shopifyEndpoint, {}, (err, response) => {
+    Shopify.postRequest(shopifyEndpoint, {}, () => {
       sinon.assert.calledWith(logSpy, sinon.match.has('duration'))
       sinon.assert.calledWith(logSpy, sinon.match.has('message'))
       sinon.assert.calledWith(logSpy, sinon.match.has('request'))
@@ -58,7 +58,7 @@ describe('Shopify API', () => {
       .put(`${shopifyEndpoint}?`)
       .reply(httpCodeSuccess, {})
 
-    Shopify.putRequest(shopifyEndpoint, {}, (err, response) => {
+    Shopify.putRequest(shopifyEndpoint, {}, () => {
       sinon.assert.calledWith(logSpy, sinon.match.has('duration'))
       sinon.assert.calledWith(logSpy, sinon.match.has('message'))
       sinon.assert.calledWith(logSpy, sinon.match.has('request'))
@@ -72,7 +72,7 @@ describe('Shopify API', () => {
       .delete(`${shopifyEndpoint}?`)
       .reply(httpCodeSuccess, {})
 
-    Shopify.deleteRequest(shopifyEndpoint, {}, (err, response) => {
+    Shopify.deleteRequest(shopifyEndpoint, {}, () => {
       sinon.assert.calledWith(logSpy, sinon.match.has('duration'))
       sinon.assert.calledWith(logSpy, sinon.match.has('message'))
       sinon.assert.calledWith(logSpy, sinon.match.has('request'))
@@ -92,8 +92,8 @@ describe('Shopify API', () => {
 
     nock(shopifyApiUrl)
       .post(shopifyGraphQlUrl)
-      .reply(httpCodeSuccess, function(uri, requestBody) {
-        return body;
+      .reply(httpCodeSuccess, function() {
+        return body
       })
 
     const login = {
@@ -101,7 +101,7 @@ describe('Shopify API', () => {
       password: 'supersecretpassword'
     }
 
-    Shopify.checkCredentials(Shopify, 'supersecrettoken', login, {}, (err, login, customerAccessToken, storefrontAccessToken) => {
+    Shopify.checkCredentials(Shopify, 'supersecrettoken', login, {}, (err, login) => {
       assert.equal(JSON.stringify(body).includes(login.password), false)
     })
   })
