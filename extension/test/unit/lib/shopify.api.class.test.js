@@ -1,7 +1,6 @@
 const nock = require('nock')
 const sinon = require('sinon')
 const assert = require('assert')
-const Logger = require('../../../lib/logger')
 const SGShopifyApi = require('../../../lib/shopify.api.class')
 const shopifyApiUrl = 'https://shopgate.myshopify.com'
 const shopifyEndpoint = '/sample/endpoint'
@@ -18,13 +17,8 @@ const context = {
 }
 const logSpy = sinon.spy(context.log, 'debug')
 const Shopify = new SGShopifyApi(context)
-let logRequest
 
 describe('Shopify API', () => {
-  beforeEach(() => {
-    logRequest = new Logger(context.log, {})
-  })
-
   it('should create logs for all GET requests', () => {
     nock(shopifyApiUrl)
       .get(`${shopifyEndpoint}?`)
@@ -92,7 +86,7 @@ describe('Shopify API', () => {
 
     nock(shopifyApiUrl)
       .post(shopifyGraphQlUrl)
-      .reply(httpCodeSuccess, function() {
+      .reply(httpCodeSuccess, function () {
         return body
       })
 
@@ -101,8 +95,8 @@ describe('Shopify API', () => {
       password: 'supersecretpassword'
     }
 
-    Shopify.checkCredentials(Shopify, 'supersecrettoken', login, {}, (err, login) => {
-      assert.equal(JSON.stringify(body).includes(login.password), false)
+    Shopify.checkCredentials(Shopify, 'supersecrettoken', login, {}, () => {
+      assert.strictEqual(JSON.stringify(body).includes(login.password), false)
     })
   })
 })

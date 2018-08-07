@@ -7,10 +7,9 @@ const log = {
 }
 
 describe('Logger', () => {
-
   beforeEach(() => {
     logRequest = new Logger(log, {})
-  });
+  })
 
   it('should log the status code, duration, request and response', () => {
     const logSpy = sinon.spy(log, 'debug')
