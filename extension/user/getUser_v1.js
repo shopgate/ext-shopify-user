@@ -1,6 +1,5 @@
 const Tools = require('../lib/tools')
 const SGShopifyApi = require('../lib/shopify.api.class.js')
-const User = require('../models/user/user')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
@@ -83,20 +82,12 @@ function getUserFromShopify (context, cb) {
       return cb(new CustomerNotFoundError())
     }
 
-    const user = new User()
-
-    user.id = customerData.id
-    user.firstName = customerData.first_name
-    user.lastName = customerData.last_name
-    user.mail = customerData.email
-    user.phone = customerData.phone
-
     return cb(null, {
-      'id': user.id.toString(),
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'mail': user.mail,
-      'phone': user.phone
+      'id': customerData.id.toString(),
+      'firstName': customerData.first_name,
+      'lastName': customerData.last_name,
+      'mail': customerData.email,
+      'phone': customerData.phone
     })
   })
 }
