@@ -52,7 +52,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {}\n}"
+									"raw": "{\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_user_get}}",
@@ -131,8 +131,9 @@
 									"    pm.expect(response.firstName).to.not.be.empty;",
 									"    pm.expect(response.lastName).to.not.be.empty;",
 									"    pm.expect(response.mail).to.not.be.empty;",
-									"	 pm.response.to.not.have.jsonBody(\"address\");",
-									"})"
+									"    pm.response.to.not.have.jsonBody(\"address\");",
+									"})",
+									""
 								]
 							}
 						}
