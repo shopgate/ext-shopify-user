@@ -37,7 +37,7 @@ module.exports = async function (context, input, cb) {
  * @returns {Object}
  */
 function createAddressObject (input) {
-  let newAddress = {
+  const newAddress = {
     id: input.id,
     address1: input.street1,
     address2: input.street2,
