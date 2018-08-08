@@ -5,18 +5,16 @@
     "public": true,
     "input": [
       {"key": "id", "id": "10"},
-      {"key": "address1", "id": "20"},
-      {"key": "address2", "id": "30"},
-      {"key": "city", "id": "40"},
-      {"key": "company", "id": "50"},
-      {"key": "first_name", "id": "60"},
-      {"key": "last_name", "id": "70"},
-      {"key": "phone", "id": "80"},
-      {"key": "province_code", "id": "90"},
-      {"key": "zip", "id": "100"},
-      {"key": "id", "id": "110"},
-      {"key": "name", "id": "120"},
-      {"key": "country", "id": "130"}
+      {"key": "street1", "id": "20", "optional": true},
+      {"key": "street2", "id": "30", "optional": true},
+      {"key": "city", "id": "40", "optional": true},
+      {"key": "company", "id": "50", "optional": true},
+      {"key": "firstName", "id": "60", "optional": true},
+      {"key": "lastName", "id": "70", "optional": true},
+      {"key": "phone", "id": "80", "optional": true},
+      {"key": "province", "id": "90", "optional": true},
+      {"key": "zipCode", "id": "100", "optional": true},
+      {"key": "country", "id": "120", "optional": true}
     ],
     "output": [
       {"key": "success", "id": "2", "optional": true}
@@ -25,21 +23,19 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/updateAddress.js",
+        "path": "@shopgate/shopify-user/user/updateAddress_v1.js",
         "input": [
           {"key": "id", "id": "10"},
-          {"key": "address1", "id": "20"},
-          {"key": "address2", "id": "30"},
-          {"key": "city", "id": "40"},
-          {"key": "company", "id": "50"},
-          {"key": "first_name", "id": "60"},
-          {"key": "last_name", "id": "70"},
-          {"key": "phone", "id": "80"},
-          {"key": "province_code", "id": "90"},
-          {"key": "zip", "id": "100"},
-          {"key": "id", "id": "110"},
-          {"key": "name", "id": "120"},
-          {"key": "country", "id": "130"}
+          {"key": "street1", "id": "20", "optional": true},
+          {"key": "street2", "id": "30", "optional": true},
+          {"key": "city", "id": "40", "optional": true},
+          {"key": "company", "id": "50", "optional": true},
+          {"key": "firstName", "id": "60", "optional": true},
+          {"key": "lastName", "id": "70", "optional": true},
+          {"key": "phone", "id": "80", "optional": true},
+          {"key": "province", "id": "90", "optional": true},
+          {"key": "zipCode", "id": "100", "optional": true},
+          {"key": "country", "id": "120", "optional": true}
         ],
         "output": [
           {"key": "success", "id": "2",  "optional": true}

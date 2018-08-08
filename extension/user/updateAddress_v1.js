@@ -3,6 +3,7 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const SGShopifyApi = require('../lib/shopify.api.class')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const _ = require('lodash')
 
 /**
  * @param {SDKContext} context
@@ -10,47 +11,46 @@ const FieldValidationError = require('../models/Errors/FieldValidationError')
  * @param {function} cb
  */
 module.exports = async function (context, input, cb) {
+
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
     context.log.error('User is not logged in')
     return cb(new UnauthorizedError('User is not logged in.'))
   }
 
-  const userId = context.meta.userId
-
-  // Validate some input values
-  validateAddressInputs(input, cb)
-
-  // Map the input address values to fit the Shopify specifications for the admin api endpoint
-  const address = Object.assign(input.address)
-  const newAddress = {
-    address1: address.street1,
-    address2: address.street2,
-    city: address.city,
-    company: address.company,
-    first_name: address.firstName,
-    last_name: address.lastName,
-    phone: address.phone,
-    province_code: address.province,
-    zip: address.zipCode,
-    name: address.firstName + ' ' + address.lastName,
-    ...SGShopifyApi.mapCountry(address.country)
+  // Validate country input to have at least more than 1 char
+  if (!Tools.isEmpty(input.country) && input.country.length <= 1) {
+    context.log.error('Country|CountryCode length <= 1')
+    const validationError = new FieldValidationError()
+    validationError.addValidationMessage('country', 'Country is required, at least minimum 2 chars')
+    return cb(validationError)
   }
 
   const shopify = new SGShopifyApi(context)
 
-  return shopify.addAddress(userId, newAddress)
+  return shopify.updateAddress(context.meta.userId, input.id, createAddressObject(input))
 }
 
-function validateAddressInputs (input, cb) {
-  const validationError = new FieldValidationError()
-
-  if (Tools.isEmpty(input.id)) {
-    cb(new InvalidCallError('Address is missing'))
+/**
+ * Map the input address values to fit the Shopify specifications for the admin api endpoint
+ * @param {Object} input
+ * @returns {Object}
+ */
+function createAddressObject (input) {
+  let newAddress = {
+    id: input.id,
+    address1: input.street1,
+    address2: input.street2,
+    city: input.city,
+    company: input.company,
+    first_name: input.firstName,
+    last_name: input.lastName,
+    phone: input.phone,
+    province_code: input.province,
+    zip: input.zipCode,
+    ...SGShopifyApi.mapCountry(input.country)
   }
 
-  if (Tools.isEmpty(input.country) || input.country.length <= 1) {
-    validationError.addValidationMessage('country', 'Country is required')
-    cb(validationError)
-  }
+  // Remove all empty or not set properties
+  return _.omitBy(newAddress, _.isNil)
 }

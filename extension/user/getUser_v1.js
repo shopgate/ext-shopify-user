@@ -1,6 +1,5 @@
 const Tools = require('../lib/tools')
 const SGShopifyApi = require('../lib/shopify.api.class.js')
-const User = require('../models/user/user')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
@@ -84,43 +83,12 @@ function getUserFromShopify (context, cb) {
       return cb(new CustomerNotFoundError())
     }
 
-    const user = new User()
-
-    user.id = customerData.id
-    user.mail = customerData.email
-    user.firstName = customerData.first_name
-    user.lastName = customerData.last_name
-    user.phone = customerData.phone
-
-    customerData.addresses.forEach((address) => {
-      user.addresses.push({
-        id: address.id,
-        type: null,
-        firstName: address.first_name,
-        lastName: address.last_name,
-        company: address.company,
-        street1: address.address1,
-        street2: address.address2,
-        city: address.city,
-        state: address.country_code,
-        phone: address.phone,
-        isDefault: address.default,
-        alias: null,
-        zipcode: address.zip,
-        country: address.country
-      })
-    })
-
     return cb(null, {
-      'id': user.id.toString(),
-      'mail': user.mail,
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'gender': user.gender,
-      'birthday': user.birthday,
-      'phone': user.phone,
-      'customerGroups': user.customerGroups,
-      'addresses': user.addresses
+      'id': customerData.id.toString(),
+      'firstName': customerData.first_name,
+      'lastName': customerData.last_name,
+      'mail': customerData.email,
+      'phone': customerData.phone
     })
   })
 }

@@ -52,6 +52,36 @@ class SGShopifyApi {
   }
 
   /**
+   * @param {string} customerId
+   * @param {number} addressId
+   * @param {Object} newAddress
+   * @returns {Promise.<{success:true}|FieldValidationError>}
+   */
+  async updateAddress (customerId, addressId, newAddress) {
+    return new Promise((resolve, reject) => {
+      this.putRequest(`/admin/customers/${customerId}/addresses/${addressId}.json`, {address: newAddress}, (err, response) => {
+        if (err) {
+          // Some Shopify address validation error occurred
+          if (response.errors) {
+            const validationError = new FieldValidationError()
+            for (let path in response.errors) {
+              response.errors[path].forEach(message => {
+                validationError.addValidationMessage(path, message, newAddress[path])
+              })
+            }
+
+            return reject(validationError)
+          }
+
+          return reject(err)
+        }
+
+        return resolve({success: true})
+      })
+    })
+  }
+
+  /**
    * @returns {string}
    */
   getGraphQlUrl () {
