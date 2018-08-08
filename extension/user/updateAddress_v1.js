@@ -2,6 +2,7 @@ const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const SGShopifyApi = require('../lib/shopify.api.class')
+const FieldValidationError = require('../models/Errors/FieldValidationError')
 
 /**
  * @param {SDKContext} context
@@ -17,10 +18,8 @@ module.exports = async function (context, input, cb) {
 
   const userId = context.meta.userId
 
-  if (Tools.isEmpty(input.address)) {
-    context.log.error('Empty address data.')
-    return cb(new InvalidCallError('Empty address data.'))
-  }
+  // Validate some input values
+  validateAddressInputs(input, cb)
 
   // Map the input address values to fit the Shopify specifications for the admin api endpoint
   const address = Object.assign(input.address)
@@ -41,4 +40,17 @@ module.exports = async function (context, input, cb) {
   const shopify = new SGShopifyApi(context)
 
   return shopify.addAddress(userId, newAddress)
+}
+
+function validateAddressInputs (input, cb) {
+  const validationError = new FieldValidationError()
+
+  if (Tools.isEmpty(input.id)) {
+    cb(new InvalidCallError('Address is missing'))
+  }
+
+  if (Tools.isEmpty(input.country) || input.country.length <= 1) {
+    validationError.addValidationMessage('country', 'Country is required')
+    cb(validationError)
+  }
 }

@@ -31,7 +31,7 @@ class FieldValidationError extends Error {
    */
   translatePath (path) {
     const translations = {
-      signature: 'street1',
+      signature: 'country',
       address1: 'street1',
       address2: 'street2',
       first_name: 'firstName',

@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.updateAddress.v1",
+    "public": true,
+    "input": [
+      {"key": "id", "id": "10"},
+      {"key": "address1", "id": "20"},
+      {"key": "address2", "id": "30"},
+      {"key": "city", "id": "40"},
+      {"key": "company", "id": "50"},
+      {"key": "first_name", "id": "60"},
+      {"key": "last_name", "id": "70"},
+      {"key": "phone", "id": "80"},
+      {"key": "province_code", "id": "90"},
+      {"key": "zip", "id": "100"},
+      {"key": "id", "id": "110"},
+      {"key": "name", "id": "120"},
+      {"key": "country", "id": "130"}
+    ],
+    "output": [
+      {"key": "success", "id": "2", "optional": true}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/updateAddress.js",
+        "input": [
+          {"key": "id", "id": "10"},
+          {"key": "address1", "id": "20"},
+          {"key": "address2", "id": "30"},
+          {"key": "city", "id": "40"},
+          {"key": "company", "id": "50"},
+          {"key": "first_name", "id": "60"},
+          {"key": "last_name", "id": "70"},
+          {"key": "phone", "id": "80"},
+          {"key": "province_code", "id": "90"},
+          {"key": "zip", "id": "100"},
+          {"key": "id", "id": "110"},
+          {"key": "name", "id": "120"},
+          {"key": "country", "id": "130"}
+        ],
+        "output": [
+          {"key": "success", "id": "2",  "optional": true}
+        ]
+      }
+    ]
+  }
+}
