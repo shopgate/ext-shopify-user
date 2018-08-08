@@ -20,10 +20,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"User not logged in error\", function () {",
 											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
@@ -212,10 +208,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"User not logged in error\", function () {",
 											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
@@ -290,10 +282,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"Correct missing address error is thrown\", function () {",
 											"    pm.expect(jsonData.error.message).to.be.eq('Empty address data.');",
@@ -332,10 +320,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"Incorrect validation error structure\", function () {",
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
@@ -383,10 +367,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"Incorrect validation error structure\", function () {",
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
@@ -434,10 +414,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"Incorrect validation error structure\", function () {",
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
@@ -508,10 +484,6 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 500\", function () {",
-											"    pm.response.to.have.status(500);",
-											"});",
-											"",
 											"var jsonData = pm.response.json();",
 											"pm.test(\"Incorrect validation error structure\", function () {",
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
