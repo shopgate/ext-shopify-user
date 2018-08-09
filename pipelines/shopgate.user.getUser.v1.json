@@ -9,8 +9,7 @@
       {"key": "firstName", "id": "1020"},
       {"key": "lastName", "id": "1030"},
       {"key": "mail", "id": "1040"},
-      {"key": "phone", "id": "1050"},
-      {"key": "messages", "id": "1060", "optional": true}
+      {"key": "phone", "id": "1050"}
     ],
     "steps": [
       {
@@ -23,8 +22,7 @@
           {"key": "firstName", "id": "1020"},
           {"key": "lastName", "id": "1030"},
           {"key": "mail", "id": "1040"},
-          {"key": "phone", "id": "1050"},
-          {"key": "messages", "id": "1060", "optional": true}
+          {"key": "phone", "id": "1050"}
         ]
       }
     ]

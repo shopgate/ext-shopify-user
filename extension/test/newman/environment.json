@@ -6,23 +6,23 @@
       "enabled": true,
       "key": "username",
       "type": "text",
-      "value": "ronny.lindner@shopgate.com"
+      "value": "****"
     },
     {
       "enabled": true,
       "key": "password",
       "type": "text",
-      "value": "123456kill"
+      "value": "****"
     },
     {
       "enabled": true,
       "key": "address_id",
       "type": "text",
-      "value": "729846513751"
+      "value": "****"
     }
   ],
   "timestamp": 1533728684584,
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2018-08-08T13:31:21.764Z",
+  "_postman_exported_at": "2018-08-09T08:03:51.989Z",
   "_postman_exported_using": "Postman/5.3.2"
 }
