@@ -11,7 +11,7 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 module.exports = function (context, input, cb) {
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
-    return cb(new UnauthorizedError('User is not logged in.'))
+    return cb(new UnauthorizedError('Unauthorized user'))
   }
 
   // Look user storage first
@@ -73,7 +73,6 @@ function getUserFromShopify (context, cb) {
    * @property {string} first_name
    * @property {string} last_name
    * @property {string} phone
-   * @property {[CustomerAddress]} addresses
    *
    * @param {Error} err
    * @param {CustomerResponseElement} customerData

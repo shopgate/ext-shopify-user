@@ -713,52 +713,6 @@
 					"response": []
 				},
 				{
-					"name": "Country: United States",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"})"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"// Create a seed to have a randomized data set",
-									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"id\": 729846513751,\n    \"firstName\": \"Tester55\",\n    \"lastName\": \"Moped6\",\n    \"country\": \"1\"\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
-							"host": [
-								"{{domain}}{{endpoint_address_update}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Logout + clean",
 					"event": [
 						{

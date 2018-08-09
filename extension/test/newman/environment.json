@@ -5,24 +5,30 @@
     {
       "enabled": true,
       "key": "username",
-      "type": "text",
-      "value": "***"
+      "value": "***",
+      "type": "text"
     },
     {
       "enabled": true,
       "key": "password",
-      "type": "text",
-      "value": "***"
+      "value": "***",
+      "type": "text"
     },
     {
       "enabled": true,
       "key": "address_id",
-      "type": "text",
-      "value": "***"
+      "value": "***",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "seed",
+      "value": "***",
+      "type": "text"
     }
   ],
-  "timestamp": 1533728684584,
+  "timestamp": 1533803800396,
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2018-08-08T13:28:33.673Z",
+  "_postman_exported_at": "2018-08-09T11:18:03.070Z",
   "_postman_exported_using": "Postman/5.3.2"
 }

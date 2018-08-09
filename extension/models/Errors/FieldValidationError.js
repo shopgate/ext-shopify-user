@@ -18,8 +18,10 @@ class FieldValidationError extends Error {
    */
   addValidationMessage (path, message, value) {
     path = this.translatePath(path)
+
     const capitalizedPath = path.charAt(0).toUpperCase() + path.substr(1)
-    let main = value && !message.includes('required') ? value : capitalizedPath
+    const main = value && !message.includes('required') ? value : capitalizedPath
+
     this.validationErrors.push({path, message: `"${main}" ${message}`})
   }
 
