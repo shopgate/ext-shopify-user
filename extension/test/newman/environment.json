@@ -1,19 +1,22 @@
 {
-  "id": "a368ea06-ccd9-49b5-895b-b7103b7049e7",
+  "id": "5361ef71-7120-5abf-5b74-afa57f6475aa",
   "name": "Shopify Connect",
   "values": [
     {
-      "value": "***",
+      "enabled": true,
       "key": "username",
-      "enabled": true
+      "type": "text",
+      "value": "****"
     },
     {
-      "value": "***",
+      "enabled": true,
       "key": "password",
-      "enabled": true
+      "type": "text",
+      "value": "****"
     }
   ],
+  "timestamp": 1533728684584,
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2018-07-30T08:59:05.815Z",
-  "_postman_exported_using": "Postman/6.2.1"
+  "_postman_exported_at": "2018-08-09T08:03:51.989Z",
+  "_postman_exported_using": "Postman/5.3.2"
 }
