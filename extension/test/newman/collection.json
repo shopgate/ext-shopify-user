@@ -977,7 +977,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": 729846513751,\n    \"firstName\": \"{{seed}}\"\n}"
+							"raw": "{\n\t\"id\": \"{{address_id}}\",\n    \"firstName\": \"{{seed}}\"\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_update}}",

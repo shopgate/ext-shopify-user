@@ -6,19 +6,19 @@
       "enabled": true,
       "key": "username",
       "type": "text",
-      "value": "ronny.lindner@shopgate.com"
+      "value": "***"
     },
     {
       "enabled": true,
       "key": "password",
       "type": "text",
-      "value": "123456kill"
+      "value": "***"
     },
     {
       "enabled": true,
       "key": "address_id",
       "type": "text",
-      "value": "729846513751"
+      "value": "***"
     }
   ],
   "timestamp": 1533728684584,

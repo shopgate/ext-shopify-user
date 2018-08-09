@@ -1,73 +1,7 @@
 {
-  "id": "059dc3fc-a037-9908-db1e-14869162d48a",
+  "id": "ebf65e69-1af9-8b29-17df-ff7647165a82",
   "name": "Postman Globals",
   "values": [
-    {
-      "enabled": true,
-      "key": "echo_digest_realm",
-      "type": "text",
-      "value": "Users"
-    },
-    {
-      "enabled": true,
-      "key": "echo_digest_nonce",
-      "type": "text",
-      "value": "33N7FfwYwIPZDre4fdzQUxFSwnpU2Qy1"
-    },
-    {
-      "enabled": true,
-      "key": "endpoint_auth_token",
-      "type": "text",
-      "value": "shopgate/v2/auth/token"
-    },
-    {
-      "enabled": true,
-      "key": "endpoint_carts",
-      "type": "text",
-      "value": "shopgate/v2/carts"
-    },
-    {
-      "enabled": true,
-      "key": "endpoint_carts_id_items",
-      "type": "text",
-      "value": "{{endpoint_carts}}/{{cartId}}/items"
-    },
-    {
-      "enabled": true,
-      "key": "endpoint_carts_id_checkoutUrl",
-      "type": "text",
-      "value": "{{endpoint_carts}}/{{cartId}}/checkoutUrl"
-    },
-    {
-      "enabled": true,
-      "key": "endpoint_carts_id_customer",
-      "type": "text",
-      "value": "{{endpoint_carts}}/{{cartId}}/customer"
-    },
-    {
-      "enabled": true,
-      "key": "endpoint_products",
-      "type": "text",
-      "value": "shopgate/v2/products"
-    },
-    {
-      "enabled": true,
-      "key": "username",
-      "type": "text",
-      "value": "ronny.lindner@shopgate.com"
-    },
-    {
-      "enabled": true,
-      "key": "password",
-      "type": "text",
-      "value": "123456kill"
-    },
-    {
-      "enabled": true,
-      "key": "host",
-      "type": "text",
-      "value": "http://192.168.2.108:8090"
-    },
     {
       "enabled": true,
       "key": "endpoint_address_add",
@@ -112,6 +46,6 @@
     }
   ],
   "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-08-08T13:28:55.227Z",
+  "_postman_exported_at": "2018-08-09T08:34:42.962Z",
   "_postman_exported_using": "Postman/5.3.2"
 }
