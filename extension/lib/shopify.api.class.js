@@ -71,7 +71,8 @@ class SGShopifyApi {
         // Mapping the response to met the specs
         const addresses = []
         response.addresses.forEach((address) => {
-          addresses.push({
+
+          const customerAddress = {
             id: address.id,
             address1: address.street1,
             address2: address.street2,
@@ -84,8 +85,15 @@ class SGShopifyApi {
             zip: address.zipCode,
             name: address.firstName + ' ' + address.lastName,
             country: address.country,
-            country_code: address.country_code
-          })
+            country_code: address.country_code,
+            tags: []
+          }
+
+          if (address.default === true) {
+            customerAddress.tags.push('default')
+          }
+
+          addresses.push(customerAddress)
         })
 
         return resolve({addresses})
