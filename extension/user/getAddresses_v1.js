@@ -11,7 +11,7 @@ module.exports = async function (context, input, cb) {
   // Check if there is a userId within the context.meta-data, if not the user is not logged in
   if (Tools.isEmpty(context.meta.userId)) {
     context.log.error('User is not logged in')
-    return cb(new UnauthorizedError('User is not logged in.'))
+    return cb(new UnauthorizedError('Unauthorized user'))
   }
 
   const shopify = new SGShopifyApi(context)

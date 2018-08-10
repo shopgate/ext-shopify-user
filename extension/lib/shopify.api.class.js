@@ -386,19 +386,6 @@ class SGShopifyApi {
       })
     })
   }
-
-  /**
-   * @param {string} [country] - country input
-   *
-   * @returns {Object}
-   */
-  static mapCountry (country) {
-    const map = country && {
-      ...(country.length === 2 && {country_code: country}),
-      ...(country.length > 2 && {country})
-    }
-    return map || {}
-  }
 }
 
 module.exports = SGShopifyApi

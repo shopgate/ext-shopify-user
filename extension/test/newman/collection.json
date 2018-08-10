@@ -195,6 +195,570 @@
 			]
 		},
 		{
+			"name": "addAddress",
+			"item": [
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"User not logged in error\", function () {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Cache-Control",
+										"value": "no-cache"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_login}}",
+									"host": [
+										"{{domain}}{{endpoint_login}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "missing address data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Correct missing address error is thrown\", function () {",
+											"    pm.expect(jsonData.error.message).to.be.eq('Empty address data.');",
+											"    pm.expect(jsonData.error.code).to.be.eq('EINVALIDCALL');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "bad country name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Incorrect validation error structure\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.gte(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Correct country error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('country');",
+											"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"TESTER\" is not a valid country');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n        \"country\": \"TESTER\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "country is required",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Incorrect validation error structure\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.gte(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Correct country error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('country');",
+											"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Country\" is required');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n        \"province\":\"{{seed}}-province\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "incorrect province",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Incorrect validation error structure\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.gte(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Correct province error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('province');",
+											"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Province\" is not valid');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n        \"country\": \"US\",\n        \"province\":\"{{seed}}-province\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add GB address",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"TEST ADDRESS\",\n        \"country\": \"GB\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add duplicate",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Incorrect validation error structure\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.gte(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Correct duplicate error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('street1');",
+											"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Street1\" has already been taken');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n        \"street1\": \"TEST ADDRESS\",\n        \"country\": \"GB\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "All field mapping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Create a seed to have a randomized data set",
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"company\": \"{{seed}}-company\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"state\": \"{{seed}}-state\",\n        \"phone\": \"{{seed}}-phone\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_address_add}}",
+							"host": [
+								"{{domain}}{{endpoint_address_add}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check address mapping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Make sure all address data was properly set\", function() {",
+									"    const response = pm.response.json();",
+									"    const address = response.addresses.pop();",
+									"    pm.expect(address.id).to.not.be.empty;",
+									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
+									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
+									"    pm.expect(address.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
+									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
+									"    pm.expect(address.street2).to.be.eq(pm.environment.get(\"seed\") + '-street2');",
+									"    pm.expect(address.city).to.be.eq(pm.environment.get(\"seed\") + '-city');",
+									"    pm.expect(address.state).to.be.eq(pm.environment.get(\"seed\") + '-state');",
+									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zip');",
+									"    pm.expect(address.country).to.be.eq('United States');",
+									"    pm.expect(address.province).to.be.eq('Arizona');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Province: Arizona",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Create a seed to have a randomized data set",
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_address_add}}",
+							"host": [
+								"{{domain}}{{endpoint_address_add}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Province: AZ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Create a seed to have a randomized data set",
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"AZ\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_address_add}}",
+							"host": [
+								"{{domain}}{{endpoint_address_add}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout + clean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Logout successful to clear up the login-state for the next tests\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.environment.unset(\"seed\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer bbb0913aad2d5b2e531a449c430956ed93258297",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_logout}}",
+							"host": [
+								"{{domain}}{{endpoint_logout}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "getAddresses",
 			"description": "",
 			"item": [
@@ -333,9 +897,7 @@
 									"pm.test(\"Logout successful to clear up the login-state for the next tests\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.environment.unset(\"seed\");"
+									"});"
 								]
 							}
 						}
