@@ -20,3 +20,21 @@
  * @property {Function} log.error
  * @property {Function} log.fatal
  */
+
+/**
+ * @typedef {Object} ShopifyAddress
+ * @property {Object} address
+ * @property {string} [address.address1]
+ * @property {string} [address.address2]
+ * @property {string} [city]
+ * @property {string} [company]
+ * @property {string} [first_name]
+ * @property {string} [last_name]
+ * @property {string} [phone]
+ * @property {string} [province_code] - 2 letter province/region/state code, e.g. AZ
+ * @property {string} [province] - full name of province/region/state, e.g. Arizona
+ * @property {string} country_code - 2 letter ISO2 code of country, e.g. US
+ * @property {string} country - full name of country, e.g. United States
+ * @property {string} [zip] - zip code of country
+ * @property {string} [name] - full name of the customer, first + last
+ */

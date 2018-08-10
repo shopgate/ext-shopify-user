@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.addAddress.v1",
+    "public": true,
+    "input": [
+      {"key": "address", "id": "1"}
+    ],
+    "output": [
+      {"key": "success", "id": "2", "optional": true}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/addAddress_v1.js",
+        "input": [
+          {"key": "address", "id": "1"}
+        ],
+        "output": [
+          {"key": "success", "id": "2",  "optional": true}
+        ]
+      }
+    ]
+  }
+}

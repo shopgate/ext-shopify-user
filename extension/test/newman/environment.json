@@ -1,0 +1,19 @@
+{
+  "id": "a368ea06-ccd9-49b5-895b-b7103b7049e7",
+  "name": "Shopify Connect",
+  "values": [
+    {
+      "value": "***",
+      "key": "username",
+      "enabled": true
+    },
+    {
+      "value": "***",
+      "key": "password",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2018-07-30T08:59:05.815Z",
+  "_postman_exported_using": "Postman/6.2.1"
+}
