@@ -35,23 +35,10 @@ module.exports = async function (context, input, cb) {
     province_code: address.province,
     zip: address.zipCode,
     name: address.firstName + ' ' + address.lastName,
-    ...mapCountry(address.country)
+    ...SGShopifyApi.mapCountry(address.country)
   }
 
   const shopify = new SGShopifyApi(context)
 
   return shopify.addAddress(userId, newAddress)
-}
-
-/**
- * @param {string} [country] - country input
- *
- * @returns {Object}
- */
-function mapCountry (country) {
-  const map = country && {
-    ...(country.length === 2 && {country_code: country}),
-    ...(country.length > 2 && {country})
-  }
-  return map || {}
 }

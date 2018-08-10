@@ -13,6 +13,12 @@
       "key": "password",
       "type": "text",
       "value": "****"
+    },
+    {
+      "enabled": true,
+      "key": "address_id",
+      "type": "text",
+      "value": "****"
     }
   ],
   "timestamp": 1533728684584,

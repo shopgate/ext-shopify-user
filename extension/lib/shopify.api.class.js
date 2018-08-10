@@ -3,6 +3,7 @@ const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -47,6 +48,47 @@ class SGShopifyApi {
         }
 
         return resolve({success: true})
+      })
+    })
+  }
+
+  /**
+   * Get up to 250 addresses of the customer
+   * @param {string} customerId
+   * @returns {Object}
+   */
+  async getAddresses (customerId) {
+    return new Promise((resolve, reject) => {
+      this.getRequest(`/admin/customers/${customerId}/addresses.json?limit=250`, {}, (err, response) => {
+        if (err) {
+          if (err.code === 404) {
+            return reject(new CustomerNotFoundError())
+          }
+
+          return reject(err)
+        }
+
+        // Mapping the response to met the specs
+        const addresses = []
+        response.addresses.forEach((address) => {
+          addresses.push({
+            id: address.id,
+            address1: address.street1,
+            address2: address.street2,
+            city: address.city,
+            company: address.company,
+            first_name: address.firstName,
+            last_name: address.lastName,
+            phone: address.phone,
+            province_code: address.province,
+            zip: address.zipCode,
+            name: address.firstName + ' ' + address.lastName,
+            country: address.country,
+            country_code: address.country_code
+          })
+        })
+
+        return resolve({addresses})
       })
     })
   }
@@ -335,6 +377,19 @@ class SGShopifyApi {
         storefrontAccessToken
       })
     })
+  }
+
+  /**
+   * @param {string} [country] - country input
+   *
+   * @returns {Object}
+   */
+  static mapCountry (country) {
+    const map = country && {
+      ...(country.length === 2 && {country_code: country}),
+      ...(country.length > 2 && {country})
+    }
+    return map || {}
   }
 }
 

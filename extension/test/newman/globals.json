@@ -4,9 +4,9 @@
   "values": [
     {
       "enabled": true,
-      "key": "endpoint_address_add",
+      "key": "endpoint_address_get",
       "type": "text",
-      "value": "/trustedPipelines/shopgate.user.addAddress.v1"
+      "value": "/trustedPipelines/shopgate.user.getAddresses.v1"
     },
     {
       "enabled": true,
