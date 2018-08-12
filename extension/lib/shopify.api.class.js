@@ -71,7 +71,6 @@ class SGShopifyApi {
         // Mapping the response to met the specs
         const addresses = []
         response.addresses.forEach((address) => {
-
           const customerAddress = {
             id: address.id,
             address1: address.street1,

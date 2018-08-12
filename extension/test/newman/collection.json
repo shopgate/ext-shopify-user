@@ -1,8 +1,7 @@
 {
 	"info": {
+		"_postman_id": "37ab0c84-8d8e-4fd4-b9b7-d3ca446d64eb",
 		"name": "Shopify Connect",
-		"_postman_id": "89f5875b-b97e-3f82-b9b7-533899004216",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -84,10 +83,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Cache-Control",
-								"value": "no-cache"
 							}
 						],
 						"body": {
@@ -527,7 +522,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "All field mapping",
+					"name": "Add: all field mapping",
 					"event": [
 						{
 							"listen": "test",
@@ -573,17 +568,18 @@
 					"response": []
 				},
 				{
-					"name": "Check address mapping",
+					"name": "Get: check all fields",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "96182509-f7b9-4698-888d-77eef719bea9",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
 									"    const address = response.addresses.pop();",
-									"    pm.expect(address.id).to.not.be.empty;",
+									"    pm.expect(address.id).to.be.a('number', 'Not a number provided!');",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
 									"    pm.expect(address.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
@@ -609,12 +605,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{}"
+							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_user_get}}",
+							"raw": "{{domain}}{{endpoint_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_user_get}}"
+								"{{domain}}{{endpoint_addresses_get}}"
 							]
 						}
 					},
@@ -667,6 +663,45 @@
 					"response": []
 				},
 				{
+					"name": "Get: check province",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6c8cb6dc-d41f-4f87-9638-289e3c02d55a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Make sure all address data was properly set\", function() {",
+									"    const response = pm.response.json();",
+									"    const address = response.addresses.pop();",
+									"    pm.expect(address.province).to.be.eq('Arizona');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_addresses_get}}",
+							"host": [
+								"{{domain}}{{endpoint_addresses_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Province: AZ",
 					"event": [
 						{
@@ -713,6 +748,45 @@
 					"response": []
 				},
 				{
+					"name": "Get: check province",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ef0fd5e-7b28-4738-93c5-aca4cfd79ff7",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Make sure all address data was properly set\", function() {",
+									"    const response = pm.response.json();",
+									"    const address = response.addresses.pop();",
+									"    pm.expect(address.province).to.be.eq('Arizona');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_addresses_get}}",
+							"host": [
+								"{{domain}}{{endpoint_addresses_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Logout + clean",
 					"event": [
 						{
@@ -736,11 +810,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer bbb0913aad2d5b2e531a449c430956ed93258297",
-								"disabled": true
 							}
 						],
 						"body": {
@@ -760,11 +829,9 @@
 		},
 		{
 			"name": "getAddresses",
-			"description": "",
 			"item": [
 				{
 					"name": "Errors",
-					"description": "",
 					"item": [
 						{
 							"name": "Unauthorized",
@@ -812,36 +879,32 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Login",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
-								},
-								"url": {
-									"raw": "{{domain}}{{endpoint_login}}",
-									"host": [
-										"{{domain}}{{endpoint_login}}"
-									]
-								}
-							},
-							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_login}}",
+							"host": [
+								"{{domain}}{{endpoint_login}}"
+							]
+						}
+					},
+					"response": []
 				},
 				{
 					"name": "Get Addresses",
@@ -881,13 +944,12 @@
 							"host": [
 								"{{domain}}{{endpoint_addresses_get}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Logout + clean",
+					"name": "Logout",
 					"event": [
 						{
 							"listen": "test",
@@ -908,11 +970,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer bbb0913aad2d5b2e531a449c430956ed93258297",
-								"disabled": true
 							}
 						],
 						"body": {
