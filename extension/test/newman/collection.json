@@ -477,16 +477,12 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "8742e751-e06d-46e2-949c-6ac2e38402d1",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.test(\"Incorrect validation error structure\", function () {",
+											"pm.test(\"Code is EVALIDATION because the address is duplicate\", function () {",
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
-											"    pm.expect(jsonData.error.validationErrors.length).to.be.gte(1);",
-											"    jsonData.error.validationErrors.forEach((error) => {",
-											"        pm.expect(error.path).to.not.be.empty;",
-											"        pm.expect(error.message).to.not.be.empty;",
-											"    })",
 											"});",
 											"",
 											"pm.test(\"Correct duplicate error is shown\", function () {",
@@ -556,7 +552,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"company\": \"{{seed}}-company\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"state\": \"{{seed}}-state\",\n        \"phone\": \"{{seed}}-phone\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
+							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"company\": \"{{seed}}-company\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"phone\": \"{{seed}}-phone\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -573,7 +569,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "96182509-f7b9-4698-888d-77eef719bea9",
+								"id": "0eea0735-8006-4cdb-9461-f2ef2039ed82",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -586,10 +582,10 @@
 									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
 									"    pm.expect(address.street2).to.be.eq(pm.environment.get(\"seed\") + '-street2');",
 									"    pm.expect(address.city).to.be.eq(pm.environment.get(\"seed\") + '-city');",
-									"    pm.expect(address.state).to.be.eq(pm.environment.get(\"seed\") + '-state');",
-									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zip');",
+									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
 									"    pm.expect(address.country).to.be.eq('United States');",
 									"    pm.expect(address.province).to.be.eq('Arizona');",
+									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
 									"});"
 								]
 							}

@@ -55,7 +55,7 @@ class SGShopifyApi {
   /**
    * Get up to 250 addresses of the customer
    * @param {string} customerId
-   * @returns {Object}
+   * @returns {Promise.<ShopifyAddress[],CustomerNotFoundError|UnknownError>}
    */
   async getAddresses (customerId) {
     return new Promise((resolve, reject) => {
@@ -64,38 +64,9 @@ class SGShopifyApi {
           if (err.code === 404) {
             return reject(new CustomerNotFoundError())
           }
-
-          return reject(err)
+          return reject(new UnknownError())
         }
-
-        // Mapping the response to met the specs
-        const addresses = []
-        response.addresses.forEach((address) => {
-          const customerAddress = {
-            id: address.id,
-            address1: address.street1,
-            address2: address.street2,
-            city: address.city,
-            company: address.company,
-            first_name: address.firstName,
-            last_name: address.lastName,
-            phone: address.phone,
-            province_code: address.province,
-            zip: address.zipCode,
-            name: address.firstName + ' ' + address.lastName,
-            country: address.country,
-            country_code: address.country_code,
-            tags: []
-          }
-
-          if (address.default === true) {
-            customerAddress.tags.push('default')
-          }
-
-          addresses.push(customerAddress)
-        })
-
-        return resolve({addresses})
+        return resolve(response.addresses)
       })
     })
   }
