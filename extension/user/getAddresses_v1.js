@@ -12,9 +12,8 @@ module.exports = async function (context) {
   }
 
   const shopifyAddresses = await new SGShopifyApi(context).getAddresses(context.meta.userId)
-  const addresses = []
-  shopifyAddresses.forEach(address => {
-    const customerAddress = {
+  const addresses = shopifyAddresses.map(address => {
+    return {
       id: address.id,
       street1: address.address1,
       street2: address.address2,
@@ -28,14 +27,9 @@ module.exports = async function (context) {
       zipCode: address.zip,
       country: address.country,
       country_code: address.country_code,
-      tags: []
+      ...(address.default === true && {tags: ['default']}),
+      ...(address.default === false && {tags: []})
     }
-
-    if (address.default === true) {
-      customerAddress.tags.push('default')
-    }
-
-    addresses.push(customerAddress)
   })
 
   return {addresses}
