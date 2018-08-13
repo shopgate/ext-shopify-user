@@ -35,10 +35,17 @@
       "enabled": true,
       "key": "endpoint_address_add",
       "value": "/trustedPipelines/shopgate.user.addAddress.v1"
+    },
+    {
+      "key": "endpoint_address_update",
+      "value": "/trustedPipelines/shopgate.user.updateAddress.v1",
+      "description": "",
+      "type": "text",
+      "enabled": true
     }
   ],
   "name": "SG Connect Extension Globals",
   "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-08-12T17:03:40.322Z",
+  "_postman_exported_at": "2018-08-13T19:41:07.411Z",
   "_postman_exported_using": "Postman/6.2.4"
 }

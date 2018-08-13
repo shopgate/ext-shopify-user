@@ -1,9 +1,10 @@
 const ShopifyAPI = require('shopify-node-api')
 const Tools = require('./tools')
-const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
+const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
+const InvalidCallError = require('../models/Errors/InvalidCallError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -73,29 +74,28 @@ class SGShopifyApi {
 
   /**
    * @param {string} customerId
-   * @param {number} addressId
-   * @param {Object} newAddress
-   * @returns {Promise.<{success:true}|FieldValidationError>}
+   * @param {ShopifyAddress} address
+   * @returns {Promise.<{success:true},FieldValidationError|UnknownError|InvalidCallError>}
    */
-  async updateAddress (customerId, addressId, newAddress) {
+  async updateAddress (customerId, address) {
     return new Promise((resolve, reject) => {
-      this.putRequest(`/admin/customers/${customerId}/addresses/${addressId}.json`, {address: newAddress}, (err, response) => {
+      this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, {address}, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
           if (response.errors) {
+            if (err.code === 404) {
+              return reject(new InvalidCallError('Address not found'))
+            }
             const validationError = new FieldValidationError()
             for (let path in response.errors) {
               response.errors[path].forEach(message => {
-                validationError.addValidationMessage(path, message, newAddress[path])
+                validationError.addValidationMessage(path, message, address[path])
               })
             }
-
             return reject(validationError)
           }
-
-          return reject(err)
+          return reject(new UnknownError())
         }
-
         return resolve({success: true})
       })
     })
@@ -385,19 +385,6 @@ class SGShopifyApi {
         storefrontAccessToken
       })
     })
-  }
-
-  /**
-   * @param {string} [country] - country input
-   *
-   * @returns {Object}
-   */
-  static mapCountry (country) {
-    const map = country && {
-      ...(country.length === 2 && {country_code: country}),
-      ...(country.length > 2 && {country})
-    }
-    return map || {}
   }
 }
 
