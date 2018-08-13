@@ -3,6 +3,7 @@ const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -47,6 +48,25 @@ class SGShopifyApi {
         }
 
         return resolve({success: true})
+      })
+    })
+  }
+
+  /**
+   * Get up to 250 addresses of the customer
+   * @param {string} customerId
+   * @returns {Promise.<ShopifyAddress[],CustomerNotFoundError|UnknownError>}
+   */
+  async getAddresses (customerId) {
+    return new Promise((resolve, reject) => {
+      this.getRequest(`/admin/customers/${customerId}/addresses.json?limit=250`, {}, (err, response) => {
+        if (err) {
+          if (err.code === 404) {
+            return reject(new CustomerNotFoundError())
+          }
+          return reject(new UnknownError())
+        }
+        return resolve(response.addresses)
       })
     })
   }
