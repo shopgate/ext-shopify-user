@@ -1,9 +1,10 @@
 const ShopifyAPI = require('shopify-node-api')
 const Tools = require('./tools')
-const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
+const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
+const InvalidCallError = require('../models/Errors/InvalidCallError')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -27,14 +28,15 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @returns {Promise.<{success:true}|FieldValidationError>}
+   * @returns {Promise.<{success:boolean}>}
+   * @throws FieldValidationError
    */
   async addAddress (customerId, address) {
     return new Promise((resolve, reject) => {
       this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
-          if (response.errors) {
+          if (!Tools.isEmpty(response.errors)) {
             const validationError = new FieldValidationError()
             for (let path in response.errors) {
               response.errors[path].forEach(message => {
@@ -43,10 +45,8 @@ class SGShopifyApi {
             }
             return reject(validationError)
           }
-
-          return reject(err)
+          return reject(new UnknownError())
         }
-
         return resolve({success: true})
       })
     })
@@ -55,7 +55,9 @@ class SGShopifyApi {
   /**
    * Get up to 250 addresses of the customer
    * @param {string} customerId
-   * @returns {Promise.<ShopifyAddress[],CustomerNotFoundError|UnknownError>}
+   * @returns {Promise.<ShopifyAddress[]>}
+   * @throws UnknownError
+   * @throws CustomerNotFoundError
    */
   async getAddresses (customerId) {
     return new Promise((resolve, reject) => {
@@ -67,6 +69,38 @@ class SGShopifyApi {
           return reject(new UnknownError())
         }
         return resolve(response.addresses)
+      })
+    })
+  }
+
+  /**
+   * @param {string} customerId
+   * @param {ShopifyAddress} address
+   * @returns {Promise.<{success:boolean}>}
+   * @throws FieldValidationError
+   * @throws UnknownError
+   * @throws InvalidCallError
+   */
+  async updateAddress (customerId, address) {
+    return new Promise((resolve, reject) => {
+      this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, {address}, (err, response) => {
+        if (err) {
+          if (err.code === 404) {
+            return reject(new InvalidCallError('Address not found'))
+          }
+          // Some Shopify address validation error occurred
+          if (!Tools.isEmpty(response.errors)) {
+            const validationError = new FieldValidationError()
+            for (let path in response.errors) {
+              response.errors[path].forEach(message => {
+                validationError.addValidationMessage(path, message, address[path])
+              })
+            }
+            return reject(validationError)
+          }
+          return reject(new UnknownError())
+        }
+        return resolve({success: true})
       })
     })
   }

@@ -4,11 +4,10 @@ const SGShopifyApi = require('../lib/shopify.api.class')
 
 /**
  * @param {SDKContext} context
- * @param {Object} input
  */
 module.exports = async function (context) {
   if (Tools.isEmpty(context.meta.userId)) {
-    return new UnauthorizedError('Unauthorized user')
+    throw new UnauthorizedError('Unauthorized user')
   }
 
   const shopifyAddresses = await new SGShopifyApi(context).getAddresses(context.meta.userId)

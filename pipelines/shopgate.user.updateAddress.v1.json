@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.updateAddress.v1",
+    "public": true,
+    "input": [
+      {"key": "id", "id": "10"},
+      {"key": "street1", "id": "20", "optional": true},
+      {"key": "street2", "id": "30", "optional": true},
+      {"key": "city", "id": "40", "optional": true},
+      {"key": "company", "id": "50", "optional": true},
+      {"key": "firstName", "id": "60", "optional": true},
+      {"key": "lastName", "id": "70", "optional": true},
+      {"key": "phone", "id": "80", "optional": true},
+      {"key": "province", "id": "90", "optional": true},
+      {"key": "zipCode", "id": "100", "optional": true},
+      {"key": "country", "id": "120", "optional": true}
+    ],
+    "output": [
+      {"key": "success", "id": "2", "optional": true}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/updateAddress_v1.js",
+        "input": [
+          {"key": "id", "id": "10"},
+          {"key": "street1", "id": "20", "optional": true},
+          {"key": "street2", "id": "30", "optional": true},
+          {"key": "city", "id": "40", "optional": true},
+          {"key": "company", "id": "50", "optional": true},
+          {"key": "firstName", "id": "60", "optional": true},
+          {"key": "lastName", "id": "70", "optional": true},
+          {"key": "phone", "id": "80", "optional": true},
+          {"key": "province", "id": "90", "optional": true},
+          {"key": "zipCode", "id": "100", "optional": true},
+          {"key": "country", "id": "120", "optional": true}
+        ],
+        "output": [
+          {"key": "success", "id": "2",  "optional": true}
+        ]
+      }
+    ]
+  }
+}
