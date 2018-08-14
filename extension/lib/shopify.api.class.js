@@ -28,7 +28,8 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @returns {Promise.<{success:true}|FieldValidationError>}
+   * @returns {Promise.<{success:boolean}>}
+   * @throws FieldValidationError
    */
   async addAddress (customerId, address) {
     return new Promise((resolve, reject) => {
@@ -54,7 +55,9 @@ class SGShopifyApi {
   /**
    * Get up to 250 addresses of the customer
    * @param {string} customerId
-   * @returns {Promise.<ShopifyAddress[],CustomerNotFoundError|UnknownError>}
+   * @returns {Promise.<ShopifyAddress[]>}
+   * @throws UnknownError
+   * @throws CustomerNotFoundError
    */
   async getAddresses (customerId) {
     return new Promise((resolve, reject) => {
@@ -73,7 +76,10 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @returns {Promise.<{success:true},FieldValidationError|UnknownError|InvalidCallError>}
+   * @returns {Promise.<{success:boolean}>}
+   * @throws FieldValidationError
+   * @throws UnknownError
+   * @throws InvalidCallError
    */
   async updateAddress (customerId, address) {
     return new Promise((resolve, reject) => {
