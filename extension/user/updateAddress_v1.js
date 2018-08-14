@@ -1,6 +1,5 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const FieldValidationError = require('../models/Errors/FieldValidationError')
 const SGShopifyApi = require('../lib/shopify.api.class')
 const {mapCountry, mapProvince} = require('../lib/mapper')
 const _ = require('lodash')

@@ -35,7 +35,7 @@ class SGShopifyApi {
       this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
-          if (response.errors) {
+          if (!Tools.isEmpty(response.errors)) {
             const validationError = new FieldValidationError()
             for (let path in response.errors) {
               response.errors[path].forEach(message => {
@@ -44,10 +44,8 @@ class SGShopifyApi {
             }
             return reject(validationError)
           }
-
-          return reject(err)
+          return reject(new UnknownError())
         }
-
         return resolve({success: true})
       })
     })
@@ -81,11 +79,11 @@ class SGShopifyApi {
     return new Promise((resolve, reject) => {
       this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, {address}, (err, response) => {
         if (err) {
+          if (err.code === 404) {
+            return reject(new InvalidCallError('Address not found'))
+          }
           // Some Shopify address validation error occurred
-          if (response.errors) {
-            if (err.code === 404) {
-              return reject(new InvalidCallError('Address not found'))
-            }
+          if (!Tools.isEmpty(response.errors)) {
             const validationError = new FieldValidationError()
             for (let path in response.errors) {
               response.errors[path].forEach(message => {
