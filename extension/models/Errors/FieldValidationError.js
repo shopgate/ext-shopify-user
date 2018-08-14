@@ -17,7 +17,7 @@ class FieldValidationError extends Error {
    * @param {string} [value] - passed down value if any
    */
   addValidationMessage (path, message, value) {
-    path = this.translatePath(path)
+    path = FieldValidationError.translatePath(path)
 
     const capitalizedPath = path.charAt(0).toUpperCase() + path.substr(1)
     const main = value && !message.includes('required') ? value : capitalizedPath
@@ -31,9 +31,9 @@ class FieldValidationError extends Error {
    * @private
    * @returns {string}
    */
-  translatePath (path) {
+  static translatePath (path) {
     const translations = {
-      signature: 'country',
+      signature: 'street1',
       address1: 'street1',
       address2: 'street2',
       first_name: 'firstName',
