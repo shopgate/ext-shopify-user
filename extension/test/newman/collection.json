@@ -1365,7 +1365,8 @@
 									"});",
 									"",
 									"pm.environment.unset(\"seed\");",
-									"pm.environment.unset(\"address-id\");"
+									"pm.environment.unset(\"address-id\");",
+									"pm.environment.unset(\"address_id\");"
 								]
 							}
 						}
