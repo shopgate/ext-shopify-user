@@ -1398,195 +1398,331 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Errors",
+					"name": "Prepare test data",
 					"description": "",
-					"item": [],
+					"item": [
+						{
+							"name": "Get: addresss we need for the tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var response = pm.response.json().addresses;",
+											"// Set the overall number of addresses, the last test will check if this number decreased by two",
+											"pm.environment.set(\"overallCountOfAddresses\", response.length);",
+											"",
+											"// Set the last three addresses, these both will be deleted in the next test",
+											"pm.environment.set(\"defaultAddressId\", response[0].id);",
+											"",
+											"if (response.length > 1) {",
+											"    pm.environment.set(\"firstAddressIdToDelete\", response[response.length-1].id);",
+											"    pm.environment.set(\"secondAddressIdToDelete\", response[response.length-2].id);",
+											"    pm.environment.set(\"thirdAddressIdToDelete\", response[response.length-3].id);",
+											"",
+											"    // Collect all address ids, expect the default, so we're able to delete all of them after the tests are done",
+											"    var allAddressIds = [];",
+											"    response.forEach(function(address, index) {",
+											"        if (index !== 0) {",
+											"            allAddressIds.push(address.id)",
+											"        }",
+											"    })",
+											"    ",
+											"    pm.environment.set(\"addressIdsToDelete\", allAddressIds.join());",
+											"}",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_get}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_get}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add: new address to be deleted",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"// Create a seed to have a randomized data set",
+											"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"AZ\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Add: new address to be deleted",
-					"event": [
+					"name": "Errors",
+					"description": "",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"})"
-								]
-							}
+							"name": "Try to delete default address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(500);",
+											"})",
+											"",
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because the address is default\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ids\": [\n\t\t{{defaultAddressId}}\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_delete}}"
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"// Create a seed to have a randomized data set",
-									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
-								]
-							}
+							"name": "Error no address ids given",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(500);",
+											"})",
+											"",
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EINVALIDCALL because no address ids were given\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EINVALIDCALL');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ids\": [\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_delete}}"
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"AZ\"\n\t}\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
-							"host": [
-								"{{domain}}{{endpoint_address_add}}"
-							]
-						}
-					},
-					"response": []
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Get: address ids to be deleted",
-					"event": [
+					"name": "Tests",
+					"description": "",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    ",
-									"    var response = pm.response.json().addresses;",
-									"",
-									"    // Set the overall number of addresses, the last test will check if this number decreased by two",
-									"    pm.environment.set(\"overallCountOfAddresses\", response.length);",
-									"    ",
-									"    // Set the last three addresses, these will be deleted in the next test",
-									"    pm.environment.set(\"firstAddressIdToDelete\", response[response.length-1].id);",
-									"    pm.environment.set(\"secondAddressIdToDelete\", response[response.length-2].id);",
-									"    pm.environment.set(\"thirdAddressIdToDelete\", response[response.length-3].id);",
-									"});",
-									"",
-									""
-								]
-							}
+							"name": "deleteAddresses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Addresses deleted and return is success true\", function () {",
+											"    pm.expect(jsonData.success).to.be.eq(true);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}},\n\t\t{{thirdAddressIdToDelete}}\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_delete}}"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Check if addresses were deleted",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Check if number of addresses decreased by 2\", function() {",
+											"    var addressesCount = pm.response.json().addresses.length;",
+											"    pm.expect(addressesCount).to.be.eq(pm.environment.get(\"overallCountOfAddresses\") - 2)",
+											"})",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_get}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_get}}"
+									]
+								}
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
-							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
-							]
-						}
-					},
-					"response": []
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "deleteAddresses",
-					"event": [
+					"name": "Cleanup",
+					"description": "",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"})",
-									"",
-									"var jsonData = pm.response.json();",
-									"pm.test(\"Addresses deleted and return is success true\", function () {",
-									"    pm.expect(jsonData.success).to.be.eq(true);",
-									"});"
-								]
-							}
+							"name": "Cleanup test data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"// Cleanup environment vars",
+											"pm.environment.unset(\"seed\");",
+											"pm.environment.unset(\"overallCountOfAddresses\");",
+											"pm.environment.unset(\"defaultAddressId\");",
+											"pm.environment.unset(\"firstAddressIdToDelete\");",
+											"pm.environment.unset(\"secondAddressIdToDelete\");",
+											"pm.environment.unset(\"thirdAddressIdToDelete\");",
+											"pm.environment.unset(\"addressIdsToDelete\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_delete}}"
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}},\n\t\t{{thirdAddressIdToDelete}}\n\t]\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_delete}}",
-							"host": [
-								"{{domain}}{{endpoint_addresses_delete}}"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Check if addresses were deleted + cleanup",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Check if number of addresses decreased by 3\", function() {",
-									"    var addressesCount = pm.response.json().addresses.length;",
-									"    pm.expect(addressesCount).to.be.eq(pm.environment.get(\"overallCountOfAddresses\") - 3)",
-									"})",
-									"",
-									"// Cleanup",
-									"pm.environment.unset(\"seed\");",
-									"pm.environment.unset(\"overallCountOfAddresses\");",
-									"pm.environment.unset(\"firstAddressIdToDelete\");",
-									"pm.environment.unset(\"secondAddressIdToDelete\");",
-									"pm.environment.unset(\"thirdAddressIdToDelete\");",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n}"
-						},
-						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
-							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
-							]
-						}
-					},
-					"response": []
+					"_postman_isSubFolder": true
 				}
 			]
 		}
