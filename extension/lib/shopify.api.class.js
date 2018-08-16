@@ -114,7 +114,15 @@ class SGShopifyApi {
     return new Promise((resolve, reject) => {
       this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {}, (err, response) => {
         if (err) {
-          // Some Shopify address validation error occurred. For now there are no known errors returned from shopify, even if the address ids are unknown or empty strings
+          this.context.log.error(err)
+
+          if (err.code === 422) {
+            const validationError = new FieldValidationError()
+            validationError.message = err.error
+            return reject(validationError)
+          }
+
+          // Some Shopify address validation error occurred.
           return reject(new UnknownError())
         }
 
