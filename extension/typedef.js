@@ -56,4 +56,5 @@
  * @property {string} country - full name of country, e.g. United States
  * @property {string} [zipCode] - zip code of country
  * @property {string[]} [tags] - list of cart specific tags, e.g. 'default', 'billing', etc.
+ * @property {Object[]} [customAttributes] - list of cart specific custom address fields, e.g. 'phone', 'company', etc.
  */
