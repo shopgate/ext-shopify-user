@@ -117,9 +117,7 @@ class SGShopifyApi {
           this.context.log.error(err)
 
           if (err.code === 422) {
-            const validationError = new FieldValidationError()
-            validationError.message = err.error
-            return reject(validationError)
+            return reject(new InvalidCallError(err.error))
           }
 
           // Some Shopify address validation error occurred.
