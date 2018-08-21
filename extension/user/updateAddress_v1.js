@@ -34,7 +34,7 @@ function createAddressUpdate (input) {
     zip: input.zipCode,
     ...mapProvince(input.province),
     ...mapCountry(input.country),
-    ...mapCustomAttributes(input)
+    ...mapCustomAttributes(input.customAttributes)
   }
 
   // Remove all empty or not set properties

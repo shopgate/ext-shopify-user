@@ -30,7 +30,7 @@ module.exports = async function (context, input) {
     zip: address.zipCode,
     name: address.firstName + ' ' + address.lastName,
     ...mapCountry(address.country),
-    ...mapCustomAttributes(address)
+    ...mapCustomAttributes(address.customAttributes)
   }
 
   return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress)
