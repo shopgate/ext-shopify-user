@@ -16,5 +16,9 @@ module.exports = async function (context, input) {
     throw new InvalidCallError('No address ids given.')
   }
 
+  if (input.ids.includes("")) {
+    throw new InvalidCallError('Empty string address id passed.')
+  }
+
   return new SGShopifyApi(context).deleteAddresses(context.meta.userId, input.ids)
 }
