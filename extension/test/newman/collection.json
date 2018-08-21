@@ -6,17 +6,17 @@
 	},
 	"item": [
 		{
-			"_postman_id": "4e853d24-e9c8-4b1c-a145-92b79006288f",
+			"_postman_id": "ccb97954-af4e-41ba-a590-e5b242cc989a",
 			"name": "Errors: unauthorized",
 			"item": [
 				{
-					"_postman_id": "319b12a4-8b4d-438c-bf6d-7b7ad1cb6f92",
+					"_postman_id": "adf5fa2e-f6aa-4df5-adab-8f389b3eb4f2",
 					"name": "Logout",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "e3fa81e6-ee1a-4005-8d31-65838eedd1ae",
+								"id": "a9cf418a-ecb3-4a21-91b5-b132c7c4ea7c",
 								"type": "text/javascript",
 								"exec": [
 									"// doesn't matter if we succeed, this just clears previous states",
@@ -49,7 +49,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "bc1b7725-6c75-4ca0-be9d-92edc99d80df",
+					"_postman_id": "448d782f-6612-401f-8778-d5d93bfb7f20",
 					"name": "getUser",
 					"event": [
 						{
@@ -97,7 +97,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "50cd7e98-16bf-4a9a-957b-513046426adf",
+					"_postman_id": "be2dc5be-0023-4709-b191-f2dbac40e70e",
 					"name": "getAddresses",
 					"event": [
 						{
@@ -145,7 +145,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "b46f638e-34a6-42a5-9785-5d19d238f78a",
+					"_postman_id": "fd848c44-0de6-4e74-90f8-ae600849efa2",
 					"name": "addAddress",
 					"event": [
 						{
@@ -193,7 +193,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "bf0fd662-7d80-43f5-a6cc-60b04c4efe28",
+					"_postman_id": "0daa1978-5026-4d5a-9c4e-5ae0793c5a5d",
 					"name": "updateAddress",
 					"event": [
 						{
@@ -241,7 +241,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "9b350418-6e68-4cb0-8b59-7222b6df1069",
+					"_postman_id": "846b1bf4-1bbe-4807-86e5-4e2e5f9f98b3",
 					"name": "deleteAddresses",
 					"event": [
 						{
@@ -291,11 +291,11 @@
 			]
 		},
 		{
-			"_postman_id": "17a7fdf0-af9c-43a6-9a0d-41be7f72d988",
+			"_postman_id": "be86608d-24cb-4c1b-9cad-6c4f5a1370de",
 			"name": "getUser",
 			"item": [
 				{
-					"_postman_id": "5f95d11d-42b0-48f8-aaaa-b082764a2adb",
+					"_postman_id": "e550b542-bef3-477f-8fcc-41b38f85daaa",
 					"name": "Login",
 					"event": [
 						{
@@ -333,7 +333,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "84db48aa-9f44-4a4b-98d0-d9308a721cd1",
+					"_postman_id": "a9d61b5e-eb6e-476b-82db-8f72dd1b866c",
 					"name": "getUser",
 					"event": [
 						{
@@ -388,15 +388,15 @@
 			]
 		},
 		{
-			"_postman_id": "ddbbd62e-b53a-43c0-9e82-4a786854a435",
+			"_postman_id": "f1543815-5ad3-41b5-a311-c67772e1fc17",
 			"name": "addAddress",
 			"item": [
 				{
-					"_postman_id": "36d432d8-21c4-4bc1-8f02-879205ef6441",
+					"_postman_id": "53b5e0f4-5f64-484b-8bdb-c8d556469c1b",
 					"name": "Errors",
 					"item": [
 						{
-							"_postman_id": "09475b99-e64a-4229-add5-2fad154dbfad",
+							"_postman_id": "76b2b6a5-54ed-417e-9b5e-c39e7a9dc747",
 							"name": "missing address data",
 							"event": [
 								{
@@ -435,7 +435,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "5cfebf83-8bb8-4d72-8b3a-3d50c931a55d",
+							"_postman_id": "7ae735d8-3556-41e6-b4a9-7f625cf535c3",
 							"name": "bad country name",
 							"event": [
 								{
@@ -486,7 +486,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "9ec8870e-c28a-43ca-a91a-60d1d07448f2",
+							"_postman_id": "966a51b9-6d5d-446b-bd89-ff3326d76b58",
 							"name": "country is required",
 							"event": [
 								{
@@ -537,7 +537,7 @@
 							"response": []
 						},
 						{
-							"_postman_id": "59aef9bb-9070-4f26-b3dd-9e4f55cc9b76",
+							"_postman_id": "9d95568a-0470-456b-84ec-21285a59f92f",
 							"name": "incorrect province",
 							"event": [
 								{
@@ -588,8 +588,8 @@
 							"response": []
 						},
 						{
-							"_postman_id": "4f3bcd23-ee4b-4d8b-980b-f76cb077ac30",
-							"name": "Add GB address",
+							"_postman_id": "f0d4b5c4-7645-4a2c-8463-13191e81f1d7",
+							"name": "Create GB address",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -600,7 +600,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"TEST ADDRESS\",\n        \"country\": \"GB\"\n\t}\n}"
+									"raw": "{\n\t\"address\": {\n        \"street1\": \"TEST ADDRESS\",\n        \"country\": \"GB\"\n\t}\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -612,7 +612,47 @@
 							"response": []
 						},
 						{
-							"_postman_id": "d79ef030-60a6-475b-8da8-fad7e3578149",
+							"_postman_id": "93561a07-f1c7-471b-b0cb-aaf8ce717416",
+							"name": "Get address ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0a91dbc1-ad95-4997-b170-7655199bf6b7",
+										"type": "text/javascript",
+										"exec": [
+											"const response = pm.response.json();",
+											"const address = response.addresses.pop();",
+											"var addressIdsToDelete = [];",
+											"addressIdsToDelete.push(address.id);",
+											"pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_get}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_get}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"_postman_id": "ec0b4746-8660-41e7-ab82-268f3339f5d7",
 							"name": "Add duplicate",
 							"event": [
 								{
@@ -658,7 +698,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "6a86d5a3-43da-4757-9159-7ef81d9b3887",
+					"_postman_id": "d3c9b7c9-86ff-4232-a0a3-072115da94a4",
 					"name": "Add: all field mapping",
 					"event": [
 						{
@@ -705,13 +745,13 @@
 					"response": []
 				},
 				{
-					"_postman_id": "4a741510-78a6-4abe-94f9-2710b75d9b7b",
+					"_postman_id": "58239860-eb55-4596-9eec-65d0df368232",
 					"name": "Get: check all fields",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "2b83efe5-fa1b-482c-90ee-7cda5979f231",
+								"id": "36ca1a1a-c71e-41c3-b3e7-1342bb462383",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -730,6 +770,10 @@
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
 									"    pm.expect(address.customAttributes.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
 									"    pm.expect(address.customAttributes.phone).to.be.eq(pm.environment.get(\"seed\") + '-phone');",
+									"",
+									"    var addressIdsToDelete = pm.environment.get(\"addressIdsToDelete\").split(\",\");",
+									"    addressIdsToDelete.push(address.id);",
+									"    pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());",
 									"});"
 								]
 							}
@@ -757,12 +801,13 @@
 					"response": []
 				},
 				{
-					"_postman_id": "3cfc5b4e-b025-45e1-81e6-9dedf6af4dad",
+					"_postman_id": "5a4f3d50-0b24-4983-88cf-da914c7e32ea",
 					"name": "Province: Arizona",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "e868c823-f86b-432b-a7a5-2fb04a45a6a2",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -774,6 +819,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "0dac9877-31f4-4c5a-b61c-023afb4f3e70",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -804,13 +850,13 @@
 					"response": []
 				},
 				{
-					"_postman_id": "6d0554e5-2b90-4463-a0e1-1498eb8e757c",
+					"_postman_id": "b8daa8a9-b8aa-4cb3-8c23-d5852ef51ce9",
 					"name": "Get: check province",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "0a5e6b39-dc4c-434a-a041-ee1d760069ea",
+								"id": "147d2b27-1b15-458e-be01-a9a0f356efb6",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -818,6 +864,10 @@
 									"    const address = response.addresses.pop();",
 									"    pm.expect(address.province).to.be.eq('Arizona');",
 									"    pm.expect(address.provinceCode).to.be.eq('AZ');",
+									"    ",
+									"    var addressIdsToDelete = pm.environment.get(\"addressIdsToDelete\").split(\",\");",
+									"    addressIdsToDelete.push(address.id);",
+									"    pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());",
 									"});"
 								]
 							}
@@ -845,12 +895,13 @@
 					"response": []
 				},
 				{
-					"_postman_id": "91a54f51-f287-4e6d-8d6b-8a75847a99b6",
-					"name": "Province: TX",
+					"_postman_id": "a0d87cf6-c914-479c-8eeb-6598294b4626",
+					"name": "ProvinceCode: Texas",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "2883e3d5-ac37-4900-b793-94def3e34b83",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -862,6 +913,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "6b2b11ad-742b-47da-9590-0a3f1ae8b3bb",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -892,13 +944,13 @@
 					"response": []
 				},
 				{
-					"_postman_id": "17d590c6-e038-41ed-89aa-d5b051e084b9",
+					"_postman_id": "b9ae4327-d42f-4928-ba33-5b6ed954681e",
 					"name": "Get: check province by code",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "994df2b2-afd2-45b2-ac59-2f2996d6495d",
+								"id": "e744be76-6e39-4997-a361-70a78fcd2204",
 								"type": "text/javascript",
 								"exec": [
 									"var response = pm.response.json().addresses;",
@@ -908,19 +960,11 @@
 									"    const address = response.addresses.pop();",
 									"    pm.expect(address.province).to.be.eq('Texas');",
 									"    pm.expect(address.provinceCode).to.be.eq('TX');",
-									"});",
-									"",
-									"if (response.length > 1) {",
-									"// Collect all address ids, expect the default, so we're able to delete all of them after the tests are done",
-									"    var allAddressIds = [];",
-									"    response.forEach(function(address, index) {",
-									"        if (index !== 0) {",
-									"            allAddressIds.push(address.id)",
-									"        }",
-									"    })",
 									"    ",
-									"    pm.environment.set(\"addressIdsToDelete\", allAddressIds.join());",
-									"}"
+									"    var addressIdsToDelete = pm.environment.get(\"addressIdsToDelete\").split(\",\");",
+									"    addressIdsToDelete.push(address.id);",
+									"    pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());",
+									"});"
 								]
 							}
 						}
@@ -949,19 +993,19 @@
 			]
 		},
 		{
-			"_postman_id": "dad637fa-8b6c-4a16-8d16-00f6927c17b8",
+			"_postman_id": "fc639c79-051f-43d2-8b72-b867ab63f0a1",
 			"name": "updateAddress",
 			"item": [
 				{
-					"_postman_id": "73bb5c28-2723-4af4-801d-5e6b92736985",
+					"_postman_id": "ac6a61b6-0be6-49cc-ba04-aef819167ecc",
 					"name": "Errors",
 					"item": [
 						{
-							"_postman_id": "9155d28e-a5b2-41bd-a58c-a6f6ee3341ad",
+							"_postman_id": "25856ac8-8ff6-4ed8-b4c8-6146e3449736",
 							"name": "General",
 							"item": [
 								{
-									"_postman_id": "6cd0ccbf-33a2-4a5c-b6db-b5f8c7e08de2",
+									"_postman_id": "67a08130-d702-46f8-8338-d8cffadeaefc",
 									"name": "Add: all field mapping",
 									"event": [
 										{
@@ -1008,12 +1052,13 @@
 									"response": []
 								},
 								{
-									"_postman_id": "2e7234b1-48b9-44b6-863c-60b2da330142",
+									"_postman_id": "b874eabf-430e-4b26-800d-afd01d1f275f",
 									"name": "Get address ID",
 									"event": [
 										{
 											"listen": "test",
 											"script": {
+												"id": "a52f9daf-4542-4818-8d40-62ee5f6e3a98",
 												"type": "text/javascript",
 												"exec": [
 													"pm.test(\"Addresses are returned\", function () {",
@@ -1022,7 +1067,11 @@
 													"    pm.environment.set(\"address-id\", address.id);",
 													"});",
 													"",
-													""
+													"const response = pm.response.json();",
+													"const address = response.addresses.pop();",
+													"var addressIdsToDelete = pm.environment.get(\"addressIdsToDelete\").split(\",\");",
+													"addressIdsToDelete.push(address.id);",
+													"pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());"
 												]
 											}
 										}
@@ -1049,7 +1098,7 @@
 									"response": []
 								},
 								{
-									"_postman_id": "7d4e6cab-80e6-4e8a-a3d0-45b62a9a6866",
+									"_postman_id": "42b083ae-da89-4b0f-8519-ad87a62cbbf8",
 									"name": "bad country name",
 									"event": [
 										{
@@ -1100,7 +1149,7 @@
 									"response": []
 								},
 								{
-									"_postman_id": "f6f236a6-45e5-41c6-bb83-4e7285c7d1cc",
+									"_postman_id": "5ad7318f-ee6a-4116-bafe-a2a20bf03ce0",
 									"name": "incorrect province",
 									"event": [
 										{
@@ -1152,7 +1201,7 @@
 									"response": []
 								},
 								{
-									"_postman_id": "11d9750e-8557-463f-a140-82c7a4c55078",
+									"_postman_id": "396b4d89-c93c-46ff-a373-2df909e46102",
 									"name": "Address not found",
 									"event": [
 										{
@@ -1197,7 +1246,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "90092472-e1da-4a66-aaba-dab52b6a2c76",
+					"_postman_id": "d402a082-8bae-4aae-8840-da7cf0266a21",
 					"name": "Add: all field mapping",
 					"event": [
 						{
@@ -1244,20 +1293,24 @@
 					"response": []
 				},
 				{
-					"_postman_id": "663ef649-b801-473c-9f48-90fc5ad7002d",
+					"_postman_id": "e8664e47-efe4-4cca-81a7-c9bbe91cfe5b",
 					"name": "Get address ID",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "8fd3470d-29fe-45a9-b7ce-5dd6020a92e8",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Addresses are returned\", function () {",
 									"    const response = pm.response.json();",
 									"    const address = response.addresses.pop();",
 									"    pm.environment.set(\"address-id\", address.id);",
+									"    ",
+									"    var addressIdsToDelete = pm.environment.get(\"addressIdsToDelete\").split(\",\");",
+									"    addressIdsToDelete.push(address.id);",
+									"    pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());",
 									"});",
-									"",
 									""
 								]
 							}
@@ -1285,7 +1338,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "c41112ab-9aeb-4453-8c43-0d804d84b6d4",
+					"_postman_id": "e0c9d161-b665-4114-954c-a2276aefaced",
 					"name": "Change all fields",
 					"event": [
 						{
@@ -1339,7 +1392,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "5d28d519-6fba-4530-9abd-c85b2b985d07",
+					"_postman_id": "af31ca58-c3b4-4105-92cc-327c55c58a4b",
 					"name": "Get: check all fields",
 					"event": [
 						{
@@ -1391,7 +1444,7 @@
 					"response": []
 				},
 				{
-					"_postman_id": "f82816e0-a80b-4f1e-8f77-e7d13635737b",
+					"_postman_id": "fb6f97e9-b543-47b1-a42a-d6976a719ac1",
 					"name": "Make data blank",
 					"event": [
 						{
@@ -1443,13 +1496,13 @@
 					"response": []
 				},
 				{
-					"_postman_id": "4922095f-6aee-491c-9879-1815a67f2a81",
+					"_postman_id": "f48d73b0-82b6-4720-94e1-f168793df16a",
 					"name": "Check fields are blank + clean",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "237be61a-41c9-4773-8564-510bd6c01999",
+								"id": "b5f55d33-740f-4926-ab78-f4fa3a883086",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
@@ -1471,8 +1524,7 @@
 									"});",
 									"",
 									"pm.environment.unset(\"seed\");",
-									"pm.environment.unset(\"address-id\");",
-									"pm.environment.unset(\"address_id\");"
+									"pm.environment.unset(\"address-id\");"
 								]
 							}
 						}
@@ -1501,20 +1553,21 @@
 			]
 		},
 		{
-			"_postman_id": "92df73d6-6709-4b01-bdb6-ccd0ef94546f",
+			"_postman_id": "63bdf223-9bc7-4ec0-ad2b-e83985b0b867",
 			"name": "deleteAddresses",
 			"item": [
 				{
-					"_postman_id": "7831c71f-55f2-4cdf-88b8-d0246ae8765f",
+					"_postman_id": "6f96a820-6d8a-4c18-935a-85b00e130c97",
 					"name": "Prepare test data",
 					"item": [
 						{
-							"_postman_id": "e8115231-cfd9-4339-b3dc-ba93005cd6bd",
-							"name": "Get: addresss we need for the tests",
+							"_postman_id": "28fca668-8ae7-4bf9-8e9d-b521d692dc95",
+							"name": "Fetch addresses",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
+										"id": "a2961bf4-81a5-495f-9e89-e667a2196cdf",
 										"type": "text/javascript",
 										"exec": [
 											"var response = pm.response.json().addresses;",
@@ -1528,16 +1581,6 @@
 											"    pm.environment.set(\"firstAddressIdToDelete\", response[response.length-1].id);",
 											"    pm.environment.set(\"secondAddressIdToDelete\", response[response.length-2].id);",
 											"    pm.environment.set(\"thirdAddressIdToDelete\", response[response.length-3].id);",
-											"",
-											"    // Collect all address ids, expect the default, so we're able to delete all of them after the tests are done",
-											"    var allAddressIds = [];",
-											"    response.forEach(function(address, index) {",
-											"        if (index !== 0) {",
-											"            allAddressIds.push(address.id)",
-											"        }",
-											"    })",
-											"    ",
-											"    pm.environment.set(\"addressIdsToDelete\", allAddressIds.join());",
 											"}",
 											"",
 											"",
@@ -1568,8 +1611,8 @@
 							"response": []
 						},
 						{
-							"_postman_id": "cac838b2-f1ad-487e-8631-834fcfec571f",
-							"name": "Add: new address to be deleted",
+							"_postman_id": "c54b0ca6-ec3e-4d30-8849-ef4eb2fe4021",
+							"name": "Create another address",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1602,17 +1645,57 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"_postman_id": "7903fcc3-44d7-47cd-b773-5b004b83b08c",
+							"name": "Get address ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "10b40008-18ea-40f9-b06f-faf414b3ca4c",
+										"type": "text/javascript",
+										"exec": [
+											"const response = pm.response.json();",
+											"const address = response.addresses.pop();",
+											"var addressIdsToDelete = pm.environment.get(\"addressIdsToDelete\").split(\",\");",
+											"addressIdsToDelete.push(address.id);",
+											"pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join());"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_addresses_get}}",
+									"host": [
+										"{{domain}}{{endpoint_addresses_get}}"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "b30c5af0-aacb-49f2-8df3-090c6b0b8f35",
+					"_postman_id": "68da203d-79a3-4089-b6aa-9735c36185e2",
 					"name": "Errors",
 					"item": [
 						{
-							"_postman_id": "1a970095-90b4-49ad-9ebd-d56222d384d9",
-							"name": "Try to delete default address",
+							"_postman_id": "de3ca040-fdb6-4548-b381-1db996b621f6",
+							"name": "Delete default address",
 							"event": [
 								{
 									"listen": "test",
@@ -1650,8 +1733,8 @@
 							"response": []
 						},
 						{
-							"_postman_id": "57b68912-31b3-4689-83d5-c5e5814a62da",
-							"name": "Error no address ids given",
+							"_postman_id": "b5f18b5f-5cb3-440b-9826-c4cc9b9cb90e",
+							"name": "No address ids given",
 							"event": [
 								{
 									"listen": "test",
@@ -1692,12 +1775,12 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"_postman_id": "98ef1fda-c7c0-4475-ac2a-a97c080c6aaa",
+					"_postman_id": "943a5ce5-cd28-4430-9824-437aa72c21e1",
 					"name": "Tests",
 					"item": [
 						{
-							"_postman_id": "83112bd0-e6a8-49da-93f9-59b88dff3954",
-							"name": "deleteAddresses",
+							"_postman_id": "02b6847d-a91b-4d77-afbe-817230f7ce2a",
+							"name": "Delete multiple addresses",
 							"event": [
 								{
 									"listen": "test",
@@ -1738,8 +1821,8 @@
 							"response": []
 						},
 						{
-							"_postman_id": "67a040cb-016e-4883-94e8-0f3cc3cbe527",
-							"name": "Check if addresses were deleted",
+							"_postman_id": "f3d275c8-22bd-4206-a2e0-6416b20b7e08",
+							"name": "Check for deleted addresses",
 							"event": [
 								{
 									"listen": "test",
@@ -1778,55 +1861,55 @@
 						}
 					],
 					"_postman_isSubFolder": true
-				},
+				}
+			]
+		},
+		{
+			"_postman_id": "39a7fee9-2803-4997-8316-00b79a669483",
+			"name": "Cleanup",
+			"item": [
 				{
-					"_postman_id": "f2a5fc09-d492-4759-ac00-725c16484a51",
-					"name": "Cleanup",
-					"item": [
+					"_postman_id": "875ab3a7-6349-4186-bbe3-8f5cc493dd90",
+					"name": "Cleanup test data",
+					"event": [
 						{
-							"_postman_id": "6c20bf3f-83d0-47a4-94fc-fa473bf31620",
-							"name": "Cleanup test data",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"// Cleanup environment vars",
-											"pm.environment.unset(\"seed\");",
-											"pm.environment.unset(\"overallCountOfAddresses\");",
-											"pm.environment.unset(\"defaultAddressId\");",
-											"pm.environment.unset(\"firstAddressIdToDelete\");",
-											"pm.environment.unset(\"secondAddressIdToDelete\");",
-											"pm.environment.unset(\"thirdAddressIdToDelete\");",
-											"pm.environment.unset(\"addressIdsToDelete\");"
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
-								},
-								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
-									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"id": "86f7696f-5d60-4da5-aa93-08e5a6606826",
+								"type": "text/javascript",
+								"exec": [
+									"// Cleanup environment vars",
+									"pm.environment.unset(\"seed\");",
+									"pm.environment.unset(\"overallCountOfAddresses\");",
+									"pm.environment.unset(\"defaultAddressId\");",
+									"pm.environment.unset(\"firstAddressIdToDelete\");",
+									"pm.environment.unset(\"secondAddressIdToDelete\");",
+									"pm.environment.unset(\"thirdAddressIdToDelete\");",
+									"//pm.environment.unset(\"addressIdsToDelete\");"
+								]
+							}
 						}
 					],
-					"_postman_isSubFolder": true
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_addresses_delete}}",
+							"host": [
+								"{{domain}}{{endpoint_addresses_delete}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
