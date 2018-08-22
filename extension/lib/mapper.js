@@ -23,3 +23,17 @@ module.exports.mapProvince = function (province) {
   }
   return map || {}
 }
+
+/**
+ * Append customAttributes object to the address
+ *
+ * @param {ShopgateAddressCustomAttributes} [customAttributes]
+ * @return {Object}
+ */
+module.exports.mapCustomAttributes = function (customAttributes) {
+  const map = customAttributes && {
+    ...(customAttributes.hasOwnProperty('company') && {company: customAttributes.company}),
+    ...(customAttributes.hasOwnProperty('phone') && {phone: customAttributes.phone})
+  }
+  return map || {}
+}

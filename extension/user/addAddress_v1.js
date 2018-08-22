@@ -2,7 +2,7 @@ const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const SGShopifyApi = require('../lib/shopify.api.class')
-const {mapCountry} = require('../lib/mapper')
+const {mapCountry, mapCustomAttributes} = require('../lib/mapper')
 
 /**
  * @param {SDKContext} context
@@ -24,14 +24,13 @@ module.exports = async function (context, input) {
     address1: address.street1,
     address2: address.street2,
     city: address.city,
-    company: address.company,
     first_name: address.firstName,
     last_name: address.lastName,
-    phone: address.phone,
     province_code: address.province,
     zip: address.zipCode,
     name: address.firstName + ' ' + address.lastName,
-    ...mapCountry(address.country)
+    ...mapCountry(address.country),
+    ...mapCustomAttributes(address.customAttributes)
   }
 
   return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress)

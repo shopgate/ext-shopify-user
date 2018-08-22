@@ -1,5 +1,5 @@
 {
-  "id": "605017bd-48d6-4075-8058-48eae3c22d2c",
+  "id": "dc6854ef-d2f0-41a7-8686-a5dc29cd1fb1",
   "values": [
     {
       "key": "port",
@@ -12,9 +12,9 @@
       "enabled": true
     },
     {
-      "enabled": true,
       "key": "endpoint_login",
-      "value": "/trustedPipelines/shopgate.user.loginUser.v1"
+      "value": "/trustedPipelines/shopgate.user.loginUser.v1",
+      "enabled": true
     },
     {
       "key": "endpoint_logout",
@@ -27,25 +27,33 @@
       "enabled": true
     },
     {
+      "enabled": true,
+      "key": "endpoint_address_get",
+      "value": "/trustedPipelines/shopgate.user.getAddresses.v1"
+    },
+    {
       "key": "endpoint_addresses_get",
       "value": "/trustedPipelines/shopgate.user.getAddresses.v1",
       "enabled": true
     },
     {
-      "enabled": true,
       "key": "endpoint_address_add",
-      "value": "/trustedPipelines/shopgate.user.addAddress.v1"
+      "value": "/trustedPipelines/shopgate.user.addAddress.v1",
+      "enabled": true
     },
     {
       "key": "endpoint_address_update",
       "value": "/trustedPipelines/shopgate.user.updateAddress.v1",
-      "description": "",
-      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "endpoint_addresses_delete",
+      "value": "/trustedPipelines/shopgate.user.deleteAddresses.v1",
       "enabled": true
     }
   ],
   "name": "SG Connect Extension Globals",
   "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-08-13T19:41:07.411Z",
-  "_postman_exported_using": "Postman/6.2.4"
+  "_postman_exported_at": "2018-08-20T08:55:01.613Z",
+  "_postman_exported_using": "Postman/6.2.3"
 }

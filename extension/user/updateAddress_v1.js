@@ -1,7 +1,7 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const SGShopifyApi = require('../lib/shopify.api.class')
-const {mapCountry, mapProvince} = require('../lib/mapper')
+const {mapCountry, mapProvince, mapCustomAttributes} = require('../lib/mapper')
 const _ = require('lodash')
 
 /**
@@ -29,13 +29,12 @@ function createAddressUpdate (input) {
     address1: input.street1,
     address2: input.street2,
     city: input.city,
-    company: input.company,
     first_name: input.firstName,
     last_name: input.lastName,
-    phone: input.phone,
     zip: input.zipCode,
     ...mapProvince(input.province),
-    ...mapCountry(input.country)
+    ...mapCountry(input.country),
+    ...mapCustomAttributes(input.customAttributes)
   }
 
   // Remove all empty or not set properties

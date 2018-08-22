@@ -56,4 +56,11 @@
  * @property {string} country - full name of country, e.g. United States
  * @property {string} [zipCode] - zip code of country
  * @property {string[]} [tags] - list of cart specific tags, e.g. 'default', 'billing', etc.
+ * @property {ShopgateAddressCustomAttributes} [customAttributes]
+ */
+
+/**
+ * @typedef {Object} ShopgateAddressCustomAttributes
+ * @property {string} [company]
+ * @property {string} [phone]
  */
