@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b48007f5-8be8-4e99-acc3-80de5783794c",
+		"_postman_id": "74301ba3-eea9-4e95-899c-5e4f45f79a49",
 		"name": "Shopify Connect",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1254,17 +1254,20 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bf9a6f0b-261b-4346-b2b6-e1610d9c503e",
+								"id": "9bb18834-46db-468f-baa5-2f059a332412",
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Addresses are returned\", function () {",
-									"    const response = pm.response.json();",
-									"    const address = response.addresses.pop();",
+									"const response = pm.response.json();",
+									"const address = response.addresses.pop();",
+									"",
+									"if (address.id) {",
 									"    pm.environment.set(\"address-id\", address.id);",
-									"    ",
 									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
-									"});",
-									""
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
 								]
 							}
 						}
@@ -1508,59 +1511,7 @@
 					"name": "Prepare test data",
 					"item": [
 						{
-							"name": "Fetch addresses",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "749938d1-bcf6-4026-92ed-7cddf551f219",
-										"type": "text/javascript",
-										"exec": [
-											"var response = pm.response.json().addresses;",
-											"// Set the overall number of addresses, the last test will check if this number decreased by two",
-											"pm.environment.set(\"overallCountOfAddresses\", response.length);",
-											"",
-											"// Set the last three addresses, these both will be deleted in the next test",
-											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
-											"pm.environment.set(\"defaultAddressId\", defaultAddress.id);",
-											"",
-											"if (response.length > 1) {",
-											"    pm.environment.set(\"firstAddressIdToDelete\", response[response.length-1].id);",
-											"    pm.environment.set(\"secondAddressIdToDelete\", response[response.length-2].id);",
-											"    pm.environment.set(\"thirdAddressIdToDelete\", response[response.length-3].id);",
-											"}",
-											"",
-											"pm.test(\"Default address should be there\", function () {",
-											"    pm.expect(response.length).to.not.eql(3)",
-											"});",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n}"
-								},
-								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
-									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create another address",
+							"name": "Create address 1",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1595,17 +1546,62 @@
 							"response": []
 						},
 						{
-							"name": "Get address ID",
+							"name": "Create address 2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"// Create a seed to have a randomized data set",
+											"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"AZ\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_address_add}}",
+									"host": [
+										"{{domain}}{{endpoint_address_add}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch addresses",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "850afedf-01fe-490a-acba-b23102bac134",
+										"id": "ca0f15a5-e040-4872-aa6d-c37f9965ab35",
 										"type": "text/javascript",
 										"exec": [
-											"const response = pm.response.json();",
-											"const address = response.addresses.pop();",
-											"pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);"
+											"var response = pm.response.json().addresses;",
+											"",
+											"if (response.length > 1) {",
+											"    pm.environment.set(\"firstAddressIdToDelete\", response.pop().id);",
+											"    pm.environment.set(\"secondAddressIdToDelete\", response.pop().id);",
+											"} else {",
+											"    tests['Something went wrong with address creation'] = false;",
+											"}",
+											"",
+											"// set default address to test removing it",
+											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
+											"pm.environment.set(\"defaultAddressId\", defaultAddress.id);",
+											""
 										]
 									}
 								}
@@ -1779,7 +1775,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}},\n\t\t{{thirdAddressIdToDelete}},\n\t\t\"\"\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t\"\",\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_addresses_delete}}",
@@ -1826,7 +1822,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}},\n\t\t{{thirdAddressIdToDelete}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_addresses_delete}}",
@@ -1843,14 +1839,13 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fb1d6d7a-1cae-4781-966d-9539dc1067dd",
+										"id": "74ff7be6-d178-4908-a197-68c625cd8ca4",
 										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Check if addresses were deleted\", function() {",
-											"    var addresses = pm.response.json().addresses;",
-											"",
-											"    const filteredAddresses = addresses.filter(address => address.id === pm.environment.get(\"firstAddressIdToDelete\") || address.id === pm.environment.get(\"secondAddressIdToDelete\") || address.id === pm.environment.get(\"thirdAddressIdToDelete\"));",
-											"    pm.expect(filteredAddresses).to.be.empty;",
+											"    const addresses = pm.response.json().addresses;",
+											"    const filteredAddresses = addresses.filter(address => address.id === pm.environment.get(\"firstAddressIdToDelete\") || address.id === pm.environment.get(\"secondAddressIdToDelete\"));",
+											"    pm.expect(filteredAddresses).to.be.a('array').to.be.empty;",
 											"})",
 											""
 										]
@@ -1892,7 +1887,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6d97e7c9-5f79-4baf-a8a4-6c34948e126d",
+								"id": "9a98d545-32c2-41e9-a92e-b6062ea28505",
 								"type": "text/javascript",
 								"exec": [
 									"// Cleanup environment vars",
