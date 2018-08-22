@@ -1564,7 +1564,7 @@
 											"",
 											"// Set the last three addresses, these both will be deleted in the next test",
 											"const defaultAddress = response.filter(address => address.tags.includes(\"default\"));",
-											"pm.environment.set(\"defaultAddressId\", defaultAddress.id);",
+											"pm.environment.set(\"defaultAddressId\", defaultAddress.id).pop();",
 											"",
 											"if (response.length > 1) {",
 											"    pm.environment.set(\"firstAddressIdToDelete\", response[response.length-1].id);",
