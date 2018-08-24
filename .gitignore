@@ -4,6 +4,7 @@ extension/coverage
 **/node_modules
 **/extension/config.json
 .idea/
+.nyc_output/
 npm-debug.log
 extension/package-lock.json
 package-lock.json

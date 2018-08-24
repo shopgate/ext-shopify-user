@@ -7,7 +7,7 @@
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
-    "standard": "./node_modules/.bin/standard"
+    "test": "JUNIT_REPORT_PATH=../build/mocha.xml JUNIT_REPORT_STACK=1 ./node_modules/.bin/mocha --recursive test"
   },
   "author": "",
   "license": "ISC",
@@ -19,12 +19,31 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "mocha": "^5.2.0",
+    "newman": "^4.0.2",
     "npm-run-all": "^4.1.2",
+    "nyc": "^12.0.2",
     "standard": "^11.0.1"
   },
   "standard": {
     "env": {
       "mocha": true
     }
+  },
+  "nyc": {
+    "include": [
+      "**/*.js"
+    ],
+    "exclude": [
+      "build",
+      "test",
+      "models"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "all": true,
+    "report-dir": "build"
   }
 }
