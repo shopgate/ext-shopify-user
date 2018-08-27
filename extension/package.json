@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/shopify-user",
-  "version": "1.1.7",
+  "version": "1.2.1",
   "description": "",
   "repository": {
     "type": "git",
@@ -15,9 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "crypto-js": "^3.1.9-1",
+    "json-bigint": "^0.3.0",
     "request": "2.87.0",
-    "shopify-node-api": "^1.7.6",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
     "istanbul": "^0.4.5",

@@ -1,4 +1,4 @@
-const ShopifyAPI = require('shopify-node-api')
+const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
@@ -15,12 +15,13 @@ class SGShopifyApi {
     this.accessToken = this.context.config.shopifyAccessToken
     this.verbose = false
 
-    this.shopifyApi = ShopifyAPI({
+    this.shopifyApiRequest = new ShopifyRequest({
       shop: this.shop,
       shopify_api_key: this.shopifyApiKey, // not required
       access_token: this.accessToken, // not required
       verbose: this.verbose
-    })
+    },
+    context.log)
   }
 
   /**
@@ -207,9 +208,13 @@ class SGShopifyApi {
    * @param cb
    */
   getRequest (endpoint, params, cb) {
-    this.shopifyApi.get(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.get(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -218,9 +223,13 @@ class SGShopifyApi {
    * @param cb
    */
   putRequest (endpoint, params, cb) {
-    this.shopifyApi.put(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.put(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -229,9 +238,13 @@ class SGShopifyApi {
    * @param cb
    */
   deleteRequest (endpoint, params, cb) {
-    this.shopifyApi.delete(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.delete(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -240,9 +253,13 @@ class SGShopifyApi {
    * @param cb
    */
   postRequest (endpoint, params, cb) {
-    this.shopifyApi.post(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.post(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
