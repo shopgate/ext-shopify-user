@@ -1,7 +1,7 @@
 const querystring = require('querystring')
 const BigJSON = require('json-bigint')
 const https = require('https')
-const request = require('request-promise')
+const request = require('request-promise-native')
 const Logger = require('./logger')
 
 module.exports = class {
@@ -76,9 +76,10 @@ module.exports = class {
         'Accept': 'application/json'
       },
       agent: this.config.agent,
+      resolveWithFullResponse: true
     }
 
-    if (data) {
+    if (data && Object.keys(data).length) {
       options.body =  BigJSON.stringify(data)
     }
 
@@ -86,7 +87,12 @@ module.exports = class {
       options.headers['X-Shopify-Access-Token'] = this.config.access_token
     }
 
-    const response = await request({...options, time: true});
+    let response
+    try {
+      response = await request({...options, time: true});
+    } catch (err) {
+      console.log(err)
+    }
     this.logger.log(options, response)
 
     if (response.body.trim() === '') throw new Error('Empty response body.')

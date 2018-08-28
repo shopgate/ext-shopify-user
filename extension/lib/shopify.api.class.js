@@ -306,7 +306,7 @@ class SGShopifyApi {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
     const logRequestData = JSON.parse(JSON.stringify(requestData))
     logRequestData.body.variables.input.password = 'XXXXXXXX'
-    const logRequest = new Logger(this.context.log, logRequestData)
+    const logRequest = new Logger(this.context.log)
 
     /**
      * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
@@ -330,8 +330,7 @@ class SGShopifyApi {
      * @param {ShopifyGraphQLResponseBody} body
      */
     request(requestData, (err, response, body) => {
-      logRequest.request.uri = response.request.uri
-      logRequest.log(response.statusCode, response.headers, response.body, {})
+      logRequest.log(logRequestData, response)
 
       if (err) {
         this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')

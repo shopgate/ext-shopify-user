@@ -8,7 +8,7 @@ module.exports = class {
 
   /**
    * @param {object} requestOptions
-   * @param {response} response A response object of the "request" module
+   * @param {object} response A response object of the "request" module
    */
   log (requestOptions, response) {
     if (!response.elapsedTime) response.elapsedTime = 'Not measured.'
@@ -18,8 +18,8 @@ module.exports = class {
       statusCode: response.statusCode,
       request: requestOptions,
       response: {
-        headers,
-        body: response
+        headers: response.headers,
+        body: response.body
       },
       message: 'Request to Shopify - User extension'
     })
