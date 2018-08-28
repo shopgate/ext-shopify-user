@@ -1,54 +1,60 @@
 const querystring = require('querystring')
 const BigJSON = require('json-bigint')
 const https = require('https')
+const request = require('request-promise')
 const Logger = require('./logger')
 
 module.exports = class {
   /**
    * @param {Object} config
-   * @param {config.log} logger
+   * @param {context.log} logger
    */
   constructor (config, logger) {
     this.config = config
-    this.logger = logger
+    this.logger = new Logger(logger)
   }
+
   /**
    * @param {string} endpoint
    * @param {Object} data
-   * @returns {Promise}
+   * @returns {Promise<object>} The JSON decoded response body.
    */
   get (endpoint, data) {
     endpoint += '?' + querystring.stringify(data)
     return (this.makeRequest(endpoint, 'GET', data))
   }
+
   /**
    * @param {string} endpoint
    * @param {Object} data
-   * @returns {Promise}
+   * @returns {Promise<object>} The JSON decoded response body.
    */
   put (endpoint, data) {
     return (this.makeRequest(endpoint, 'PUT', data))
   }
+
   /**
    * @param {string} endpoint
    * @param {Object} data
-   * @returns {Promise}
+   * @returns {Promise<object>} The JSON decoded response body.
    */
   post (endpoint, data) {
     return (this.makeRequest(endpoint, 'POST', data))
   }
+
   /**
    * @param {string} endpoint
    * @param {Object} data
-   * @returns {Promise}
+   * @returns {Promise<object>} The JSON decoded response body.
    */
   delete (endpoint, data) {
     return (this.makeRequest(endpoint, 'DELETE', data))
   }
+
   /**
    * @param {string} endpoint
    * @param {Object} data
-   * @returns {Promise}
+   * @returns {Promise<object>} The JSON decoded response body.
    */
   patch (endpoint, data) {
     return (this.makeRequest(endpoint, 'PATCH', data))
@@ -58,63 +64,34 @@ module.exports = class {
    * @param {string} endpoint
    * @param {string} method
    * @param {Object} data
-   * @returns {Promise}
+   * @returns {Promise<object>} The JSON decoded response body.
+   * @throws when request fails or response is empty
    */
-  makeRequest (endpoint, method, data) {
-    const logRequest = new Logger(this.logger, data)
-    const dataString = BigJSON.stringify(data)
+  async makeRequest (endpoint, method, data) {
     const options = {
-      hostname: this.config.shop,
-      path: endpoint,
+      uri: this.config.shop.replace(/\/+$/, '') + '/' + endpoint.replace(/^\/+/, ''),
       method: method.toLowerCase() || 'get',
-      port: 443,
-      agent: this.config.agent,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }
+      },
+      agent: this.config.agent,
+    }
+
+    if (data) {
+      options.body =  BigJSON.stringify(data)
     }
 
     if (this.config.access_token) {
       options.headers['X-Shopify-Access-Token'] = this.config.access_token
     }
 
-    if (!this.isGetMethod(options)) {
-      options.headers['Content-Length'] = Buffer.from(dataString).length
-    }
+    const response = await request({...options, time: true});
+    this.logger.log(options, response)
 
-    return new Promise((resolve, reject) => {
-      const request = https.request(options, function (response) {
-        response.setEncoding('utf8')
-        let body = ''
-        response.on('data', (chunk) => {
-          body += chunk
-        }).on('end', () => {
-          try {
-            if (body.trim() !== '') {
-              const json = BigJSON.parse(body)
-              logRequest.log(response.statusCode, options.headers, json, options)
-              resolve(json)
-            } else {
-              logRequest.log(response.statusCode, options.headers, '', options)
-              reject(new Error('Empty response given'))
-            }
-          } catch (err) {
-            reject(err)
-          }
-        })
-      })
+    if (response.body.trim() === '') throw new Error('Empty response body.')
 
-      request.on('error', (err) => {
-        reject(err)
-      })
-
-      if (!this.isGetMethod(options)) {
-        request.write(dataString)
-      }
-
-      request.end()
-    })
+    return BigJSON.parse(response.body)
   }
 
   /**
