@@ -69,7 +69,7 @@ module.exports = class {
    */
   async makeRequest (endpoint, method, data) {
     const options = {
-      uri: this.config.shop.replace(/\/+$/, '') + '/' + endpoint.replace(/^\/+/, ''),
+      uri: 'https://' + this.config.shop.replace(/\/+$/, '') + '/' + endpoint.replace(/^\/+/, ''),
       method: method.toLowerCase() || 'get',
       headers: {
         'Content-Type': 'application/json',
