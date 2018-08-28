@@ -76,6 +76,7 @@ module.exports = class {
         'Accept': 'application/json'
       },
       agent: this.config.agent,
+      simple: false,
       resolveWithFullResponse: true
     }
 
@@ -87,12 +88,7 @@ module.exports = class {
       options.headers['X-Shopify-Access-Token'] = this.config.access_token
     }
 
-    let response
-    try {
-      response = await request({...options, time: true});
-    } catch (err) {
-      console.log(err)
-    }
+    const response = await request({...options, time: true});
     this.logger.log(options, response)
 
     if (response.body.trim() === '') throw new Error('Empty response body.')
