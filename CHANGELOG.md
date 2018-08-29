@@ -14,6 +14,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in webcheckout
 
-[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-cart/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv1.2.2
-[1.2.2]: https://stash.localdev.cc/projects/SGX/repos/shopify-cart/compare/commits?targetBranch=refs%2Ftags%2Fv1.1.5&sourceBranch=refs%2Ftags%2Fv1.2.2
-[1.1.5]: https://stash.localdev.cc/projects/SGX/repos/shopify-cart/browse?at=refs%2Ftags%2Fv1.1.5
+[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv1.2.2
+[1.2.2]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.1.5&sourceBranch=refs%2Ftags%2Fv1.2.2
+[1.1.5]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/browse?at=refs%2Ftags%2Fv1.1.5
