@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## 1.2.2 - 2018-08-30
+## [1.2.2] - 2018-08-30
 ### Added
 - logging request duration and other info when requesting the Shopify API
 
-## 1.1.5 - 2018-07-30
+## [1.1.5] - 2018-07-30
 ### Fixed
 - user not logged in after registration in webcheckout
 
