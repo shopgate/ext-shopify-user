@@ -13,10 +13,11 @@
       {"key": "province", "id": "70", "optional": true},
       {"key": "zipCode", "id": "80", "optional": true},
       {"key": "country", "id": "90", "optional": true},
-      {"key": "customAttributes", "id": "100", "optional": true}
+      {"key": "tags", "id": "100", "optional": true},
+      {"key": "customAttributes", "id": "110", "optional": true}
     ],
     "output": [
-      {"key": "success", "id": "2", "optional": true}
+      {"key": "success", "id": "2"}
     ],
     "steps": [
       {
@@ -33,10 +34,11 @@
           {"key": "province", "id": "70", "optional": true},
           {"key": "zipCode", "id": "80", "optional": true},
           {"key": "country", "id": "90", "optional": true},
-          {"key": "customAttributes", "id": "100", "optional": true}
+          {"key": "tags", "id": "100", "optional": true},
+          {"key": "customAttributes", "id": "110", "optional": true}
         ],
         "output": [
-          {"key": "success", "id": "2",  "optional": true}
+          {"key": "success", "id": "2"}
         ]
       }
     ]

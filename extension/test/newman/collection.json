@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "74301ba3-eea9-4e95-899c-5e4f45f79a49",
-		"name": "Shopify Connect",
+		"name": "Shopify Connect copy",
+		"_postman_id": "ce5ba642-9243-13ab-3e46-79cbce85ec96",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -14,7 +15,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a9cf418a-ecb3-4a21-91b5-b132c7c4ea7c",
 								"type": "text/javascript",
 								"exec": [
 									"// doesn't matter if we succeed, this just clears previous states",
@@ -600,7 +600,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8cd94b43-9c57-4124-931e-ed5bb8a35573",
 										"type": "text/javascript",
 										"exec": [
 											"const response = pm.response.json();",
@@ -728,7 +727,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ba518d76-fbb8-42fb-87aa-b13229667b29",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -781,7 +779,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e868c823-f86b-432b-a7a5-2fb04a45a6a2",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -793,7 +790,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "0dac9877-31f4-4c5a-b61c-023afb4f3e70",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -829,7 +825,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "55e314e6-1e60-402d-99c1-95a5e5c1cca6",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -871,7 +866,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2883e3d5-ac37-4900-b793-94def3e34b83",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -883,7 +877,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "6b2b11ad-742b-47da-9590-0a3f1ae8b3bb",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -919,7 +912,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d2c213fa-8c5a-40de-9906-b307c0e06824",
 								"type": "text/javascript",
 								"exec": [
 									"var response = pm.response.json().addresses;",
@@ -932,6 +924,135 @@
 									"    ",
 									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
 									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_addresses_get}}",
+							"host": [
+								"{{domain}}{{endpoint_addresses_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get: current default address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var response = pm.response.json().addresses;",
+									"",
+									"// set default address to compare it with the new added default address",
+									"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
+									"pm.environment.set(\"defaultAddressId\", defaultAddress.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_addresses_get}}",
+							"host": [
+								"{{domain}}{{endpoint_addresses_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add: new default address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Create a seed to have a randomized data set",
+									"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"TX\",\n        \"tags\": [\n        \t\"default\"\n    \t]\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_address_add}}",
+							"host": [
+								"{{domain}}{{endpoint_address_add}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get: check if default address id as changed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const response = pm.response.json().addresses;",
+									"",
+									"pm.test(\"Check if the default address id has changed\", function() {",
+									"   const response = pm.response.json().addresses;",
+									"   const currentDefaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
+									"   const latestDefaultAddressId = pm.environment.get(\"defaultAddressId\")",
+									"   ",
+									"   pm.expect(currentDefaultAddress.id).to.not.eql(latestDefaultAddressId);",
+									"});",
+									"",
+									"pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + latestDefaultAddressId);",
+									"pm.environment.set(\"defaultAddressId\", currentDefaultAddress);"
 								]
 							}
 						}
@@ -1020,7 +1141,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b595626f-063b-495e-9550-3d6c8a80ee06",
 												"type": "text/javascript",
 												"exec": [
 													"pm.test(\"Addresses are returned\", function () {",
@@ -1113,7 +1233,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9ca6c558-595c-4d28-ac3f-5bb784ac6ad5",
 												"type": "text/javascript",
 												"exec": [
 													"var jsonData = pm.response.json();",
@@ -1254,7 +1373,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9bb18834-46db-468f-baa5-2f059a332412",
 								"type": "text/javascript",
 								"exec": [
 									"const response = pm.response.json();",
@@ -1299,7 +1417,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e8dd06eb-2165-4f11-8efd-453643322bae",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1316,7 +1433,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f690a69f-a8f8-4958-a885-ceb326e6935d",
 								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
@@ -1335,7 +1451,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
+							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"tags\": [\n    \t\"default\"\n\t],\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_update}}",
@@ -1352,7 +1468,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "17f771f8-7752-4c3e-bed4-4d1ff520dba1",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
@@ -1454,7 +1569,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b5f55d33-740f-4926-ab78-f4fa3a883086",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
@@ -1586,7 +1700,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ca0f15a5-e040-4872-aa6d-c37f9965ab35",
 										"type": "text/javascript",
 										"exec": [
 											"var response = pm.response.json().addresses;",
@@ -1598,9 +1711,15 @@
 											"    tests['Something went wrong with address creation'] = false;",
 											"}",
 											"",
-											"// set default address to test removing it",
+											"// set default address",
 											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
-											"pm.environment.set(\"defaultAddressId\", defaultAddress.id);",
+											"",
+											"if (defaultAddress) {",
+											"    pm.environment.set(\"defaultAddressId\", defaultAddress.id);    ",
+											"} else {",
+											"    tests['Something went wrong with getting the default address'] = false;",
+											"}",
+											"",
 											""
 										]
 									}
@@ -1639,7 +1758,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3ff5c36d-2b08-4b2a-87a6-7fc221dcae17",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -1678,7 +1796,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "36a7b895-7a66-44f5-81d3-ecc913e99f8d",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -1716,7 +1833,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b98ded50-bbd1-44c3-99c4-2fec94302266",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -1754,7 +1870,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e1c2f1f8-4259-4e35-beec-44daea50a3a2",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -1839,7 +1954,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "74ff7be6-d178-4908-a197-68c625cd8ca4",
 										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Check if addresses were deleted\", function() {",
@@ -1887,7 +2001,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9a98d545-32c2-41e9-a92e-b6062ea28505",
 								"type": "text/javascript",
 								"exec": [
 									"// Cleanup environment vars",
