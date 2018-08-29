@@ -1,9 +1,8 @@
-const ShopifyAPI = require('shopify-node-api')
+const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
-const ShopgateShopifyApi = require('./shopgate.shopify.node.api')
 const Logger = require('./logger')
 
 /**
@@ -17,18 +16,13 @@ class SGShopifyApi {
     this.accessToken = this.context.config.shopifyAccessToken
     this.verbose = false
 
-    this.shopifyApi = ShopifyAPI({
+    this.shopifyApiRequest = new ShopifyRequest({
       shop: this.shop,
       shopify_api_key: this.shopifyApiKey, // not required
       access_token: this.accessToken, // not required
       verbose: this.verbose
-    })
-
-    /**
-    * Rewrite makeRequest method
-    */
-    let shopgateShopifyApi = new ShopgateShopifyApi()
-    this.shopifyApi.makeRequest = shopgateShopifyApi.makeRequest
+    },
+    context.log)
   }
 
   /**
@@ -215,11 +209,13 @@ class SGShopifyApi {
    * @param cb
    */
   getRequest (endpoint, params, cb) {
-    const logRequest = new Logger(this.context.log, params)
-    this.shopifyApi.get(endpoint, params, function (err, response, headers, options, statusCode) {
-      logRequest.log(statusCode, headers, response, options)
-      cb(err, response)
-    })
+    this.shopifyApiRequest.get(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -228,11 +224,13 @@ class SGShopifyApi {
    * @param cb
    */
   putRequest (endpoint, params, cb) {
-    const logRequest = new Logger(this.context.log, params)
-    this.shopifyApi.put(endpoint, params, function (err, response, headers, options, statusCode) {
-      logRequest.log(statusCode, headers, response, options)
-      cb(err, response)
-    })
+    this.shopifyApiRequest.put(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -241,11 +239,13 @@ class SGShopifyApi {
    * @param cb
    */
   deleteRequest (endpoint, params, cb) {
-    const logRequest = new Logger(this.context.log, params)
-    this.shopifyApi.delete(endpoint, params, function (err, response, headers, options, statusCode) {
-      logRequest.log(statusCode, headers, response, options)
-      cb(err, response)
-    })
+    this.shopifyApiRequest.delete(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -254,11 +254,13 @@ class SGShopifyApi {
    * @param cb
    */
   postRequest (endpoint, params, cb) {
-    const logRequest = new Logger(this.context.log, params)
-    this.shopifyApi.post(endpoint, params, function (err, response, headers, options, statusCode) {
-      logRequest.log(statusCode, headers, response, options)
-      cb(err, response)
-    })
+    this.shopifyApiRequest.post(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -304,7 +306,8 @@ class SGShopifyApi {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
     const logRequestData = JSON.parse(JSON.stringify(requestData))
     logRequestData.body.variables.input.password = 'XXXXXXXX'
-    const logRequest = new Logger(this.context.log, logRequestData)
+    const logRequest = new Logger(this.context.log)
+
     /**
      * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
      *
@@ -327,8 +330,7 @@ class SGShopifyApi {
      * @param {ShopifyGraphQLResponseBody} body
      */
     request(requestData, (err, response, body) => {
-      logRequest.request.uri = response.request.uri
-      logRequest.log(response.statusCode, response.headers, response.body, {})
+      logRequest.log(logRequestData, response)
 
       if (err) {
         this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')

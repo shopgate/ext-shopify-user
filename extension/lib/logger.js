@@ -1,23 +1,27 @@
 module.exports = class {
-  constructor (logger, request) {
+  /**
+   * @param {context.log} logger The extension's context.log object.
+   */
+  constructor (logger) {
     this.logger = logger
-    this.request = request
-    this.start = new Date()
   }
-  log (statusCode, headers, response, options) {
-    const logResult = {
-      duration: new Date() - this.start,
-      statusCode,
-      request: {
-        request: this.request,
-        options
-      },
+
+  /**
+   * @param {object} requestOptions
+   * @param {object} response A response object of the "request" module
+   */
+  log (requestOptions, response) {
+    if (!response.elapsedTime) response.elapsedTime = 'Not measured.'
+
+    this.logger.debug({
+      duration: response.elapsedTime,
+      statusCode: response.statusCode,
+      request: requestOptions,
       response: {
-        headers,
-        body: response
+        headers: response.headers,
+        body: response.body
       },
       message: 'Request to Shopify - User extension'
-    }
-    this.logger.debug(logResult)
+    })
   }
 }
