@@ -7,19 +7,25 @@
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
-    "standard": "./node_modules/.bin/standard"
+    "standard": "./node_modules/.bin/standard",
+    "cover": "istanbul cover _mocha -- --recursive",
+    "newman": "newman run ./test/newman/collection.json --environment ./test/newman/environment.json --globals ./test/newman/globals.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "crypto-js": "^3.1.9-1",
     "lodash": "^4.17.10",
+    "json-bigint": "^0.3.0",
     "request": "2.87.0",
-    "shopify-node-api": "^1.7.6",
+    "request-promise-native": "^1.0.5",
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
+    "newman": "^4.0.2",
     "npm-run-all": "^4.1.2",
+    "sinon": "^6.1.4",
     "standard": "^11.0.1"
   },
   "standard": {
