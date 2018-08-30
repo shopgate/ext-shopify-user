@@ -1,10 +1,11 @@
-const ShopifyAPI = require('shopify-node-api')
+const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
 const request = require('request')
 const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
+const Logger = require('./logger')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -17,12 +18,13 @@ class SGShopifyApi {
     this.accessToken = this.context.config.shopifyAccessToken
     this.verbose = false
 
-    this.shopifyApi = ShopifyAPI({
+    this.shopifyApiRequest = new ShopifyRequest({
       shop: this.shop,
       shopify_api_key: this.shopifyApiKey, // not required
       access_token: this.accessToken, // not required
       verbose: this.verbose
-    })
+    },
+    context.log)
   }
 
   /**
@@ -283,9 +285,13 @@ class SGShopifyApi {
    * @param cb
    */
   getRequest (endpoint, params, cb) {
-    this.shopifyApi.get(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.get(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -294,9 +300,13 @@ class SGShopifyApi {
    * @param cb
    */
   putRequest (endpoint, params, cb) {
-    this.shopifyApi.put(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.put(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -305,9 +315,13 @@ class SGShopifyApi {
    * @param cb
    */
   deleteRequest (endpoint, params, cb) {
-    this.shopifyApi.delete(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.delete(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -316,9 +330,13 @@ class SGShopifyApi {
    * @param cb
    */
   postRequest (endpoint, params, cb) {
-    this.shopifyApi.post(endpoint, params, function (err, response) {
-      cb(err, response)
-    })
+    this.shopifyApiRequest.post(endpoint, params)
+      .then((response) => {
+        cb(null, response)
+      })
+      .catch((err) => {
+        cb(err)
+      })
   }
 
   /**
@@ -362,6 +380,9 @@ class SGShopifyApi {
    */
   checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
     const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
+    const logRequestData = JSON.parse(JSON.stringify(requestData))
+    logRequestData.body.variables.input.password = 'XXXXXXXX'
+    const logRequest = new Logger(this.context.log)
 
     /**
      * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
@@ -385,6 +406,8 @@ class SGShopifyApi {
      * @param {ShopifyGraphQLResponseBody} body
      */
     request(requestData, (err, response, body) => {
+      logRequest.log(logRequestData, response)
+
       if (err) {
         this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
         return cb(new UnknownError())
