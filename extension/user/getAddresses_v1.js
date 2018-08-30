@@ -1,7 +1,6 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const SGShopifyApi = require('../lib/shopify.api.class')
-const _orderBy = require('lodash/orderBy')
 
 /**
  * @param {SDKContext} context
@@ -11,12 +10,9 @@ module.exports = async function (context) {
     throw new UnauthorizedError('Unauthorized user')
   }
 
-  const shopifyAddressesOrderedByDefaultFirst = _orderBy(
-    await new SGShopifyApi(context).getAddresses(context.meta.userId), ['default'], ['desc']
-  )
-
+  const shopifyAddresses = await new SGShopifyApi(context).getAddresses(context.meta.userId)
   return {
-    addresses: shopifyAddressesOrderedByDefaultFirst.map(address => ({
+    addresses: shopifyAddresses.map(address => ({
       id: address.id,
       street1: address.address1,
       street2: address.address2,
@@ -30,7 +26,7 @@ module.exports = async function (context) {
       countryCode: address.country_code,
       customAttributes: {
         company: address.company,
-        phone: address.phone
+        phone: address.phone,
       },
       ...(address.default === true && {tags: ['default']}),
       ...(address.default === false && {tags: []})

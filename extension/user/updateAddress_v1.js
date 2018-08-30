@@ -14,7 +14,8 @@ module.exports = async function (context, input) {
   }
 
   const address = createAddressUpdate(input)
-  return new SGShopifyApi(context).updateAddress(context.meta.userId, address, (!Tools.isEmpty(input.tags) && input.tags.includes('default')))
+
+  return new SGShopifyApi(context).updateAddress(context.meta.userId, address)
 }
 
 /**
