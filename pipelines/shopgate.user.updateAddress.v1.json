@@ -13,6 +13,7 @@
       {"key": "province", "id": "70", "optional": true},
       {"key": "zipCode", "id": "80", "optional": true},
       {"key": "country", "id": "90", "optional": true},
+      {"key": "tags", "id": "114", "optional": true},
       {"key": "customAttributes", "id": "100", "optional": true}
     ],
     "output": [
@@ -33,6 +34,7 @@
           {"key": "province", "id": "70", "optional": true},
           {"key": "zipCode", "id": "80", "optional": true},
           {"key": "country", "id": "90", "optional": true},
+          {"key": "tags", "id": "114", "optional": true},
           {"key": "customAttributes", "id": "100", "optional": true}
         ],
         "output": [
