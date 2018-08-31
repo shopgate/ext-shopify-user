@@ -1,28 +1,37 @@
-import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl';
-import goBackHistory from '@shopgate/pwa-common/actions/history/goBackHistory';
-import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
-import ParsedLink from '@shopgate/pwa-common/components/Router/helpers/parsed-link';
-import { openedRegisterLink$ } from '@shopgate/pwa-common/streams/history';
-import openRegisterUrl from '@shopgate/pwa-common/subscriptions/helpers/openRegisterUrl';
+import { appWillStart$ } from '@shopgate/pwa-common/streams/app';
+import redirects from '@shopgate/pwa-common/collections/Redirects';
 import { LEGACY_URL } from '@shopgate/pwa-common/constants/Registration';
+import { REGISTER_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
+
+import buildRegisterUrl from '@shopgate/pwa-common/subscriptions/helpers/buildRegisterUrl';
+import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl';
+import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
 
 export default (subscribe) => {
-  // Open register link subscription
-  subscribe(openedRegisterLink$, async ({ dispatch, getState }) => {
-    const state = getState();
+  /**
+   * Redirect handler for registration links.
+   * @param {Function} dispatch The redux dispatch function.
+   * @param {Function} getState The redux getState function.
+   * @return {Promise<string>}
+   */
+  const redirectHandler = async ({ dispatch, getState, action }) => {
+    /**
+     * When the register url was opened from a login page, a redirect to the original target
+     * page needs to happen after a successful registration. It's added by buildRegisterUrl.
+     */
+    const { params: { state: { redirect: { location = '' } = {} } = {} } = {} } = action;
 
-    const hasRegistrationUrl = !!getRegisterUrl(state);
+    let url = getRegisterUrl(getState());
 
-    // Open the registration url if one is found.
-    if (hasRegistrationUrl) {
-      await dispatch(fetchRegisterUrl())
-        .then(url => openRegisterUrl(url, state))
-        .catch(e => e);
-    } else {
-      const link = new ParsedLink(LEGACY_URL);
-      link.open();
+    if (!url) {
+      // Fetch a fresh url if none was found within the store.
+      url = await dispatch(fetchRegisterUrl());
     }
 
-    dispatch(goBackHistory(1));
+    return buildRegisterUrl(url || LEGACY_URL, location);
+  };
+
+  subscribe(appWillStart$, () => {
+    redirects.set(REGISTER_PATH, redirectHandler, true);
   });
 };
