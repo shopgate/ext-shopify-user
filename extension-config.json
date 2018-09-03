@@ -2,8 +2,6 @@
   "version": "1.2.3",
   "id": "@shopgate/shopify-user",
   "trusted": true,
-  "steps": [
-  ],
   "configuration": {
     "shopifyShopAlias": {
       "type": "bigApi",
@@ -52,6 +50,17 @@
       "id": "CheckoutSubscription",
       "path": "frontend/Checkout/subscribers.js",
       "type": "subscribers"
+    }
+  ],
+  "steps": [
+    {
+      "path": "extension/config/getConfig.js",
+      "description": "Replace config by shopify extension",
+      "hooks" : ["shopgate.user.getConfig.v1:after"],
+      "input" : [],
+      "output" : [
+        {"key": "splitDefaultAddressesByTags", "optional": true}
+      ]
     }
   ]
 }
