@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "74301ba3-eea9-4e95-899c-5e4f45f79a49",
+		"_postman_id": "7ef5b4a6-b1d4-4a85-a577-ea1015097f9e",
 		"name": "Shopify Connect",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -637,6 +637,7 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "bb4159fe-98b9-41d5-9642-52e2cfbe36a7",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -644,10 +645,13 @@
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
 											"});",
 											"",
-											"pm.test(\"Correct duplicate error is shown\", function () {",
-											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('street1');",
-											"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Street1\" has already been taken');",
-											"});"
+											"if (jsonData.error.validationErrors) {",
+											"    pm.test(\"Correct duplicate error is shown\", function () {",
+											"        pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('street1');",
+											"        pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Street1\" has already been taken');",
+											"    });",
+											"}",
+											""
 										]
 									}
 								}
@@ -711,7 +715,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\",\n        \"customAttributes\": {\n        \t\"company\": \"{{seed}}-company\",\n        \t\"phone\": \"{{seed}}-phone\"\n        }\n\t}\n}"
+							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\",\n        \"customAttributes\": {\n        \t\"company\": \"{{seed}}-company\",\n        \t\"phone\": \"{{seed}}-phone\"\n        },\n        \"tags\": [\n        \t\"default\"\n    \t]\n\t}\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -728,12 +732,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ba518d76-fbb8-42fb-87aa-b13229667b29",
+								"id": "851c88d0-76a1-4712-9f1e-c5255b06e1b5",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses.pop();",
+									"    const address = response.addresses[0];",
 									"    pm.expect(address.id).to.be.a('number', 'Not a number provided!');",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
@@ -743,7 +747,8 @@
 									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
 									"    pm.expect(address.country).to.be.eq('United States');",
 									"    pm.expect(address.province).to.be.eq('Arizona');",
-									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
+									"    pm.expect(address.tags).to.be.a('array').to.not.be.empty;",
+									"    pm.expect(address.tags).to.contain('default');",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
 									"    pm.expect(address.customAttributes.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
 									"    pm.expect(address.customAttributes.phone).to.be.eq(pm.environment.get(\"seed\") + '-phone');",
@@ -1335,7 +1340,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
+							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    },\n    \"tags\": [\n    \t\"default\"\n\t]\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_update}}",
@@ -1352,12 +1357,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "17f771f8-7752-4c3e-bed4-4d1ff520dba1",
+								"id": "795ec2c5-6669-4a35-b39f-39913f43d7d5",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses.pop();",
+									"    const address = response.addresses[0];",
 									"    pm.expect(address.id).to.be.a('number', 'Not a number provided!');",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
@@ -1367,7 +1372,8 @@
 									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
 									"    pm.expect(address.country).to.be.eq('Estonia');",
 									"    pm.expect(address.province).to.be.eq(pm.environment.get(\"seed\") + '-province');",
-									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
+									"    pm.expect(address.tags).to.be.a('array').to.not.be.empty;",
+									"    pm.expect(address.tags).to.contain('default');",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
 									"    pm.expect(address.customAttributes.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
 									"    pm.expect(address.customAttributes.phone).to.be.eq(pm.environment.get(\"seed\") + '-phone');",
@@ -1586,10 +1592,21 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ca0f15a5-e040-4872-aa6d-c37f9965ab35",
+										"id": "379168cd-7ead-4ea3-9b8a-398321a68abe",
 										"type": "text/javascript",
 										"exec": [
 											"var response = pm.response.json().addresses;",
+											"",
+											"",
+											"// set default address",
+											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
+											"console.log(defaultAddress)",
+											"if (defaultAddress) {",
+											"    pm.environment.set(\"defaultAddressId\", defaultAddress.id);    ",
+											"} else {",
+											"    tests['Something went wrong with getting the default address'] = false;",
+											"}",
+											"",
 											"",
 											"if (response.length > 1) {",
 											"    pm.environment.set(\"firstAddressIdToDelete\", response.pop().id);",
@@ -1597,10 +1614,6 @@
 											"} else {",
 											"    tests['Something went wrong with address creation'] = false;",
 											"}",
-											"",
-											"// set default address to test removing it",
-											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
-											"pm.environment.set(\"defaultAddressId\", defaultAddress.id);",
 											""
 										]
 									}
@@ -1639,13 +1652,13 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3ff5c36d-2b08-4b2a-87a6-7fc221dcae17",
+										"id": "ca6e1531-d3d3-445b-8205-dd679059a67d",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
 											"pm.test('Code is EINVALIDCALL because the address is default', function () {",
 											"    pm.expect(jsonData.error.code).to.eql('EINVALIDCALL');",
-											"    pm.expect(jsonData.error.message).to.eql('Cannot remove address ids because the default address id (' + pm.environment.get('defaultAddressId') + ') was included');",
+											"    pm.expect(jsonData.error.message).to.eql('Cannot remove default address.');",
 											"});"
 										]
 									}

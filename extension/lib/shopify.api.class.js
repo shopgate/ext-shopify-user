@@ -30,13 +30,14 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
+   * @param {Boolean} setToDefaultAddress
    * @returns {Promise.<{success:boolean}>}
    * @throws FieldValidationError
    */
-  async addAddress (customerId, address) {
+  async addAddress (customerId, address, setToDefaultAddress) {
     return new Promise((resolve, reject) => {
       this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
-        if (err) {
+        if (err || response.errors) {
           // Some Shopify address validation error occurred
           if (!Tools.isEmpty(response.errors)) {
             const validationError = new FieldValidationError()
@@ -49,6 +50,18 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
+
+        // If tag "default" is set, set this address to the default one
+        if (setToDefaultAddress) {
+          this.setDefaultAddress(customerId, response.customer_address.id, {}, (err) => {
+            if (err) {
+              return reject(new UnknownError())
+            }
+
+            return resolve({success: true})
+          })
+        }
+
         return resolve({success: true})
       })
     })
@@ -76,16 +89,42 @@ class SGShopifyApi {
   }
 
   /**
+   * @param {Number} customerId
+   * @param {Number} addressId
+   * @returns {Promise.<{success:boolean}>}
+   */
+  async setDefaultAddress (customerId, addressId) {
+    return new Promise((resolve, reject) => {
+      this.putRequest(`/admin/customers/${customerId}/addresses/${addressId}/default.json`, {}, (err, response) => {
+        if (err) {
+          if (err.code === 404) {
+            return reject(new CustomerNotFoundError())
+          }
+          return reject(new UnknownError())
+        }
+
+        if (response.customer_address.id !== addressId) {
+          return reject(new UnknownError())
+        }
+
+        return resolve({success: true})
+      })
+    })
+  }
+
+  /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
+   * @param {Boolean} setToDefaultAddress
    * @returns {Promise.<{success:boolean}>}
    * @throws FieldValidationError
    * @throws UnknownError
    * @throws InvalidCallError
    */
-  async updateAddress (customerId, address) {
+  async updateAddress (customerId, address, setToDefaultAddress) {
     return new Promise((resolve, reject) => {
       this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, {address}, (err, response) => {
+
         if (err) {
           if (err.code === 404) {
             return reject(new InvalidCallError('Address not found'))
@@ -102,6 +141,18 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
+
+        // If tag "default" is set, set this address to the default one
+        if (setToDefaultAddress) {
+          this.setDefaultAddress(customerId, response.customer_address.id, {}, (err) => {
+            if (err) {
+              return reject(new UnknownError())
+            }
+
+            return resolve({success: true})
+          })
+        }
+
         return resolve({success: true})
       })
     })
@@ -116,12 +167,12 @@ class SGShopifyApi {
     return new Promise((resolve, reject) => {
       this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {}, (err, response) => {
         if (err) {
-          if (err.code === 422) {
-            return reject(new InvalidCallError(err.error))
-          }
-
           // Some Shopify address validation error occurred.
           return reject(new UnknownError())
+        }
+
+        if (response.errors && response.errors.match(/Cannot remove address ids because the default address id \(.*\) was included/)) {
+          return reject(new InvalidCallError('Cannot remove default address.'))
         }
 
         return resolve({success: true})
