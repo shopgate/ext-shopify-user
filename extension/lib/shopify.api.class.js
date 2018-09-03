@@ -38,11 +38,11 @@ class SGShopifyApi {
       this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
-          if (!Tools.isEmpty(response.errors)) {
+          if (err.code === 422) {
             const validationError = new FieldValidationError()
-            for (let path in response.errors) {
-              response.errors[path].forEach(message => {
-                validationError.addValidationMessage(path, message, address[path])
+            for (let fieldName in err.error) {
+              err.error[fieldName].forEach(message => {
+                validationError.addValidationMessage(fieldName, message, address[fieldName])
               })
             }
             return reject(validationError)
@@ -91,11 +91,11 @@ class SGShopifyApi {
             return reject(new InvalidCallError('Address not found'))
           }
           // Some Shopify address validation error occurred
-          if (!Tools.isEmpty(response.errors)) {
+          if (err.code === 422) {
             const validationError = new FieldValidationError()
-            for (let path in response.errors) {
-              response.errors[path].forEach(message => {
-                validationError.addValidationMessage(path, message, address[path])
+            for (let fieldName in err.error) {
+              err.error[fieldName].forEach(message => {
+                validationError.addValidationMessage(fieldName, message, address[fieldName])
               })
             }
             return reject(validationError)
@@ -116,14 +116,16 @@ class SGShopifyApi {
     return new Promise((resolve, reject) => {
       this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {}, (err, response) => {
         if (err) {
-          // Some Shopify address validation error occurred.
+          // Some Shopify address validation error occurred
+          if (err.code === 422) {
+            const validationError = new FieldValidationError()
+
+            if (err.error.match(/Cannot remove address ids because the default address id \(.*\) was included/)) {
+              return reject(new InvalidCallError('Cannot remove default address.'))
+            }
+          }
           return reject(new UnknownError())
         }
-
-        if (response.errors && response.errors.match(/Cannot remove address ids because the default address id \(.*\) was included/)) {
-          return reject(new InvalidCallError('Cannot remove default address.'))
-        }
-
         return resolve({success: true})
       })
     })
