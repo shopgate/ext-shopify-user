@@ -53,13 +53,7 @@ class SGShopifyApi {
 
         // If tag "default" is set, set this address to the default one
         if (setToDefaultAddress) {
-          this.setDefaultAddress(customerId, response.customer_address.id, {}, (err) => {
-            if (err) {
-              return reject(new UnknownError())
-            }
-
-            return resolve({success: true})
-          })
+          this.setDefaultAddress(customerId, response.customer_address.id)
         }
 
         return resolve({success: true})
@@ -143,13 +137,7 @@ class SGShopifyApi {
 
         // If tag "default" is set, set this address to the default one
         if (setToDefaultAddress) {
-          this.setDefaultAddress(customerId, response.customer_address.id, {}, (err) => {
-            if (err) {
-              return reject(new UnknownError())
-            }
-
-            return resolve({success: true})
-          })
+          this.setDefaultAddress(customerId, response.customer_address.id)
         }
 
         return resolve({success: true})

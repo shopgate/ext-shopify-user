@@ -13,18 +13,6 @@
       "key": "password",
       "value": "***",
       "type": "text"
-    },
-    {
-      "enabled": true,
-      "key": "address_id",
-      "value": "***",
-      "type": "text"
-    },
-    {
-      "enabled": true,
-      "key": "seed",
-      "value": "***",
-      "type": "text"
     }
   ],
   "timestamp": 1533803800396,

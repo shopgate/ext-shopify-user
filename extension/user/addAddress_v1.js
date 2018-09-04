@@ -28,5 +28,5 @@ module.exports = async function (context, input) {
     tags: input.tags
   }
 
-  return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress, (!Tools.isEmpty(input.address.tags) && input.address.tags.includes('default')))
+  return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress, (!Tools.isEmpty(input.tags) && input.tags.includes('default')))
 }
