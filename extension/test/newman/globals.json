@@ -50,6 +50,11 @@
       "key": "endpoint_addresses_delete",
       "value": "/trustedPipelines/shopgate.user.deleteAddresses.v1",
       "enabled": true
+    },
+    {
+      "enabled": true,
+      "key": "address_empty",
+      "value": "{\"firstName\": \"\",\"lastName\": \"\",\"street1\": \"\",\"zipCode\": \"\",\"city\": \"\",\"country\": \"US\"}"
     }
   ],
   "name": "SG Connect Extension Globals",
