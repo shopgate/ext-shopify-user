@@ -81,19 +81,27 @@ module.exports = class {
     }
 
     if (data && Object.keys(data).length) {
-      options.body =  BigJSON.stringify(data)
+      options.body = BigJSON.stringify(data)
     }
 
     if (this.config.access_token) {
       options.headers['X-Shopify-Access-Token'] = this.config.access_token
     }
 
-    const response = await request({...options, time: true});
+    const response = await request({ ...options, time: true })
     this.logger.log(options, response)
 
     if (response.body.trim() === '') throw new Error('Empty response body.')
 
-    return BigJSON.parse(response.body)
+    const body = BigJSON.parse(response.body)
+    if (response.statusCode >= 400) {
+      const error = new Error('Received non-2xx or -3xx HTTP status code.')
+      error.code = response.statusCode
+      error.error = body.error_description || body.error || body.errors || response.statusMessage
+      throw error
+    }
+
+    return body
   }
 
   /**
