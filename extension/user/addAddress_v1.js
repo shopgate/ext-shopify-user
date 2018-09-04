@@ -1,8 +1,7 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const InvalidCallError = require('../models/Errors/InvalidCallError')
 const SGShopifyApi = require('../lib/shopify.api.class')
-const {mapCountry, mapCustomAttributes} = require('../lib/mapper')
+const { mapCountry, mapCustomAttributes } = require('../lib/mapper')
 
 /**
  * @param {SDKContext} context

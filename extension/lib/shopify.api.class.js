@@ -35,7 +35,7 @@ class SGShopifyApi {
    */
   async addAddress (customerId, address) {
     return new Promise((resolve, reject) => {
-      this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
+      this.postRequest(`/admin/customers/${customerId}/addresses.json`, { address }, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
           if (err.code === 422) {
@@ -49,7 +49,7 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
-        return resolve({success: true})
+        return resolve({ success: true })
       })
     })
   }
@@ -85,7 +85,7 @@ class SGShopifyApi {
    */
   async updateAddress (customerId, address) {
     return new Promise((resolve, reject) => {
-      this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, {address}, (err, response) => {
+      this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, { address }, (err, response) => {
         if (err) {
           if (err.code === 404) {
             return reject(new InvalidCallError('Address not found'))
@@ -102,7 +102,7 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
-        return resolve({success: true})
+        return resolve({ success: true })
       })
     })
   }
@@ -126,7 +126,7 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
-        return resolve({success: true})
+        return resolve({ success: true })
       })
     })
   }
