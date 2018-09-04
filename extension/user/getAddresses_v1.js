@@ -23,14 +23,12 @@ module.exports = async function (context) {
       city: address.city,
       firstName: address.first_name,
       lastName: address.last_name,
-      province: address.province,
-      provinceCode: address.province_code,
+      province: address.province_code,
       zipCode: address.zip,
-      country: address.country,
-      countryCode: address.country_code,
+      country: address.country_code,
       customAttributes: {
         company: address.company,
-        phone: address.phone,
+        phone: address.phone
       },
       ...(address.default === true && {tags: ['default']}),
       ...(address.default === false && {tags: []})

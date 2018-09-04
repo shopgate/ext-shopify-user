@@ -176,7 +176,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {}\n}"
+							"raw": "{{address_empty}}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -196,7 +196,7 @@
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = pm.response.json();",
-									"pm.test(\"User not logged in error, cannout update address\", function () {",
+									"pm.test(\"User not logged in error, cannot update address\", function () {",
 									"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
 									"});"
 								]
@@ -384,44 +384,6 @@
 					"name": "Errors",
 					"item": [
 						{
-							"name": "missing address data",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"var jsonData = pm.response.json();",
-											"pm.test(\"Correct missing address error is thrown\", function () {",
-											"    pm.expect(jsonData.error.message).to.be.eq('Empty address data.');",
-											"    pm.expect(jsonData.error.code).to.be.eq('EINVALIDCALL');",
-											"});"
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"address\": {}\n}"
-								},
-								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
-									"host": [
-										"{{domain}}{{endpoint_address_add}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "bad country name",
 							"event": [
 								{
@@ -460,7 +422,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n        \"country\": \"TESTER\"\n\t}\n}"
+									"raw": "{\"firstName\": \"\",\"lastName\": \"\",\"street1\": \"\",\"zipCode\": \"\",\"city\": \"\",\"country\": \"TESTER\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -510,7 +472,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n        \"province\":\"{{seed}}-province\"\n\t}\n}"
+									"raw": "{\"firstName\": \"\", \"lastName\": \"\", \"street1\": \"\", \"zipCode\": \"\", \"city\": \"\", \"country\": \"\", \"province\":\"{{seed}}-province\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -560,7 +522,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n        \"country\": \"US\",\n        \"province\":\"{{seed}}-province\"\n\t}\n}"
+									"raw": "{\"firstName\": \"\", \"lastName\": \"\", \"street1\": \"\", \"zipCode\": \"\", \"city\": \"\", \"country\": \"US\",\"province\":\"{{seed}}-province\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -583,7 +545,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n        \"street1\": \"TEST ADDRESS\",\n        \"country\": \"GB\"\n\t}\n}"
+									"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"GB\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -666,7 +628,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n        \"street1\": \"TEST ADDRESS\",\n        \"country\": \"GB\"\n\t}\n}"
+									"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"GB\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -715,7 +677,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\",\n        \"customAttributes\": {\n        \t\"company\": \"{{seed}}-company\",\n        \t\"phone\": \"{{seed}}-phone\"\n        },\n        \"tags\": [\n        \t\"default\"\n    \t]\n\t}\n}"
+							"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -737,16 +699,16 @@
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses[0];",
-									"    pm.expect(address.id).to.be.a('number', 'Not a number provided!');",
+									"    const address = response.addresses.pop();",
+									"    pm.expect(address.id).to.match(/^[0-9]+$/, 'Not a numeric string provided!');",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
 									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
 									"    pm.expect(address.street2).to.be.eq(pm.environment.get(\"seed\") + '-street2');",
 									"    pm.expect(address.city).to.be.eq(pm.environment.get(\"seed\") + '-city');",
 									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
-									"    pm.expect(address.country).to.be.eq('United States');",
-									"    pm.expect(address.province).to.be.eq('Arizona');",
+									"    pm.expect(address.country).to.be.eq('US');",
+									"    pm.expect(address.province).to.be.eq('AZ');",
 									"    pm.expect(address.tags).to.be.a('array').to.not.be.empty;",
 									"    pm.expect(address.tags).to.contain('default');",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
@@ -817,7 +779,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
+							"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"{{seed}}-12345\", \"city\": \"Gotham\", \"country\": \"US\", \"province\":\"AZ\"}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -840,8 +802,7 @@
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
 									"    const address = response.addresses.pop();",
-									"    pm.expect(address.province).to.be.eq('Arizona');",
-									"    pm.expect(address.provinceCode).to.be.eq('AZ');",
+									"    pm.expect(address.province).to.be.eq('AZ');",
 									"    ",
 									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
 									"});"
@@ -907,7 +868,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"TX\"\n\t}\n}"
+							"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"{{seed}}-street1\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"US\", \"province\":\"TX\"}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -932,8 +893,7 @@
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
 									"    const address = response.addresses.pop();",
-									"    pm.expect(address.province).to.be.eq('Texas');",
-									"    pm.expect(address.provinceCode).to.be.eq('TX');",
+									"    pm.expect(address.province).to.be.eq('TX');",
 									"    ",
 									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
 									"});"
@@ -1008,7 +968,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"company\": \"{{seed}}-company\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"phone\": \"{{seed}}-phone\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\"\n\t}\n}"
+											"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
 										},
 										"url": {
 											"raw": "{{domain}}{{endpoint_address_add}}",
@@ -1242,7 +1202,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"address\": {\n\t\t\"firstName\": \"{{seed}}-firstname\",\n        \"lastName\": \"{{seed}}-lastname\",\n        \"street1\": \"{{seed}}-street1\",\n        \"street2\": \"{{seed}}-street2\",\n        \"city\": \"{{seed}}-city\",\n        \"zipCode\": \"{{seed}}-zipCode\",\n        \"country\": \"US\",\n        \"province\":\"Arizona\",\n        \"customAttributes\": {\n        \t\"company\": \"{{seed}}-company\",\n        \t\"phone\": \"{{seed}}-phone\"\n        }\n\t}\n}"
+							"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -1362,16 +1322,16 @@
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses[0];",
-									"    pm.expect(address.id).to.be.a('number', 'Not a number provided!');",
+									"    const address = response.addresses.pop();",
+									"    pm.expect(address.id).to.match(/^[0-9]+$/, 'Not a numeric string provided!');",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
 									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
 									"    pm.expect(address.street2).to.be.eq(pm.environment.get(\"seed\") + '-street2');",
 									"    pm.expect(address.city).to.be.eq(pm.environment.get(\"seed\") + '-city');",
 									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
-									"    pm.expect(address.country).to.be.eq('Estonia');",
-									"    pm.expect(address.province).to.be.eq(pm.environment.get(\"seed\") + '-province');",
+									"    pm.expect(address.country).to.be.eq('EE');",
+									"    pm.expect(address.province).to.be.null;",
 									"    pm.expect(address.tags).to.be.a('array').to.not.be.empty;",
 									"    pm.expect(address.tags).to.contain('default');",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
@@ -1466,15 +1426,15 @@
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
 									"    const address = response.addresses.pop();",
-									"    pm.expect(address.id).to.be.a('number', 'Not a number provided!');",
+									"    pm.expect(address.id).to.match(/^[0-9]+$/, 'Not a numeric string provided!');",
 									"    pm.expect(address.firstName).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.lastName).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
 									"    pm.expect(address.street2).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.city).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.zipCode).to.be.a(\"string\").to.be.empty;",
-									"    pm.expect(address.country).to.be.eq('Estonia');",
-									"    pm.expect(address.province).to.be.eq(pm.environment.get(\"seed\") + '-province');",
+									"    pm.expect(address.country).to.be.eq('EE');",
+									"    pm.expect(address.province).to.be.null;",
 									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
 									"    pm.expect(address.customAttributes.company).to.be.a(\"string\").to.be.empty;",
@@ -1540,7 +1500,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"AZ\"\n\t}\n}"
+									"raw": "{{\"street1\": \"{{seed}}-street1\", \"country\": \"US\", \"province\":\"AZ\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -1575,7 +1535,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"address\": {\n\t\t\"street1\": \"{{seed}}-street1\",\n        \"country\": \"US\",\n        \"province\":\"AZ\"\n\t}\n}"
+									"raw": "{{\"street1\": \"{{seed}}-street1\", \"country\": \"US\", \"province\":\"AZ\"}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",

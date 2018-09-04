@@ -4,7 +4,16 @@
     "id": "shopgate.user.addAddress.v1",
     "public": true,
     "input": [
-      {"key": "address", "id": "1"}
+      {"key": "firstName", "id": "102"},
+      {"key": "lastName", "id": "104"},
+      {"key": "street1", "id": "108"},
+      {"key": "street2", "id": "109", "optional": true},
+      {"key": "zipCode", "id": "110"},
+      {"key": "city", "id": "111"},
+      {"key": "province", "id": "112", "optional": true},
+      {"key": "country", "id": "113"},
+      {"key": "tags", "id": "114", "optional": true},
+      {"key": "customAttributes", "id": "115", "optional": true}
     ],
     "output": [
       {"key": "success", "id": "2", "optional": true}
@@ -15,7 +24,16 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/addAddress_v1.js",
         "input": [
-          {"key": "address", "id": "1"}
+          {"key": "firstName", "id": "102"},
+          {"key": "lastName", "id": "104"},
+          {"key": "street1", "id": "108"},
+          {"key": "street2", "id": "109", "optional": true},
+          {"key": "zipCode", "id": "110"},
+          {"key": "city", "id": "111"},
+          {"key": "province", "id": "112", "optional": true},
+          {"key": "country", "id": "113"},
+          {"key": "tags", "id": "114", "optional": true},
+          {"key": "customAttributes", "id": "115", "optional": true}
         ],
         "output": [
           {"key": "success", "id": "2",  "optional": true}
