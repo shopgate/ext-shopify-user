@@ -30,7 +30,7 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @param {Boolean} setToDefaultAddress
+   * @param {boolean} setToDefaultAddress
    * @returns {Promise.<{success:boolean}>}
    * @throws FieldValidationError
    */
@@ -83,8 +83,8 @@ class SGShopifyApi {
   }
 
   /**
-   * @param {Number} customerId
-   * @param {Number} addressId
+   * @param {number} customerId
+   * @param {number} addressId
    * @returns {Promise.<{success:boolean}>}
    */
   async setDefaultAddress (customerId, addressId) {
@@ -109,7 +109,7 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @param {Boolean} setToDefaultAddress
+   * @param {boolean} setToDefaultAddress
    * @returns {Promise.<{success:boolean}>}
    * @throws FieldValidationError
    * @throws UnknownError

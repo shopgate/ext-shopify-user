@@ -1,7 +1,7 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const SGShopifyApi = require('../lib/shopify.api.class')
-const _orderBy = require('lodash/orderBy')
+const orderBy = require('lodash/orderBy')
 
 /**
  * @param {SDKContext} context
@@ -11,7 +11,7 @@ module.exports = async function (context) {
     throw new UnauthorizedError('Unauthorized user')
   }
 
-  const shopifyAddressesOrderedByDefaultFirst = _orderBy(
+  const shopifyAddressesOrderedByDefaultFirst = orderBy(
     await new SGShopifyApi(context).getAddresses(context.meta.userId), ['default'], ['desc']
   )
 

@@ -1851,7 +1851,7 @@
 			"name": "Cleanup",
 			"item": [
 				{
-					"name": "Get Shopify address ids (exept default) Copy",
+					"name": "Get Shopify address ids (except default)",
 					"event": [
 						{
 							"listen": "test",
