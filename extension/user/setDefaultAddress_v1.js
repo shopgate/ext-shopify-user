@@ -3,8 +3,8 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const SGShopifyApi = require('../lib/shopify.api.class')
 
 /**
- * @typedef {ShopgateAddress} input
- * @property {Array} tags
+ * @typedef {Object} input
+ * @property {string[]} tags
  *
  * @param {SDKContext} context
  * @param {ShopgateAddress} input
