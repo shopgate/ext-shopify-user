@@ -56,7 +56,7 @@ class SGShopifyApi {
           this.setDefaultAddress(customerId, response.customer_address.id)
         }
 
-        return resolve({success: true})
+        return resolve({ success: true })
       })
     })
   }
@@ -101,7 +101,7 @@ class SGShopifyApi {
           return reject(new UnknownError())
         }
 
-        return resolve({success: true})
+        return resolve({ success: true })
       })
     })
   }
@@ -140,7 +140,7 @@ class SGShopifyApi {
           this.setDefaultAddress(customerId, response.customer_address.id)
         }
 
-        return resolve({success: true})
+        return resolve({ success: true })
       })
     })
   }

@@ -22,7 +22,7 @@ class FieldValidationError extends Error {
     const capitalizedPath = path.charAt(0).toUpperCase() + path.substr(1)
     const main = value && !message.includes('required') ? value : capitalizedPath
 
-    this.validationErrors.push({path, message: `"${main}" ${message}`})
+    this.validationErrors.push({ path, message: `"${main}" ${message}` })
   }
 
   /**
