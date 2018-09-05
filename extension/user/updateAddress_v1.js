@@ -13,9 +13,7 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  const address = createAddressUpdate(input)
-
-  return new SGShopifyApi(context).updateAddress(context.meta.userId, address, (!Tools.isEmpty(input.tags) && input.tags.includes('default')))
+  return new SGShopifyApi(context).updateAddress(context.meta.userId, createAddressUpdate(input))
 }
 
 /**
@@ -34,8 +32,7 @@ function createAddressUpdate (input) {
     zip: input.zipCode,
     ...mapProvince(input.province),
     ...mapCountry(input.country),
-    ...mapCustomAttributes(input.customAttributes),
-    tags: input.tags
+    ...mapCustomAttributes(input.customAttributes)
   }
 
   // Remove all empty or not set properties

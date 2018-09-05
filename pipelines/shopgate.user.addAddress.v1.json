@@ -16,7 +16,7 @@
       {"key": "customAttributes", "id": "115", "optional": true}
     ],
     "output": [
-      {"key": "success", "id": "2", "optional": true}
+      {"key": "success", "id": "2"}
     ],
     "steps": [
       {
@@ -32,11 +32,22 @@
           {"key": "city", "id": "111"},
           {"key": "province", "id": "112", "optional": true},
           {"key": "country", "id": "113"},
-          {"key": "tags", "id": "114", "optional": true},
           {"key": "customAttributes", "id": "115", "optional": true}
         ],
         "output": [
-          {"key": "success", "id": "2",  "optional": true}
+          {"key": "id", "id": "3"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/setDefaultAddress_v1.js",
+        "input": [
+          {"key": "id", "id": "3"},
+          {"key": "tags", "id": "114", "optional": true}
+        ],
+        "output": [
+          {"key": "success", "id": "2"}
         ]
       }
     ]

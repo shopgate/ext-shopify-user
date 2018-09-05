@@ -24,9 +24,8 @@ module.exports = async function (context, input) {
     zip: input.zipCode,
     name: input.firstName + ' ' + input.lastName,
     ...mapCountry(input.country),
-    ...mapCustomAttributes(input.customAttributes),
-    tags: input.tags
+    ...mapCustomAttributes(input.customAttributes)
   }
 
-  return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress, (!Tools.isEmpty(input.tags) && input.tags.includes('default')))
+  return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress)
 }

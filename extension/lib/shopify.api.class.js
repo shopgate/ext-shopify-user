@@ -30,11 +30,10 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @param {boolean} setToDefaultAddress
    * @returns {Promise.<{success:boolean}>}
    * @throws FieldValidationError
    */
-  async addAddress (customerId, address, setToDefaultAddress) {
+  async addAddress (customerId, address) {
     return new Promise((resolve, reject) => {
       this.postRequest(`/admin/customers/${customerId}/addresses.json`, { address }, (err, response) => {
         if (err) {
@@ -51,12 +50,11 @@ class SGShopifyApi {
           return reject(new UnknownError())
         }
 
-        // If tag "default" is set, set this address to the default one
-        if (setToDefaultAddress) {
-          this.setDefaultAddress(customerId, response.customer_address.id)
+        if (!response.customer_address.id) {
+          return reject(new UnknownError())
         }
 
-        return resolve({ success: true })
+        return resolve({ id: response.customer_address.id })
       })
     })
   }
@@ -84,7 +82,7 @@ class SGShopifyApi {
 
   /**
    * @param {number} customerId
-   * @param {number} addressId
+   * @param {number|string} addressId
    * @returns {Promise.<{success:boolean}>}
    */
   async setDefaultAddress (customerId, addressId) {
@@ -94,10 +92,11 @@ class SGShopifyApi {
           if (err.code === 404) {
             return reject(new CustomerNotFoundError())
           }
+
           return reject(new UnknownError())
         }
 
-        if (response.customer_address.id !== addressId) {
+        if (parseInt(response.customer_address.id) !== parseInt(addressId)) {
           return reject(new UnknownError())
         }
 
@@ -109,13 +108,12 @@ class SGShopifyApi {
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @param {boolean} setToDefaultAddress
    * @returns {Promise.<{success:boolean}>}
    * @throws FieldValidationError
    * @throws UnknownError
    * @throws InvalidCallError
    */
-  async updateAddress (customerId, address, setToDefaultAddress) {
+  async updateAddress (customerId, address) {
     return new Promise((resolve, reject) => {
       this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, { address }, (err, response) => {
         if (err) {
@@ -133,11 +131,6 @@ class SGShopifyApi {
             return reject(validationError)
           }
           return reject(new UnknownError())
-        }
-
-        // If tag "default" is set, set this address to the default one
-        if (setToDefaultAddress) {
-          this.setDefaultAddress(customerId, response.customer_address.id)
         }
 
         return resolve({ success: true })
