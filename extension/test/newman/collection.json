@@ -1480,10 +1480,23 @@
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "f6ce858c-066b-4ef1-b6c7-4de925a05915",
 										"type": "text/javascript",
 										"exec": [
 											"// Create a seed to have a randomized data set",
 											"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "cc8eea39-7859-4156-ace0-1532078738cf",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
 										]
 									}
 								}
@@ -1498,7 +1511,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{{\"street1\": \"{{seed}}-street1\", \"country\": \"US\", \"province\":\"AZ\"}"
+									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -1515,10 +1528,23 @@
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "55cdbaf2-6277-4a90-a42a-7827b1d0f77d",
 										"type": "text/javascript",
 										"exec": [
 											"// Create a seed to have a randomized data set",
 											"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "23691813-8870-4865-a3fd-88d177324c71",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
 										]
 									}
 								}
@@ -1533,7 +1559,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{{\"street1\": \"{{seed}}-street1\", \"country\": \"US\", \"province\":\"AZ\"}"
+									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -1550,10 +1576,14 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f50fd64e-0cc8-44ba-9297-baf79a46f97d",
+										"id": "69ada3fc-f9a6-488d-b688-408a32035465",
 										"type": "text/javascript",
 										"exec": [
 											"var response = pm.response.json().addresses;",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
 											"",
 											"// set default address",
 											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
