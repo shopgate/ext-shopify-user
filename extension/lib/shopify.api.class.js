@@ -49,7 +49,12 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
-        return resolve({ success: true })
+
+        if (!response.customer_address.id) {
+          return reject(new UnknownError())
+        }
+
+        return resolve({ id: response.customer_address.id })
       })
     })
   }
@@ -71,6 +76,31 @@ class SGShopifyApi {
           return reject(new UnknownError())
         }
         return resolve(response.addresses)
+      })
+    })
+  }
+
+  /**
+   * @param {number} customerId
+   * @param {number|string} addressId
+   * @returns {Promise.<{success:boolean}>}
+   */
+  async setDefaultAddress (customerId, addressId) {
+    return new Promise((resolve, reject) => {
+      this.putRequest(`/admin/customers/${customerId}/addresses/${addressId}/default.json`, {}, (err, response) => {
+        if (err) {
+          if (err.code === 404) {
+            return reject(new CustomerNotFoundError())
+          }
+
+          return reject(new UnknownError())
+        }
+
+        if (parseInt(response.customer_address.id) !== parseInt(addressId)) {
+          return reject(new UnknownError())
+        }
+
+        return resolve({ success: true })
       })
     })
   }
@@ -102,6 +132,7 @@ class SGShopifyApi {
           }
           return reject(new UnknownError())
         }
+
         return resolve({ success: true })
       })
     })
@@ -118,14 +149,14 @@ class SGShopifyApi {
         if (err) {
           // Some Shopify address validation error occurred
           if (err.code === 422) {
-            const validationError = new FieldValidationError()
-
             if (err.error.match(/Cannot remove address ids because the default address id \(.*\) was included/)) {
               return reject(new InvalidCallError('Cannot remove default address.'))
             }
           }
+
           return reject(new UnknownError())
         }
+
         return resolve({ success: true })
       })
     })

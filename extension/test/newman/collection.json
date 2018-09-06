@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "74301ba3-eea9-4e95-899c-5e4f45f79a49",
+      "_postman_id": "8dbf86ff-016d-4ad9-815b-56703b1b22e2",
 		"name": "Shopify Connect",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -38,9 +38,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_logout}}",
+                          "raw": "{{domain}}{{endpoint_user_logout}}",
 							"host": [
-								"{{domain}}{{endpoint_logout}}"
+                              "{{domain}}{{endpoint_user_logout}}"
 							]
 						}
 					},
@@ -132,9 +132,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -176,12 +176,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{{address_empty}}"
+                          "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -226,9 +226,9 @@
 							"raw": "{\n\t\"id\":\"1\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
+                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-								"{{domain}}{{endpoint_address_update}}"
+                              "{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -273,9 +273,9 @@
 							"raw": "{\n\t\"ids\": [\n\t\t\"1\"\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_delete}}"
+                              "{{domain}}{{endpoint_user_addresses_delete}}"
 							]
 						}
 					},
@@ -315,9 +315,9 @@
 							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_login}}",
+                          "raw": "{{domain}}{{endpoint_user_login}}",
 							"host": [
-								"{{domain}}{{endpoint_login}}"
+                              "{{domain}}{{endpoint_user_login}}"
 							]
 						}
 					},
@@ -422,12 +422,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"\",\"lastName\": \"\",\"street1\": \"\",\"zipCode\": \"\",\"city\": \"\",\"country\": \"TESTER\"}"
+                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"TESTER\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -472,12 +472,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"\", \"lastName\": \"\", \"street1\": \"\", \"zipCode\": \"\", \"city\": \"\", \"country\": \"\", \"province\":\"{{seed}}-province\"}"
+                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -522,12 +522,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"\", \"lastName\": \"\", \"street1\": \"\", \"zipCode\": \"\", \"city\": \"\", \"country\": \"US\",\"province\":\"{{seed}}-province\"}"
+                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -545,12 +545,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"GB\"}"
+                                  "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -562,7 +562,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8cd94b43-9c57-4124-931e-ed5bb8a35573",
+										"id": "cf98abc1-a6f0-4a18-86a6-962c206f37e8",
 										"type": "text/javascript",
 										"exec": [
 											"const response = pm.response.json();",
@@ -585,9 +585,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
+                                      "{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -599,6 +599,7 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "bb4159fe-98b9-41d5-9642-52e2cfbe36a7",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -606,10 +607,13 @@
 											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
 											"});",
 											"",
-											"pm.test(\"Correct duplicate error is shown\", function () {",
-											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('street1');",
-											"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Street1\" has already been taken');",
-											"});"
+											"if (jsonData.error.validationErrors) {",
+											"    pm.test(\"Correct duplicate error is shown\", function () {",
+											"        pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('street1');",
+											"        pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Street1\" has already been taken');",
+											"    });",
+											"}",
+											""
 										]
 									}
 								}
@@ -624,12 +628,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"GB\"}"
+                                  "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -673,12 +677,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
+							"raw": "{\n\t\"firstName\": \"{{seed}}-firstname\",\n\t\"lastName\": \"{{seed}}-lastname\",\n\t\"street1\": \"{{seed}}-street1\",\n\t\"street2\": \"{{seed}}-street2\",\n\t\"city\": \"{{seed}}-city\",\n\t\"zipCode\": \"{{seed}}-zipCode\",\n\t\"country\": \"US\",\n\t\"province\":\"Arizona\",\n\t\"customAttributes\": {\n\t\t\"company\": \"{{seed}}-company\",\n\t\t\"phone\": \"{{seed}}-phone\"\n\t},\n\t\"tags\": [\n\t\t\"default\"\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -690,25 +694,28 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ba518d76-fbb8-42fb-87aa-b13229667b29",
+								"id": "6120e65f-de6f-48fd-99d1-660ff34847b6",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses.pop();",
+									"    const address = response.addresses[0];",
+									"    const seed = pm.environment.get(\"seed\");",
+									"",
 									"    pm.expect(address.id).to.match(/^[0-9]+$/, 'Not a numeric string provided!');",
-									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
-									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
-									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
-									"    pm.expect(address.street2).to.be.eq(pm.environment.get(\"seed\") + '-street2');",
-									"    pm.expect(address.city).to.be.eq(pm.environment.get(\"seed\") + '-city');",
-									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
+									"    pm.expect(address.firstName).to.be.eq(seed + '-firstname');",
+									"    pm.expect(address.lastName).to.be.eq(seed + '-lastname');",
+									"    pm.expect(address.street1).to.be.eq(seed + '-street1');",
+									"    pm.expect(address.street2).to.be.eq(seed + '-street2');",
+									"    pm.expect(address.city).to.be.eq(seed + '-city');",
+									"    pm.expect(address.zipCode).to.be.eq(seed + '-zipCode');",
 									"    pm.expect(address.country).to.be.eq('US');",
 									"    pm.expect(address.province).to.be.eq('AZ');",
-									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
+									"    pm.expect(address.tags).to.be.a('array').to.not.be.empty;",
+									"    pm.expect(address.tags).to.contain('default');",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
-									"    pm.expect(address.customAttributes.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
-									"    pm.expect(address.customAttributes.phone).to.be.eq(pm.environment.get(\"seed\") + '-phone');",
+									"    pm.expect(address.customAttributes.company).to.be.eq(seed + '-company');",
+									"    pm.expect(address.customAttributes.phone).to.be.eq(seed + '-phone');",
 									"",
 									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
 									"});"
@@ -729,9 +736,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -774,12 +781,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"{{seed}}-12345\", \"city\": \"Gotham\", \"country\": \"US\", \"province\":\"AZ\"}"
+                          "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"{{seed}}-12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"AZ\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -791,7 +798,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "55e314e6-1e60-402d-99c1-95a5e5c1cca6",
+								"id": "308e75a5-b593-4ee5-99c5-9b10812499fc",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly set\", function() {",
@@ -818,9 +825,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -863,12 +870,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"{{seed}}-street1\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"US\", \"province\":\"TX\"}"
+                          "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"{{seed}}-street1\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"TX\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -880,11 +887,9 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d2c213fa-8c5a-40de-9906-b307c0e06824",
+								"id": "6ba08f27-f4a4-4055-8f17-f19e6024505e",
 								"type": "text/javascript",
 								"exec": [
-									"var response = pm.response.json().addresses;",
-									"",
 									"pm.test(\"Make sure all address data was properly set\", function() {",
 									"    const response = pm.response.json();",
 									"    const address = response.addresses.pop();",
@@ -909,9 +914,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -963,12 +968,12 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
+                                          "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_add}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 											"host": [
-												"{{domain}}{{endpoint_address_add}}"
+                                              "{{domain}}{{endpoint_user_address_add}}"
 											]
 										}
 									},
@@ -980,16 +985,15 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b595626f-063b-495e-9550-3d6c8a80ee06",
+												"id": "2871284f-3edc-4c69-a994-6c0d59847fbc",
 												"type": "text/javascript",
 												"exec": [
+													"const response = pm.response.json();",
 													"pm.test(\"Addresses are returned\", function () {",
-													"    const response = pm.response.json();",
 													"    const address = response.addresses.pop();",
 													"    pm.environment.set(\"address-id\", address.id);",
 													"});",
 													"",
-													"const response = pm.response.json();",
 													"const address = response.addresses.pop();",
 													"pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);"
 												]
@@ -1009,9 +1013,9 @@
 											"raw": "{\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 											"host": [
-												"{{domain}}{{endpoint_addresses_get}}"
+                                              "{{domain}}{{endpoint_user_addresses_get}}"
 											]
 										}
 									},
@@ -1059,9 +1063,9 @@
 											"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"country\": \"TESTER\"\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_update}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-												"{{domain}}{{endpoint_address_update}}"
+                                              "{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1110,9 +1114,9 @@
 											"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"country\": \"IT\",\n    \"province\":\"{{seed}}-province\"\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_update}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-												"{{domain}}{{endpoint_address_update}}"
+                                              "{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1148,9 +1152,9 @@
 											"raw": "{\n\t\"id\": \"0\",\n    \"country\": \"IT\",\n    \"province\":\"{{seed}}-province\"\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_update}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-												"{{domain}}{{endpoint_address_update}}"
+                                              "{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1197,12 +1201,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
+                          "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -1214,7 +1218,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9bb18834-46db-468f-baa5-2f059a332412",
+								"id": "41b3ef08-f179-4b2c-94f9-66b7b77ffa42",
 								"type": "text/javascript",
 								"exec": [
 									"const response = pm.response.json();",
@@ -1245,9 +1249,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1295,12 +1299,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
+							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    },\n    \"tags\": [\n    \t\"default\"\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
+                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-								"{{domain}}{{endpoint_address_update}}"
+                              "{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -1312,12 +1316,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "17f771f8-7752-4c3e-bed4-4d1ff520dba1",
+								"id": "0e15ae1b-cba7-46ac-9d81-3fe14d6464dc",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses.pop();",
+									"    const address = response.addresses[0];",
 									"    pm.expect(address.id).to.match(/^[0-9]+$/, 'Not a numeric string provided!');",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
@@ -1327,7 +1331,8 @@
 									"    pm.expect(address.zipCode).to.be.eq(pm.environment.get(\"seed\") + '-zipCode');",
 									"    pm.expect(address.country).to.be.eq('EE');",
 									"    pm.expect(address.province).to.be.null;",
-									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
+									"    pm.expect(address.tags).to.be.a('array').to.not.be.empty;",
+									"    pm.expect(address.tags).to.contain('default');",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
 									"    pm.expect(address.customAttributes.company).to.be.eq(pm.environment.get(\"seed\") + '-company');",
 									"    pm.expect(address.customAttributes.phone).to.be.eq(pm.environment.get(\"seed\") + '-phone');",
@@ -1349,9 +1354,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1400,9 +1405,9 @@
 							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"\",\n    \"city\": \"\",\n    \"zipCode\": \"\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"\",\n        \"phone\": \"\"\n    }\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
+                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-								"{{domain}}{{endpoint_address_update}}"
+                              "{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -1414,12 +1419,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b5f55d33-740f-4926-ab78-f4fa3a883086",
+								"id": "b761af07-7e9c-48a8-9e94-13e08e9ef69d",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses.pop();",
+									"    const address = response.addresses[0];",
 									"    pm.expect(address.id).to.match(/^[0-9]+$/, 'Not a numeric string provided!');",
 									"    pm.expect(address.firstName).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.lastName).to.be.a(\"string\").to.be.empty;",
@@ -1429,7 +1434,6 @@
 									"    pm.expect(address.zipCode).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.country).to.be.eq('EE');",
 									"    pm.expect(address.province).to.be.null;",
-									"    pm.expect(address.tags).to.be.a('array').to.be.empty;",
 									"    pm.expect(address.customAttributes).to.be.a('object').to.not.be.empty;",
 									"    pm.expect(address.customAttributes.company).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.customAttributes.phone).to.be.a(\"string\").to.be.empty;",
@@ -1454,9 +1458,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1476,10 +1480,23 @@
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "f6ce858c-066b-4ef1-b6c7-4de925a05915",
 										"type": "text/javascript",
 										"exec": [
 											"// Create a seed to have a randomized data set",
 											"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "cc8eea39-7859-4156-ace0-1532078738cf",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
 										]
 									}
 								}
@@ -1494,12 +1511,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{{\"street1\": \"{{seed}}-street1\", \"country\": \"US\", \"province\":\"AZ\"}"
+									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -1511,10 +1528,23 @@
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "55cdbaf2-6277-4a90-a42a-7827b1d0f77d",
 										"type": "text/javascript",
 										"exec": [
 											"// Create a seed to have a randomized data set",
 											"pm.environment.set(\"seed\", \"address-\" + Math.floor(Math.random() * Math.floor(1000)));"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "23691813-8870-4865-a3fd-88d177324c71",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
 										]
 									}
 								}
@@ -1529,12 +1559,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{{\"street1\": \"{{seed}}-street1\", \"country\": \"US\", \"province\":\"AZ\"}"
+									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -1546,10 +1576,23 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ca0f15a5-e040-4872-aa6d-c37f9965ab35",
+										"id": "69ada3fc-f9a6-488d-b688-408a32035465",
 										"type": "text/javascript",
 										"exec": [
 											"var response = pm.response.json().addresses;",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// set default address",
+											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
+											"",
+											"if (defaultAddress) {",
+											"    pm.environment.set(\"defaultAddressId\", defaultAddress.id);    ",
+											"} else {",
+											"    tests['Something went wrong with getting the default address'] = false;",
+											"}",
 											"",
 											"if (response.length > 1) {",
 											"    pm.environment.set(\"firstAddressIdToDelete\", response.pop().id);",
@@ -1557,10 +1600,6 @@
 											"} else {",
 											"    tests['Something went wrong with address creation'] = false;",
 											"}",
-											"",
-											"// set default address to test removing it",
-											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
-											"pm.environment.set(\"defaultAddressId\", defaultAddress.id);",
 											""
 										]
 									}
@@ -1579,9 +1618,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
+                                      "{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -1599,7 +1638,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3ff5c36d-2b08-4b2a-87a6-7fc221dcae17",
+										"id": "ca6e1531-d3d3-445b-8205-dd679059a67d",
 										"type": "text/javascript",
 										"exec": [
 											"var jsonData = pm.response.json();",
@@ -1624,9 +1663,9 @@
 									"raw": "{\n\t\"ids\": [\n\t\t{{defaultAddressId}}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1662,9 +1701,9 @@
 									"raw": "{\n\t\"ids\": [\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1700,9 +1739,9 @@
 									"raw": "{\n\t\"ids\": [\"\"]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1738,9 +1777,9 @@
 									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t\"\",\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1785,9 +1824,9 @@
 									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1825,9 +1864,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
+                                      "{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -1842,12 +1881,61 @@
 			"name": "Cleanup",
 			"item": [
 				{
+					"name": "Get Shopify address ids (except default)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2aeefe63-b494-4971-a6f6-94d22a67d454",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.unset(\"addressIdsToDelete\");",
+									"",
+									"const addresses = pm.response.json().addresses;",
+									"const addressIdsToDelete = Array();",
+									"",
+									"",
+									"addresses.forEach(function(address) {",
+									"    const isDefault = address.tags.includes(\"default\");",
+									"    ",
+									"    if (!isDefault) {",
+									"        addressIdsToDelete.push(address.id);",
+									"    }",
+									"})",
+									"",
+									"pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join(','));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"host": [
+                              "{{domain}}{{endpoint_user_addresses_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Cleanup test data",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "9a98d545-32c2-41e9-a92e-b6062ea28505",
+								"id": "357b04dc-59d7-4c89-a4a6-2fd176a225e1",
 								"type": "text/javascript",
 								"exec": [
 									"// Cleanup environment vars",
@@ -1857,7 +1945,18 @@
 									"pm.environment.unset(\"firstAddressIdToDelete\");",
 									"pm.environment.unset(\"secondAddressIdToDelete\");",
 									"pm.environment.unset(\"thirdAddressIdToDelete\");",
-									"pm.environment.unset(\"addressIdsToDelete\");"
+									"pm.environment.unset(\"addressIdsToDelete\");",
+									"pm.environment.unset(\"address-id\");"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "98fc4f79-b5c7-45e7-b7a7-f47ae9853435",
+								"type": "text/javascript",
+								"exec": [
+									""
 								]
 							}
 						}
@@ -1875,9 +1974,9 @@
 							"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_delete}}"
+                              "{{domain}}{{endpoint_user_addresses_delete}}"
 							]
 						}
 					},

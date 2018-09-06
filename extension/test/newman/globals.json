@@ -12,12 +12,12 @@
       "enabled": true
     },
     {
-      "key": "endpoint_login",
+      "key": "endpoint_user_login",
       "value": "/trustedPipelines/shopgate.user.loginUser.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_logout",
+      "key": "endpoint_user_logout",
       "value": "/trustedPipelines/shopgate.user.logoutUser.v1",
       "enabled": true
     },
@@ -27,34 +27,24 @@
       "enabled": true
     },
     {
-      "enabled": true,
-      "key": "endpoint_address_get",
-      "value": "/trustedPipelines/shopgate.user.getAddresses.v1"
-    },
-    {
-      "key": "endpoint_addresses_get",
+      "key": "endpoint_user_addresses_get",
       "value": "/trustedPipelines/shopgate.user.getAddresses.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_address_add",
+      "key": "endpoint_user_address_add",
       "value": "/trustedPipelines/shopgate.user.addAddress.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_address_update",
+      "key": "endpoint_user_address_update",
       "value": "/trustedPipelines/shopgate.user.updateAddress.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_addresses_delete",
+      "key": "endpoint_user_addresses_delete",
       "value": "/trustedPipelines/shopgate.user.deleteAddresses.v1",
       "enabled": true
-    },
-    {
-      "enabled": true,
-      "key": "address_empty",
-      "value": "{\"firstName\": \"\",\"lastName\": \"\",\"street1\": \"\",\"zipCode\": \"\",\"city\": \"\",\"country\": \"US\"}"
     }
   ],
   "name": "SG Connect Extension Globals",

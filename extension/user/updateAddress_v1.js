@@ -1,7 +1,7 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const SGShopifyApi = require('../lib/shopify.api.class')
-const {mapCountry, mapProvince, mapCustomAttributes} = require('../lib/mapper')
+const { mapCountry, mapProvince, mapCustomAttributes } = require('../lib/mapper')
 const _ = require('lodash')
 
 /**
@@ -13,9 +13,7 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  const address = createAddressUpdate(input)
-
-  return new SGShopifyApi(context).updateAddress(context.meta.userId, address)
+  return new SGShopifyApi(context).updateAddress(context.meta.userId, createAddressUpdate(input))
 }
 
 /**

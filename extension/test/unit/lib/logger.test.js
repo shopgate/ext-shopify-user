@@ -20,6 +20,6 @@ describe('Logger', () => {
     sinon.assert.calledWith(logSpy, sinon.match.has('message'))
     sinon.assert.calledWith(logSpy, sinon.match.has('request'))
     sinon.assert.calledWith(logSpy, sinon.match.has('response'))
-    sinon.assert.calledWith(logSpy, sinon.match({statusCode: httpCodeSuccess}))
+    sinon.assert.calledWith(logSpy, sinon.match({ statusCode: httpCodeSuccess }))
   })
 })
