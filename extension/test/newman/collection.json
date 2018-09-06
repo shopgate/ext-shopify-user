@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c799a47c-b148-418f-b51b-dc5994276dbf",
+      "_postman_id": "8dbf86ff-016d-4ad9-815b-56703b1b22e2",
 		"name": "Shopify Connect",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -176,7 +176,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{{address_empty}}"
+                          "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\"\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -422,7 +422,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"\",\"lastName\": \"\",\"street1\": \"\",\"zipCode\": \"\",\"city\": \"\",\"country\": \"TESTER\"}"
+                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"TESTER\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -472,7 +472,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"\", \"lastName\": \"\", \"street1\": \"\", \"zipCode\": \"\", \"city\": \"\", \"country\": \"\", \"province\":\"{{seed}}-province\"}"
+                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -522,7 +522,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"\", \"lastName\": \"\", \"street1\": \"\", \"zipCode\": \"\", \"city\": \"\", \"country\": \"US\",\"province\":\"{{seed}}-province\"}"
+                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -545,7 +545,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"GB\"}"
+                                  "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -628,7 +628,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"GB\"}"
+                                  "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_address_add}}",
@@ -781,7 +781,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"TEST ADDRESS\", \"zipCode\": \"{{seed}}-12345\", \"city\": \"Gotham\", \"country\": \"US\", \"province\":\"AZ\"}"
+                          "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"{{seed}}-12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"AZ\"\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -870,7 +870,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"TEST\", \"lastName\": \"USER\", \"street1\": \"{{seed}}-street1\", \"zipCode\": \"12345\", \"city\": \"Gotham\", \"country\": \"US\", \"province\":\"TX\"}"
+                          "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"{{seed}}-street1\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"TX\"\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
@@ -968,7 +968,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
+                                          "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 										},
 										"url": {
 											"raw": "{{domain}}{{endpoint_address_add}}",
@@ -1201,7 +1201,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"firstName\": \"{{seed}}-firstname\", \"lastName\": \"{{seed}}-lastname\", \"street1\": \"{{seed}}-street1\", \"street2\": \"{{seed}}-street2\", \"city\": \"{{seed}}-city\", \"zipCode\": \"{{seed}}-zipCode\", \"country\": \"US\", \"province\":\"Arizona\", \"customAttributes\": {\"company\": \"{{seed}}-company\", \"phone\": \"{{seed}}-phone\"}}"
+                          "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_address_add}}",
