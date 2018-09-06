@@ -38,9 +38,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_logout}}",
+                          "raw": "{{domain}}{{endpoint_user_logout}}",
 							"host": [
-								"{{domain}}{{endpoint_logout}}"
+                              "{{domain}}{{endpoint_user_logout}}"
 							]
 						}
 					},
@@ -132,9 +132,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -179,9 +179,9 @@
                           "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -226,9 +226,9 @@
 							"raw": "{\n\t\"id\":\"1\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
+                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-								"{{domain}}{{endpoint_address_update}}"
+                              "{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -273,9 +273,9 @@
 							"raw": "{\n\t\"ids\": [\n\t\t\"1\"\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_delete}}"
+                              "{{domain}}{{endpoint_user_addresses_delete}}"
 							]
 						}
 					},
@@ -315,9 +315,9 @@
 							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_login}}",
+                          "raw": "{{domain}}{{endpoint_user_login}}",
 							"host": [
-								"{{domain}}{{endpoint_login}}"
+                              "{{domain}}{{endpoint_user_login}}"
 							]
 						}
 					},
@@ -425,9 +425,9 @@
                                   "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"TESTER\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -475,9 +475,9 @@
                                   "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -525,9 +525,9 @@
                                   "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -548,9 +548,9 @@
                                   "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -585,9 +585,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
+                                      "{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -631,9 +631,9 @@
                                   "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -680,9 +680,9 @@
 							"raw": "{\n\t\"firstName\": \"{{seed}}-firstname\",\n\t\"lastName\": \"{{seed}}-lastname\",\n\t\"street1\": \"{{seed}}-street1\",\n\t\"street2\": \"{{seed}}-street2\",\n\t\"city\": \"{{seed}}-city\",\n\t\"zipCode\": \"{{seed}}-zipCode\",\n\t\"country\": \"US\",\n\t\"province\":\"Arizona\",\n\t\"customAttributes\": {\n\t\t\"company\": \"{{seed}}-company\",\n\t\t\"phone\": \"{{seed}}-phone\"\n\t},\n\t\"tags\": [\n\t\t\"default\"\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -736,9 +736,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -784,9 +784,9 @@
                           "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"{{seed}}-12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"AZ\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -825,9 +825,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -873,9 +873,9 @@
                           "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"{{seed}}-street1\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"TX\"\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -914,9 +914,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -971,9 +971,9 @@
                                           "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_add}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 											"host": [
-												"{{domain}}{{endpoint_address_add}}"
+                                              "{{domain}}{{endpoint_user_address_add}}"
 											]
 										}
 									},
@@ -1013,9 +1013,9 @@
 											"raw": "{\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 											"host": [
-												"{{domain}}{{endpoint_addresses_get}}"
+                                              "{{domain}}{{endpoint_user_addresses_get}}"
 											]
 										}
 									},
@@ -1063,9 +1063,9 @@
 											"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"country\": \"TESTER\"\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_update}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-												"{{domain}}{{endpoint_address_update}}"
+                                              "{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1114,9 +1114,9 @@
 											"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"country\": \"IT\",\n    \"province\":\"{{seed}}-province\"\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_update}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-												"{{domain}}{{endpoint_address_update}}"
+                                              "{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1152,9 +1152,9 @@
 											"raw": "{\n\t\"id\": \"0\",\n    \"country\": \"IT\",\n    \"province\":\"{{seed}}-province\"\n}"
 										},
 										"url": {
-											"raw": "{{domain}}{{endpoint_address_update}}",
+                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-												"{{domain}}{{endpoint_address_update}}"
+                                              "{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1204,9 +1204,9 @@
                           "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_add}}",
+                          "raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-								"{{domain}}{{endpoint_address_add}}"
+                              "{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -1249,9 +1249,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1302,9 +1302,9 @@
 							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    },\n    \"tags\": [\n    \t\"default\"\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
+                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-								"{{domain}}{{endpoint_address_update}}"
+                              "{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -1354,9 +1354,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1405,9 +1405,9 @@
 							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"\",\n    \"city\": \"\",\n    \"zipCode\": \"\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"\",\n        \"phone\": \"\"\n    }\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_address_update}}",
+                          "raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-								"{{domain}}{{endpoint_address_update}}"
+                              "{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -1458,9 +1458,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1514,9 +1514,9 @@
 									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -1562,9 +1562,9 @@
 									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_address_add}}",
+                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-										"{{domain}}{{endpoint_address_add}}"
+                                      "{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -1618,9 +1618,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
+                                      "{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -1663,9 +1663,9 @@
 									"raw": "{\n\t\"ids\": [\n\t\t{{defaultAddressId}}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1701,9 +1701,9 @@
 									"raw": "{\n\t\"ids\": [\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1739,9 +1739,9 @@
 									"raw": "{\n\t\"ids\": [\"\"]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1777,9 +1777,9 @@
 									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t\"\",\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1824,9 +1824,9 @@
 									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_delete}}"
+                                      "{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1864,9 +1864,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-									"raw": "{{domain}}{{endpoint_addresses_get}}",
+                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-										"{{domain}}{{endpoint_addresses_get}}"
+                                      "{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -1921,9 +1921,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_get}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_get}}"
+                              "{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1974,9 +1974,9 @@
 							"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
 						},
 						"url": {
-							"raw": "{{domain}}{{endpoint_addresses_delete}}",
+                          "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 							"host": [
-								"{{domain}}{{endpoint_addresses_delete}}"
+                              "{{domain}}{{endpoint_user_addresses_delete}}"
 							]
 						}
 					},
