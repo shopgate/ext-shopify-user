@@ -16,11 +16,11 @@ const disableGuestCheckout = () => !config.getUserAccountSettings || config.getU
 
 /**
  * The GuestCheckoutLink component.
- * @param {Object} redirectLocation The redirect location.
+ * @param {Object} redirect The redirect object.
  * @return {JSX}
  */
-const GuestCheckoutLink = ({ redirectLocationPath }) => {
-  const isCheckoutLogin = redirectLocationPath === '/checkout';
+const GuestCheckoutLink = ({ redirect }) => {
+  const isCheckoutLogin = redirect === '/checkout';
 
   if (disableGuestCheckout() || !isCheckoutLogin) {
     return null;
@@ -36,11 +36,7 @@ const GuestCheckoutLink = ({ redirectLocationPath }) => {
 };
 
 GuestCheckoutLink.propTypes = {
-  redirectLocationPath: PropTypes.string,
-};
-
-GuestCheckoutLink.defaultProps = {
-  redirectLocationPath: '',
+  redirect: PropTypes.string.isRequired,
 };
 
 export default connect(GuestCheckoutLink);
