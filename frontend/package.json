@@ -18,20 +18,6 @@
     "@shopgate/pwa-common": "^5.6.0",
     "@shopgate/pwa-common-commerce": "^5.6.0",
     "@shopgate/tracking-core": "^5.6.0",
-    "eslint": "^4.19.1",
-    "@shopgate/pwa-unit-test": "^1.3.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "jest": "^22.4.4",
-    "enzyme": "^3.3.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-react-transform": "^3.0.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-react-inline-elements": "^6.22.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1"
+    "eslint": "^4.19.1"
   }
 }
