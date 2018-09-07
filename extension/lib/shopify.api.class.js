@@ -35,11 +35,11 @@ class SGShopifyApi {
       this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
         if (err) {
           // Some Shopify address validation error occurred
-          if (response.errors) {
+          if (err.code === 422) {
             const validationError = new FieldValidationError()
-            for (let path in response.errors) {
-              response.errors[path].forEach(message => {
-                validationError.addValidationMessage(path, message, address[path])
+            for (let fieldName in err.error) {
+              err.error[fieldName].forEach(message => {
+                validationError.addValidationMessage(fieldName, message, address[fieldName])
               })
             }
             return reject(validationError)

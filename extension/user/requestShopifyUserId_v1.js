@@ -48,7 +48,7 @@ module.exports = function (context, input, cb) {
     }
 
     const filterResult = (customerList.filter((customer) => {
-      return customer.email === login.toString()
+      return customer.email.toLowerCase() === login.toString().toLowerCase()
     }))
 
     return filterResult.length
