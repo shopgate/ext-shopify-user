@@ -71,6 +71,12 @@
       "type": "portals"
     },
     {
+      "id": "GuestCheckoutLinkRoute",
+      "path": "frontend/portals/GuestCheckoutLink/route.jsx",
+      "target": "app.routes",
+      "type": "portals"
+    },
+    {
       "id": "GuestCheckoutSubscription",
       "path": "frontend/portals/GuestCheckoutLink/subscribers.js",
       "type": "subscribers"
@@ -84,6 +90,16 @@
       "id": "locale/de-DE",
       "type": "translations",
       "path": "frontend/locale/de-DE.json"
+    },
+    {
+      "id": "locale/fr-FR",
+      "type": "translations",
+      "path": "frontend/locale/fr-FR.json"
+    },
+    {
+      "id": "locale/nl-NL",
+      "type": "translations",
+      "path": "frontend/locale/nl-NL.json"
     }
   ]
 }
