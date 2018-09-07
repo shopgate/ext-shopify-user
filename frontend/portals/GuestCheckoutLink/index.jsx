@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import I18n from '@shopgate/pwa-common/components/I18n';
 import Link from '@shopgate/pwa-common/components/Router/components/Link';
 import { CHECKOUT_GUEST_PATH } from './route';
 import styles from './style';
 import config from '../../config';
+import connect from './connector';
 
 /**
  * Check is the guest checkout disabled
@@ -14,10 +16,13 @@ const disableGuestCheckout = () => !config.getUserAccountSettings || config.getU
 
 /**
  * The GuestCheckoutLink component.
+ * @param {Object} redirectLocation The redirect location.
  * @return {JSX}
  */
-const GuestCheckoutLink = () => {
-  if (disableGuestCheckout()) {
+const GuestCheckoutLink = ({ redirectLocationPath }) => {
+  const isCheckoutLogin = redirectLocationPath === '/checkout';
+
+  if (disableGuestCheckout() || !isCheckoutLogin) {
     return null;
   }
   return (
@@ -30,4 +35,12 @@ const GuestCheckoutLink = () => {
   );
 };
 
-export default GuestCheckoutLink;
+GuestCheckoutLink.propTypes = {
+  redirectLocationPath: PropTypes.string,
+};
+
+GuestCheckoutLink.defaultProps = {
+  redirectLocationPath: '',
+};
+
+export default connect(GuestCheckoutLink);
