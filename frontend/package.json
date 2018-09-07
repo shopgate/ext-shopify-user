@@ -7,11 +7,9 @@
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive test",
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
   },
   "license": "Apache-2.0",
-  "dependencies": {},
   "devDependencies": {
     "@shopgate/eslint-config": "6.0.0-beta.9",
     "@shopgate/pwa-common": "6.0.0-beta.9",
