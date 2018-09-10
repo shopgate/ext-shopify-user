@@ -22,35 +22,35 @@ class SGShopifyApi {
       access_token: this.accessToken, // not required
       verbose: this.verbose
     },
-    context.log)
+    context.log
+    )
   }
 
   /**
    * @param {string} customerId
    * @param {ShopifyAddress} address
-   * @returns {Promise.<{success:true}|FieldValidationError>}
+   * @returns {Promise.<{success:boolean}|FieldValidationError>}
    */
   async addAddress (customerId, address) {
-    return new Promise((resolve, reject) => {
-      this.postRequest(`/admin/customers/${customerId}/addresses.json`, {address}, (err, response) => {
-        if (err) {
-          // Some Shopify address validation error occurred
-          if (err.code === 422) {
-            const validationError = new FieldValidationError()
-            for (let fieldName in err.error) {
-              err.error[fieldName].forEach(message => {
-                validationError.addValidationMessage(fieldName, message, address[fieldName])
-              })
-            }
-            return reject(validationError)
+    try {
+      await this.postRequest(`/admin/customers/${customerId}/addresses.json`, { address })
+      return { success: true }
+    } catch (err) {
+      if (err) {
+        // Some Shopify address validation error occurred
+        if (err.code === 422) {
+          const validationError = new FieldValidationError()
+          for (let fieldName in err.error) {
+            err.error[fieldName].forEach(message => {
+              validationError.addValidationMessage(fieldName, message, address[fieldName])
+            })
           }
-
-          return reject(err)
+          throw validationError
         }
 
-        return resolve({success: true})
-      })
-    })
+        throw err
+      }
+    }
   }
 
   /**
@@ -61,57 +61,38 @@ class SGShopifyApi {
   }
 
   /**
-   * @param cb
-   * @returns {function} cb
+   * @returns {Promise<string>} The storefront access token.
+   * @throws {Error} If the API returns an invalid response or an error occurs on the request.
    */
-  getStoreFrontAccessToken (cb) {
+  async getStoreFrontAccessToken () {
     const endpoint = '/admin/storefront_access_tokens.json'
+    const response = await this.getRequest(endpoint, {})
+    const storefrontAccessTokenTitle = 'Web Checkout Storefront Access Token'
 
-    this.getRequest(endpoint, {}, (err, response) => {
-      if (err) return cb(err)
+    if (!Tools.propertyExists(response, 'storefront_access_tokens')) {
+      throw new Error('Invalid response from Shopify API.')
+    }
 
-      const storefrontAccessTokenTitle = 'Web Checkout Storefront Access Token'
+    const token = response.storefront_access_tokens.find(token => token.title === storefrontAccessTokenTitle)
+    if (typeof token !== 'undefined') {
+      return token
+    }
 
-      /**
-       * @typedef {object} response
-       * @property {storefront_access_token[]} storefront_access_tokens
-       * @typedef {object} storefront_access_token
-       * @property {string} access_token
-       * @property {string} access_scope
-       * @property {string} created_at
-       * @property {int} id
-       * @property {string} title
-       */
-      if (Tools.propertyExists(response, 'storefront_access_tokens')) {
-        for (let token of response.storefront_access_tokens) {
-          if (token.title === storefrontAccessTokenTitle) {
-            return cb(null, token.access_token)
-          }
-        }
+    // create a new access token, because no valid token was found at this point
+    return (await this.postRequest(endpoint, {
+      storefront_access_token: {
+        title: storefrontAccessTokenTitle
       }
-
-      // create a new access token, because no valid token was found at this point
-      const requestBody = {
-        storefront_access_token: {
-          title: storefrontAccessTokenTitle
-        }
-      }
-
-      this.postRequest(endpoint, requestBody, (err, response) => {
-        if (err) return cb(err)
-        return cb(null, response.storefront_access_token.access_token)
-      })
-    })
+    })).storefront_access_token.access_token
   }
 
   /**
    * @param cb
-   * @returns {function} cb
    */
   createCheckout (cb) {
-    this.postRequest('/admin/checkouts.json', {}, function (err, response) {
-      return cb(err, response)
-    })
+    this.postRequest('/admin/checkouts.json', {})
+      .then(response => cb(null, response))
+      .catch(err => cb(err))
   }
 
   /**
@@ -120,9 +101,9 @@ class SGShopifyApi {
    * @returns {function} cb
    */
   getCheckout (checkoutToken, cb) {
-    this.getRequest('/admin/checkouts/' + checkoutToken + '.json', {}, function (err, response) {
-      return cb(err, response)
-    })
+    this.getRequest('/admin/checkouts/' + checkoutToken + '.json', {})
+      .then(response => cb(null, response))
+      .catch(err => cb(err))
   }
 
   /**
@@ -168,20 +149,47 @@ class SGShopifyApi {
    *
    * @param customersId
    * @param cb
-   * @returns {function} cb
    */
   getCustomerById (customersId, cb) {
-    this.getRequest(`/admin/customers/${customersId}.json`, {}, (err, userData) => {
-      if (err) {
-        return cb(err)
-      }
+    this.getRequest(`/admin/customers/${customersId}.json`, {})
+      .then(userData => {
+        if (Tools.isEmpty(userData.customer)) {
+          return cb(new Error('Customer not found'))
+        }
 
-      if (Tools.isEmpty(userData.customer)) {
-        return cb(new Error('Customer not found'))
-      }
+        return cb(null, userData.customer)
+      }).catch(err => cb(err))
+  }
 
-      cb(null, userData.customer)
-    })
+  getCustomerByAccessToken (customerAccessToken) {
+    const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
+    const logRequestData = JSON.parse(JSON.stringify(requestData))
+    logRequestData.body.variables.input.password = 'customerAccessToken'
+    const logRequest = new Logger(this.context.log)
+
+    const lol = {
+      method: 'POST',
+      url: this.getGraphQlUrl(),
+      headers: {
+        'cache-control': 'no-cache',
+        'x-shopify-storefront-access-token': storefrontAccessToken,
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
+      body: {
+        query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
+          '{customerAccessTokenCreate(input: $input) ' +
+          '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
+        variables: {
+          input: {
+            email: login.login,
+            password: login.password
+          }
+        },
+        operationName: 'customerAccessTokenCreate'
+      },
+      json: true
+    }
   }
 
   /**
@@ -190,32 +198,23 @@ class SGShopifyApi {
    * @returns {function} cb
    */
   findUserByEmail (email, cb) {
-    this.getRequest(`/admin/customers/search.json?query=email:"${email}"&fields=id,email&limit=5`, {}, (err, userData) => {
-      if (err) {
-        return cb(err)
-      }
+    this.getRequest(`/admin/customers/search.json?query=email:"${email}"&fields=id,email&limit=5`, {})
+      .then(userData => {
+        if (Tools.isEmpty(userData.customers)) {
+          return cb(new Error('Customer not found'))
+        }
 
-      if (Tools.isEmpty(userData.customers)) {
-        return cb(new Error('Customer not found'))
-      }
-
-      cb(null, userData.customers)
-    })
+        return cb(null, userData.customers)
+      })
+      .catch(err => cb(err))
   }
 
   /**
    * @param endpoint
    * @param params
-   * @param cb
    */
-  getRequest (endpoint, params, cb) {
-    this.shopifyApiRequest.get(endpoint, params)
-      .then((response) => {
-        cb(null, response)
-      })
-      .catch((err) => {
-        cb(err)
-      })
+  async getRequest (endpoint, params) {
+    return this.shopifyApiRequest.get(endpoint, params)
   }
 
   /**
@@ -251,16 +250,9 @@ class SGShopifyApi {
   /**
    * @param endpoint
    * @param params
-   * @param cb
    */
-  postRequest (endpoint, params, cb) {
-    this.shopifyApiRequest.post(endpoint, params)
-      .then((response) => {
-        cb(null, response)
-      })
-      .catch((err) => {
-        cb(err)
-      })
+  async postRequest (endpoint, params) {
+    return this.shopifyApiRequest.post(endpoint, params)
   }
 
   /**
@@ -329,6 +321,7 @@ class SGShopifyApi {
      * @param {Object} response
      * @param {ShopifyGraphQLResponseBody} body
      */
+    // TODO make this thing use request-promise-native
     request(requestData, (err, response, body) => {
       logRequest.log(logRequestData, response)
 
