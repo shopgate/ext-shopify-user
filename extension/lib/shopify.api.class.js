@@ -1,11 +1,9 @@
 const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
-const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
-const Logger = require('./logger')
 
 /**
  * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
@@ -253,37 +251,6 @@ class SGShopifyApi {
       }).catch(err => cb(err))
   }
 
-  getCustomerByAccessToken (customerAccessToken) {
-    const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
-    const logRequestData = JSON.parse(JSON.stringify(requestData))
-    logRequestData.body.variables.input.password = 'customerAccessToken'
-    const logRequest = new Logger(this.context.log)
-
-    const lol = {
-      method: 'POST',
-      url: this.getGraphQlUrl(),
-      headers: {
-        'cache-control': 'no-cache',
-        'x-shopify-storefront-access-token': storefrontAccessToken,
-        accept: 'application/json',
-        'content-type': 'application/json'
-      },
-      body: {
-        query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
-          '{customerAccessTokenCreate(input: $input) ' +
-          '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
-        variables: {
-          input: {
-            email: login.login,
-            password: login.password
-          }
-        },
-        operationName: 'customerAccessTokenCreate'
-      },
-      json: true
-    }
-  }
-
   /**
    * @param email
    * @param cb
@@ -331,76 +298,6 @@ class SGShopifyApi {
    */
   async postRequest (endpoint, params) {
     return this.shopifyApiRequest.post(endpoint, params)
-  }
-
-  /**
-   * @param {SGShopifyApi} shopify
-   * @param {string} storefrontAccessToken
-   * @param {Login} login
-   * @param {Object} input
-   * @return {Object} User-data including the store front access token
-   */
-  async checkCredentials (shopify, storefrontAccessToken, login, input) {
-    const requestData = {
-      method: 'POST',
-      url: 'https://' + this.shop + '/api/graphql',
-      headers: {
-        'cache-control': 'no-cache',
-        'x-shopify-storefront-access-token': storefrontAccessToken.access_token,
-        accept: 'application/json',
-        'content-type': 'application/json'
-      },
-      body: {
-        query: 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
-          '{customerAccessTokenCreate(input: $input) ' +
-          '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}',
-        variables: {
-          input: {
-            email: login.login,
-            password: login.password
-          }
-        },
-        operationName: 'customerAccessTokenCreate'
-      },
-      json: true,
-      resolveWithFullResponse: true
-    }
-
-    const logRequestData = JSON.parse(JSON.stringify(requestData))
-    logRequestData.body.variables.input.password = 'XXXXXXXX'
-    const logRequest = new Logger(this.context.log)
-
-    let response
-
-    try {
-      response = await requestp(requestData)
-      logRequest.log(logRequestData, response)
-    } catch (err) {
-      logRequest.log(logRequestData, null)
-      this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
-      throw new UnknownError()
-    }
-
-    const token = response.body.data
-    if (!token) {
-      this.context.log.error('No token received for login credentials: ' + JSON.stringify(logRequestData.body.variables.input))
-      throw new UnknownError()
-    }
-
-    if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
-      !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
-      throw new Error(token.customerAccessTokenCreate.userErrors[0].message)
-    }
-
-    // login successful (pass on the storefront access token to avoid additional requests)
-    return {
-      login: {
-        login: login.login,
-        parameters: login.parameters
-      },
-      customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
-      storefrontAccessToken
-    }
   }
 }
 

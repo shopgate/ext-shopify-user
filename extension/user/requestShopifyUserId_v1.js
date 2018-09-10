@@ -1,4 +1,4 @@
-const SGShopifyApi = require('../lib/shopify.api.class.js')
+const StorefrontApi = require('../lib/shopify.api.storefront.js')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
@@ -17,42 +17,25 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  *
  * @param {Object} context
  * @param {RequestShopifyUserIdInputData} input
- * @param {function} cb
  */
-module.exports = function (context, input, cb) {
-  const shopify = new SGShopifyApi(context)
-  const login = input.login.login
+module.exports = async function (context, input) {
   const customerId = input.login.parameters.customerId
 
   if (input.strategy === 'web') {
     if (!customerId) {
       context.log.error('No userId given on input strategy web')
-      return cb(new CustomerNotFoundError())
+      throw new CustomerNotFoundError()
     } else {
-      return cb(null, { userId: customerId.toString() })
+      return { userId: customerId.toString() }
     }
   }
 
-  shopify.findUserByEmail(login, (err, customerList) => {
-    /**
-     * Ensure the requested data to be available and no request error occurred.
-     *
-     * @typedef {Object} CustomerResponseElement
-     * @property {number} id
-     */
-    if (err || !customerList || customerList.length !== 1) {
-      if (customerList && customerList.length > 1) {
-        context.log.error('Multiple users accounts returned from API request')
-      }
-      return cb(new CustomerNotFoundError())
-    }
+  const storefrontApi = new StorefrontApi(context, input.storefrontAccessToken)
+  const userId = Buffer.from(
+    (await storefrontApi.getCustomerByAccessToken(input.customerAccessToken.accessToken)).id,
+    'base64')
+    .toString()
+    .substring(23) // strip 'gid://shopify/Customer/'
 
-    const filterResult = (customerList.filter((customer) => {
-      return customer.email.toLowerCase() === login.toString().toLowerCase()
-    }))
-
-    return filterResult.length
-      ? cb(null, { 'userId': filterResult[0].id.toString() })
-      : cb(new CustomerNotFoundError())
-  })
+  return { userId }
 }

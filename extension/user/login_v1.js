@@ -1,26 +1,35 @@
 const CryptoJS = require('crypto-js')
-const SGShopifyApi = require('../lib/shopify.api.class.js')
+const AdminApi = require('../lib/shopify.api.class.js')
+const StorefrontApi = require('../lib/shopify.api.storefront.js')
 const Login = require('../models/user/login')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 
-module.exports = async function (context, input, cb) {
+module.exports = async function (context, input) {
   // strategy is not supported
   if (!Login.isStrategyValid(input.strategy)) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
-  const shopify = new SGShopifyApi(context)
-  const storefrontAccessToken = await shopify.getStoreFrontAccessToken()
+  // TODO move to some kind of token manager class or function
+  let storefrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  if (!storefrontAccessToken) {
+    const adminApi = new AdminApi(context)
+    storefrontAccessToken = (await adminApi.getStoreFrontAccessToken()).access_token
+    context.storage.extension.set('storefrontAccessToken', storefrontAccessToken)
+  }
 
+  const storefrontApi = new StorefrontApi(context, storefrontAccessToken)
   const login = new Login(input.strategy)
   login.parameters = { customerId: input.parameters.customerId || null }
 
+  let customerAccessToken
   switch (input.strategy) {
     case 'basic':
       login.login = input.parameters.login
       login.password = input.parameters.password
 
-      return shopify.checkCredentials(shopify, storefrontAccessToken, login, input)
+      customerAccessToken = await storefrontApi.getCustomerAccessToken(login, input.authType)
+      break
     case 'web':
       const phrase = await context.storage.device.get('webLoginPhrase')
 
@@ -37,6 +46,16 @@ module.exports = async function (context, input, cb) {
       login.login = userData.u
       login.password = userData.p
 
-      return shopify.checkCredentials(shopify, storefrontAccessToken, login, input)
+      customerAccessToken = storefrontApi.getCustomerAccessToken(login, input)
+      break
+  }
+
+  return {
+    login: {
+      login: input.parameters.login,
+      parameters: input.parameters
+    },
+    customerAccessToken,
+    storefrontAccessToken
   }
 }
