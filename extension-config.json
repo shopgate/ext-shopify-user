@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "2.0.0",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "steps": [
@@ -46,11 +46,6 @@
     {
       "id": "RegisterSubscription",
       "path": "frontend/Register/subscribers.js",
-      "type": "subscribers"
-    },
-    {
-      "id": "CheckoutSubscription",
-      "path": "frontend/Checkout/subscribers.js",
       "type": "subscribers"
     }
   ]
