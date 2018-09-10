@@ -1,8 +1,10 @@
 const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
-const UnknownError = require('../models/Errors/UnknownError')
 const request = require('request')
+const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
+const InvalidCallError = require('../models/Errors/InvalidCallError')
 const Logger = require('./logger')
 
 /**
@@ -33,8 +35,8 @@ class SGShopifyApi {
    */
   async addAddress (customerId, address) {
     try {
-      await this.postRequest(`/admin/customers/${customerId}/addresses.json`, { address })
-      return { success: true }
+      const response = await this.postRequest(`/admin/customers/${customerId}/addresses.json`, { address })
+      return { id: response.customer_address.id }
     } catch (err) {
       if (err) {
         // Some Shopify address validation error occurred
@@ -50,6 +52,103 @@ class SGShopifyApi {
 
         throw err
       }
+    }
+  }
+
+  /**
+   * Get up to 250 addresses of the customer
+   * @param {string} customerId
+   * @returns {Promise.<ShopifyAddress[]>}
+   * @throws UnknownError
+   * @throws CustomerNotFoundError
+   */
+  async getAddresses (customerId) {
+    try {
+      const response = await this.getRequest(`/admin/customers/${customerId}/addresses.json?limit=250`, {})
+      return response.addresses
+    } catch (err) {
+      if (err.code === 404) {
+        throw new CustomerNotFoundError()
+      }
+      throw new UnknownError()
+    }
+  }
+
+  /**
+   * @param {number} customerId
+   * @param {number|string} addressId
+   * @returns {Promise.<{success:boolean}>}
+   */
+  async setDefaultAddress (customerId, addressId) {
+    let response
+
+    try {
+      response = await this.putRequest(`/admin/customers/${customerId}/addresses/${addressId}/default.json`, {})
+    } catch (err) {
+      if (err.code === 404) {
+        throw new CustomerNotFoundError()
+      }
+
+      throw new UnknownError()
+    }
+
+    if (parseInt(response.customer_address.id) !== parseInt(addressId)) {
+      throw new UnknownError()
+    }
+
+    return { success: true }
+  }
+
+  /**
+   * @param {string} customerId
+   * @param {ShopifyAddress} address
+   * @returns {Promise.<{success:boolean}>}
+   * @throws FieldValidationError
+   * @throws UnknownError
+   * @throws InvalidCallError
+   */
+  async updateAddress (customerId, address) {
+    try {
+      await this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, { address })
+      return { success: true }
+    } catch (err) {
+      if (err.code === 404) {
+        throw new InvalidCallError('Address not found')
+      }
+
+      // Some Shopify address validation error occurred
+      if (err.code === 422) {
+        const validationError = new FieldValidationError()
+        for (let fieldName in err.error) {
+          err.error[fieldName].forEach(message => {
+            validationError.addValidationMessage(fieldName, message, address[fieldName])
+          })
+        }
+        throw validationError
+      }
+
+      throw new UnknownError()
+    }
+  }
+
+  /**
+   * @param {string} customerId
+   * @param {Array} addressIds
+   * @returns {Promise.<{success:boolean}>}
+   */
+  async deleteAddresses (customerId, addressIds) {
+    try {
+      this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {})
+      return { success: true }
+    } catch (err) {
+      // Some Shopify address validation error occurred
+      if (err.code === 422) {
+        if (err.error.match(/Cannot remove address ids because the default address id \(.*\) was included/)) {
+          throw new InvalidCallError('Cannot remove default address.')
+        }
+      }
+
+      throw new UnknownError()
     }
   }
 

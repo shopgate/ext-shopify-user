@@ -1,6 +1,5 @@
 const querystring = require('querystring')
 const BigJSON = require('json-bigint')
-const https = require('https')
 const request = require('request-promise-native')
 const Logger = require('./logger')
 
@@ -9,7 +8,7 @@ module.exports = class {
    * @param {Object} config
    * @param {context.log} logger
    */
-  constructor(config, logger) {
+  constructor (config, logger) {
     this.config = config
     this.logger = new Logger(logger)
   }
@@ -19,7 +18,7 @@ module.exports = class {
    * @param {Object} data
    * @returns {Promise<object>} The JSON decoded response body.
    */
-  get(endpoint, data) {
+  get (endpoint, data) {
     endpoint += '?' + querystring.stringify(data)
     return (this.makeRequest(endpoint, 'GET', data))
   }
@@ -29,7 +28,7 @@ module.exports = class {
    * @param {Object} data
    * @returns {Promise<object>} The JSON decoded response body.
    */
-  put(endpoint, data) {
+  put (endpoint, data) {
     return (this.makeRequest(endpoint, 'PUT', data))
   }
 
@@ -38,7 +37,7 @@ module.exports = class {
    * @param {Object} data
    * @returns {Promise<object>} The JSON decoded response body.
    */
-  post(endpoint, data) {
+  post (endpoint, data) {
     return (this.makeRequest(endpoint, 'POST', data))
   }
 
@@ -47,7 +46,7 @@ module.exports = class {
    * @param {Object} data
    * @returns {Promise<object>} The JSON decoded response body.
    */
-  delete(endpoint, data) {
+  delete (endpoint, data) {
     return (this.makeRequest(endpoint, 'DELETE', data))
   }
 
@@ -56,7 +55,7 @@ module.exports = class {
    * @param {Object} data
    * @returns {Promise<object>} The JSON decoded response body.
    */
-  patch(endpoint, data) {
+  patch (endpoint, data) {
     return (this.makeRequest(endpoint, 'PATCH', data))
   }
 
@@ -67,7 +66,7 @@ module.exports = class {
    * @returns {Promise<object>} The JSON decoded response body.
    * @throws when request fails or response is empty
    */
-  async makeRequest(endpoint, method, data) {
+  async makeRequest (endpoint, method, data) {
     const options = {
       uri: 'https://' + this.config.shop.replace(/\/+$/, '') + '/' + endpoint.replace(/^\/+/, ''),
       method: method.toLowerCase() || 'get',
@@ -88,7 +87,7 @@ module.exports = class {
       options.headers['X-Shopify-Access-Token'] = this.config.access_token
     }
 
-    const response = await request({...options, time: true});
+    const response = await request({ ...options, time: true })
     this.logger.log(options, response)
 
     if (response.body.trim() === '') throw new Error('Empty response body.')
@@ -108,7 +107,7 @@ module.exports = class {
    * @param {Object} options
    * @returns {Boolean}
    */
-  isGetMethod(options) {
+  isGetMethod (options) {
     return options.method === 'get'
   }
 }
