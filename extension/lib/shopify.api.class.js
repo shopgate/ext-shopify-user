@@ -1,6 +1,6 @@
 const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
-const request = require('request')
+const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
@@ -138,7 +138,7 @@ class SGShopifyApi {
    */
   async deleteAddresses (customerId, addressIds) {
     try {
-      this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {})
+      await this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {})
       return { success: true }
     } catch (err) {
       // Some Shopify address validation error occurred
@@ -150,13 +150,6 @@ class SGShopifyApi {
 
       throw new UnknownError()
     }
-  }
-
-  /**
-   * @returns {string}
-   */
-  getGraphQlUrl () {
-    return 'https://' + this.shop + '/api/graphql'
   }
 
   /**
@@ -218,9 +211,9 @@ class SGShopifyApi {
       }
     }
 
-    this.putRequest('/admin/checkouts/' + checkoutToken + '.json', data, (err, response) => {
-      return cb(err, response)
-    })
+    this.putRequest('/admin/checkouts/' + checkoutToken + '.json', data)
+      .then(response => cb(null, response))
+      .catch(err => cb(err))
   }
 
   /**
@@ -236,9 +229,9 @@ class SGShopifyApi {
       }
     }
 
-    this.putRequest('/admin/checkouts/' + checkoutToken + '.json', data, (err, response) => {
-      return cb(err, response)
-    })
+    this.putRequest('/admin/checkouts/' + checkoutToken + '.json', data)
+      .then(response => cb(null, response))
+      .catch(err => cb(err))
   }
 
   /**
@@ -319,31 +312,17 @@ class SGShopifyApi {
   /**
    * @param endpoint
    * @param params
-   * @param cb
    */
-  putRequest (endpoint, params, cb) {
-    this.shopifyApiRequest.put(endpoint, params)
-      .then((response) => {
-        cb(null, response)
-      })
-      .catch((err) => {
-        cb(err)
-      })
+  async putRequest (endpoint, params) {
+    return this.shopifyApiRequest.put(endpoint, params)
   }
 
   /**
    * @param endpoint
    * @param params
-   * @param cb
    */
-  deleteRequest (endpoint, params, cb) {
-    this.shopifyApiRequest.delete(endpoint, params)
-      .then((response) => {
-        cb(null, response)
-      })
-      .catch((err) => {
-        cb(err)
-      })
+  async deleteRequest (endpoint, params) {
+    return this.shopifyApiRequest.delete(endpoint, params)
   }
 
   /**
@@ -356,17 +335,18 @@ class SGShopifyApi {
 
   /**
    * @param {SGShopifyApi} shopify
-   * @param {object} login
    * @param {string} storefrontAccessToken
-   * @return {object}
+   * @param {Login} login
+   * @param {Object} input
+   * @return {Object} User-data including the store front access token
    */
-  createRequestData (shopify, login, storefrontAccessToken) {
-    return {
+  async checkCredentials (shopify, storefrontAccessToken, login, input) {
+    const requestData = {
       method: 'POST',
-      url: this.getGraphQlUrl(),
+      url: 'https://' + this.shop + '/api/graphql',
       headers: {
         'cache-control': 'no-cache',
-        'x-shopify-storefront-access-token': storefrontAccessToken,
+        'x-shopify-storefront-access-token': storefrontAccessToken.access_token,
         accept: 'application/json',
         'content-type': 'application/json'
       },
@@ -382,74 +362,45 @@ class SGShopifyApi {
         },
         operationName: 'customerAccessTokenCreate'
       },
-      json: true
+      json: true,
+      resolveWithFullResponse: true
     }
-  }
 
-  /**
-   * @param {SGShopifyApi} shopify
-   * @param {string} storefrontAccessToken
-   * @param {Login} login
-   * @param {Object} input
-   * @param {function} cb
-   */
-  checkCredentials (shopify, storefrontAccessToken, login, input, cb) {
-    const requestData = shopify.createRequestData(shopify, login, storefrontAccessToken)
     const logRequestData = JSON.parse(JSON.stringify(requestData))
     logRequestData.body.variables.input.password = 'XXXXXXXX'
     const logRequest = new Logger(this.context.log)
 
-    /**
-     * Perform a request against the graphQL-API from Shopify to authenticate using the users login credentials.
-     *
-     * @typedef {Object} ShopifyCustomerAccessToken
-     * @property {string} accessToken
-     * @property {string} expiresAt
-     *
-     * @typedef {Object} ShopifyCustomerAccessTokenCreate
-     * @property {ShopifyCustomerAccessToken} customerAccessToken
-     * @property {[Object]} userErrors
-     *
-     * @typedef {Object} ShopifyCustomerAccessTokenData
-     * @property {ShopifyCustomerAccessTokenData} customerAccessTokenCreate
-     *
-     * @typedef {Object} ShopifyGraphQLResponseBody
-     * @property {ShopifyCustomerAccessTokenData} data
-     *
-     * @param {Error} err
-     * @param {Object} response
-     * @param {ShopifyGraphQLResponseBody} body
-     */
-    // TODO make this thing use request-promise-native
-    request(requestData, (err, response, body) => {
+    let response
+
+    try {
+      response = await requestp(requestData)
       logRequest.log(logRequestData, response)
+    } catch (err) {
+      logRequest.log(logRequestData, null)
+      this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
+      throw new UnknownError()
+    }
 
-      if (err) {
-        this.context.log.error(input.authType + ': Auth step finished unsuccessfully.')
-        return cb(new UnknownError())
-      }
+    const token = response.body.data
+    if (!token) {
+      this.context.log.error('No token received for login credentials: ' + JSON.stringify(logRequestData.body.variables.input))
+      throw new UnknownError()
+    }
 
-      const token = body.data
-      if (!token) {
-        this.context.log.error('No token received for login credentials: ' + JSON.stringify(login))
-        return cb(new UnknownError())
-      }
+    if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
+      !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
+      throw new Error(token.customerAccessTokenCreate.userErrors[0].message)
+    }
 
-      if (Tools.propertyExists(token, 'customerAccessTokenCreate.userErrors') &&
-        !Tools.isEmpty(token.customerAccessTokenCreate.userErrors)) {
-        return cb(new Error(token.customerAccessTokenCreate.userErrors[0].message))
-      }
-
-      // login successful (pass on the storefront access token to avoid additional requests)
-      cb(null, {
-        login: {
-          login: login.login,
-          parameters: login.parameters
-        },
-        customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
-        storefrontAccessToken
-      })
-    })
+    // login successful (pass on the storefront access token to avoid additional requests)
+    return {
+      login: {
+        login: login.login,
+        parameters: login.parameters
+      },
+      customerAccessToken: token.customerAccessTokenCreate.customerAccessToken,
+      storefrontAccessToken
+    }
   }
 }
 

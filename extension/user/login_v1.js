@@ -22,28 +22,21 @@ module.exports = async function (context, input, cb) {
 
       return shopify.checkCredentials(shopify, storefrontAccessToken, login, input)
     case 'web':
-      context.storage.device.get('webLoginPhrase', (err, phrase) => {
-        if (err) {
-          return err
-        }
+      const phrase = await context.storage.device.get('webLoginPhrase')
 
-        /**
-           * @typedef {Object} DecryptedStringData
-           * @property {function(string|null|undefined):string} toString
-           *
-           * @type {DecryptedStringData}
-           */
-        const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase)
-        const decodedPayload = decryptedData.toString(CryptoJS.enc.Utf8)
-        const userData = JSON.parse(decodedPayload)
+      /**
+       * @typedef {Object} DecryptedStringData
+       * @property {function(string|null|undefined):string} toString
+       *
+       * @type {DecryptedStringData}
+       */
+      const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase)
+      const decodedPayload = decryptedData.toString(CryptoJS.enc.Utf8)
+      const userData = JSON.parse(decodedPayload)
 
-        login.login = userData.u
-        login.password = userData.p
+      login.login = userData.u
+      login.password = userData.p
 
-        shopify.checkCredentials(shopify, storefrontAccessToken, login, input, (err, checkCredentialsResponse) => {
-          return cb(err, checkCredentialsResponse)
-        })
-      })
-      break
+      return shopify.checkCredentials(shopify, storefrontAccessToken, login, input)
   }
 }
