@@ -1,8 +1,8 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const SGShopifyApi = require('../lib/shopify.api.class')
 const { mapCountry, mapProvince, mapCustomAttributes } = require('../lib/mapper')
 const _ = require('lodash')
+const ApiFactory = require('../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context
@@ -13,7 +13,7 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  return new SGShopifyApi(context).updateAddress(context.meta.userId, createAddressUpdate(input))
+  return ApiFactory.buildAdminApi(context).updateAddress(context.meta.userId, createAddressUpdate(input))
 }
 
 /**

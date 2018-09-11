@@ -1,5 +1,5 @@
 const Tools = require('../lib/tools')
-const StorefrontApi = require('../lib/shopify.api.storefront.js')
+const ApiFactory = require('../lib/shopify.api.factory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
@@ -22,7 +22,7 @@ module.exports = async function (context, input) {
   }
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
-  const storefrontApi = new StorefrontApi(context, storeFrontAccessToken)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   let customerAccessToken = await context.storage.user.get('customerAccessToken')
   if (!customerAccessToken || !customerAccessToken.accessToken) {
     throw new UnauthorizedError('Please log in again.')

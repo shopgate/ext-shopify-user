@@ -1,6 +1,5 @@
 const CryptoJS = require('crypto-js')
-const AdminApi = require('../lib/shopify.api.class.js')
-const StorefrontApi = require('../lib/shopify.api.storefront.js')
+const ApiFactory = require('../lib/shopify.api.factory')
 const Login = require('../models/user/login')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 
@@ -13,12 +12,12 @@ module.exports = async function (context, input) {
   // TODO move to some kind of token manager class or function
   let storefrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   if (!storefrontAccessToken) {
-    const adminApi = new AdminApi(context)
+    const adminApi = ApiFactory.buildAdminApi(context)
     storefrontAccessToken = (await adminApi.getStoreFrontAccessToken()).access_token
     context.storage.extension.set('storefrontAccessToken', storefrontAccessToken)
   }
 
-  const storefrontApi = new StorefrontApi(context, storefrontAccessToken)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storefrontAccessToken)
   const login = new Login(input.strategy)
   login.parameters = { customerId: input.parameters.customerId || null }
 

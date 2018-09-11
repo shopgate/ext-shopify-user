@@ -11,7 +11,7 @@ module.exports = class {
    * @param {object} response A response object of the "request" module
    */
   log (requestOptions, response) {
-    if (response === null || typeof response.statusCode === 'undefined') {
+    if (!response || response === {} || typeof response.statusCode === 'undefined') {
       response = {
         body: null,
         headers: []

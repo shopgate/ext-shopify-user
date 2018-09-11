@@ -1,7 +1,7 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
-const SGShopifyApi = require('../lib/shopify.api.class')
+const ApiFactory = require('../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context
@@ -20,5 +20,5 @@ module.exports = async function (context, input) {
     throw new InvalidCallError('Empty string address id passed.')
   }
 
-  return new SGShopifyApi(context).deleteAddresses(context.meta.userId, input.ids)
+  return ApiFactory.buildAdminApi(context).deleteAddresses(context.meta.userId, input.ids)
 }

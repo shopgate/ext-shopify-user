@@ -1,4 +1,4 @@
-const StorefrontApi = require('../lib/shopify.api.storefront.js')
+const ApiFactory = require('../lib/shopify.api.factory')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
@@ -30,7 +30,7 @@ module.exports = async function (context, input) {
     }
   }
 
-  const storefrontApi = new StorefrontApi(context, input.storefrontAccessToken)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.storefrontAccessToken)
   const userId = Buffer.from(
     (await storefrontApi.getCustomerByAccessToken(input.customerAccessToken.accessToken)).id,
     'base64')

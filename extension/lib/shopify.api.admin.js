@@ -1,29 +1,21 @@
-const ShopifyRequest = require('./shopify.request')
 const Tools = require('./tools')
 const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
+const jsonb = require('json-bigint')
+const requestp = require('request-promise-native')
 
-/**
- * Class for communication with ShopifyAPI. A wrapper for the shopify-node-api.
- */
-class SGShopifyApi {
-  constructor (context) {
-    this.context = context
-    this.shop = this.context.config.shopifyShopAlias + '.myshopify.com'
-    this.shopifyApiKey = null // not required
-    this.accessToken = this.context.config.shopifyAccessToken
-    this.verbose = false
-
-    this.shopifyApiRequest = new ShopifyRequest({
-      shop: this.shop,
-      shopify_api_key: this.shopifyApiKey, // not required
-      access_token: this.accessToken, // not required
-      verbose: this.verbose
-    },
-    context.log
-    )
+module.exports = class {
+  /**
+   * @param {string} shopAlias
+   * @param {string} accessToken
+   * @param {Function} requestLog
+   */
+  constructor (shopAlias, accessToken, requestLog) {
+    this.shop = shopAlias + '.myshopify.com'
+    this.accessToken = accessToken
+    this.requestLog = requestLog
   }
 
   /**
@@ -33,7 +25,7 @@ class SGShopifyApi {
    */
   async addAddress (customerId, address) {
     try {
-      const response = await this.postRequest(`/admin/customers/${customerId}/addresses.json`, { address })
+      const response = await this.post(`/admin/customers/${customerId}/addresses.json`, { address })
       return { id: response.customer_address.id }
     } catch (err) {
       if (err) {
@@ -62,7 +54,7 @@ class SGShopifyApi {
    */
   async getAddresses (customerId) {
     try {
-      const response = await this.getRequest(`/admin/customers/${customerId}/addresses.json?limit=250`, {})
+      const response = await this.get(`/admin/customers/${customerId}/addresses.json`, `limit=250`)
       return response.addresses
     } catch (err) {
       if (err.code === 404) {
@@ -81,7 +73,7 @@ class SGShopifyApi {
     let response
 
     try {
-      response = await this.putRequest(`/admin/customers/${customerId}/addresses/${addressId}/default.json`, {})
+      response = await this.put(`/admin/customers/${customerId}/addresses/${addressId}/default.json`)
     } catch (err) {
       if (err.code === 404) {
         throw new CustomerNotFoundError()
@@ -107,7 +99,7 @@ class SGShopifyApi {
    */
   async updateAddress (customerId, address) {
     try {
-      await this.putRequest(`/admin/customers/${customerId}/addresses/${address.id}.json`, { address })
+      await this.put(`/admin/customers/${customerId}/addresses/${address.id}.json`, { address })
       return { success: true }
     } catch (err) {
       if (err.code === 404) {
@@ -136,7 +128,11 @@ class SGShopifyApi {
    */
   async deleteAddresses (customerId, addressIds) {
     try {
-      await this.putRequest(`/admin/customers/${customerId}/addresses/set.json?address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`, {})
+      await this.put(
+        `/admin/customers/${customerId}/addresses/set.json`,
+        {},
+        `address_ids[]=${addressIds.join('&address_ids[]=')}&operation=destroy`
+      )
       return { success: true }
     } catch (err) {
       // Some Shopify address validation error occurred
@@ -156,7 +152,7 @@ class SGShopifyApi {
    */
   async getStoreFrontAccessToken () {
     const endpoint = '/admin/storefront_access_tokens.json'
-    const response = await this.getRequest(endpoint, {})
+    const response = await this.get(endpoint)
     const storefrontAccessTokenTitle = 'Web Checkout Storefront Access Token'
 
     if (!Tools.propertyExists(response, 'storefront_access_tokens')) {
@@ -169,7 +165,7 @@ class SGShopifyApi {
     }
 
     // create a new access token, because no valid token was found at this point
-    return (await this.postRequest(endpoint, {
+    return (await this.post(endpoint, {
       storefront_access_token: {
         title: storefrontAccessTokenTitle
       }
@@ -180,7 +176,7 @@ class SGShopifyApi {
    * @param cb
    */
   createCheckout (cb) {
-    this.postRequest('/admin/checkouts.json', {})
+    this.post('/admin/checkouts.json')
       .then(response => cb(null, response))
       .catch(err => cb(err))
   }
@@ -191,7 +187,7 @@ class SGShopifyApi {
    * @returns {function} cb
    */
   getCheckout (checkoutToken, cb) {
-    this.getRequest('/admin/checkouts/' + checkoutToken + '.json', {})
+    this.get(`/admin/checkouts/${checkoutToken}.json`)
       .then(response => cb(null, response))
       .catch(err => cb(err))
   }
@@ -209,7 +205,7 @@ class SGShopifyApi {
       }
     }
 
-    this.putRequest('/admin/checkouts/' + checkoutToken + '.json', data)
+    this.put(`/admin/checkouts/${checkoutToken}.json`, data)
       .then(response => cb(null, response))
       .catch(err => cb(err))
   }
@@ -227,7 +223,7 @@ class SGShopifyApi {
       }
     }
 
-    this.putRequest('/admin/checkouts/' + checkoutToken + '.json', data)
+    this.put(`/admin/checkouts/${checkoutToken}.json`, data)
       .then(response => cb(null, response))
       .catch(err => cb(err))
   }
@@ -241,7 +237,7 @@ class SGShopifyApi {
    * @param cb
    */
   getCustomerById (customersId, cb) {
-    this.getRequest(`/admin/customers/${customersId}.json`, {})
+    this.get(`/admin/customers/${customersId}.json`)
       .then(userData => {
         if (Tools.isEmpty(userData.customer)) {
           return cb(new Error('Customer not found'))
@@ -257,7 +253,7 @@ class SGShopifyApi {
    * @returns {function} cb
    */
   findUserByEmail (email, cb) {
-    this.getRequest(`/admin/customers/search.json?query=email:"${email}"&fields=id,email&limit=5`, {})
+    this.get('/admin/customers/search.json', `query=email:"${email}"&fields=id,email&limit=5`)
       .then(userData => {
         if (Tools.isEmpty(userData.customers)) {
           return cb(new Error('Customer not found'))
@@ -269,36 +265,86 @@ class SGShopifyApi {
   }
 
   /**
-   * @param endpoint
-   * @param params
+   * @param {string} endpoint
+   * @param {string} query
    */
-  async getRequest (endpoint, params) {
-    return this.shopifyApiRequest.get(endpoint, params)
+  async get (endpoint, query = '') {
+    return this.request('GET', endpoint, query)
   }
 
   /**
-   * @param endpoint
-   * @param params
+   * @param {string} endpoint
+   * @param {Object} data
+   * @param {string} query
    */
-  async putRequest (endpoint, params) {
-    return this.shopifyApiRequest.put(endpoint, params)
+  async post (endpoint, data = {}, query = '') {
+    return this.request('POST', endpoint, query, data)
   }
 
   /**
-   * @param endpoint
-   * @param params
+   * @param {string} endpoint
+   * @param {Object} data
+   * @param {string} query
    */
-  async deleteRequest (endpoint, params) {
-    return this.shopifyApiRequest.delete(endpoint, params)
+  async put (endpoint, data = {}, query = '') {
+    return this.request('PUT', endpoint, query, data)
   }
 
   /**
-   * @param endpoint
-   * @param params
+   * @param {string} endpoint
+   * @param {string} query
    */
-  async postRequest (endpoint, params) {
-    return this.shopifyApiRequest.post(endpoint, params)
+  async delete (endpoint, query) {
+    return this.request('DELETE', endpoint, query)
+  }
+
+  /**
+   * @param {string} method
+   * @param {string} endpoint
+   * @param {string} query
+   * @param {Object} data
+   * @returns {Promise<object>} The JSON decoded response body.
+   * @throws when request fails or response is empty
+   */
+  async request (method, endpoint, query = '', data = {}) {
+    const options = {
+      uri: `https://${this.shop.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
+      method: method.toLowerCase() || 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      simple: false,
+      resolveWithFullResponse: true
+    }
+
+    if (data && Object.keys(data).length) {
+      options.body = jsonb.stringify(data)
+    }
+
+    if (this.accessToken) {
+      options.headers['X-Shopify-Access-Token'] = this.accessToken
+    }
+
+    let response
+    try {
+      response = await requestp({ ...options, time: true })
+    } catch (err) {
+      this.requestLog(options, {})
+      throw err
+    }
+    this.requestLog(options, response)
+
+    if (response.body.trim() === '') throw new Error('Empty response body.')
+
+    const body = jsonb.parse(response.body)
+    if (response.statusCode >= 400) {
+      const error = new Error('Received non-2xx or -3xx HTTP status code.')
+      error.code = response.statusCode
+      error.error = body.error_description || body.error || body.errors || response.statusMessage
+      throw error
+    }
+
+    return body
   }
 }
-
-module.exports = SGShopifyApi

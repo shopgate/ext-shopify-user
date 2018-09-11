@@ -2,18 +2,19 @@ const Tools = require('./tools')
 const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
-const Logger = require('./logger')
 
 module.exports = class {
   /**
-   * @param {Object} context
+   * @param {string} shopAlias
    * @param {string} storefrontAccessToken
+   * @param {Object} logger A generic logger instance, e.g. current step context's .log property.
+   * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    */
-  constructor (context, storefrontAccessToken) {
-    this.context = context
+  constructor (shopAlias, storefrontAccessToken, logger, requestLog) {
+    this.apiUrl = `https://${shopAlias}.myshopify.com/api/graphql`
     this.storefrontAccessToken = storefrontAccessToken
-    this.logger = new Logger(context.log)
-    this.apiUrl = `https://${this.context.config.shopifyShopAlias}.myshopify.com/api/graphql`
+    this.logger = logger
+    this.requestLog = requestLog
   }
 
   /**
@@ -39,12 +40,12 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.context.log.error(authType + ': Auth step finished unsuccessfully.', err)
+      this.logger.error(authType + ': Auth step finished unsuccessfully.', err)
       throw new UnknownError()
     }
 
     if (!response.body.data) {
-      this.context.log.error(`No token received for login credentials: ${variables.input.login} / XXXXXXXX`)
+      this.logger.error(`No token received for login credentials: ${variables.input.login} / XXXXXXXX`)
       throw new UnknownError()
     }
 
@@ -106,10 +107,10 @@ module.exports = class {
 
     try {
       const response = await requestp(options)
-      this.logger.log(logOptions, response)
+      this.requestLog(logOptions, response)
       return response
     } catch (err) {
-      this.logger.log(logOptions, null)
+      this.requestLog(logOptions, null)
       throw err
     }
   }
