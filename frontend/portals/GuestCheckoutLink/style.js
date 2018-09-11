@@ -16,9 +16,7 @@ const guestCheckout = css({
 }).toString();
 
 const or = css({
-  display: 'inline-block',
   marginRight: variables.gap.small * 0.5,
-  marginLeft: variables.gap.small * 0.5,
 }).toString();
 
 export default {
