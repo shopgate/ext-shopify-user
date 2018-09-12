@@ -165,11 +165,11 @@ module.exports = class {
     }
 
     // create a new access token, because no valid token was found at this point
-    return (await this.post(endpoint, {
+    return this.post(endpoint, {
       storefront_access_token: {
         title: storefrontAccessTokenTitle
       }
-    })).storefront_access_token.access_token
+    })
   }
 
   /**
