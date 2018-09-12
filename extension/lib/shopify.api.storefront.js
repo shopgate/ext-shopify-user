@@ -84,7 +84,7 @@ module.exports = class {
   async request (query, variables = undefined, operationName = undefined) {
     const options = {
       method: 'POST',
-      url: this.apiUrl,
+      uri: this.apiUrl,
       headers: {
         'cache-control': 'no-cache',
         'x-shopify-storefront-access-token': this.storefrontAccessToken,
@@ -97,21 +97,25 @@ module.exports = class {
         operationName
       },
       json: true,
+      simple: false,
       resolveWithFullResponse: true
     }
 
+    // TODO move this into a more general obfuscator class or function
     const logOptions = JSON.parse(JSON.stringify(options))
     if (variables && variables.input && variables.input.password) {
       logOptions.body.variables.input.password = 'XXXXXXXX'
     }
 
+    let response
     try {
-      const response = await requestp(options)
-      this.requestLog(logOptions, response)
-      return response
+      response = await requestp(options)
     } catch (err) {
       this.requestLog(logOptions, null)
       throw err
     }
+
+    this.requestLog(logOptions, response)
+    return response
   }
 }
