@@ -173,62 +173,6 @@ module.exports = class {
   }
 
   /**
-   * @param cb
-   */
-  createCheckout (cb) {
-    this.post('/admin/checkouts.json')
-      .then(response => cb(null, response))
-      .catch(err => cb(err))
-  }
-
-  /**
-   * @param checkoutToken
-   * @param cb
-   * @returns {function} cb
-   */
-  getCheckout (checkoutToken, cb) {
-    this.get(`/admin/checkouts/${checkoutToken}.json`)
-      .then(response => cb(null, response))
-      .catch(err => cb(err))
-  }
-
-  /**
-   * @param checkoutToken
-   * @param productList
-   * @param cb
-   * @returns {function} cb
-   */
-  setCheckoutProducts (checkoutToken, productList, cb) {
-    const data = {
-      checkout: {
-        line_items: productList
-      }
-    }
-
-    this.put(`/admin/checkouts/${checkoutToken}.json`, data)
-      .then(response => cb(null, response))
-      .catch(err => cb(err))
-  }
-
-  /**
-   * @param checkoutToken
-   * @param discountCode
-   * @param cb
-   * @returns {function} cb
-   */
-  setCheckoutDiscount (checkoutToken, discountCode, cb) {
-    const data = {
-      checkout: {
-        discount_code: discountCode
-      }
-    }
-
-    this.put(`/admin/checkouts/${checkoutToken}.json`, data)
-      .then(response => cb(null, response))
-      .catch(err => cb(err))
-  }
-
-  /**
    * @typedef {Object} userData
    * @property {Object} customer
    * @property {Array} customers
