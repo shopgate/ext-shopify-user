@@ -22,7 +22,6 @@ describe('Shopify Admin API', () => {
       let logCallCount = 0
       subjectUnderTest.requestLog = (requestOptions, response) => {
         logCallCount++
-        assert.ok(logCallCount < 2)
         assert.strictEqual(requestOptions.uri, baseUrl + dummyEndpoint)
         assert.strictEqual(response.statusCode, 200)
         assert.strictEqual(response.body, '{}')
@@ -33,7 +32,7 @@ describe('Shopify Admin API', () => {
     })
   })
 
-  describe('Fetchen Storefront API access token', () => {
+  describe('getStoreFrontAccessToken()', () => {
     const expectedToken = {
       title: 'Web Checkout Storefront Access Token',
       access_token: '12345'
