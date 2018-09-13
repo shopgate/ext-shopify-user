@@ -40,7 +40,7 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error(authType + ': Auth step finished unsuccessfully.', err)
+      this.logger.error('Error creating customer access token.', err)
       throw new UnknownError()
     }
 
@@ -55,6 +55,36 @@ module.exports = class {
     }
 
     return response.body.data.customerAccessTokenCreate.customerAccessToken
+  }
+
+  async refreshCustomerAccessToken (customerAccessToken) {
+    const query = 'mutation customerAccessTokenRenew($customerAccessToken: String!) {' +
+      'customerAccessTokenRenew(customerAccessToken: $customerAccessToken) {' +
+      'userErrors {field message} customerAccessToken {accessToken expiresAt}' +
+      '}},'
+
+    const variables = { customerAccessToken }
+    const operationName = 'customerAccessTokenRenew'
+
+    let response
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error refreshing customer access token.', err)
+      throw new UnknownError()
+    }
+
+    if (!response.body.data) {
+      this.logger.error(`No token received for login credentials: ${variables.input.login} / XXXXXXXX`)
+      throw new UnknownError()
+    }
+
+    if (Tools.propertyExists(response.body.data, 'customerAccessTokenRenew.userErrors') &&
+      !Tools.isEmpty(response.body.data.customerAccessTokenRenew.userErrors)) {
+      throw new Error(response.body.data.customerAccessTokenRenew.userErrors[0].message)
+    }
+
+    return response.body.data.customerAccessTokenRenew.customerAccessToken
   }
 
   /**
