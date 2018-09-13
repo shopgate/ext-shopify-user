@@ -5,13 +5,32 @@
  * @property {string} config.shopifyAccessToken
  * @property {string} config.userRegistrationUrl
  * @property {string} config.userDataCacheTtl
+ * @property {string} config.stage
+ * @property {string} config.credentials.baseDomain
+ * @property {string} config.credentials.clientId
+ * @property {string} config.credentials.clientSecret
+ * @property {string} config.credentials.refreshToken
+ * @property {Object} config.requestTimeout
+ * @property {number} config.requestTimeout.token
+ * @property {number} config.requestTimeout.bigApi
  * @property {Object} meta
  * @property {string|number} meta.userId
+ * @property {string} meta.appId
  * @property {Object} storage
  * @property {Object} storage.user
- * @property {Function} storage.user.get - (string key, Function cb)
- * @property {Function} storage.user.set - (string key, mixed value, Function cb)
- * @property {Function} storage.user.del - (string key, Function cb)
+ * @property {Function} storage.user.get - (string key)
+ * @property {Function} storage.user.set - (string key, mixed value)
+ * @property {Function} storage.user.del - (string key)
+ * @property {Object} storage.extension
+ * @property {Function} storage.extension.get - (string key)
+ * @property {Function} storage.extension.set - (string key, mixed value)
+ * @property {Function} storage.extension.del - (string key)
+ * @property {Function} storage.extension.map.get - (string mapName)
+ * @property {Function} storage.extension.map.set - (string mapName, Object map)
+ * @property {Function} storage.extension.map.del - (string mapName)
+ * @property {Function} storage.extension.map.getItem - (string mapName, string key)
+ * @property {Function} storage.extension.map.setItem - (string mapName, string key, string value)
+ * @property {Function} storage.extension.map.delItem - (string mapName, string key)
  * @property {Object} log
  * @property {Function} log.trace
  * @property {Function} log.debug
