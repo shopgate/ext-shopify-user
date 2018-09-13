@@ -70,7 +70,7 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error refreshing customer access token.', err)
+      this.logger.error('Error renewing customer access token.', err)
       throw new UnknownError()
     }
 
