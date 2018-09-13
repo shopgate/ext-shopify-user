@@ -31,7 +31,7 @@ module.exports = async function (context) {
   const pipelineApiKey = crypto.randomBytes(Math.floor(Math.random() * 10 + 20)).toString('base64')
 
   try {
-    await bigApiClient.scheduleCustomerTokenRefresh(context.config.credentials.stage, context.meta.appId, pipelineApiKey)
+    await bigApiClient.scheduleCustomerTokenRenew(context.config.credentials.stage, context.meta.appId, pipelineApiKey)
   } catch (err) {
     // don't break, just log
     context.log.error(err)
@@ -47,7 +47,7 @@ module.exports = async function (context) {
   }
 
   try {
-    await context.storage.extension.set('refreshCustomerAccessTokenPipelineApiKey', pipelineApiKey)
+    await context.storage.extension.set('renewCustomerAccessTokenPipelineApiKey', pipelineApiKey)
   } catch (err) {
     // don't break, just log
     context.log.error(err)

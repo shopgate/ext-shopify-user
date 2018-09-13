@@ -20,7 +20,7 @@ module.exports = class {
    * @returns {Promise<void>}
    * @throws Error when requesting the Big API fails.
    */
-  async scheduleCustomerTokenRefresh (stage, applicationId, pipelineApiKey) {
+  async scheduleCustomerTokenRenew (stage, applicationId, pipelineApiKey) {
     await this.request(
       'task-scheduler',
       'PUT',
@@ -30,7 +30,7 @@ module.exports = class {
         target: {
           type: 'http',
           params: {
-            uri: `https://${applicationId}.${stage}.connect.shopgate.com/app/trustedPipelines/shopgate.user.refreshCustomerAccessTokens.v1`,
+            uri: `https://${applicationId}.${stage}.connect.shopgate.com/app/trustedPipelines/shopgate.user.renewCustomerAccessTokens.v1`,
             method: 'POST'
           }
         },
@@ -38,7 +38,7 @@ module.exports = class {
           token: pipelineApiKey
         },
         cronPattern: `0 0 * * *`,
-        queue: 'shopifyRefreshCustomerAccessTokens'
+        queue: 'shopifyRenewCustomerAccessTokens'
       }
     )
   }

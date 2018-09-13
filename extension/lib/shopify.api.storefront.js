@@ -57,7 +57,7 @@ module.exports = class {
     return response.body.data.customerAccessTokenCreate.customerAccessToken
   }
 
-  async refreshCustomerAccessToken (customerAccessToken) {
+  async renewCustomerAccessToken (customerAccessToken) {
     const query = 'mutation customerAccessTokenRenew($customerAccessToken: String!) {' +
       'customerAccessTokenRenew(customerAccessToken: $customerAccessToken) {' +
       'userErrors {field message} customerAccessToken {accessToken expiresAt}' +
