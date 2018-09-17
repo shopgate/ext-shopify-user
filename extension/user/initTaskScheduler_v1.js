@@ -14,7 +14,7 @@ module.exports = async function (context) {
   // look up DB setting if local variable not initialized, yet
   let storageTaskSchedulerUpdateRequired
   try {
-    storageTaskSchedulerUpdateRequired = await context.storage.extension.get('taskSchedulerUpdateRequired')
+    storageTaskSchedulerUpdateRequired = (await context.storage.extension.get('taskSchedulerUpdateRequired')) || true
   } catch (err) {
     // don't break, just log
     context.log.error(err)
@@ -25,9 +25,12 @@ module.exports = async function (context) {
     return
   }
 
+  // todo: debugging, remove
+  context.config.credentials.baseDomain = 'shopgatedev.services'
+
   // update task scheduler with a schedule for this app
-  const tokenHandler = new BigApiTokenHandler(await context.storage, context.config.credentials, context.config.requestTimeout.token)
-  const bigApiClient = new BigApiClient(context.config.credentials.baseDomain, tokenHandler.getToken())
+  const tokenHandler = new BigApiTokenHandler(context.storage.extension, context.config.credentials, context.config.requestTimeout.token)
+  const bigApiClient = new BigApiClient(context.config.credentials.baseDomain, tokenHandler, context.config.requestTimeout.bigApi)
   const pipelineApiKey = crypto.randomBytes(Math.floor(Math.random() * 10 + 20)).toString('base64')
 
   try {

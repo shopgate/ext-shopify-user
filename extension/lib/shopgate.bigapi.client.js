@@ -11,6 +11,7 @@ module.exports = class {
     this.baseDomain = baseDomain
     this.tokenHandler = tokenHandler
     this.timeout = timeout
+    this.token = null
   }
 
   /**
@@ -31,13 +32,16 @@ module.exports = class {
           type: 'http',
           params: {
             uri: `https://${applicationId}.${stage}.connect.shopgate.com/app/trustedPipelines/shopgate.user.renewCustomerAccessTokens.v1`,
-            method: 'POST'
+            method: 'POST',
+            json: true
           }
         },
         arguments: {
-          token: pipelineApiKey
+          body: {
+            pipelineApiKey: pipelineApiKey
+          }
         },
-        cronPattern: `0 0 * * *`,
+        cronPattern: `0 0 0 * * *`,
         queue: 'shopifyRenewCustomerAccessTokens'
       }
     )
@@ -55,12 +59,13 @@ module.exports = class {
    */
   async request (serviceName, method, endpoint, query = '', body = {}, retry = true) {
     const uri = `https://${serviceName}.${this.baseDomain}${endpoint}${!query ? '' : `?${query}`}`
+    this.token = await this.tokenHandler.getToken()
 
     try {
       return requestp({
         method,
         uri,
-        headers: { authorization: `Bearer ${this.tokenHandler.getToken()}` },
+        headers: { authorization: `Bearer ${this.token}` },
         body,
         json: true,
         timeout: this.timeout,

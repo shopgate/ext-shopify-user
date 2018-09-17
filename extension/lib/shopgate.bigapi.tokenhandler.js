@@ -52,7 +52,7 @@ module.exports = class {
 
     // for logging:
     const method = 'POST'
-    const uri = `https://api.${this.baseDomain}/oauth/token`
+    const uri = `https://api.${this.credentials.baseDomain}/oauth/token`
 
     try {
       response = requestp({

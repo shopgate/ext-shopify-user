@@ -1,9 +1,11 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "shopgate.user.refreshCustomerAccessTokens.v1",
+    "id": "shopgate.user.renewCustomerAccessTokens.v1",
     "public": true,
-    "input": [],
+    "input": [
+      {"key": "pipelineApiKey", "id": "1"}
+    ],
     "output": [],
     "steps": [
       {
