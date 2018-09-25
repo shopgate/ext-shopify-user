@@ -22,7 +22,7 @@ module.exports = class {
    */
   async getToken () {
     if (!this.currentToken) this.currentToken = await this.storage.get(this.tokenIdentifier)
-    if (!this.currentToken || (this.currentToken.expiresAt - 60000) < Date.now()) this.currentToken = this.getNewToken()
+    if (!this.currentToken || (this.currentToken.expiresAt - 60000) < Date.now()) this.currentToken = await this.getNewToken()
 
     return this.currentToken
   }
@@ -55,7 +55,7 @@ module.exports = class {
     const uri = `https://api.${this.credentials.baseDomain}/oauth/token`
 
     try {
-      response = requestp({
+      response = await requestp({
         method,
         uri,
         headers: {
