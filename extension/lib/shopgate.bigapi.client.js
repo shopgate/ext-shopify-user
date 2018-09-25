@@ -33,7 +33,10 @@ module.exports = class {
           params: {
             uri: `https://${applicationId}.${stage}.connect.shopgate.com/app/trustedPipelines/shopgate.user.renewCustomerAccessTokens.v1`,
             method: 'POST',
-            json: true
+            json: true,
+            headers: {
+              cookie: `SGCONNECT=shopifyRenewCustomerAccessToken-${applicationId}`
+            }
           }
         },
         arguments: {
