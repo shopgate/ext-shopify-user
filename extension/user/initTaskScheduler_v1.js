@@ -34,7 +34,7 @@ module.exports = async function (context) {
   const pipelineApiKey = crypto.randomBytes(Math.floor(Math.random() * 10 + 20)).toString('base64')
 
   try {
-    await bigApiClient.scheduleCustomerTokenRenew(context.config.credentials.stage, context.meta.appId, pipelineApiKey)
+    await bigApiClient.scheduleCustomerTokenRenew(context.config.stage, context.meta.appId, pipelineApiKey)
   } catch (err) {
     // don't break, just log
     context.log.error(err)
