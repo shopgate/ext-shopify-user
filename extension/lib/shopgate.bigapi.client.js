@@ -25,7 +25,7 @@ module.exports = class {
     await this.request(
       'task-scheduler',
       'PUT',
-      `/shopifyRenewCustomerAccessToken-${applicationId}`,
+      `/v1/schedules/shopifyRenewCustomerAccessToken-${applicationId}`,
       '',
       {
         target: {
