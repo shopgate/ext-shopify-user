@@ -4,7 +4,7 @@ const ShopifyLogger = require('./logger')
 
 module.exports = class {
   /**
-   * @param {Object} context The Shopgate Connect step context.
+   * @param {SDKContext} context The Shopgate Connect step context.
    * @returns {AdminApi}
    */
   static buildAdminApi (context) {
@@ -17,7 +17,7 @@ module.exports = class {
   }
 
   /**
-   * @param {Object} context The Shopgate Connect step context.
+   * @param {SDKContext} context The Shopgate Connect step context.
    * @param {string} storefrontAccessToken
    */
   static buildStorefrontApi (context, storefrontAccessToken) {
