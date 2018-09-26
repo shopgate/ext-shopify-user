@@ -45,7 +45,7 @@ module.exports = async function (context, input) {
       login.login = userData.u
       login.password = userData.p
 
-      customerAccessToken = storefrontApi.getCustomerAccessToken(login, input)
+      customerAccessToken = await storefrontApi.getCustomerAccessToken(login, input)
       break
   }
 

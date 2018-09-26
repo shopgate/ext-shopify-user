@@ -18,7 +18,7 @@ module.exports = async function (context, input) {
     .keys(tokensByUserIds)
     .filter(userId => Date.parse(tokensByUserIds[userId].expiresAt) < moment(Date.now()).add(1, 'week'))
 
-  if (!updateUserIds) {
+  if (!updateUserIds.length) {
     context.log.info('All customer access tokens up to date.')
     return
   }

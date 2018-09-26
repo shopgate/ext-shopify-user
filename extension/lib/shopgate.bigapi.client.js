@@ -44,7 +44,7 @@ module.exports = class {
             pipelineApiKey: pipelineApiKey
           }
         },
-        cronPattern: `0 0 0 * * *`,
+        cronPattern: '0 0 0 * * *',
         queue: 'shopifyRenewCustomerAccessTokens'
       }
     )
@@ -68,7 +68,7 @@ module.exports = class {
       return requestp({
         method,
         uri,
-        headers: { authorization: `Bearer ${this.token}` },
+        headers: { authorization: `Bearer ${this.token.token}` },
         body,
         json: true,
         timeout: this.timeout,

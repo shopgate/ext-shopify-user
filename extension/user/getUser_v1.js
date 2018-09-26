@@ -29,6 +29,7 @@ module.exports = async function (context, input) {
   }
 
   const shopifyCustomerData = await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken)
+  shopifyCustomerData.id = Buffer.from(shopifyCustomerData.id, 'base64').toString().substring(23)
   shopifyCustomerData.mail = shopifyCustomerData.email
   delete shopifyCustomerData.email
 
