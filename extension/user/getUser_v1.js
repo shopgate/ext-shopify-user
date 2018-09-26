@@ -28,6 +28,27 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('Please log in again.')
   }
 
+  const now = Date.now()
+  if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
+    let renewedTokenExpiry
+    let updated = false
+    try {
+      const renewedToken = await context.storage.extension.map.getItem('customerTokensByUserIds', context.meta.userId)
+      renewedTokenExpiry = Date.parse(renewedToken.expiresAt)
+      if (Date.parse(renewedToken.expiresAt) > Date.parse(customerAccessToken.expiresAt)) {
+        updated = true
+        customerAccessToken = renewedToken
+        await context.storage.user.set('customerAccessToken', renewedToken)
+      }
+    } catch (err) {
+      context.log.error(err)
+    }
+
+    if (updated && renewedTokenExpiry <= now) {
+      throw new UnauthorizedError('Please log in again.')
+    }
+  }
+
   const shopifyCustomerData = await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken)
   shopifyCustomerData.id = Buffer.from(shopifyCustomerData.id, 'base64').toString().substring(23)
   shopifyCustomerData.mail = shopifyCustomerData.email
