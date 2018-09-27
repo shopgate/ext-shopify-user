@@ -14,7 +14,7 @@ module.exports = async function (context) {
 
   // Look user storage first
   const userData = await context.storage.user.get('userData')
-  if (userData && userData.ttl && userData.ttl > Date.now().getTime()) {
+  if (userData && userData.ttl && userData.ttl > Date.now()) {
     return userData.user
   }
 
