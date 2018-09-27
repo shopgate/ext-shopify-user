@@ -18,8 +18,6 @@ module.exports = async function (context) {
     return userData.user
   }
 
-  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   let customerAccessToken = await context.storage.user.get('customerAccessToken')
   if (!customerAccessToken || !customerAccessToken.accessToken) {
     throw new UnauthorizedError('Please log in again.')
@@ -46,6 +44,8 @@ module.exports = async function (context) {
     }
   }
 
+  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
   await context.storage.user.set('userData', {
     ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
