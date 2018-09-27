@@ -41,7 +41,7 @@ module.exports = class {
         },
         arguments: {
           body: {
-            pipelineApiKey: pipelineApiKey
+            pipelineApiKey
           }
         },
         cronPattern: '0 0 0 * * *',
