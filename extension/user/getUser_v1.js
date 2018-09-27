@@ -1,6 +1,7 @@
 const Tools = require('../lib/tools')
 const ApiFactory = require('../lib/shopify.api.factory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
+const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 
 /**
  * @param {SDKContext} context
@@ -48,15 +49,11 @@ module.exports = async function (context) {
     }
   }
 
-  const shopifyCustomerData = await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken)
-  shopifyCustomerData.id = Buffer.from(shopifyCustomerData.id, 'base64').toString().substring(23)
-  shopifyCustomerData.mail = shopifyCustomerData.email
-  delete shopifyCustomerData.email
-
+  const customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
   await context.storage.user.set('userData', {
     ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
-    user: shopifyCustomerData
+    user: customerData
   })
 
-  return shopifyCustomerData
+  return customerData
 }
