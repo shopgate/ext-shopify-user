@@ -85,14 +85,13 @@ module.exports = class {
         if (err.statusCode === 403 && retry) {
           try {
             await this.tokenHandler.invalidateCurrentToken()
-            await this.request(serviceName, method, endpoint, query, body, false)
+            return await this.request(serviceName, method, endpoint, query, body, false)
           } catch (retryError) {
             throw new Error(`Error on BigAPI request ${method} ${uri} after retry due to invalid authorization. Original message: ${retryError.message}`)
           }
         }
         throw new Error(`Error on BigAPI request ${method} ${uri}. HTTP-Code: ${err.statusCode}`)
       }
-
       throw new Error(`Unknown error on BigAPI request ${method} ${uri}. Original message: ${err.message}`)
     }
   }
