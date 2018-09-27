@@ -19,10 +19,9 @@ module.exports = class {
 
   /**
    * @param {Login} login
-   * @param {string} authType
-   * @return {Object} with properties "accessToken" (the actual token) and "expiresAt" (the expiry date of the cookie)
+   * @return {Promise<ShopifyCustomerAccessToken>}
    */
-  async getCustomerAccessToken (login, authType) {
+  async getCustomerAccessToken (login) {
     const query = 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
       '{customerAccessTokenCreate(input: $input) ' +
       '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}'
@@ -57,6 +56,10 @@ module.exports = class {
     return response.body.data.customerAccessTokenCreate.customerAccessToken
   }
 
+  /**
+   * @param {string} customerAccessToken
+   * @returns {Promise<ShopifyCustomerAccessToken>}
+   */
   async renewCustomerAccessToken (customerAccessToken) {
     const query = 'mutation customerAccessTokenRenew($customerAccessToken: String!) {' +
       'customerAccessTokenRenew(customerAccessToken: $customerAccessToken) {' +
@@ -89,7 +92,9 @@ module.exports = class {
 
   /**
    * @param {string} customerAccessToken
-   * @returns {Promise<Object>}
+   * @returns {Promise<ShopifyCustomer>}
+   * @throws UnknownError upon unknown API errors.
+   * @throws CustomerNotFoundError if a user with this token wasn't found.
    */
   async getCustomerByAccessToken (customerAccessToken) {
     const response = await this.request(`query { customer(customerAccessToken: "${customerAccessToken}") { id email firstName lastName phone } }`)
@@ -131,7 +136,7 @@ module.exports = class {
       resolveWithFullResponse: true
     }
 
-    // TODO move this into a more general obfuscator class or function
+    // TODO move this into a more general obfuscator class or function (SHOPIFY-562)
     const logOptions = JSON.parse(JSON.stringify(options))
     if (variables && variables.input && variables.input.password) {
       logOptions.body.variables.input.password = 'XXXXXXXX'
@@ -146,6 +151,7 @@ module.exports = class {
     }
 
     this.requestLog(logOptions, response)
+
     return response
   }
 }

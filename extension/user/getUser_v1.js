@@ -4,9 +4,8 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
  * @param {SDKContext} context
- * @param {Object} input
  */
-module.exports = async function (context, input) {
+module.exports = async function (context) {
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
     throw new UnauthorizedError('Unauthorized user')

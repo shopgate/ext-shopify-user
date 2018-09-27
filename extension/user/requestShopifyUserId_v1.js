@@ -2,10 +2,6 @@ const ApiFactory = require('../lib/shopify.api.factory')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
- * @typedef {Object} ShopifyCustomerAccessToken
- * @property {string} accessToken
- * @property {string} expiresAt
- *
  * @typedef {Object} input
  * @property {string} login
  * @property {string} password

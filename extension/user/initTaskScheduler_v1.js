@@ -14,9 +14,8 @@ module.exports = async function (context) {
   // look up DB setting if local variable not initialized, yet
   let storageTaskSchedulerUpdateRequired
   try {
-    storageTaskSchedulerUpdateRequired = (await context.storage.extension.get('taskSchedulerUpdateRequired'))
+    storageTaskSchedulerUpdateRequired = await context.storage.extension.get('taskSchedulerUpdateRequired')
   } catch (err) {
-    // don't break, just log
     context.log.error(err)
     return
   }
@@ -33,7 +32,6 @@ module.exports = async function (context) {
   try {
     await bigApiClient.scheduleCustomerTokenRenew(context.config.stage, context.meta.appId, pipelineApiKey)
   } catch (err) {
-    // don't break, just log
     context.log.error(err)
     return
   }
@@ -41,7 +39,6 @@ module.exports = async function (context) {
   try {
     await context.storage.extension.set('taskSchedulerUpdateRequired', false)
   } catch (err) {
-    // don't break, just log
     context.log.error(err)
     return
   }
@@ -49,7 +46,6 @@ module.exports = async function (context) {
   try {
     await context.storage.extension.set('renewCustomerAccessTokenPipelineApiKey', pipelineApiKey)
   } catch (err) {
-    // don't break, just log
     context.log.error(err)
     return
   }

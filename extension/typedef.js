@@ -83,3 +83,18 @@
  * @property {string} [company]
  * @property {string} [phone]
  */
+
+/**
+ * @typedef {Object} ShopifyCustomer
+ * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and base64 encoded
+ * @property {string} email
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {string|null} phone
+ */
+
+/**
+ * @typedef {Object} ShopifyCustomerAccessToken
+ * @property {string} accessToken
+ * @property {string} expiresAt
+ */

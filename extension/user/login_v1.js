@@ -9,7 +9,7 @@ module.exports = async function (context, input) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
-  // TODO move to some kind of token manager class or function
+  // TODO move to some kind of token manager class or function (SHOPIFY-563)
   let storefrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   if (!storefrontAccessToken) {
     const adminApi = ApiFactory.buildAdminApi(context)

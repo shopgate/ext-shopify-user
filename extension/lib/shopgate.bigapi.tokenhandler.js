@@ -43,10 +43,10 @@ module.exports = class {
   async getNewToken () {
     /**
      * @typedef {Object} response
-     * @typedef {number} response.statusCode
-     * @typedef {Object} response.body
-     * @typedef {string} response.body.access_token
-     * @typedef {number} response.body.expires_in
+     * @property {number} statusCode
+     * @property {Object} body
+     * @property {string} body.access_token
+     * @property {number} body.expires_in
      */
     let response
 
