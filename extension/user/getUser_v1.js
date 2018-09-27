@@ -14,11 +14,8 @@ module.exports = async function (context) {
 
   // Look user storage first
   const userData = await context.storage.user.get('userData')
-  if (userData) {
-    // check TTL for data if still valid
-    if (userData.ttl > (new Date()).getTime()) {
-      return userData.user
-    }
+  if (userData && userData.ttl && userData.ttl > Date.now().getTime()) {
+    return userData.user
   }
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
