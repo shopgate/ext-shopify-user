@@ -1,11 +1,22 @@
 const CryptoJS = require('crypto-js')
 const ApiFactory = require('../lib/shopify.api.factory')
-const Login = require('../models/user/login')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 
+/**
+ * @param {SDKContext} context
+ * @param {Object} input
+ * @param {string} input.strategy
+ * @param {Object} input.parameters
+ * @param {Object} input.parameters.login
+ * @param {string} input.parameters.login.login The customer's login (i.e. email address) when using strategy "basic".
+ * @param {Object} input.parameters.login.password The customer's password when using strategy "basic".
+ * @param {string} input.parameters.customerId The customer's ID sent by app when using strategy "web".
+ * @param {string} input.parameters.payload Encrypted login data sent by app when using strategy "web".
+ * @returns {Promise<{customerAccessToken: string, storefrontAccessToken: string, [customerId]: string}>}
+ */
 module.exports = async function (context, input) {
   // strategy is not supported
-  if (!Login.isStrategyValid(input.strategy)) {
+  if (!['basic', 'web', 'facebook', 'twitter'].includes(input.strategy)) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
@@ -18,43 +29,28 @@ module.exports = async function (context, input) {
   }
 
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storefrontAccessToken)
-  const login = new Login(input.strategy)
-  login.parameters = { customerId: input.parameters.customerId || null }
 
   let customerAccessToken
   switch (input.strategy) {
     case 'basic':
-      login.login = input.parameters.login
-      login.password = input.parameters.password
-
-      customerAccessToken = await storefrontApi.getCustomerAccessToken(login, input.authType)
+      customerAccessToken = await storefrontApi.getCustomerAccessToken(input.parameters.login, input.parameters.password)
       break
     case 'web':
       const phrase = await context.storage.device.get('webLoginPhrase')
 
-      /**
-       * @typedef {Object} DecryptedStringData
-       * @property {function(string|null|undefined):string} toString
-       *
-       * @type {DecryptedStringData}
-       */
+      /** @type {Buffer} */
       const decryptedData = CryptoJS.AES.decrypt(input.parameters.payload, phrase)
       const decodedPayload = decryptedData.toString(CryptoJS.enc.Utf8)
+
+      /** @type {{u: string, p: string}} */
       const userData = JSON.parse(decodedPayload)
-
-      login.login = userData.u
-      login.password = userData.p
-
-      customerAccessToken = await storefrontApi.getCustomerAccessToken(login, input)
+      customerAccessToken = await storefrontApi.getCustomerAccessToken(userData.u, userData.p)
       break
   }
 
   return {
-    login: {
-      login: input.parameters.login,
-      parameters: input.parameters
-    },
     customerAccessToken,
-    storefrontAccessToken
+    storefrontAccessToken,
+    customerId: input.parameters.customerId
   }
 }

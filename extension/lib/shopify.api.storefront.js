@@ -18,18 +18,19 @@ module.exports = class {
   }
 
   /**
-   * @param {Login} login
+   * @param {string} login
+   * @param {string} password
    * @return {Promise<ShopifyCustomerAccessToken>}
    */
-  async getCustomerAccessToken (login) {
+  async getCustomerAccessToken (login, password) {
     const query = 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
       '{customerAccessTokenCreate(input: $input) ' +
       '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}'
 
     const variables = {
       input: {
-        email: login.login,
-        password: login.password
+        email: login,
+        password
       }
     }
 

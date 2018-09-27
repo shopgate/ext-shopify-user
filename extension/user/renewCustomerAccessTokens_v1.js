@@ -6,7 +6,7 @@ const ApiFactory = require('../lib/shopify.api.factory')
  * @param {SDKContext} context
  * @param {Object} input
  * @param {string} input.pipelineApiKey
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
 module.exports = async function (context, input) {
   if (!input.pipelineApiKey || input.pipelineApiKey !== await context.storage.extension.get('renewCustomerAccessTokenPipelineApiKey')) {

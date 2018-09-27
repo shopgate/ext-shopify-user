@@ -5,6 +5,7 @@ const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 
 /**
  * @param {SDKContext} context
+ * @return {Promise<ShopgateCustomer>}
  */
 module.exports = async function (context) {
   // Check if there is a userId within the context.meta-data, if not the user is not logged

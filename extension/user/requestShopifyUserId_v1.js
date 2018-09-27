@@ -2,27 +2,21 @@ const ApiFactory = require('../lib/shopify.api.factory')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
- * @typedef {Object} input
- * @property {string} login
- * @property {string} password
- *
- * @typedef {Object} RequestShopifyUserIdInputData
- * @property {ShopifyCustomerAccessToken} customerAccessToken
- * @property {string} storefrontAccessToken
- * @property {string} login
- *
- * @param {Object} context
- * @param {RequestShopifyUserIdInputData} input
+ * @param {SDKContext} context
+ * @param {Object} input
+ * @param {string} input.strategy
+ * @param {ShopifyCustomerAccessToken} input.customerAccessToken
+ * @param {string} input.storefrontAccessToken
+ * @param {string} input.customerId
+ * @return {Promise<{userId: string}>}
  */
 module.exports = async function (context, input) {
-  const customerId = input.login.parameters.customerId
-
   if (input.strategy === 'web') {
-    if (!customerId) {
+    if (!input.customerId) {
       context.log.error('No userId given on input strategy web')
       throw new CustomerNotFoundError()
     } else {
-      return { userId: customerId.toString() }
+      return { userId: input.customerId.toString() }
     }
   }
 
