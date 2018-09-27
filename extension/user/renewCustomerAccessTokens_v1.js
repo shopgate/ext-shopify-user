@@ -27,7 +27,8 @@ module.exports = async function (context, input) {
   const api = ApiFactory.buildStorefrontApi(context, await context.storage.extension.get('storefrontAccessToken'))
 
   // update customer tokens; chunks of 5 in parallel
-  for (let i = 0; i <= updateUserIds.length; i += 5) {
+  const numberOfUserIds = updateUserIds.length
+  for (let i = 0; i <= numberOfUserIds; i += 5) {
     await Promise.all(updateUserIds.slice(i, i + 5).map(async userId => {
       let response
       try {
