@@ -1,6 +1,6 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const SGShopifyApi = require('../lib/shopify.api.class')
+const ApiFactory = require('../lib/shopify.api.factory')
 const { mapCountry, mapCustomAttributes } = require('../lib/mapper')
 
 /**
@@ -27,5 +27,5 @@ module.exports = async function (context, input) {
     ...mapCustomAttributes(input.customAttributes)
   }
 
-  return new SGShopifyApi(context).addAddress(context.meta.userId, newAddress)
+  return ApiFactory.buildAdminApi(context).addAddress(context.meta.userId, newAddress)
 }

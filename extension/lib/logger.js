@@ -11,11 +11,18 @@ module.exports = class {
    * @param {object} response A response object of the "request" module
    */
   log (requestOptions, response) {
+    if (!response || response === {} || typeof response.statusCode === 'undefined') {
+      response = {
+        body: null,
+        headers: []
+      }
+    }
+
     if (!response.elapsedTime) response.elapsedTime = 'Not measured.'
 
     this.logger.debug({
       duration: response.elapsedTime,
-      statusCode: response.statusCode,
+      statusCode: response.statusCode || 0,
       request: requestOptions,
       response: {
         headers: response.headers,

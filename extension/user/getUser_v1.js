@@ -1,93 +1,57 @@
 const Tools = require('../lib/tools')
-const SGShopifyApi = require('../lib/shopify.api.class.js')
-const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
+const ApiFactory = require('../lib/shopify.api.factory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
+const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 
 /**
  * @param {SDKContext} context
- * @param {Object} input
- * @param {function} cb
+ * @return {Promise<ShopgateCustomer>}
  */
-module.exports = function (context, input, cb) {
+module.exports = async function (context) {
   // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (Tools.isEmpty(context.meta.userId)) {
-    return cb(new UnauthorizedError('Unauthorized user'))
+    throw new UnauthorizedError('Unauthorized user')
   }
 
   // Look user storage first
-  context.storage.user.get('userData', (err, storageData) => {
-    if (storageData) {
-      // check TTL for data if still valid
-      if (storageData.ttl > (new Date()).getTime()) {
-        return cb(null, storageData.user)
+  const userData = await context.storage.user.get('userData')
+  if (userData && userData.ttl && userData.ttl > Date.now()) {
+    return userData.user
+  }
+
+  let customerAccessToken = await context.storage.user.get('customerAccessToken')
+  if (!customerAccessToken || !customerAccessToken.accessToken) {
+    throw new UnauthorizedError('Please log in again.')
+  }
+
+  const now = Date.now()
+  if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
+    let renewedTokenExpiry
+    let updated = false
+    try {
+      const renewedToken = await context.storage.extension.map.getItem('customerTokensByUserIds', context.meta.userId)
+      renewedTokenExpiry = Date.parse(renewedToken.expiresAt)
+      if (Date.parse(renewedToken.expiresAt) > Date.parse(customerAccessToken.expiresAt)) {
+        updated = true
+        customerAccessToken = renewedToken
+        await context.storage.user.set('customerAccessToken', renewedToken)
       }
+    } catch (err) {
+      context.log.error(err)
     }
-    if (err) {
-      context.log.error(err, 'User storage error')
+
+    if (updated && renewedTokenExpiry <= now) {
+      throw new UnauthorizedError('Please log in again.')
     }
+  }
 
-    getUserFromShopify(context, (err, shopifyData) => {
-      if (err) {
-        return cb(err)
-      }
-
-      const storageData = {
-        ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
-        user: shopifyData
-      }
-      // Set userData silently
-      context.storage.user.set('userData', storageData, (err) => {
-        if (err) context.log.error(err, 'User storage error')
-      })
-
-      cb(null, shopifyData)
-    })
+  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+  const customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
+  await context.storage.user.set('userData', {
+    ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
+    user: customerData
   })
-}
 
-/**
- * @param {SDKContext} context
- * @param {function} cb
- */
-function getUserFromShopify (context, cb) {
-  const shopify = new SGShopifyApi(context)
-
-  /**
-   * @typedef {Object} CustomerAddress
-   * @property {number} id
-   * @property {string} first_name
-   * @property {string} last_name
-   * @property {string} company
-   * @property {string} address1
-   * @property {string} address2
-   * @property {string} city
-   * @property {string} country_code
-   * @property {string} phone
-   * @property {number} default
-   * @property {number} zip
-   * @property {string} country
-   *
-   * @typedef {Object} CustomerResponseElement
-   * @property {number} id
-   * @property {string} email
-   * @property {string} first_name
-   * @property {string} last_name
-   * @property {string} phone
-   *
-   * @param {Error} err
-   * @param {CustomerResponseElement} customerData
-   */
-  shopify.getCustomerById(context.meta.userId, (err, customerData) => {
-    if (err) {
-      return cb(new CustomerNotFoundError())
-    }
-
-    return cb(null, {
-      'id': customerData.id.toString(),
-      'firstName': customerData.first_name,
-      'lastName': customerData.last_name,
-      'mail': customerData.email,
-      'phone': customerData.phone
-    })
-  })
+  return customerData
 }

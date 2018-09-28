@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.renewCustomerAccessTokens.v1",
+    "public": true,
+    "input": [
+      {"key": "pipelineApiKey", "id": "1"}
+    ],
+    "output": [],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/renewCustomerAccessTokens_v1.js",
+        "input": [
+          {"key": "pipelineApiKey", "id": "1"}
+        ],
+        "output": []
+      }
+    ]
+  }
+}
