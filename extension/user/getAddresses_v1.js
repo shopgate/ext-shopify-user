@@ -17,7 +17,7 @@ module.exports = async function (context) {
 
   return {
     addresses: shopifyAddressesOrderedByDefaultFirst.map(address => ({
-      id: address.id,
+      id: `${address.id}`,
       street1: address.address1,
       street2: address.address2,
       city: address.city,
