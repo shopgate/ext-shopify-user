@@ -14,7 +14,7 @@ describe('Logger', () => {
   it('should log the status code, duration, request and response', () => {
     const logSpy = sinon.spy(log, 'debug')
 
-    logRequest.log(httpCodeSuccess, {}, {}, {})
+    logRequest.log({ requestOptions: '' }, { statusCode: httpCodeSuccess, elapsedTime: 123 })
 
     sinon.assert.calledWith(logSpy, sinon.match.has('duration'))
     sinon.assert.calledWith(logSpy, sinon.match.has('message'))
