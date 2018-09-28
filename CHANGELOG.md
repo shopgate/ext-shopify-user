@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - error handling for Shopify API and validation errors
 - customer not being redirected to app/web checkout after registration
 
+### Added
+- added customer address management synchronization
+
 ## [1.2.3] - 2018-08-30
 ### Fixed
 - Fix bug that user can't login if the mail address contains capital letter
