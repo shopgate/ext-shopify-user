@@ -5,11 +5,13 @@
  * @returns {Object}
  */
 module.exports.mapCountry = function (country) {
-  const map = country && {
-    ...(country.length === 2 && { country_code: country }),
-    ...(country.length > 2 && { country })
+  const map = {}
+  if (country.length === 2) {
+    map.country_code = country
+  } else if (country.length > 2) {
+    map.country = country
   }
-  return map || {}
+  return map
 }
 
 /**

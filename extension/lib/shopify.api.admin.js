@@ -3,6 +3,7 @@ const UnknownError = require('../models/Errors/UnknownError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
+const InvalidResponseError = require('../models/Errors/InvalidResponseError')
 const jsonb = require('json-bigint')
 const requestp = require('request-promise-native')
 
@@ -39,8 +40,9 @@ module.exports = class {
           }
           throw validationError
         }
-
         throw err
+      } else {
+        throw new UnknownError()
       }
     }
   }
@@ -83,7 +85,7 @@ module.exports = class {
     }
 
     if (parseInt(response.customer_address.id) !== parseInt(addressId)) {
-      throw new UnknownError()
+      throw new InvalidResponseError('The requested addressId equals not the responsed customer_address.id')
     }
 
     return { success: true }
@@ -189,23 +191,6 @@ module.exports = class {
 
         return cb(null, userData.customer)
       }).catch(err => cb(err))
-  }
-
-  /**
-   * @param email
-   * @param cb
-   * @returns {function} cb
-   */
-  findUserByEmail (email, cb) {
-    this.get('/admin/customers/search.json', `query=email:"${email}"&fields=id,email&limit=5`)
-      .then(userData => {
-        if (Tools.isEmpty(userData.customers)) {
-          return cb(new Error('Customer not found'))
-        }
-
-        return cb(null, userData.customers)
-      })
-      .catch(err => cb(err))
   }
 
   /**
