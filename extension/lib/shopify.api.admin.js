@@ -85,7 +85,7 @@ module.exports = class {
     }
 
     if (parseInt(response.customer_address.id) !== parseInt(addressId)) {
-      throw new InvalidResponseError('The requested addressId equals not the responsed customer_address.id')
+      throw new InvalidResponseError('The requested address ID does not match the ID returned from Shopify.')
     }
 
     return { success: true }
@@ -172,25 +172,6 @@ module.exports = class {
         title: storefrontAccessTokenTitle
       }
     })
-  }
-
-  /**
-   * @typedef {Object} userData
-   * @property {Object} customer
-   * @property {Array} customers
-   *
-   * @param customersId
-   * @param cb
-   */
-  getCustomerById (customersId, cb) {
-    this.get(`/admin/customers/${customersId}.json`)
-      .then(userData => {
-        if (Tools.isEmpty(userData.customer)) {
-          return cb(new Error('Customer not found'))
-        }
-
-        return cb(null, userData.customer)
-      }).catch(err => cb(err))
   }
 
   /**
