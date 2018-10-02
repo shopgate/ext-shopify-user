@@ -19,11 +19,13 @@ module.exports.mapCountry = function (country) {
  * @return {Object}
  */
 module.exports.mapProvince = function (province) {
-  const map = province && {
-    ...(province.length === 2 && { province_code: province }),
-    ...(province.length > 2 && { province: province })
+  const map = {}
+  if (province.length === 2) {
+    map.province_code = province
+  } else if (province.length > 2) {
+    map.province = province
   }
-  return map || {}
+  return map
 }
 
 /**
@@ -33,9 +35,15 @@ module.exports.mapProvince = function (province) {
  * @return {Object}
  */
 module.exports.mapCustomAttributes = function (customAttributes) {
-  const map = customAttributes && {
-    ...(customAttributes.hasOwnProperty('company') && { company: customAttributes.company }),
-    ...(customAttributes.hasOwnProperty('phone') && { phone: customAttributes.phone })
+  const map = {}
+  if (!customAttributes) {
+    return map
   }
-  return map || {}
+  if (customAttributes.hasOwnProperty('company')) {
+    map.company = customAttributes.company
+  }
+  if (customAttributes.hasOwnProperty('phone')) {
+    map.company = customAttributes.phone
+  }
+  return map
 }
