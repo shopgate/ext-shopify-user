@@ -10,12 +10,9 @@ module.exports = class {
    * @param {object} requestOptions
    * @param {object} response A response object of the "request" module
    */
-  log (requestOptions, response) {
+  log (requestOptions, response = {}) {
     if (!response || response === {} || typeof response.statusCode === 'undefined') {
-      response = {
-        body: null,
-        headers: []
-      }
+      response = {}
     }
 
     if (!response.elapsedTime) response.elapsedTime = 'Not measured.'
