@@ -30,8 +30,7 @@ module.exports = async function (context) {
         company: address.company,
         phone: address.phone
       },
-      ...(address.default === true && { tags: ['default'] }),
-      ...(address.default === false && { tags: [] })
+      tags: address.default === true ? ['default'] : []
     }))
   }
 }

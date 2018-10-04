@@ -3,9 +3,7 @@ import { themeConfig } from '@shopgate/pwa-common/helpers/config';
 
 const { variables, colors } = themeConfig;
 
-const container = css({
-  display: 'inline-block',
-}).toString();
+const container = css({}).toString();
 
 const guestCheckout = css({
   display: 'inline-block',
