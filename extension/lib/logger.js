@@ -18,6 +18,7 @@ module.exports = class {
     if (!response.elapsedTime) response.elapsedTime = 'Not measured.'
 
     this.logger.debug({
+      /*
       duration: response.elapsedTime,
       statusCode: response.statusCode || 0,
       request: requestOptions,
@@ -25,6 +26,7 @@ module.exports = class {
         headers: response.headers,
         body: response.body
       },
+      */
       message: 'Request to Shopify - User extension'
     })
   }
