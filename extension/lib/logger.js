@@ -16,11 +16,11 @@ module.exports = class {
       statusCode: response.statusCode || 0,
       /*
       request: requestOptions,
+      */
       response: {
         headers: response.headers,
         body: response.body
       },
-      */
       message: 'Request to Shopify - User extension'
     })
   }
