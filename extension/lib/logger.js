@@ -11,15 +11,19 @@ module.exports = class {
    * @param {object} response A response object of the "request" module
    */
   log (requestOptions, response = {}) {
+    const logResponse = response === null ? {} : Object.assign({}, response)
+
+    if (logResponse.body && typeof logResponse.body === 'object') {
+      logResponse.body = JSON.stringify(logResponse.body)
+    }
+
     this.logger.debug({
-      duration: response.elapsedTime || 'Not measured.',
-      statusCode: response.statusCode || 0,
-      /*
-      request: requestOptions,
-      */
+      duration: logResponse.elapsedTime || 'Not measured.',
+      statusCode: logResponse.statusCode || 0,
+      /* request: requestOptions, */
       response: {
-        //        headers: response.headers,
-        body: response.body
+        headers: logResponse.headers || {},
+        body: logResponse.body || ''
       },
       message: 'Request to Shopify - User extension'
     })
