@@ -22,10 +22,10 @@ module.exports = class {
       statusCode: logResponse.statusCode || 0,
       /* request: requestOptions, */
       response: {
-        headers: logResponse.headers || {}
-        // body: logResponse.body || ''
+        headers: logResponse.headers || {},
+        body: 'dummy test value'
       },
-      message: 'Request to Shopify - User extension'
+      msg: 'Request to Shopify - User extension'
     })
   }
 }
