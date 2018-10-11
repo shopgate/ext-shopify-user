@@ -11,23 +11,26 @@ module.exports = class {
    * @param {object} response A response object of the "request" module
    */
   log (requestOptions, response = {}) {
-    this.logger.debug('Request to Shopify - User extension - v1.3.2-beta.10')
-
+    const logRequest = Object.assign({}, requestOptions)
     const logResponse = response === null ? {} : Object.assign({}, response)
 
-    if (logResponse.body && typeof logResponse.body === 'object') {
+    if (logResponse.body && typeof logResponse.body !== 'string') {
       logResponse.body = JSON.stringify(logResponse.body)
     }
 
+    if (logRequest.body && typeof logRequest.body !== 'string') {
+      logRequest.body = JSON.stringify(logRequest.body)
+    }
+
     this.logger.debug({
-      duration: logResponse.elapsedTime || 'Not measured.',
+      duration: logResponse.elapsedTime || 0,
       statusCode: logResponse.statusCode || 0,
-      /* request: requestOptions, */
+      request: logRequest,
       response: {
         headers: logResponse.headers || {},
-        somethingTotallyDifferent: 'dummy test value'
+        body: logResponse.body
       },
-      msg: 'Request to Shopify - User extension'
+      msg: 'Request to Shopify'
     })
   }
 }
