@@ -18,7 +18,7 @@ module.exports = class {
       request: requestOptions,
       */
       response: {
-        headers: response.headers,
+        //        headers: response.headers,
         body: response.body
       },
       message: 'Request to Shopify - User extension'
