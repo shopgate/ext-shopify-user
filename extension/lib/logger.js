@@ -11,6 +11,8 @@ module.exports = class {
    * @param {object} response A response object of the "request" module
    */
   log (requestOptions, response = {}) {
+    this.logger.debug('Request to Shopify - User extension - v1.3.2-beta.8')
+
     const logResponse = response === null ? {} : Object.assign({}, response)
 
     if (logResponse.body && typeof logResponse.body === 'object') {
