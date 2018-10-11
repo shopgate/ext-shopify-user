@@ -25,7 +25,7 @@ module.exports = class {
       /* request: requestOptions, */
       response: {
         headers: logResponse.headers || {},
-        body1: 'dummy test value'
+        somethingTotallyDifferent: 'dummy test value'
       },
       msg: 'Request to Shopify - User extension'
     })
