@@ -22,8 +22,8 @@ module.exports = class {
       statusCode: logResponse.statusCode || 0,
       /* request: requestOptions, */
       response: {
-        headers: logResponse.headers || {},
-        body: logResponse.body || ''
+        headers: logResponse.headers || {}
+        // body: logResponse.body || ''
       },
       message: 'Request to Shopify - User extension'
     })
