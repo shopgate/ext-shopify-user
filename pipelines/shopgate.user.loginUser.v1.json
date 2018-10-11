@@ -14,7 +14,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/initTaskScheduler_v1.js",
+        "path": "@shopgate/shopify-user/user/initTaskScheduler.js",
         "input": [],
         "output": []
       },
@@ -30,7 +30,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/login_v1.js",
+        "path": "@shopgate/shopify-user/user/login.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "parameters", "id": "1020"}
@@ -44,7 +44,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/requestShopifyUserId_v1.js",
+        "path": "@shopgate/shopify-user/user/requestShopifyUserId.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "customerAccessToken", "id": "1060"},
@@ -67,7 +67,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/checkAuthSuccess_v1.js",
+        "path": "@shopgate/shopify-user/user/checkAuthSuccess.js",
         "input": [
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
@@ -77,7 +77,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/saveCustomerAccessToken_v1.js",
+        "path": "@shopgate/shopify-user/user/saveCustomerAccessToken.js",
         "input": [
           {"key": "userId", "id": "1050"},
           {"key": "customerAccessToken", "id": "1060"}

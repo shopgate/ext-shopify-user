@@ -27,6 +27,11 @@
       "enabled": true
     },
     {
+      "key": "endpoint_user_update",
+      "value": "/trustedPipelines/shopgate.user.updateUser.v1",
+      "enabled": true
+    },
+    {
       "key": "endpoint_user_addresses_get",
       "value": "/trustedPipelines/shopgate.user.getAddresses.v1",
       "enabled": true

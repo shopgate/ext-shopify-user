@@ -15,7 +15,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/getUser_v1.js",
+        "path": "@shopgate/shopify-user/user/getUser.js",
         "input": [],
         "output": [
           {"key": "id", "id": "1010"},

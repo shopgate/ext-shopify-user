@@ -85,6 +85,12 @@
  */
 
 /**
+ * @typedef {Object} ShopgateUserCustomAttributes
+ * @property {string} [email]
+ * @property {string} [phone]
+ */
+
+/**
  * @typedef {Object} ShopifyCustomer
  * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and base64 encoded
  * @property {string} email
@@ -97,4 +103,11 @@
  * @typedef {Object} ShopifyCustomerAccessToken
  * @property {string} accessToken
  * @property {string} expiresAt
+ */
+
+/**
+ * @typedef {Object} UpdateUserInput
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {ShopgateUserCustomAttributes} customAttributes
  */

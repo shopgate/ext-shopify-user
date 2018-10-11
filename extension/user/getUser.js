@@ -1,5 +1,6 @@
 const Tools = require('../lib/tools')
 const ApiFactory = require('../lib/shopify.api.factory')
+const CustomerTokenManager = require('../lib/CustomerTokenManager')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 
@@ -19,32 +20,8 @@ module.exports = async function (context) {
     return userData.user
   }
 
-  let customerAccessToken = await context.storage.user.get('customerAccessToken')
-  if (!customerAccessToken || !customerAccessToken.accessToken) {
-    throw new UnauthorizedError('Please log in again.')
-  }
-
-  const now = Date.now()
-  if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
-    let renewedTokenExpiry
-    let updated = false
-    try {
-      const renewedToken = await context.storage.extension.map.getItem('customerTokensByUserIds', context.meta.userId)
-      renewedTokenExpiry = Date.parse(renewedToken.expiresAt)
-      if (Date.parse(renewedToken.expiresAt) > Date.parse(customerAccessToken.expiresAt)) {
-        updated = true
-        customerAccessToken = renewedToken
-        await context.storage.user.set('customerAccessToken', renewedToken)
-      }
-    } catch (err) {
-      context.log.error(err)
-    }
-
-    if (updated && renewedTokenExpiry <= now) {
-      throw new UnauthorizedError('Please log in again.')
-    }
-  }
-
+  const customerAccessTokenManager = new CustomerTokenManager(context)
+  const customerAccessToken = await customerAccessTokenManager.getToken()
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
