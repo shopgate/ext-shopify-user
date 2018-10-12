@@ -14,7 +14,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/updateUser.js",
+        "path": "@shopgate/shopify-user/user/update.js",
         "input": [
           {"key": "firstName", "id": "110", "optional": true},
           {"key": "lastName", "id": "120", "optional": true},

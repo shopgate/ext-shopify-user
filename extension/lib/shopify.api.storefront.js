@@ -117,7 +117,7 @@ module.exports = class {
    * @param {Object} customer
    * @returns {Promise<ShopifyCustomer>}
    * @throws UnknownError upon unknown API errors.
-   * @throws CustomerNotFoundError if a user with this token wasn't found.
+   * @throws FieldValidationError - If data could not be updated, because of validation errors from Shopify
    */
   async updateCustomerByAccessToken (customerAccessToken, customer) {
     const query = 'mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {' +
@@ -128,7 +128,7 @@ module.exports = class {
     const variables = { customerAccessToken, customer }
     const operationName = 'customerUpdate'
 
-    let response
+    let response = {}
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
@@ -136,11 +136,13 @@ module.exports = class {
       throw new UnknownError()
     }
 
-    if (!response.body.data) {
+    if (!response.body && !response.body.data) {
       throw new UnknownError('Unknown error fetching updating customer data.')
     }
 
-    if (response.body.data.customerUpdate.userErrors.length) {
+    if (Tools.propertyExists(response.body.data, 'customerUpdate.userErrors')
+      && !Tools.isEmpty(response.body.data.customerUpdate.userErrors)
+    ) {
       const validationError = new FieldValidationError()
       response.body.data.customerUpdate.userErrors.forEach(responseError => {
         validationError.addValidationMessage(responseError.field.pop(), responseError.message)

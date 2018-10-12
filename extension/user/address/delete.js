@@ -1,7 +1,7 @@
-const Tools = require('../lib/tools')
-const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const InvalidCallError = require('../models/Errors/InvalidCallError')
-const ApiFactory = require('../lib/shopify.api.factory')
+const Tools = require('../../lib/tools')
+const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
+const InvalidCallError = require('../../models/Errors/InvalidCallError')
+const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context

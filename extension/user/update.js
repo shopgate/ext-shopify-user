@@ -11,10 +11,9 @@ const _ = {
 /**
  * @param {SDKContext} context
  * @param {UpdateUserInput} input
- * @return {Promise<ShopgateCustomer>}
+ * @return {Promise<ShopifyCustomer>}
  */
 module.exports = async function (context, input) {
-
   if (!context.meta.userId) {
     throw new UnauthorizedError('Unauthorized user')
   }
@@ -33,5 +32,5 @@ module.exports = async function (context, input) {
     ...input.customAttributes
   }
 
-  return await storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, _.omitBy(customer, _.isNil))
+  return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, _.omitBy(customer, _.isNil))
 }

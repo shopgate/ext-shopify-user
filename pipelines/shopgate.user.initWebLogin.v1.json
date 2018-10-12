@@ -11,7 +11,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/storeWebLoginPhrase.js",
+        "path": "@shopgate/shopify-user/user/token/storeWebLoginPhrase.js",
         "input": [
           {"key": "phrase", "id": "1"}
         ],

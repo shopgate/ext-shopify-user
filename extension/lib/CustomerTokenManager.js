@@ -1,7 +1,6 @@
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 module.exports = class {
-
   /**
    * @param {SDKContext} context
    */
@@ -12,6 +11,10 @@ module.exports = class {
     this.userId = context.meta.userId
   }
 
+  /**
+   * @returns {Promise.<string>}
+   * @throws UnauthorizedError
+   */
   async getToken () {
     let customerAccessToken = await this.userStorage.get('customerAccessToken')
     if (!customerAccessToken || !customerAccessToken.accessToken) {
@@ -19,14 +22,10 @@ module.exports = class {
     }
 
     const now = Date.now()
-    if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
-      let renewedTokenExpiry
-      let updated = false
+    if (customerAccessToken.expiresAt) {
       try {
         const renewedToken = await this.extensionStorage.map.getItem('customerTokensByUserIds', this.userId)
-        renewedTokenExpiry = Date.parse(renewedToken.expiresAt)
         if (Date.parse(renewedToken.expiresAt) > Date.parse(customerAccessToken.expiresAt)) {
-          updated = true
           customerAccessToken = renewedToken
           await this.userStorage.set('customerAccessToken', renewedToken)
         }
@@ -34,7 +33,7 @@ module.exports = class {
         this.log.error(err)
       }
 
-      if (updated && renewedTokenExpiry <= now) {
+      if (Date.parse(customerAccessToken.expiresAt) <= now) {
         throw new UnauthorizedError('Please log in again.')
       }
     }

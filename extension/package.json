@@ -7,9 +7,10 @@
     "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
   },
   "scripts": {
+    "test": "./node_modules/.bin/_mocha --use_strict --recursive ./test/unit",
     "standard": "./node_modules/.bin/standard",
-    "cover": "istanbul cover _mocha -- --recursive",
-    "newman": "newman run ./test/newman/collection.json --environment ./test/newman/environment.json --globals ./test/newman/globals.json"
+    "cover": "./node_modules/.bin/istanbul cover _mocha -- --recursive",
+    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json --environment ./test/newman/environment.json --globals ./test/newman/globals.json"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,8 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "assert": "^1.4.1",
+    "chai": "^4.2.0",
     "eslint": "^5.4.0",
     "eslint-config-standard": "^12.0.0-alpha.0",
     "eslint-plugin-import": "^2.14.0",

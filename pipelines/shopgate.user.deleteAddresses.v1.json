@@ -13,7 +13,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/deleteAddresses.js",
+        "path": "@shopgate/shopify-user/user/address/delete.js",
         "input": [
           {"key": "ids", "id": "10"}
         ],

@@ -77,7 +77,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/saveCustomerAccessToken.js",
+        "path": "@shopgate/shopify-user/user/token/saveCustomerAccessToken.js",
         "input": [
           {"key": "userId", "id": "1050"},
           {"key": "customerAccessToken", "id": "1060"}
