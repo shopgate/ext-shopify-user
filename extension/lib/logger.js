@@ -15,20 +15,22 @@ module.exports = class {
     const logResponse = response === null ? {} : Object.assign({}, response)
 
     if (logResponse.body && typeof logResponse.body !== 'string') {
-      logResponse.body = JSON.stringify(logResponse.body)
+      logResponse.body = JSON.stringify(logResponse.body, null, 2)
     }
 
     if (logRequest.body && typeof logRequest.body !== 'string') {
-      logRequest.body = JSON.stringify(logRequest.body)
+      logRequest.body = JSON.stringify(logRequest.body, null, 2)
     }
 
     this.logger.debug('Request to Shopify', {
       duration: logResponse.elapsedTime || 0,
       statusCode: logResponse.statusCode || 0,
-      request: logRequest,
       shopifyRequest: {
-        headers: logResponse.headers ? JSON.stringify(logResponse.headers) : '',
-        body: logResponse.body
+        request: logRequest,
+        response: {
+          headers: logResponse.headers ? JSON.stringify(logResponse.headers, null, 2) : '',
+          body: logResponse.body
+        }
       }
     })
   }
