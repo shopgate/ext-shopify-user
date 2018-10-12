@@ -19,12 +19,15 @@ module.exports.mapCountry = function (country) {
  * @return {Object}
  */
 module.exports.mapProvince = function (province) {
+  if (!province) return {}
+
   const map = {}
   if (province.length === 2) {
     map.province_code = province
   } else if (province.length > 2) {
     map.province = province
   }
+
   return map
 }
 
