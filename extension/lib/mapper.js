@@ -19,7 +19,9 @@ module.exports.mapCountry = function (country) {
  * @return {Object}
  */
 module.exports.mapProvince = function (province) {
-  if (!province) return {}
+  if (!province || !province.length || province.length < 2) {
+    return {}
+  }
 
   const map = {}
   if (province.length === 2) {
@@ -42,11 +44,12 @@ module.exports.mapCustomAttributes = function (customAttributes) {
   if (!customAttributes) {
     return map
   }
-  if (customAttributes.hasOwnProperty('company')) {
+  if (customAttributes.company) {
     map.company = customAttributes.company
   }
-  if (customAttributes.hasOwnProperty('phone')) {
+  if (customAttributes.phone) {
     map.phone = customAttributes.phone
   }
+
   return map
 }
