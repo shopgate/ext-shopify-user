@@ -46,7 +46,7 @@ module.exports.mapCustomAttributes = function (customAttributes) {
     map.company = customAttributes.company
   }
   if (customAttributes.hasOwnProperty('phone')) {
-    map.company = customAttributes.phone
+    map.phone = customAttributes.phone
   }
   return map
 }
