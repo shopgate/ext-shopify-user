@@ -2,17 +2,21 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 module.exports = class {
   /**
-   * @param {SDKContext} context
+   *
+   * @param {Object} userStorage
+   * @param {Object} extensionStorage
+   * @param {Logger} logger
+   * @param userId
    */
-  constructor (context) {
-    this.userStorage = context.storage.user
-    this.extensionStorage = context.storage.extension
-    this.log = context.log
-    this.userId = context.meta.userId
+  constructor (userStorage, extensionStorage, logger, userId) {
+    this.userStorage = userStorage
+    this.extensionStorage = extensionStorage
+    this.log = logger
+    this.userId = userId
   }
 
   /**
-   * @returns {Promise.<string>}
+   * @returns {Promise<string>}
    * @throws UnauthorizedError
    */
   async getToken () {

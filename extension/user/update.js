@@ -1,5 +1,4 @@
 const ApiFactory = require('../lib/shopify.api.factory')
-const CustomerTokenManager = require('../lib/CustomerTokenManager')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const ShopgateCustomer = require('../models/user/ShopgateCustomer')
@@ -24,7 +23,7 @@ module.exports = async function (context, input) {
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
-  const customerAccessTokenManager = new CustomerTokenManager(context)
+  const customerAccessTokenManager = ApiFactory.buildCustomerTokenManager(context)
   const customerAccessToken = await customerAccessTokenManager.getToken()
   const customer = {
     firstName: input.firstName,

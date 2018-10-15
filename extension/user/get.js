@@ -1,6 +1,5 @@
 const Tools = require('../lib/tools')
 const ApiFactory = require('../lib/shopify.api.factory')
-const CustomerTokenManager = require('../lib/CustomerTokenManager')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 
@@ -20,7 +19,7 @@ module.exports = async function (context) {
     return userData.user
   }
 
-  const customerAccessTokenManager = new CustomerTokenManager(context)
+  const customerAccessTokenManager = ApiFactory.buildCustomerTokenManager(context)
   const customerAccessToken = await customerAccessTokenManager.getToken()
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
