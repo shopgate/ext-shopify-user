@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- phone number was mapped to the "company" field when adding/updating addresses
+
 ### Changed
 - Shopify request log format changed to be compatible with `shopify-cart`'s log format
 
