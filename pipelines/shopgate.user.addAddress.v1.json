@@ -41,7 +41,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/address/setDefaultAddress.js",
+        "path": "@shopgate/shopify-user/user/address/setDefault.js",
         "input": [
           {"key": "id", "id": "3"},
           {"key": "tags", "id": "114", "optional": true}
