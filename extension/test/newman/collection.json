@@ -740,8 +740,8 @@
 									"    pm.expect(response.firstName).to.eql(pm.environment.get(\"seed\") + \"-firstname\");",
 									"    pm.expect(response.lastName).to.eql(pm.environment.get(\"seed\") + \"-lastname\");",
 									"    ",
-									"    pm.environment.set(\"updatedFirstName\", response.firstName);",
-									"    pm.environment.set(\"updatedLastName\", response.lastName);",
+									"    pm.environment.set(\"updated-firstname\", response.firstName);",
+									"    pm.environment.set(\"updated-lastname\", response.lastName);",
 									"});"
 								]
 							}
@@ -841,12 +841,12 @@
 									"})",
 									"",
 									"pm.test(\"Firstname and lastname has NOT been updated\", function() {",
-									"    pm.expect(response.firstName).to.eql(pm.environment.get(\"updatedFirstName\"));",
-									"    pm.expect(response.lastName).to.eql(pm.environment.get(\"updatedLastName\"));",
+									"    pm.expect(response.firstName).to.eql(pm.environment.get(\"updated-firstname\"));",
+									"    pm.expect(response.lastName).to.eql(pm.environment.get(\"updated-lastname\"));",
 									"})",
 									"",
-									"pm.environment.unset(\"updatedFirstName\");",
-									"pm.environment.unset(\"updatedLastName\");",
+									"pm.environment.unset(\"updated-firstname\");",
+									"pm.environment.unset(\"updated-lastname\");",
 									""
 								]
 							}
@@ -1087,7 +1087,7 @@
 										"exec": [
 											"const response = pm.response.json();",
 											"const address = response.addresses.pop();",
-											"pm.environment.set(\"addressIdsToDelete\", address.id);"
+											"pm.environment.set(\"address-ids-to-delete\", address.id);"
 										]
 									}
 								}
@@ -1237,7 +1237,7 @@
 									"    pm.expect(address.customAttributes.company).to.be.eq(seed + '-company');",
 									"    pm.expect(address.customAttributes.phone).to.be.eq(seed + '-phone');",
 									"",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"});"
 								]
 							}
@@ -1326,7 +1326,7 @@
 									"    const address = response.addresses.pop();",
 									"    pm.expect(address.province).to.be.eq('AZ');",
 									"    ",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"});"
 								]
 							}
@@ -1415,7 +1415,7 @@
 									"    const address = response.addresses.pop();",
 									"    pm.expect(address.province).to.be.eq('TX');",
 									"    ",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"});"
 								]
 							}
@@ -1515,7 +1515,7 @@
 													"});",
 													"",
 													"const address = response.addresses.pop();",
-													"pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);"
+													"pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);"
 												]
 											}
 										}
@@ -1746,7 +1746,7 @@
 									"",
 									"if (address.id) {",
 									"    pm.environment.set(\"address-id\", address.id);",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"}",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
@@ -2109,14 +2109,14 @@
 											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
 											"",
 											"if (defaultAddress) {",
-											"    pm.environment.set(\"defaultAddressId\", defaultAddress.id);    ",
+											"    pm.environment.set(\"default-address-id\", defaultAddress.id);    ",
 											"} else {",
 											"    tests['Something went wrong with getting the default address'] = false;",
 											"}",
 											"",
 											"if (response.length > 1) {",
-											"    pm.environment.set(\"firstAddressIdToDelete\", response.pop().id);",
-											"    pm.environment.set(\"secondAddressIdToDelete\", response.pop().id);",
+											"    pm.environment.set(\"first-address-id-to-delete\", response.pop().id);",
+											"    pm.environment.set(\"second-address-id-to-delete\", response.pop().id);",
 											"} else {",
 											"    tests['Something went wrong with address creation'] = false;",
 											"}",
@@ -2180,7 +2180,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{defaultAddressId}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{default-address-id}}\n\t]\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
@@ -2294,7 +2294,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t\"\",\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{first-address-id-to-delete}},\n\t\t\"\",\n\t\t{{second-address-id-to-delete}}\n\t]\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
@@ -2341,7 +2341,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{first-address-id-to-delete}},\n\t\t{{second-address-id-to-delete}}\n\t]\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
@@ -2363,7 +2363,7 @@
 										"exec": [
 											"pm.test(\"Check if addresses were deleted\", function() {",
 											"    const addresses = pm.response.json().addresses;",
-											"    const filteredAddresses = addresses.filter(address => address.id === pm.environment.get(\"firstAddressIdToDelete\") || address.id === pm.environment.get(\"secondAddressIdToDelete\"));",
+											"    const filteredAddresses = addresses.filter(address => address.id === pm.environment.get(\"first-address-id-to-delete\") || address.id === pm.environment.get(\"second-address-id-to-delete\"));",
 											"    pm.expect(filteredAddresses).to.be.a('array').to.be.empty;",
 											"})",
 											""
@@ -2409,7 +2409,7 @@
 								"id": "2aeefe63-b494-4971-a6f6-94d22a67d454",
 								"type": "text/javascript",
 								"exec": [
-									"pm.environment.unset(\"addressIdsToDelete\");",
+									"pm.environment.unset(\"address-ids-to-delete\");",
 									"",
 									"const addresses = pm.response.json().addresses;",
 									"const addressIdsToDelete = Array();",
@@ -2423,7 +2423,7 @@
 									"    }",
 									"})",
 									"",
-									"pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join(','));"
+									"pm.environment.set(\"address-ids-to-delete\", addressIdsToDelete.join(','));"
 								]
 							}
 						}
@@ -2460,12 +2460,10 @@
 								"exec": [
 									"// Cleanup environment vars",
 									"pm.environment.unset(\"seed\");",
-									"pm.environment.unset(\"overallCountOfAddresses\");",
-									"pm.environment.unset(\"defaultAddressId\");",
-									"pm.environment.unset(\"firstAddressIdToDelete\");",
-									"pm.environment.unset(\"secondAddressIdToDelete\");",
-									"pm.environment.unset(\"thirdAddressIdToDelete\");",
-									"pm.environment.unset(\"addressIdsToDelete\");",
+									"pm.environment.unset(\"default-address-id\");",
+									"pm.environment.unset(\"first-address-id-to-delete\");",
+									"pm.environment.unset(\"second-address-id-to-delete\");",
+									"pm.environment.unset(\"address-ids-to-delete\");",
 									"pm.environment.unset(\"address-id\");"
 								]
 							}
@@ -2491,7 +2489,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
+							"raw": "{\n\t\"ids\": [\n\t\t{{address-ids-to-delete}}\n\t]\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
