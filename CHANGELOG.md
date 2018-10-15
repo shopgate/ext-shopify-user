@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - phone number was mapped to the "company" field when adding/updating addresses
 
+### Changed
+- Shopify request log format changed to be compatible with `shopify-cart`'s log format
+
 ## [1.3.1] - 2018-09-28
 ### Fixed
 - error handling for Shopify API and validation errors
