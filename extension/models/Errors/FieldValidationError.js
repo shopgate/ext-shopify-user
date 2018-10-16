@@ -26,6 +26,14 @@ class FieldValidationError extends Error {
   }
 
   /**
+   * @param {string} path - path of the error of the field, e.g. firstName
+   * @param {string} message - error message that pertains to path
+   */
+  addStorefrontValidationMessage (path, message) {
+    this.validationErrors.push({ path: this.translatePath(path), message })
+  }
+
+  /**
    * Translates Shopify error fields into pipeline fields
    *
    * @private

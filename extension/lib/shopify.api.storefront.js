@@ -145,7 +145,7 @@ module.exports = class {
     ) {
       const validationError = new FieldValidationError()
       response.body.data.customerUpdate.userErrors.forEach(responseError => {
-        validationError.addValidationMessage(responseError.field.pop(), responseError.message)
+        validationError.addStorefrontValidationMessage(responseError.field.pop(), responseError.message)
       })
       throw validationError
     }
