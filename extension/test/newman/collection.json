@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d3744ca1-9251-4a0c-aff4-08eaecccab68",
+		"_postman_id": "45bb99cf-b9f0-48f9-849a-d8b4bc71bf58",
 		"name": "Shopify Connect",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -377,6 +377,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "08cff157-e7a1-4aa1-898f-56a87a610d2e",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -395,6 +396,8 @@
 									"    pm.expect(response.firstName).to.not.be.empty;",
 									"    pm.expect(response.lastName).to.not.be.empty;",
 									"    pm.expect(response.mail).to.not.be.empty;",
+									"    pm.expect(response.customAttributes).to.be.a('object');",
+									"    pm.expect(response.userGroups).to.be.a('array')",
 									"    pm.response.to.not.have.jsonBody(\"addresses\");",
 									"})",
 									""
@@ -821,7 +824,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1422e849-b332-4908-b763-c8b426ae9d83",
+								"id": "80ef02b0-cb5d-41f6-8ed5-cc89299aa474",
 								"type": "text/javascript",
 								"exec": [
 									"var response = pm.response.json()",
@@ -837,7 +840,7 @@
 									"});",
 									"",
 									"pm.test(\"Data was updated\", function() {",
-									"    pm.expect(response.phone).to.eql(\"+49123456789\");",
+									"    pm.expect(response.customAttributes.phone).to.eql(\"+49123456789\");",
 									"})",
 									"",
 									"pm.test(\"Firstname and lastname has NOT been updated\", function() {",
