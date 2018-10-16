@@ -1,7 +1,6 @@
 const ApiFactory = require('../lib/shopify.api.factory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
-const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 const _ = {
   isNil: require('lodash/isNil'),
   omitBy: require('lodash/omitBy')
@@ -9,7 +8,7 @@ const _ = {
 
 /**
  * @param {SDKContext} context
- * @param {UpdateUserInput} input
+ * @param {ShopgateUser} input
  * @return {Promise<ShopifyCustomer>}
  */
 module.exports = async function (context, input) {

@@ -2,11 +2,10 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 module.exports = class {
   /**
-   *
-   * @param {Object} userStorage
-   * @param {Object} extensionStorage
-   * @param {Logger} logger
-   * @param userId
+   * @param {SDKContextEntityStorage} userStorage
+   * @param {SDKContextEntityStorage} extensionStorage
+   * @param {SDKContextLog} logger
+   * @param {string} userId
    */
   constructor (userStorage, extensionStorage, logger, userId) {
     this.userStorage = userStorage
