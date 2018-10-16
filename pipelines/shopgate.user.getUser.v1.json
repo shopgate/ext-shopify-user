@@ -6,10 +6,12 @@
     "input": [],
     "output": [
       {"key": "id", "id": "1010"},
-      {"key": "firstName", "id": "1020"},
-      {"key": "lastName", "id": "1030"},
-      {"key": "mail", "id": "1040"},
-      {"key": "phone", "id": "1050"}
+      {"key": "mail", "id": "1020"},
+      {"key": "firstName", "id": "1030", "optional": true},
+      {"key": "lastName", "id": "1040", "optional": true},
+      {"key": "userGroups", "id": "1050", "optional": true},
+      {"key": "customAttributes", "id": "1060", "optional": true},
+      {"key": "messages", "id": "1070", "optional": true}
     ],
     "steps": [
       {
@@ -19,10 +21,12 @@
         "input": [],
         "output": [
           {"key": "id", "id": "1010"},
-          {"key": "firstName", "id": "1020"},
-          {"key": "lastName", "id": "1030"},
-          {"key": "mail", "id": "1040"},
-          {"key": "phone", "id": "1050"}
+          {"key": "mail", "id": "1020"},
+          {"key": "firstName", "id": "1030", "optional": true},
+          {"key": "lastName", "id": "1040", "optional": true},
+          {"key": "userGroups", "id": "1050", "optional": true},
+          {"key": "customAttributes", "id": "1060", "optional": true},
+          {"key": "messages", "id": "1070", "optional": true}
         ]
       }
     ]

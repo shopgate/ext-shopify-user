@@ -24,6 +24,7 @@ module.exports = async function (context) {
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
+
   await context.storage.user.set('userData', {
     ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
     user: customerData
