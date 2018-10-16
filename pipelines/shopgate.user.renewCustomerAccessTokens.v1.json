@@ -11,7 +11,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/renewCustomerAccessTokens_v1.js",
+        "path": "@shopgate/shopify-user/user/token/renewCustomerAccessTokens.js",
         "input": [
           {"key": "pipelineApiKey", "id": "1"}
         ],
