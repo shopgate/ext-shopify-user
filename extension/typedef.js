@@ -127,6 +127,7 @@
  * @typedef {Object} ShopgateUser
  * @property {string} firstName
  * @property {string} lastName
+ * @property {string} [email]
  * @property {ShopgateUserCustomAttributes} customAttributes
  */
 
@@ -138,6 +139,11 @@
 
 /**
  * @typedef {Object} ShopgateUserCustomAttributes
- * @property {string} [email]
  * @property {string} [phone]
+ */
+
+/**
+ * @typedef {Object} ShopgateUserGroups
+ * @property {string} [id]
+ * @property {string} [name]
  */
