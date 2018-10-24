@@ -1,4 +1,3 @@
-const requestp = require('request-promise-native')
 const errors = require('request-promise-native/errors')
 
 module.exports = class {
@@ -22,7 +21,6 @@ module.exports = class {
       'v1',
       `/schedules/shopifyRenewCustomerAccessToken-${applicationId}`,
       'PUT',
-      '',
       {
         target: {
           type: 'http',
@@ -59,7 +57,7 @@ module.exports = class {
     try {
       return this.bigapiClient.request({
         service: serviceName.toLowerCase(),
-        version,
+        version: '/' + version.replace(/^\/*/, ''),
         path,
         method,
         body
@@ -68,7 +66,7 @@ module.exports = class {
       if (err instanceof errors.StatusCodeError) {
         throw new Error(`Error in BigAPI requesting service ${serviceName} ${method} ${version + path}. HTTP-Code: ${err.statusCode}`)
       }
-      throw new Error(`Unknown error in BigAPI requesting service ${serviceName} ${method} ${version + path}. HTTP-Code: ${err.statusCode}`)
+      throw err
     }
   }
 }
