@@ -147,3 +147,8 @@
  * @property {string} [id]
  * @property {string} [name]
  */
+
+/**
+ * @typedef {Object} UpdateMailInput
+ * @property {string} mail - new email
+ */
