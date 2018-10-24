@@ -1,6 +1,5 @@
 const crypto = require('crypto')
-const BigApiTokenHandler = require('../lib/shopgate.bigapi.tokenhandler')
-const BigApiClient = require('../lib/shopgate.bigapi.client')
+const BigApiFactory = require('../lib/shopgate.bigapi.factory')
 let taskSchedulerUpdateRequired = true
 
 /**
@@ -25,8 +24,7 @@ module.exports = async function (context) {
   }
 
   // update task scheduler with a schedule for this app
-  const tokenHandler = new BigApiTokenHandler(context.storage.extension, context.config.credentials, context.config.requestTimeout.token)
-  const bigApiClient = new BigApiClient(context.config.credentials.baseDomain, tokenHandler, context.config.requestTimeout.bigApi)
+  const bigApiClient = BigApiFactory.buildBigApi(context)
   const pipelineApiKey = crypto.randomBytes(Math.floor(Math.random() * 10 + 20)).toString('base64')
 
   try {
