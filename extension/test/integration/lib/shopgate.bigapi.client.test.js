@@ -1,8 +1,10 @@
 const nock = require('nock')
 const BigApiClient = require('../../../lib/shopgate.bigapi.client')
+const { ExternalBigAPI } = require('@shopgate/bigapi-requester')
 
 describe('Shopgate BigAPI', () => {
   let subjectUnderTest
+  let bigApiRequester
   const tokenHandlerStub = {}
 
   const baseUrl = 'shopgate.services'
@@ -11,7 +13,13 @@ describe('Shopgate BigAPI', () => {
   const path = '/schedules/shopifyRenewCustomerAccessToken-'
 
   beforeEach(done => {
-    subjectUnderTest = new BigApiClient('shopgate.services', tokenHandlerStub, 15000)
+    bigApiRequester = new ExternalBigAPI(tokenHandlerStub, 15000)
+
+    // this flag is determined by checking if the token handler is an instance of TokenHandler - since we're using a
+    // stub it wouldn't be used automatically, so force it
+    bigApiRequester.handleTokensInternally = true
+
+    subjectUnderTest = new BigApiClient(bigApiRequester)
     done()
   })
 
@@ -20,7 +28,9 @@ describe('Shopgate BigAPI', () => {
     const stage = 'development'
     const pipelineApiKey = 'abcdef123456'
 
-    tokenHandlerStub.getToken = () => { return { token: 'abcdef123456' } }
+    // set up the stub
+    tokenHandlerStub.credentials = { api: 'https://{serviceName}.' + baseUrl }
+    tokenHandlerStub.getToken = () => { return { refreshToken: 'token', token: 'abcdef123456' } }
 
     nock(`https://${serviceName}.${baseUrl}`, { reqheaders: { authorization: 'Bearer abcdef123456' } })
       .put('/' + version + path + applicationId, {
