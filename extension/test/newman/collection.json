@@ -142,6 +142,54 @@
 					"response": []
 				},
 				{
+					"name": "updateMail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b489029a-ab45-4670-b69b-eb4277dfa856",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"User not logged in error, cannot update data\", function () {",
+									"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cce257bd-f80f-470f-a0b3-1f4a07aa84f5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mail\": \"test@shopgate.com\" \n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_email_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_email_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getAddresses",
 					"event": [
 						{
@@ -892,6 +940,330 @@
 					"listen": "test",
 					"script": {
 						"id": "64ca7770-e8b9-4c28-ab8f-da2332edd36b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "updateMail",
+			"item": [
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "wrong email format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a54217f2-9b2e-48a6-95de-870fb838e93d",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Code is EVALIDATION', function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test('Incorrect validation error structure', function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test('Incorrect path errors are shown', function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('email');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"mail\": \"wrongmailformat\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_email_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_email_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ab295062-5d55-45c6-9622-291509198338",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Code is EVALIDATION', function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test('Incorrect validation error structure', function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test('Incorrect path errors are shown', function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('email');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"mail\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_email_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_email_update}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "update email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec8d5938-de45-46b3-95a8-df38c6ba1226",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15b92979-0a22-42b2-8133-f5a3e922dcc2",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set('temp-email', '12345-' + pm.environment.get('username'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mail\": \"{{temp-email}}\"\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_email_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_email_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check updated email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aaf52781-ee12-4c05-9c53-6f7c1b64f734",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test if repsonse is okay, with body and json\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.with.body;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Email has been updated\", function() {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.mail).to.eql(pm.environment.get(\"temp-email\"));",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customerLogout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_logout}}",
+							"host": [
+								"{{domain}}{{endpoint_user_logout}}"
+							]
+						},
+						"description": "customerLogout"
+					},
+					"response": []
+				},
+				{
+					"name": "customerLogin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"strategy\": \"basic\",\n    \"parameters\": {\n        \"login\": \"{{temp-email}}\",\n        \"password\": \"{{password}}\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_login}}",
+							"host": [
+								"{{domain}}{{endpoint_user_login}}"
+							]
+						},
+						"description": "customerLogin"
+					},
+					"response": []
+				},
+				{
+					"name": "reset email + cleanup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "02c16eb8-379a-4557-bfde-c45642657ee1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.environment.unset('temp-email');"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "380aa0c2-0445-4253-b8fd-c8ae3f6a2801",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mail\": \"{{username}}\"\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_email_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_email_update}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e7ac9d42-e9d7-4711-ad81-14d5f8a27d6f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f31e6824-9fd3-4604-9ae2-47b0112bce02",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2504,6 +2876,28 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1046a112-2984-4e67-8884-2ad3ee5952d1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "45c269a7-f743-419a-9453-7cc96b15fc56",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
