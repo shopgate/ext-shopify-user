@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- internally using `@shopgate/bigapi-requester` now instead of a custom implementation
 
 ## [1.3.2] - 2018-10-15
 ### Fixed
