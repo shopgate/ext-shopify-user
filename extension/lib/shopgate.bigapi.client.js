@@ -55,7 +55,7 @@ module.exports = class {
    */
   async request (serviceName, version, path, method, body = {}) {
     try {
-      return this.bigapiClient.request({
+      return await this.bigapiClient.request({
         service: serviceName.toLowerCase(),
         version: '/' + version.replace(/^\/*/, ''),
         path,
