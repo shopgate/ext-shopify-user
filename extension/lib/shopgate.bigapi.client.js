@@ -2,10 +2,10 @@ const errors = require('request-promise-native/errors')
 
 module.exports = class {
   /**
-   * @param {ExternalBigAPI} bigapiClient
+   * @param {ExternalBigAPI} bigapiRequester
    */
-  constructor (bigapiClient) {
-    this.bigapiClient = bigapiClient
+  constructor (bigapiRequester) {
+    this.bigapiRequester = bigapiRequester
   }
 
   /**
@@ -55,7 +55,7 @@ module.exports = class {
    */
   async request (serviceName, version, path, method, body = {}) {
     try {
-      return await this.bigapiClient.request({
+      return await this.bigapiRequester.request({
         service: serviceName.toLowerCase(),
         version: '/' + version.replace(/^\/*/, ''),
         path,
