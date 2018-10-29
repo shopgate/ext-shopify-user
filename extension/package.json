@@ -9,7 +9,7 @@
   "scripts": {
     "standard": "./node_modules/.bin/standard",
     "cover": "./node_modules/.bin/istanbul cover _mocha -- --recursive",
-    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json --environment ./test/newman/environment.json --globals ./test/newman/globals.json"
+    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json --globals ./test/newman/globals.json",
     "unit": "mocha --ui bdd ./test/unit --recursive",
     "integration": "mocha --ui bdd ./test/integration --recursive",
     "test": "npm run newman && npm run unit && npm run integration"
