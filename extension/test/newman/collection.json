@@ -1078,7 +1078,7 @@
 								"id": "15b92979-0a22-42b2-8133-f5a3e922dcc2",
 								"type": "text/javascript",
 								"exec": [
-									"pm.environment.set('temp-email', '12345-' + pm.environment.get('username'));"
+									"pm.environment.set('temp-email', '12345-' + pm.globals.get('username'));"
 								]
 							}
 						}
