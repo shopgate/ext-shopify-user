@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - pipeline for updating a customer
 
+### Fixed
+- company or phone could not be updated to empty strings
+
+### Changed
+- internally using `@shopgate/bigapi-requester` now instead of a custom implementation
+
 ## [1.3.2] - 2018-10-15
 ### Fixed
 - phone number was mapped to the "company" field when adding/updating addresses
