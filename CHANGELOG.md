@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 - internally using `@shopgate/bigapi-requester` now instead of a custom implementation
+- guest checkout now depends on the config 'guest_login_mode'
 
 ## [1.3.2] - 2018-10-15
 ### Fixed
