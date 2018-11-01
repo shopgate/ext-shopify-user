@@ -1481,8 +1481,7 @@
 							"host": [
 								"{{domain}}{{endpoint_user_logout}}"
 							]
-						},
-						"description": "customerLogout"
+						}
 					},
 					"response": []
 				},
@@ -1558,8 +1557,7 @@
 							"host": [
 								"{{domain}}{{endpoint_user_login}}"
 							]
-						},
-						"description": "customerLogin"
+						}
 					},
 					"response": []
 				},
@@ -1596,8 +1594,7 @@
 							"host": [
 								"{{domain}}{{endpoint_user_login}}"
 							]
-						},
-						"description": "customerLogin"
+						}
 					},
 					"response": []
 				},
