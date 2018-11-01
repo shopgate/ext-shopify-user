@@ -21,7 +21,7 @@ module.exports = async (context, input) => {
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessTokenManager = ApiFactory.buildCustomerTokenManager(context)
   const customerAccessToken = await customerAccessTokenManager.getToken()
-  const options = { password: input.password /*, oldPassword: input.oldPassword*/ }
+  const options = { password: input.password }
 
   return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, options)
 }
