@@ -3,14 +3,14 @@ const InvalidCallError = require('../../models/Errors/InvalidCallError')
 /**
  * @typedef {Object} PrepareLoginInput
  * @property {string} username - currently logged in user
- * @property {string} password - currently acive password
+ * @property {string} oldPassword - currently acive password
  */
 /**
  * @param {SDKContext} context
  * @param {PrepareLoginInput} input
  */
 module.exports = async (context, input) => {
-  if (!input.password || !input.username) {
+  if (!input.oldPassword || !input.username) {
     throw new InvalidCallError()
   }
 
@@ -18,7 +18,7 @@ module.exports = async (context, input) => {
     strategy: 'basic',
     parameters: {
       login: input.username,
-      password: input.password
+      password: input.oldPassword
     }
   }
 }
