@@ -18,6 +18,7 @@
     "@shopgate/pwa-common": "^5.6.0",
     "@shopgate/pwa-common-commerce": "^5.6.0",
     "@shopgate/tracking-core": "^5.6.0",
-    "eslint": "^4.19.1"
+    "eslint": "^4.19.1",
+    "mocha": "^5.2.0"
   }
 }

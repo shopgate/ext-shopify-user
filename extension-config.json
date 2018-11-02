@@ -34,7 +34,7 @@
       "params": {
         "method": "GET",
         "service": "config",
-        "path": "/v1/shop/%(shopId)s/gui_sg_connect_user_account?parsed=true",
+        "path": "/v1/shop/%(shopId)s/guest_login_mode?parsed=true",
         "key": "value"
       }
     },
