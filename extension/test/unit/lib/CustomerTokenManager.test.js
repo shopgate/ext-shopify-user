@@ -84,5 +84,14 @@ describe('CustomerTokenManager', () => {
       }
       assert.fail('Expected an error to be thrown.')
     })
+
+    it('should save a token to the user storage', async () => {
+      const storageSetSpy = sinon.spy(userStorageStub, 'set')
+      const newToken = { accessToken: 'token-new', expiresAt: moment(Date.now()).add(1, 'week') }
+
+      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub, loggerStub, 1)
+      await TokenManager.setToken(newToken)
+      sinon.assert.calledWith(storageSetSpy, 'customerAccessToken', newToken)
+    })
   })
 })

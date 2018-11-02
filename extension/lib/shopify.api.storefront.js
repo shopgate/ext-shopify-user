@@ -3,6 +3,7 @@ const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
 
 module.exports = class {
   /**
@@ -52,7 +53,7 @@ module.exports = class {
 
     if (Tools.propertyExists(response.body.data, 'customerAccessTokenCreate.userErrors') &&
       !Tools.isEmpty(response.body.data.customerAccessTokenCreate.userErrors)) {
-      throw new Error(response.body.data.customerAccessTokenCreate.userErrors[0].message)
+      throw new InvalidCredentialsError(response.body.data.customerAccessTokenCreate.userErrors[0].message)
     }
 
     return response.body.data.customerAccessTokenCreate.customerAccessToken
@@ -115,7 +116,7 @@ module.exports = class {
   /**
    * @param {string} customerAccessToken
    * @param {Object} customer
-   * @returns {Promise<ShopifyCustomer>}
+   * @returns {Promise<ShopifyCustomerUpdateResponse>}
    * @throws UnknownError upon unknown API errors.
    * @throws FieldValidationError - If data could not be updated, because of validation errors from Shopify
    */
@@ -150,7 +151,7 @@ module.exports = class {
       throw validationError
     }
 
-    return response.body.data.customer
+    return response.body.data.customerUpdate
   }
 
   /**

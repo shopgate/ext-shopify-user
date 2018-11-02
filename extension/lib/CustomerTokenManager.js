@@ -43,4 +43,11 @@ module.exports = class {
 
     return customerAccessToken
   }
+
+  /**
+   * @param {ShopifyCustomerAccessToken} token
+   */
+  async setToken (token) {
+    await this.userStorage.set('customerAccessToken', token)
+  }
 }

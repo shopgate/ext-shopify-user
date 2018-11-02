@@ -49,6 +49,11 @@
       "enabled": true
     },
     {
+      "key": "endpoint_user_password_update",
+      "value": "/trustedPipelines/shopgate.user.updatePassword.v1",
+      "enabled": true
+    },
+    {
       "key": "endpoint_user_addresses_get",
       "value": "/trustedPipelines/shopgate.user.getAddresses.v1",
       "enabled": true

@@ -104,6 +104,12 @@
  * @property {string} expiresAt
  */
 
+/**
+ * @typedef {Object} ShopifyCustomerUpdateResponse
+ * @property {Object} ShopifyCustomerAccessToken
+ * @property {Object} ShopifyCustomer
+ */
+
 // ========= Shopgate Specifics ==========
 /**
  * @typedef {Object} ShopgateAddress
