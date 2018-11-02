@@ -1,6 +1,5 @@
 const ApiFactory = require('../lib/shopify.api.factory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const InvalidCallError = require('../models/Errors/InvalidCallError')
 
 /**
  * @param {SDKContext} context

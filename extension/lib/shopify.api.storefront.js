@@ -116,7 +116,7 @@ module.exports = class {
   /**
    * @param {string} customerAccessToken
    * @param {Object} customer
-   * @returns {Promise<ShopifyCustomer>}
+   * @returns {Promise<ShopifyCustomerUpdateResponse>}
    * @throws UnknownError upon unknown API errors.
    * @throws FieldValidationError - If data could not be updated, because of validation errors from Shopify
    */
