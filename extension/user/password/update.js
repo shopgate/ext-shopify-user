@@ -9,12 +9,12 @@ const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
  * @property {string} userId - current customer ID
  */
 /**
- * @param {StepContext} context
+ * @param {SDKContext} context
  * @param {UpdatePasswordInput} input
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
-    throw new UnauthorizedError('Unauthorized user')
+    throw new UnauthorizedError()
   }
 
   if (!input.password) {

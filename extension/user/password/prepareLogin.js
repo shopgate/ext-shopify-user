@@ -6,7 +6,7 @@ const InvalidCallError = require('../../models/Errors/InvalidCallError')
  * @property {string} password - currently acive password
  */
 /**
- * @param {StepContext} context
+ * @param {SDKContext} context
  * @param {PrepareLoginInput} input
  */
 module.exports = async (context, input) => {
