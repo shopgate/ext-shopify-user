@@ -5,7 +5,7 @@ const InvalidCallError = require('../models/Errors/InvalidCallError')
 /**
  * @param {SDKContext} context
  * @param {UpdateMailInput} input
- * @return {Promise<ShopifyCustomer>}
+ * @return {Promise<ShopifyCustomerUpdateResponse>}
  */
 module.exports = async function (context, input) {
   if (!context.meta.userId) {

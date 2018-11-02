@@ -9,7 +9,7 @@ const _ = {
 /**
  * @param {SDKContext} context
  * @param {ShopgateUser} input
- * @return {Promise<ShopifyCustomer>}
+ * @return {Promise<ShopifyCustomerUpdateResponse>}
  */
 module.exports = async function (context, input) {
   if (!context.meta.userId) {

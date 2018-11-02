@@ -11,6 +11,7 @@ const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 /**
  * @param {SDKContext} context
  * @param {UpdatePasswordInput} input
+ * @return {Promise<ShopifyCustomerUpdateResponse>}
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
@@ -27,5 +28,8 @@ module.exports = async (context, input) => {
   const customerAccessToken = await customerAccessTokenManager.getToken()
   const options = { password: input.password }
 
-  return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, options)
+  const result = await storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, options)
+  await customerAccessTokenManager.setToken(result.customerAccessToken)
+
+  return result
 }

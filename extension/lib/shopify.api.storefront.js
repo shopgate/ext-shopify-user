@@ -151,7 +151,7 @@ module.exports = class {
       throw validationError
     }
 
-    return response.body.data.customer
+    return response.body.data.customerUpdate
   }
 
   /**
