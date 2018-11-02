@@ -1,10 +1,10 @@
 const ApiFactory = require('../../lib/shopify.api.factory')
+const InvalidCallError = require('../../models/Errors/InvalidCallError')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 
 /**
  * @typedef {Object} UpdatePasswordInput
  * @property {string} password - new password
- * @property {string} oldPassword - old password for verification
  * @property {string} token - current Bearer token
  * @property {string} userId - current customer ID
  */
@@ -15,6 +15,10 @@ const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
     throw new UnauthorizedError('Unauthorized user')
+  }
+
+  if (!input.password) {
+    throw new InvalidCallError()
   }
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
