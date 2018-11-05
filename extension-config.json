@@ -59,7 +59,9 @@
       "hooks" : ["shopgate.user.getConfig.v1:after"],
       "input" : [],
       "output" : [
-        {"key": "splitDefaultAddressesByTags", "optional": true}
+        {"key": "addressDefaultGroups", "optional": true},
+        {"key": "userMenuEntries", "optional": true},
+        {"key": "addressForm", "optional": true}
       ]
     }
   ]
