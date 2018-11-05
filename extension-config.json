@@ -2,8 +2,6 @@
   "version": "1.3.3",
   "id": "@shopgate/shopify-user",
   "trusted": true,
-  "steps": [
-  ],
   "configuration": {
     "shopifyShopAlias": {
       "type": "bigApi",
@@ -121,6 +119,19 @@
       "id": "locale/nl-NL",
       "type": "translations",
       "path": "frontend/locale/nl-NL.json"
+    }
+  ],
+  "steps": [
+    {
+      "path": "extension/config/getConfig.js",
+      "description": "Replace config by shopify extension",
+      "hooks" : ["shopgate.user.getConfig.v1:after"],
+      "input" : [],
+      "output" : [
+        {"key": "addressDefaultGroups", "optional": true},
+        {"key": "userMenuEntries", "optional": true},
+        {"key": "addressForm", "optional": true}
+      ]
     }
   ]
 }
