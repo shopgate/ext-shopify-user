@@ -1,4 +1,5 @@
 const InvalidCallError = require('../../models/Errors/InvalidCallError')
+const FieldValidationError = require('../../models/Errors/FieldValidationError')
 
 /**
  * @typedef {Object} PrepareLoginInput
@@ -10,8 +11,14 @@ const InvalidCallError = require('../../models/Errors/InvalidCallError')
  * @param {PrepareLoginInput} input
  */
 module.exports = async (context, input) => {
-  if (!input.oldPassword || !input.username) {
+  if (!input.username) {
     throw new InvalidCallError()
+  }
+
+  if (!input.oldPassword) {
+    const validationError = new FieldValidationError()
+    validationError.addStorefrontValidationMessage('oldPassword', 'user.errors.blank')
+    throw validationError
   }
 
   return {
