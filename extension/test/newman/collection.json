@@ -15,13 +15,13 @@
 							"listen": "test",
 							"script": {
 								"id": "a9cf418a-ecb3-4a21-91b5-b132c7c4ea7c",
-								"type": "text/javascript",
 								"exec": [
 									"// doesn't matter if we succeed, this just clears previous states",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -196,23 +196,23 @@
 							"listen": "test",
 							"script": {
 								"id": "b489029a-ab45-4670-b69b-eb4277dfa856",
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = pm.response.json();",
 									"pm.test(\"User not logged in error, cannot update data\", function () {",
 									"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
 								"id": "cce257bd-f80f-470f-a0b3-1f4a07aa84f5",
-								"type": "text/javascript",
 								"exec": [
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1325,19 +1325,31 @@
 					"name": "Errors",
 					"item": [
 						{
-							"name": "empty data",
+							"name": "empty password",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "2e8d378c-162c-44bf-828a-72a75a173c42",
-										"type": "text/javascript",
+										"id": "035be69a-24c9-4837-9fcc-d8446acff32d",
 										"exec": [
 											"var jsonData = pm.response.json();",
 											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
-											"    pm.expect(jsonData.error.code).to.eql('EINVALIDCALL');",
+											"    pm.expect(jsonData.error.code).to.eql(\"EVALIDATION\");",
+											"});",
+											"",
+											"pm.test(\"Correct validation error structure\", function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Ccorrect path errors are shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq(\"password\");",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -1351,7 +1363,57 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"password\": \"\",\n\t\"oldPassword\": \"\"\n}"
+									"raw": "{\n\t\"password\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty password with oldPassword",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2e8d378c-162c-44bf-828a-72a75a173c42",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test('Correct validation error structure', function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test('Ccorrect path errors are shown', function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('password');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"\",\n\t\"oldPassword\": \"{{password}}\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_user_password_update}}",
@@ -1369,23 +1431,23 @@
 									"listen": "test",
 									"script": {
 										"id": "68ba37a2-6f5e-4898-97be-6825e050a814",
-										"type": "text/javascript",
 										"exec": [
 											"const jsonData = pm.response.json();",
 											"pm.test('Bad credentials provided', function() {",
 											"    pm.expect(jsonData.error.code).to.be.eq('EINVALIDCREDENTIALS');",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
 										"id": "88a7a37a-3613-4b5f-90d3-7866eb682dfd",
-										"type": "text/javascript",
 										"exec": [
 											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -1399,7 +1461,67 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"password\": \"password\",\n\t\"oldPassword\": \"notrealpassword\"\n}"
+									"raw": "{\n\t\"password\": \"{{password}}\",\n\t\"oldPassword\": \"notrealpassword\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty old password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "94e09a43-1886-461a-89a7-3cd5b098c343",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql(\"EVALIDATION\");",
+											"});",
+											"",
+											"pm.test(\"Correct validation error structure\", function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Ccorrect path errors are shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq(\"oldPassword\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "8a650af8-a5cc-491d-93c4-3d3054d2853d",
+										"exec": [
+											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{password}}\",\n\t\"oldPassword\": \"\"\n}"
 								},
 								"url": {
 									"raw": "{{domain}}{{endpoint_user_password_update}}",
@@ -1660,22 +1782,22 @@
 									"listen": "test",
 									"script": {
 										"id": "ec8d5938-de45-46b3-95a8-df38c6ba1226",
-										"type": "text/javascript",
 										"exec": [
 											"pm.test('Status code is 200', function() {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
 										"id": "88a7a37a-3613-4b5f-90d3-7866eb682dfd",
-										"type": "text/javascript",
 										"exec": [
 											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
