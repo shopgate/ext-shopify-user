@@ -49,5 +49,6 @@ module.exports = class {
    */
   async setToken (token) {
     await this.userStorage.set('customerAccessToken', token)
+    await this.extensionStorage.map.setItem('customerTokensByUserIds', this.userId, token)
   }
 }

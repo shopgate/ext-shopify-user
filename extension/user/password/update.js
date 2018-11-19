@@ -1,5 +1,5 @@
 const ApiFactory = require('../../lib/shopify.api.factory')
-const InvalidCallError = require('../../models/Errors/InvalidCallError')
+const FieldValidationError = require('../../models/Errors/FieldValidationError')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 
 /**
@@ -19,7 +19,9 @@ module.exports = async (context, input) => {
   }
 
   if (!input.password) {
-    throw new InvalidCallError()
+    const validationError = new FieldValidationError()
+    validationError.addStorefrontValidationMessage('password', 'user.errors.blank')
+    throw validationError
   }
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
