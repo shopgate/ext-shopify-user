@@ -71,7 +71,6 @@
         }
       }
     },
-
     "addressForm": {
       "type": "admin",
       "destination": "backend",
