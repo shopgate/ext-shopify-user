@@ -12,9 +12,7 @@
         "trusted": true,
         "input": [],
         "output": [
-          {"key": "mail", "id": "1"},
-          {"key": "gender", "id": "2"},
-          {"key": "birthday", "id": "3"}
+          {"key": "mail", "id": "1"}
         ]
       },
       {
@@ -22,9 +20,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/event/createEventData.js",
         "input": [
-          {"key": "mail", "id": "1"},
-          {"key": "gender", "id": "2"},
-          {"key": "birthday", "id": "3"}
+          {"key": "mail", "id": "1"}
         ],
         "output": [
           {"key": "eventData", "id": "4"}

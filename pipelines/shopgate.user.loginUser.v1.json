@@ -12,6 +12,13 @@
     ],
     "steps": [
       {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/initTaskScheduler_v1.js",
+        "input": [],
+        "output": []
+      },
+      {
         "type": "pipeline",
         "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
@@ -31,7 +38,7 @@
         "output": [
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "login", "id": "1080"}
+          {"key": "customerId", "id": "1090", "optional": true}
         ]
       },
       {
@@ -42,7 +49,7 @@
           {"key": "strategy", "id": "1010"},
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "login", "id": "1080"}
+          {"key": "customerId", "id": "1090", "optional": true}
         ],
         "output": [
           {"key": "userId", "id": "1050"}
@@ -64,6 +71,16 @@
         "input": [
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
+        ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/saveCustomerAccessToken_v1.js",
+        "input": [
+          {"key": "userId", "id": "1050"},
+          {"key": "customerAccessToken", "id": "1060"}
         ],
         "output": []
       },

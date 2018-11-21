@@ -7,10 +7,10 @@
   "configuration": {
     "shopifyShopAlias": {
       "type": "bigApi",
-      "destination" : "backend",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
         "key": "value.frontend.alias"
@@ -18,27 +18,59 @@
     },
     "shopifyAccessToken": {
       "type": "bigApi",
-      "destination" : "backend",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
         "key": "value.backend.shopifyAccessToken"
       }
     },
-    "userRegistrationUrl" : {
-      "type" : "static",
-      "destination" : "backend",
-      "params" : {
-        "value" : ""
+    "getUserAccountSettings": {
+      "type": "bigApi",
+      "destination": "frontend",
+      "default": "required",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/gui_sg_connect_user_account?parsed=true",
+        "key": "value"
       }
     },
-    "userDataCacheTtl" : {
-      "type" : "static",
-      "destination" : "backend",
-      "params" : {
-        "value" : 600000
+    "userRegistrationUrl": {
+      "type": "static",
+      "destination": "backend",
+      "params": {
+        "value": ""
+      }
+    },
+    "userDataCacheTtl": {
+      "type": "static",
+      "destination": "backend",
+      "params": {
+        "value": 600000
+      }
+    },
+    "stage": {
+      "type": "static",
+      "destination": "backend",
+      "params": {
+        "value": "%(targetStage)s"
+      }
+    },
+    "credentials": {
+      "type": "bigApiCredentials",
+      "destination": "backend"
+    },
+    "requestTimeout": {
+      "type": "static",
+      "destination": "backend",
+      "params": {
+        "value": {
+          "bigApi": 15000,
+          "token": 2000
+        }
       }
     }
   },
@@ -47,6 +79,43 @@
       "id": "RegisterSubscription",
       "path": "frontend/Register/subscribers.js",
       "type": "subscribers"
+    },
+    {
+      "id": "GuestCheckoutLink",
+      "path": "frontend/portals/GuestCheckoutLink/index.jsx",
+      "target": "page.login.register-link.after",
+      "type": "portals"
+    },
+    {
+      "id": "GuestCheckoutLinkRoute",
+      "path": "frontend/portals/GuestCheckoutLink/route.jsx",
+      "target": "app.routes",
+      "type": "portals"
+    },
+    {
+      "id": "GuestCheckoutSubscription",
+      "path": "frontend/portals/GuestCheckoutLink/subscribers.js",
+      "type": "subscribers"
+    },
+    {
+      "id": "locale/en-US",
+      "type": "translations",
+      "path": "frontend/locale/en-US.json"
+    },
+    {
+      "id": "locale/de-DE",
+      "type": "translations",
+      "path": "frontend/locale/de-DE.json"
+    },
+    {
+      "id": "locale/fr-FR",
+      "type": "translations",
+      "path": "frontend/locale/fr-FR.json"
+    },
+    {
+      "id": "locale/nl-NL",
+      "type": "translations",
+      "path": "frontend/locale/nl-NL.json"
     }
   ]
 }

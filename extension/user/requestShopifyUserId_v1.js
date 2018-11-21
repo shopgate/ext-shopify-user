@@ -1,58 +1,31 @@
-const SGShopifyApi = require('../lib/shopify.api.class.js')
+const ApiFactory = require('../lib/shopify.api.factory')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**
- * @typedef {Object} ShopifyCustomerAccessToken
- * @property {string} accessToken
- * @property {string} expiresAt
- *
- * @typedef {Object} input
- * @property {string} login
- * @property {string} password
- *
- * @typedef {Object} RequestShopifyUserIdInputData
- * @property {ShopifyCustomerAccessToken} customerAccessToken
- * @property {string} storefrontAccessToken
- * @property {string} login
- *
- * @param {Object} context
- * @param {RequestShopifyUserIdInputData} input
- * @param {function} cb
+ * @param {SDKContext} context
+ * @param {Object} input
+ * @param {string} input.strategy
+ * @param {ShopifyCustomerAccessToken} input.customerAccessToken
+ * @param {string} input.storefrontAccessToken
+ * @param {string} input.customerId
+ * @return {Promise<{userId: string}>}
  */
-module.exports = function (context, input, cb) {
-  const shopify = new SGShopifyApi(context)
-  const login = input.login.login
-  const customerId = input.login.parameters.customerId
-
+module.exports = async function (context, input) {
   if (input.strategy === 'web') {
-    if (!customerId) {
+    if (!input.customerId) {
       context.log.error('No userId given on input strategy web')
-      return cb(new CustomerNotFoundError())
+      throw new CustomerNotFoundError()
     } else {
-      return cb(null, { userId: customerId.toString() })
+      return { userId: input.customerId.toString() }
     }
   }
 
-  shopify.findUserByEmail(login, (err, customerList) => {
-    /**
-     * Ensure the requested data to be available and no request error occurred.
-     *
-     * @typedef {Object} CustomerResponseElement
-     * @property {number} id
-     */
-    if (err || !customerList || customerList.length !== 1) {
-      if (customerList && customerList.length > 1) {
-        context.log.error('Multiple users accounts returned from API request')
-      }
-      return cb(new CustomerNotFoundError())
-    }
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.storefrontAccessToken)
+  const userId = Buffer.from(
+    (await storefrontApi.getCustomerByAccessToken(input.customerAccessToken.accessToken)).id,
+    'base64')
+    .toString()
+    .substring(23) // strip 'gid://shopify/Customer/'
 
-    const filterResult = (customerList.filter((customer) => {
-      return customer.email.toLowerCase() === login.toString().toLowerCase()
-    }))
-
-    return filterResult.length
-      ? cb(null, { 'userId': filterResult[0].id.toString() })
-      : cb(new CustomerNotFoundError())
-  })
+  return { userId }
 }
