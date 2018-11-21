@@ -87,12 +87,6 @@
       "type": "portals"
     },
     {
-      "id": "GuestCheckoutLinkRoute",
-      "path": "frontend/portals/GuestCheckoutLink/route.jsx",
-      "target": "app.routes",
-      "type": "portals"
-    },
-    {
       "id": "GuestCheckoutSubscription",
       "path": "frontend/portals/GuestCheckoutLink/subscribers.js",
       "type": "subscribers"

@@ -3,7 +3,6 @@ import { appWillStart$ } from '@shopgate/pwa-common/streams/app';
 import { redirects } from '@shopgate/pwa-common/collections';
 import { LEGACY_URL } from '@shopgate/pwa-common/constants/Registration';
 import { REGISTER_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
-
 import buildRegisterUrl from '@shopgate/pwa-common/subscriptions/helpers/buildRegisterUrl';
 import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl';
 import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
