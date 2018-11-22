@@ -187,6 +187,11 @@
       "type": "subscribers"
     },
     {
+      "id": "CheckoutSubscription",
+      "path": "frontend/Checkout/subscribers.js",
+      "type": "subscribers"
+    },
+    {
       "id": "GuestCheckoutLink",
       "path": "frontend/portals/GuestCheckoutLink/index.jsx",
       "target": "page.login.register-link.after",

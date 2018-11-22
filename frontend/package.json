@@ -17,5 +17,10 @@
     "@shopgate/pwa-common-commerce": "6.0.0-rc.4",
     "@shopgate/tracking-core": "6.0.0-rc.4",
     "eslint": "^4.17.0"
+  },
+  "peerDependencies": {
+    "@shopgate/pwa-common": "6.x"
   }
 }
+
+
