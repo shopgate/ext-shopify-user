@@ -22,7 +22,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/addAddress_v1.js",
+        "path": "@shopgate/shopify-user/user/address/add.js",
         "input": [
           {"key": "firstName", "id": "102", "optional": true},
           {"key": "lastName", "id": "104", "optional": true},
@@ -41,7 +41,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/setDefaultAddress_v1.js",
+        "path": "@shopgate/shopify-user/user/address/setDefault.js",
         "input": [
           {"key": "id", "id": "3"},
           {"key": "tags", "id": "114", "optional": true}

@@ -4,14 +4,16 @@ class ShopgateCustomer {
    * @param {string} mail
    * @param {string} firstName
    * @param {string} lastName
-   * @param {string|null} phone
+   * @param {ShopgateUserCustomAttributes} customAttributes
+   * @param {ShopgateUserGroups[]} userGroups
    */
-  constructor (id, mail, firstName, lastName, phone = null) {
+  constructor (id, mail, firstName, lastName, customAttributes, userGroups = []) {
     this.id = id
     this.mail = mail
     this.firstName = firstName
     this.lastName = lastName
-    this.phone = phone
+    this.customAttributes = customAttributes
+    this.userGroups = userGroups
   }
 
   /**
@@ -24,7 +26,9 @@ class ShopgateCustomer {
       shopifyCustomer.email,
       shopifyCustomer.firstName,
       shopifyCustomer.lastName,
-      shopifyCustomer.phone
+      {
+        phone: shopifyCustomer.phone
+      }
     )
   }
 }

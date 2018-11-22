@@ -8,12 +8,16 @@
   },
   "scripts": {
     "standard": "./node_modules/.bin/standard",
-    "cover": "istanbul cover _mocha -- --recursive",
-    "newman": "newman run ./test/newman/collection.json --environment ./test/newman/environment.json --globals ./test/newman/globals.json"
+    "cover": "./node_modules/.bin/istanbul cover _mocha -- --recursive",
+    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json --globals ./test/newman/globals.json",
+    "unit": "mocha --ui bdd ./test/unit --recursive",
+    "integration": "mocha --ui bdd ./test/integration --recursive",
+    "test": "npm run newman && npm run unit && npm run integration"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@shopgate/bigapi-requester": "^2.0.4",
     "crypto-js": "^3.1.9-1",
     "json-bigint": "^0.3.0",
     "lodash": "^4.17.10",
@@ -23,6 +27,8 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "assert": "^1.4.1",
+    "chai": "^4.2.0",
     "eslint": "^5.4.0",
     "eslint-config-standard": "^12.0.0-alpha.0",
     "eslint-plugin-import": "^2.14.0",

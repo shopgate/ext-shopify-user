@@ -1,6 +1,6 @@
 const moment = require('moment')
-const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const ApiFactory = require('../lib/shopify.api.factory')
+const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
+const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context

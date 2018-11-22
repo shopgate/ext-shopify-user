@@ -1,8 +1,8 @@
-const Tools = require('../lib/tools')
-const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const { mapCountry, mapProvince, mapCustomAttributes } = require('../lib/mapper')
+const Tools = require('../../lib/tools')
+const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
+const { mapCountry, mapProvince, mapCustomAttributes } = require('../../lib/mapper')
+const ApiFactory = require('../../lib/shopify.api.factory')
 const _ = require('lodash')
-const ApiFactory = require('../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context
