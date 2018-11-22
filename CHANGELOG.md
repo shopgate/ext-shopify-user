@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- pipeline for updating a customer
+
+### Fixed
+- company or phone could not be updated to empty strings
+
+### Changed
+- internally using `@shopgate/bigapi-requester` now instead of a custom implementation
+- guest checkout now depends on the config 'guest_login_mode'
 
 ## [1.3.2] - 2018-10-15
 ### Fixed

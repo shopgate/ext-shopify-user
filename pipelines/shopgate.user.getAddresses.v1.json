@@ -11,7 +11,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/getAddresses_v1.js",
+        "path": "@shopgate/shopify-user/user/address/get.js",
         "input": [],
         "output": [
           {"key": "addresses", "id": "10"}

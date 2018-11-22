@@ -8,11 +8,11 @@ import config from '../../config';
 import connect from './connector';
 
 /**
- * Check is the guest checkout disabled
+ * Check whether the guest checkout is disabled
  * @private
  * @returns {boolean}
  */
-const disableGuestCheckout = () => !config.getUserAccountSettings || config.getUserAccountSettings === 'required';
+const disableGuestCheckout = () => !config.getUserAccountSettings;
 
 /**
  * The GuestCheckoutLink component.

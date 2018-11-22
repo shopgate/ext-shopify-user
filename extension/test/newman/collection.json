@@ -1,6 +1,6 @@
 {
 	"info": {
-      "_postman_id": "8dbf86ff-016d-4ad9-815b-56703b1b22e2",
+		"_postman_id": "84686a82-7c6d-4db4-a10b-8d7f07c82400",
 		"name": "Shopify Connect",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,13 +15,13 @@
 							"listen": "test",
 							"script": {
 								"id": "a9cf418a-ecb3-4a21-91b5-b132c7c4ea7c",
-								"type": "text/javascript",
 								"exec": [
 									"// doesn't matter if we succeed, this just clears previous states",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -38,9 +38,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_logout}}",
+							"raw": "{{domain}}{{endpoint_user_logout}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_logout}}"
+								"{{domain}}{{endpoint_user_logout}}"
 							]
 						}
 					},
@@ -94,6 +94,150 @@
 					"response": []
 				},
 				{
+					"name": "updateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b489029a-ab45-4670-b69b-eb4277dfa856",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"User not logged in error, cannot update data\", function () {",
+									"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cce257bd-f80f-470f-a0b3-1f4a07aa84f5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateMail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b489029a-ab45-4670-b69b-eb4277dfa856",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"User not logged in error, cannot update data\", function () {",
+									"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cce257bd-f80f-470f-a0b3-1f4a07aa84f5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mail\": \"test@shopgate.com\" \n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_email_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_email_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b489029a-ab45-4670-b69b-eb4277dfa856",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"User not logged in error, cannot update data\", function () {",
+									"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cce257bd-f80f-470f-a0b3-1f4a07aa84f5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"test\",\n\t\"oldPassword\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_password_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_password_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getAddresses",
 					"event": [
 						{
@@ -132,9 +276,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -176,12 +320,12 @@
 						],
 						"body": {
 							"mode": "raw",
-                          "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\"\n}"
+							"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\"\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_add}}",
+							"raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_add}}"
+								"{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -226,9 +370,9 @@
 							"raw": "{\n\t\"id\":\"1\"\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_update}}",
+							"raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_update}}"
+								"{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -273,9 +417,9 @@
 							"raw": "{\n\t\"ids\": [\n\t\t\"1\"\n\t]\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_delete}}"
+								"{{domain}}{{endpoint_user_addresses_delete}}"
 							]
 						}
 					},
@@ -315,9 +459,9 @@
 							"raw": "{\n\t\"strategy\": \"basic\",\n\t\"parameters\": {\n\t\t\"login\": \"{{username}}\",\n\t\t\"password\": \"{{password}}\"\n\t}\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_login}}",
+							"raw": "{{domain}}{{endpoint_user_login}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_login}}"
+								"{{domain}}{{endpoint_user_login}}"
 							]
 						}
 					},
@@ -329,6 +473,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "08cff157-e7a1-4aa1-898f-56a87a610d2e",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -347,6 +492,8 @@
 									"    pm.expect(response.firstName).to.not.be.empty;",
 									"    pm.expect(response.lastName).to.not.be.empty;",
 									"    pm.expect(response.mail).to.not.be.empty;",
+									"    pm.expect(response.customAttributes).to.be.a('object');",
+									"    pm.expect(response.userGroups).to.be.a('array')",
 									"    pm.response.to.not.have.jsonBody(\"addresses\");",
 									"})",
 									""
@@ -374,6 +521,1537 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "updateUser",
+			"item": [
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "no input",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "49674fc5-9e17-42a8-ab66-575229270df5",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EINVALIDCALL');",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "742173d7-84fb-4207-85ae-a7e93e6fb17c",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty required field",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a241e5f7-3c4d-4bdb-83e2-a13d71343932",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because the firstname is empty\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test(\"Incorrect validation error structure\", function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.gte(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Correct email error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('email');",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "742173d7-84fb-4207-85ae-a7e93e6fb17c",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customAttributes\": {\n\t\t\"email\": \"\"\t\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "email invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b44c90ca-48c9-4486-a4ed-1053aeb29a15",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because email was malformed\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test(\"Correct email error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('email');",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "742173d7-84fb-4207-85ae-a7e93e6fb17c",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customAttributes\": {\n\t\t\"email\": \"invalidmailformat\"\t\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "phone invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8404ac01-e0dc-4616-a787-a5ce1464a345",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because phone was malformed\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test(\"Correct phone error is shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('phone');",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "742173d7-84fb-4207-85ae-a7e93e6fb17c",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customAttributes\": {\n\t\t\"phone\": \"invalidphoneformat\"\t\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_update}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e19c85f2-0033-4b62-86b1-b088f4411bb4",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "064b68e5-42a4-496b-9159-f433d3daab02",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "update simple data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f1dbd16-cd35-46ad-8414-547ac9c5141a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "372abd2d-4751-42fa-9d2d-fedabb295bef",
+								"type": "text/javascript",
+								"exec": [
+									"// Create a seed to have a randomized data set",
+									"pm.environment.set(\"seed\", \"user-\" + Math.floor(Math.random() * Math.floor(1000)));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\"\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check updated data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "12eb378a-97e0-4f9f-800d-c936ff0f1040",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test if repsonse is okay, with body and json\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.with.body;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Data was updated\", function() {",
+									"    var response = pm.response.json()",
+									"    pm.expect(response.firstName).to.eql(pm.environment.get(\"seed\") + \"-firstname\");",
+									"    pm.expect(response.lastName).to.eql(pm.environment.get(\"seed\") + \"-lastname\");",
+									"    ",
+									"    pm.environment.set(\"updated-firstname\", response.firstName);",
+									"    pm.environment.set(\"updated-lastname\", response.lastName);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update customAttributes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f1dbd16-cd35-46ad-8414-547ac9c5141a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a043704-a011-4b22-a58c-3bb80a05ae54",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"customAttributes\": {\n\t\t\"phone\": \"+49123456789\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check updated customAttributes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "80ef02b0-cb5d-41f6-8ed5-cc89299aa474",
+								"type": "text/javascript",
+								"exec": [
+									"var response = pm.response.json()",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test if repsonse is okay, with body and json\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.with.body;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Data was updated\", function() {",
+									"    pm.expect(response.customAttributes.phone).to.eql(\"+49123456789\");",
+									"})",
+									"",
+									"pm.test(\"Firstname and lastname has NOT been updated\", function() {",
+									"    pm.expect(response.firstName).to.eql(pm.environment.get(\"updated-firstname\"));",
+									"    pm.expect(response.lastName).to.eql(pm.environment.get(\"updated-lastname\"));",
+									"})",
+									"",
+									"pm.environment.unset(\"updated-firstname\");",
+									"pm.environment.unset(\"updated-lastname\");",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e52b83a3-53e4-45a2-99f1-ce504e3d204f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "64ca7770-e8b9-4c28-ab8f-da2332edd36b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "updateMail",
+			"item": [
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "wrong email format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a54217f2-9b2e-48a6-95de-870fb838e93d",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Code is EVALIDATION', function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test('Incorrect validation error structure', function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test('Incorrect path errors are shown', function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('email');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"mail\": \"wrongmailformat\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_email_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_email_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ab295062-5d55-45c6-9622-291509198338",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Code is EVALIDATION', function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test('Incorrect validation error structure', function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test('Incorrect path errors are shown', function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('email');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"mail\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_email_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_email_update}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "update email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec8d5938-de45-46b3-95a8-df38c6ba1226",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15b92979-0a22-42b2-8133-f5a3e922dcc2",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set('temp-email', '12345-' + pm.globals.get('username'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mail\": \"{{temp-email}}\"\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_email_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_email_update}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check updated email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aaf52781-ee12-4c05-9c53-6f7c1b64f734",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test if repsonse is okay, with body and json\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.with.body;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Email has been updated\", function() {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.mail).to.eql(pm.environment.get(\"temp-email\"));",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_get}}",
+							"host": [
+								"{{domain}}{{endpoint_user_get}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customerLogout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_logout}}",
+							"host": [
+								"{{domain}}{{endpoint_user_logout}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customerLogin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"strategy\": \"basic\",\n    \"parameters\": {\n        \"login\": \"{{temp-email}}\",\n        \"password\": \"{{password}}\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_login}}",
+							"host": [
+								"{{domain}}{{endpoint_user_login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset email + cleanup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "02c16eb8-379a-4557-bfde-c45642657ee1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.environment.unset('temp-email');"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "380aa0c2-0445-4253-b8fd-c8ae3f6a2801",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mail\": \"{{username}}\"\n}"
+						},
+						"url": {
+							"raw": "{{domain}}{{endpoint_user_email_update}}",
+							"host": [
+								"{{domain}}{{endpoint_user_email_update}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e7ac9d42-e9d7-4711-ad81-14d5f8a27d6f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f31e6824-9fd3-4604-9ae2-47b0112bce02",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "updatePassword",
+			"item": [
+				{
+					"name": "Errors",
+					"item": [
+						{
+							"name": "empty password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "035be69a-24c9-4837-9fcc-d8446acff32d",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql(\"EVALIDATION\");",
+											"});",
+											"",
+											"pm.test(\"Correct validation error structure\", function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Ccorrect path errors are shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq(\"password\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty password with oldPassword",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2e8d378c-162c-44bf-828a-72a75a173c42",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql('EVALIDATION');",
+											"});",
+											"",
+											"pm.test('Correct validation error structure', function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test('Ccorrect path errors are shown', function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('password');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"\",\n\t\"oldPassword\": \"{{password}}\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "wrong old password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "68ba37a2-6f5e-4898-97be-6825e050a814",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Bad credentials provided', function() {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EINVALIDCREDENTIALS');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "88a7a37a-3613-4b5f-90d3-7866eb682dfd",
+										"exec": [
+											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{password}}\",\n\t\"oldPassword\": \"notrealpassword\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty old password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "94e09a43-1886-461a-89a7-3cd5b098c343",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.test(\"Code is EVALIDATION because all inputs were missing\", function () {",
+											"    pm.expect(jsonData.error.code).to.eql(\"EVALIDATION\");",
+											"});",
+											"",
+											"pm.test(\"Correct validation error structure\", function () {",
+											"    pm.expect(jsonData.error.validationErrors.length).to.be.eq(1);",
+											"    jsonData.error.validationErrors.forEach((error) => {",
+											"        pm.expect(error.path).to.not.be.empty;",
+											"        pm.expect(error.message).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Ccorrect path errors are shown\", function () {",
+											"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq(\"oldPassword\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "8a650af8-a5cc-491d-93c4-3d3054d2853d",
+										"exec": [
+											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{password}}\",\n\t\"oldPassword\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Without old password",
+					"item": [
+						{
+							"name": "update password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ec8d5938-de45-46b3-95a8-df38c6ba1226",
+										"exec": [
+											"pm.test('Status code is 200', function() {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "88a7a37a-3613-4b5f-90d3-7866eb682dfd",
+										"exec": [
+											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{temp-password}}\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_logout}}",
+									"host": [
+										"{{domain}}{{endpoint_user_logout}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cannot get customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4e552004-891e-49bb-a719-ab3a6eae98ad",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('User not logged in error', function() {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_get}}",
+									"host": [
+										"{{domain}}{{endpoint_user_get}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cannot login with old",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f0aa4f4f-2309-4e14-b5ee-fbbfa03b51e9",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Bad credentials provided', function() {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EINVALIDCREDENTIALS');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"strategy\": \"basic\",\n    \"parameters\": {\n        \"login\": \"{{username}}\",\n        \"password\": \"{{password}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_login}}",
+									"host": [
+										"{{domain}}{{endpoint_user_login}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login with new",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4f781017-7f23-4431-8e50-c1fb3cd115cb",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test('Status code is 200', function() {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"strategy\": \"basic\",\n    \"parameters\": {\n        \"login\": \"{{username}}\",\n        \"password\": \"{{temp-password}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_login}}",
+									"host": [
+										"{{domain}}{{endpoint_user_login}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reset pass + cleanup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "06ed9d1a-fffe-43f4-9b2e-6586267f02dd",
+										"exec": [
+											"pm.test('Status code is 200', function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.environment.unset('temp-password');"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "380aa0c2-0445-4253-b8fd-c8ae3f6a2801",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{password}}\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "With old password",
+					"item": [
+						{
+							"name": "update password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ec8d5938-de45-46b3-95a8-df38c6ba1226",
+										"exec": [
+											"pm.test('Status code is 200', function() {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "88a7a37a-3613-4b5f-90d3-7866eb682dfd",
+										"exec": [
+											"pm.environment.set('temp-password', pm.environment.get('password') + '-12345');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{temp-password}}\",\n\t\"oldPassword\": \"{{password}}\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_logout}}",
+									"host": [
+										"{{domain}}{{endpoint_user_logout}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cannot get customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4e552004-891e-49bb-a719-ab3a6eae98ad",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('User not logged in error', function() {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EACCESS');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_get}}",
+									"host": [
+										"{{domain}}{{endpoint_user_get}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cannot login with old",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f0aa4f4f-2309-4e14-b5ee-fbbfa03b51e9",
+										"type": "text/javascript",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"pm.test('Bad credentials provided', function() {",
+											"    pm.expect(jsonData.error.code).to.be.eq('EINVALIDCREDENTIALS');",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"strategy\": \"basic\",\n    \"parameters\": {\n        \"login\": \"{{username}}\",\n        \"password\": \"{{password}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_login}}",
+									"host": [
+										"{{domain}}{{endpoint_user_login}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login with new",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4f781017-7f23-4431-8e50-c1fb3cd115cb",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test('Status code is 200', function() {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"strategy\": \"basic\",\n    \"parameters\": {\n        \"login\": \"{{username}}\",\n        \"password\": \"{{temp-password}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_login}}",
+									"host": [
+										"{{domain}}{{endpoint_user_login}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reset pass + cleanup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "06ed9d1a-fffe-43f4-9b2e-6586267f02dd",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test('Status code is 200', function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.environment.unset('temp-password');"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "380aa0c2-0445-4253-b8fd-c8ae3f6a2801",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{password}}\",\n\t\"oldPassword\": \"{{temp-password}}\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}{{endpoint_user_password_update}}",
+									"host": [
+										"{{domain}}{{endpoint_user_password_update}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0626dd98-f039-4075-8e70-cfd35c2062bb",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6240e28f-97cf-4090-ad52-f5de36a206f1",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e1097d30-88a8-4685-8914-365ecef471ae",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "88628adc-16a4-4995-a4dd-73ed5355e163",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -422,12 +2100,12 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"TESTER\"\n}"
+									"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"TESTER\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -472,12 +2150,12 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"\",\n    \"province\": \"{{seed}}-province\"\n}"
+									"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -522,12 +2200,12 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\",\n    \"province\": \"{{seed}}-province\"\n}"
+									"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"\",\n    \"zipCode\": \"\",\n    \"city\": \"\",\n    \"country\": \"US\",\n    \"province\": \"{{seed}}-province\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -545,12 +2223,12 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
+									"raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -567,7 +2245,7 @@
 										"exec": [
 											"const response = pm.response.json();",
 											"const address = response.addresses.pop();",
-											"pm.environment.set(\"addressIdsToDelete\", address.id);"
+											"pm.environment.set(\"address-ids-to-delete\", address.id);"
 										]
 									}
 								}
@@ -585,9 +2263,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_get}}"
+										"{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -628,12 +2306,12 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
+									"raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"GB\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -680,9 +2358,9 @@
 							"raw": "{\n\t\"firstName\": \"{{seed}}-firstname\",\n\t\"lastName\": \"{{seed}}-lastname\",\n\t\"street1\": \"{{seed}}-street1\",\n\t\"street2\": \"{{seed}}-street2\",\n\t\"city\": \"{{seed}}-city\",\n\t\"zipCode\": \"{{seed}}-zipCode\",\n\t\"country\": \"US\",\n\t\"province\":\"Arizona\",\n\t\"customAttributes\": {\n\t\t\"company\": \"{{seed}}-company\",\n\t\t\"phone\": \"{{seed}}-phone\"\n\t},\n\t\"tags\": [\n\t\t\"default\"\n\t]\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_add}}",
+							"raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_add}}"
+								"{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -717,7 +2395,7 @@
 									"    pm.expect(address.customAttributes.company).to.be.eq(seed + '-company');",
 									"    pm.expect(address.customAttributes.phone).to.be.eq(seed + '-phone');",
 									"",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"});"
 								]
 							}
@@ -736,9 +2414,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -781,12 +2459,12 @@
 						],
 						"body": {
 							"mode": "raw",
-                          "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"{{seed}}-12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"AZ\"\n}"
+							"raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"TEST ADDRESS\",\n    \"zipCode\": \"{{seed}}-12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"AZ\"\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_add}}",
+							"raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_add}}"
+								"{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -806,7 +2484,7 @@
 									"    const address = response.addresses.pop();",
 									"    pm.expect(address.province).to.be.eq('AZ');",
 									"    ",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"});"
 								]
 							}
@@ -825,9 +2503,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -870,12 +2548,12 @@
 						],
 						"body": {
 							"mode": "raw",
-                          "raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"{{seed}}-street1\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"TX\"\n}"
+							"raw": "{\n    \"firstName\": \"TEST\",\n    \"lastName\": \"USER\",\n    \"street1\": \"{{seed}}-street1\",\n    \"zipCode\": \"12345\",\n    \"city\": \"Gotham\",\n    \"country\": \"US\",\n    \"province\": \"TX\"\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_add}}",
+							"raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_add}}"
+								"{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -895,7 +2573,7 @@
 									"    const address = response.addresses.pop();",
 									"    pm.expect(address.province).to.be.eq('TX');",
 									"    ",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"});"
 								]
 							}
@@ -914,9 +2592,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -968,12 +2646,12 @@
 										],
 										"body": {
 											"mode": "raw",
-                                          "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
+											"raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 										},
 										"url": {
-                                          "raw": "{{domain}}{{endpoint_user_address_add}}",
+											"raw": "{{domain}}{{endpoint_user_address_add}}",
 											"host": [
-                                              "{{domain}}{{endpoint_user_address_add}}"
+												"{{domain}}{{endpoint_user_address_add}}"
 											]
 										}
 									},
@@ -995,7 +2673,7 @@
 													"});",
 													"",
 													"const address = response.addresses.pop();",
-													"pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);"
+													"pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);"
 												]
 											}
 										}
@@ -1013,9 +2691,9 @@
 											"raw": "{\n}"
 										},
 										"url": {
-                                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+											"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 											"host": [
-                                              "{{domain}}{{endpoint_user_addresses_get}}"
+												"{{domain}}{{endpoint_user_addresses_get}}"
 											]
 										}
 									},
@@ -1063,9 +2741,9 @@
 											"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"country\": \"TESTER\"\n}"
 										},
 										"url": {
-                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
+											"raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-                                              "{{domain}}{{endpoint_user_address_update}}"
+												"{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1114,9 +2792,9 @@
 											"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"country\": \"IT\",\n    \"province\":\"{{seed}}-province\"\n}"
 										},
 										"url": {
-                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
+											"raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-                                              "{{domain}}{{endpoint_user_address_update}}"
+												"{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1152,9 +2830,9 @@
 											"raw": "{\n\t\"id\": \"0\",\n    \"country\": \"IT\",\n    \"province\":\"{{seed}}-province\"\n}"
 										},
 										"url": {
-                                          "raw": "{{domain}}{{endpoint_user_address_update}}",
+											"raw": "{{domain}}{{endpoint_user_address_update}}",
 											"host": [
-                                              "{{domain}}{{endpoint_user_address_update}}"
+												"{{domain}}{{endpoint_user_address_update}}"
 											]
 										}
 									},
@@ -1201,12 +2879,12 @@
 						],
 						"body": {
 							"mode": "raw",
-                          "raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
+							"raw": "{\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"US\",\n    \"province\": \"Arizona\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    }\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_add}}",
+							"raw": "{{domain}}{{endpoint_user_address_add}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_add}}"
+								"{{domain}}{{endpoint_user_address_add}}"
 							]
 						}
 					},
@@ -1226,7 +2904,7 @@
 									"",
 									"if (address.id) {",
 									"    pm.environment.set(\"address-id\", address.id);",
-									"    pm.environment.set(\"addressIdsToDelete\", pm.environment.get(\"addressIdsToDelete\") + \",\" + address.id);",
+									"    pm.environment.set(\"address-ids-to-delete\", pm.environment.get(\"address-ids-to-delete\") + \",\" + address.id);",
 									"}",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
@@ -1249,9 +2927,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1302,9 +2980,9 @@
 							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"{{seed}}-firstname\",\n    \"lastName\": \"{{seed}}-lastname\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"{{seed}}-street2\",\n    \"city\": \"{{seed}}-city\",\n    \"zipCode\": \"{{seed}}-zipCode\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"{{seed}}-company\",\n        \"phone\": \"{{seed}}-phone\"\n    },\n    \"tags\": [\n    \t\"default\"\n\t]\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_update}}",
+							"raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_update}}"
+								"{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -1354,9 +3032,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1405,9 +3083,9 @@
 							"raw": "{\n\t\"id\": \"{{address-id}}\",\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"street1\": \"{{seed}}-street1\",\n    \"street2\": \"\",\n    \"city\": \"\",\n    \"zipCode\": \"\",\n    \"country\": \"EE\",\n    \"province\":\"{{seed}}-province\",\n    \"customAttributes\": {\n        \"company\": \"\",\n        \"phone\": \"\"\n    }\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_address_update}}",
+							"raw": "{{domain}}{{endpoint_user_address_update}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_address_update}}"
+								"{{domain}}{{endpoint_user_address_update}}"
 							]
 						}
 					},
@@ -1458,9 +3136,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1514,9 +3192,9 @@
 									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -1562,9 +3240,9 @@
 									"raw": "{\n\t\"street1\": \"{{seed}}-street1\",\n\t\"country\": \"US\",\n\t\"province\":\"AZ\"\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_address_add}}",
+									"raw": "{{domain}}{{endpoint_user_address_add}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_address_add}}"
+										"{{domain}}{{endpoint_user_address_add}}"
 									]
 								}
 							},
@@ -1589,14 +3267,14 @@
 											"const defaultAddress = response.filter(address => address.tags.includes(\"default\")).pop();",
 											"",
 											"if (defaultAddress) {",
-											"    pm.environment.set(\"defaultAddressId\", defaultAddress.id);    ",
+											"    pm.environment.set(\"default-address-id\", defaultAddress.id);    ",
 											"} else {",
 											"    tests['Something went wrong with getting the default address'] = false;",
 											"}",
 											"",
 											"if (response.length > 1) {",
-											"    pm.environment.set(\"firstAddressIdToDelete\", response.pop().id);",
-											"    pm.environment.set(\"secondAddressIdToDelete\", response.pop().id);",
+											"    pm.environment.set(\"first-address-id-to-delete\", response.pop().id);",
+											"    pm.environment.set(\"second-address-id-to-delete\", response.pop().id);",
 											"} else {",
 											"    tests['Something went wrong with address creation'] = false;",
 											"}",
@@ -1618,9 +3296,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_get}}"
+										"{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -1660,12 +3338,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{defaultAddressId}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{default-address-id}}\n\t]\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_delete}}"
+										"{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1701,9 +3379,9 @@
 									"raw": "{\n\t\"ids\": [\n\t]\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_delete}}"
+										"{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1739,9 +3417,9 @@
 									"raw": "{\n\t\"ids\": [\"\"]\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_delete}}"
+										"{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1774,12 +3452,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t\"\",\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{first-address-id-to-delete}},\n\t\t\"\",\n\t\t{{second-address-id-to-delete}}\n\t]\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_delete}}"
+										"{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1821,12 +3499,12 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"ids\": [\n\t\t{{firstAddressIdToDelete}},\n\t\t{{secondAddressIdToDelete}}\n\t]\n}"
+									"raw": "{\n\t\"ids\": [\n\t\t{{first-address-id-to-delete}},\n\t\t{{second-address-id-to-delete}}\n\t]\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_delete}}"
+										"{{domain}}{{endpoint_user_addresses_delete}}"
 									]
 								}
 							},
@@ -1843,7 +3521,7 @@
 										"exec": [
 											"pm.test(\"Check if addresses were deleted\", function() {",
 											"    const addresses = pm.response.json().addresses;",
-											"    const filteredAddresses = addresses.filter(address => address.id === pm.environment.get(\"firstAddressIdToDelete\") || address.id === pm.environment.get(\"secondAddressIdToDelete\"));",
+											"    const filteredAddresses = addresses.filter(address => address.id === pm.environment.get(\"first-address-id-to-delete\") || address.id === pm.environment.get(\"second-address-id-to-delete\"));",
 											"    pm.expect(filteredAddresses).to.be.a('array').to.be.empty;",
 											"})",
 											""
@@ -1864,9 +3542,9 @@
 									"raw": "{\n}"
 								},
 								"url": {
-                                  "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+									"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 									"host": [
-                                      "{{domain}}{{endpoint_user_addresses_get}}"
+										"{{domain}}{{endpoint_user_addresses_get}}"
 									]
 								}
 							},
@@ -1889,7 +3567,7 @@
 								"id": "2aeefe63-b494-4971-a6f6-94d22a67d454",
 								"type": "text/javascript",
 								"exec": [
-									"pm.environment.unset(\"addressIdsToDelete\");",
+									"pm.environment.unset(\"address-ids-to-delete\");",
 									"",
 									"const addresses = pm.response.json().addresses;",
 									"const addressIdsToDelete = Array();",
@@ -1903,7 +3581,7 @@
 									"    }",
 									"})",
 									"",
-									"pm.environment.set(\"addressIdsToDelete\", addressIdsToDelete.join(','));"
+									"pm.environment.set(\"address-ids-to-delete\", addressIdsToDelete.join(','));"
 								]
 							}
 						}
@@ -1921,9 +3599,9 @@
 							"raw": "{\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_get}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_get}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_get}}"
+								"{{domain}}{{endpoint_user_addresses_get}}"
 							]
 						}
 					},
@@ -1940,12 +3618,10 @@
 								"exec": [
 									"// Cleanup environment vars",
 									"pm.environment.unset(\"seed\");",
-									"pm.environment.unset(\"overallCountOfAddresses\");",
-									"pm.environment.unset(\"defaultAddressId\");",
-									"pm.environment.unset(\"firstAddressIdToDelete\");",
-									"pm.environment.unset(\"secondAddressIdToDelete\");",
-									"pm.environment.unset(\"thirdAddressIdToDelete\");",
-									"pm.environment.unset(\"addressIdsToDelete\");",
+									"pm.environment.unset(\"default-address-id\");",
+									"pm.environment.unset(\"first-address-id-to-delete\");",
+									"pm.environment.unset(\"second-address-id-to-delete\");",
+									"pm.environment.unset(\"address-ids-to-delete\");",
 									"pm.environment.unset(\"address-id\");"
 								]
 							}
@@ -1971,18 +3647,40 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ids\": [\n\t\t{{addressIdsToDelete}}\n\t]\n}"
+							"raw": "{\n\t\"ids\": [\n\t\t{{address-ids-to-delete}}\n\t]\n}"
 						},
 						"url": {
-                          "raw": "{{domain}}{{endpoint_user_addresses_delete}}",
+							"raw": "{{domain}}{{endpoint_user_addresses_delete}}",
 							"host": [
-                              "{{domain}}{{endpoint_user_addresses_delete}}"
+								"{{domain}}{{endpoint_user_addresses_delete}}"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1046a112-2984-4e67-8884-2ad3ee5952d1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "45c269a7-f743-419a-9453-7cc96b15fc56",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

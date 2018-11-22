@@ -1,7 +1,7 @@
-const Tools = require('../lib/tools')
-const UnauthorizedError = require('../models/Errors/UnauthorizedError')
+const Tools = require('../../lib/tools')
+const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
+const ApiFactory = require('../../lib/shopify.api.factory')
 const orderBy = require('lodash/orderBy')
-const ApiFactory = require('../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context

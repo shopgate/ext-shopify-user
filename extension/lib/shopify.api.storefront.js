@@ -2,6 +2,8 @@ const Tools = require('./tools')
 const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
+const FieldValidationError = require('../models/Errors/FieldValidationError')
+const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
 
 module.exports = class {
   /**
@@ -51,7 +53,7 @@ module.exports = class {
 
     if (Tools.propertyExists(response.body.data, 'customerAccessTokenCreate.userErrors') &&
       !Tools.isEmpty(response.body.data.customerAccessTokenCreate.userErrors)) {
-      throw new Error(response.body.data.customerAccessTokenCreate.userErrors[0].message)
+      throw new InvalidCredentialsError(response.body.data.customerAccessTokenCreate.userErrors[0].message)
     }
 
     return response.body.data.customerAccessTokenCreate.customerAccessToken
@@ -109,6 +111,47 @@ module.exports = class {
     }
 
     return response.body.data.customer
+  }
+
+  /**
+   * @param {string} customerAccessToken
+   * @param {Object} customer
+   * @returns {Promise<ShopifyCustomerUpdateResponse>}
+   * @throws UnknownError upon unknown API errors.
+   * @throws FieldValidationError - If data could not be updated, because of validation errors from Shopify
+   */
+  async updateCustomerByAccessToken (customerAccessToken, customer) {
+    const query = 'mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {' +
+      'customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {' +
+      'userErrors {field message} customerAccessToken {accessToken expiresAt} customer {id firstName lastName}' +
+      '}}'
+
+    const variables = { customerAccessToken, customer }
+    const operationName = 'customerUpdate'
+
+    let response = {}
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error updating customer data.', err)
+      throw new UnknownError()
+    }
+
+    if (!response.body && !response.body.data) {
+      throw new UnknownError('Unknown error fetching updating customer data.')
+    }
+
+    if (Tools.propertyExists(response.body.data, 'customerUpdate.userErrors')
+      && !Tools.isEmpty(response.body.data.customerUpdate.userErrors)
+    ) {
+      const validationError = new FieldValidationError()
+      response.body.data.customerUpdate.userErrors.forEach(responseError => {
+        validationError.addStorefrontValidationMessage(responseError.field.pop(), responseError.message)
+      })
+      throw validationError
+    }
+
+    return response.body.data.customerUpdate
   }
 
   /**
