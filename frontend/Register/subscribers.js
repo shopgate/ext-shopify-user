@@ -8,6 +8,8 @@ import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
 import { getCurrentRoute } from '@shopgate/pwa-common/helpers/router';
 import { userDidLogin$ } from '@shopgate/pwa-common/streams/user';
 import { historyPop } from '@shopgate/pwa-common/actions/router';
+import { registerRedirect } from '@shopgate/pwa-webcheckout-shopify/action-creators/register';
+import { webCheckoutRegisterRedirect$ } from '@shopgate/pwa-webcheckout-shopify/streams';
 
 export default (subscribe) => {
   /**
@@ -29,14 +31,23 @@ export default (subscribe) => {
       url = await dispatch(fetchRegisterUrl());
     }
 
-    return buildRegisterUrl(url || LEGACY_URL, location);
+    url = buildRegisterUrl(url || LEGACY_URL, location);
+
+    // Dispatch redirect
+    dispatch(registerRedirect(url));
+
+    return url;
   };
 
   subscribe(appWillStart$, () => {
     redirects.set(REGISTER_PATH, redirectHandler, true);
   });
 
-  subscribe(userDidLogin$, ({dispatch}) => {
+  const popHistory$ = webCheckoutRegisterRedirect$.switchMap(ignore => userDidLogin$);
+  /**
+   * Pop history (back 1) after success web registration
+   */
+  subscribe(popHistory$, ({ dispatch }) => {
     dispatch(historyPop());
   });
 };
