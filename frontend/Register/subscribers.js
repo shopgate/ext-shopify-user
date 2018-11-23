@@ -43,7 +43,8 @@ export default (subscribe) => {
     redirects.set(REGISTER_PATH, redirectHandler, true);
   });
 
-  const popHistory$ = webCheckoutRegisterRedirect$.switchMap(ignore => userDidLogin$);
+  const popHistory$ = webCheckoutRegisterRedirect$
+    .switchMap(ignore => userDidLogin$.first());
   /**
    * Pop history (back 1) after success web registration
    */
