@@ -187,15 +187,14 @@
       "type": "subscribers"
     },
     {
+      "id": "CheckoutSubscription",
+      "path": "frontend/Checkout/subscribers.js",
+      "type": "subscribers"
+    },
+    {
       "id": "GuestCheckoutLink",
       "path": "frontend/portals/GuestCheckoutLink/index.jsx",
       "target": "page.login.register-link.after",
-      "type": "portals"
-    },
-    {
-      "id": "GuestCheckoutLinkRoute",
-      "path": "frontend/portals/GuestCheckoutLink/route.jsx",
-      "target": "app.routes",
       "type": "portals"
     },
     {
