@@ -1,5 +1,6 @@
 const Tools = require('../lib/tools')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
+const AddressValidationError = require('../models/Errors/AddressValidationError')
 const ApiFactory = require('../lib/shopify.api.factory')
 
 /**
@@ -15,8 +16,19 @@ module.exports = async function (context, input) {
   }
 
   if (!Tools.isEmpty(input.tags) && input.tags.includes('default')) {
-    return ApiFactory.buildAdminApi(context).setDefaultAddress(context.meta.userId, input.id)
+    const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+    const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+    const customerAccessToken = await context.storage.user.get('customerAccessToken')
+    return storefrontApi.customerDefaultAddressUpdate(customerAccessToken.accessToken, input.id).then(() => {
+      return { success: true }
+    }).catch(errors => {
+      let addressValidationError = new AddressValidationError()
+      errors.forEach(error => {
+        addressValidationError.addValidationMessage(error.message)
+      })
+      throw addressValidationError
+    })
+  } else {
+    return { success: true }
   }
-
-  return { success: true }
 }

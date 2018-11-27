@@ -67,7 +67,8 @@ module.exports = async () => ({
             rules: [
               {
                 data: [
-                  'US'
+                  'US',
+                  'DE'
                 ],
                 type: 'oneOf',
                 context: 'country'

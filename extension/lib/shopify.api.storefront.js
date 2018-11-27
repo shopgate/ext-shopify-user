@@ -112,6 +112,201 @@ module.exports = class {
   }
 
   /**
+   * @param {string} customerAccessToken
+   * @throws UnknownError upon unknown API errors.
+   * @returns {Promise[<Object>]}
+   */
+  async customerGetAddresses (customerAccessToken) {
+    const query = 'query getCustomerAddesses ($customerAccessToken: String!) ' +
+      '{ customer (customerAccessToken: $customerAccessToken) ' +
+      '{ defaultAddress { id}, addresses(first: 250) { edges ' +
+      '{ node { id, address1, address2, city, company, countryCodeV2, firstName, lastName, phone, provinceCode, zip }}}}}'
+
+    const variables = { customerAccessToken }
+    const operationName = 'getCustomerAddesses'
+
+    let response
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error customer get addresses.', err)
+      throw new UnknownError()
+    }
+
+    return new Promise((resolve) => {
+      const { body: { errors, data } } = response
+
+      if (Array.isArray(errors)) {
+        errors.forEach(item => {
+          this.logger.error('Error get customer address.', item.message)
+        })
+        throw new UnknownError()
+      }
+
+      return resolve(data)
+    })
+  }
+
+  /**
+   * @param {string} customerAccessToken
+   * @param {Object} address
+   * @throws UnknownError upon unknown API errors.
+   * @returns {Promise<Object>}
+   */
+  async customerAddressCreate (customerAccessToken, address) {
+    const query = 'mutation customerAddressCreate($customerAccessToken: String!, $address: MailingAddressInput!) ' +
+      '{customerAddressCreate(customerAccessToken: $customerAccessToken, address: $address)' +
+      '{customerAddress {id} customerUserErrors {field message}}}'
+
+    const variables = { customerAccessToken, address }
+    const operationName = 'customerAddressCreate'
+
+    let response
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error create customer address.', err)
+      throw new UnknownError()
+    }
+
+    return new Promise((resolve, reject) => {
+      const { body: { errors, data: { customerAddressCreate: { customerUserErrors, customerAddress } } } } = response
+
+      if (Array.isArray(errors)) {
+        errors.forEach(item => {
+          this.logger.error('Error create customer address.', item.message)
+        })
+        throw new UnknownError()
+      }
+
+      if (customerUserErrors.length > 0) {
+        reject(customerUserErrors)
+      }
+
+      return resolve(customerAddress)
+    })
+  }
+
+  /**
+   * @param {string} customerAccessToken
+   * @param {string} id
+   * @throws UnknownError upon unknown API errors.
+   * @returns {boolean}
+   */
+  async customerAddressDelete (customerAccessToken, id) {
+    const query = 'mutation customerAddressDelete($id: ID!, $customerAccessToken: String!) ' +
+      '{customerAddressDelete(id: $id, customerAccessToken: $customerAccessToken) ' +
+      '{userErrors {field message} customerUserErrors {field message} deletedCustomerAddressId }}'
+
+    const variables = { customerAccessToken, id }
+    const operationName = 'customerAddressDelete'
+
+    let response
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error delete customer address.', err)
+      throw new UnknownError()
+    }
+
+    return new Promise((resolve, reject) => {
+      const { body: { errors, data: { customerAddressDelete: { customerUserErrors } } } } = response
+
+      if (Array.isArray(errors)) {
+        errors.forEach(item => {
+          this.logger.error('Error create customer address.', item.message)
+        })
+        throw new UnknownError()
+      }
+
+      if (customerUserErrors.length > 0) {
+        reject(customerUserErrors)
+      }
+
+      return resolve(true)
+    })
+  }
+
+  /**
+   * @param {string} customerAccessToken
+   * @param {string} addressId
+   * @throws UnknownError upon unknown API errors.
+   * @returns {Promise}
+   */
+  async customerDefaultAddressUpdate (customerAccessToken, addressId) {
+    const query = 'mutation customerDefaultAddressUpdate($customerAccessToken: String!, $addressId: ID!) ' +
+      '{ customerDefaultAddressUpdate(customerAccessToken: $customerAccessToken, addressId: $addressId) ' +
+      ' { userErrors { field message } customer { id } customerUserErrors { field message }}}'
+
+    const variables = { customerAccessToken, addressId }
+    const operationName = 'customerDefaultAddressUpdate'
+
+    let response
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error customer set default address.', err)
+      throw new UnknownError()
+    }
+
+    return new Promise((resolve, reject) => {
+      const { body: { errors, data: { customerDefaultAddressUpdate: { customerUserErrors } } } } = response
+      if (Array.isArray(errors)) {
+        errors.forEach(item => {
+          this.logger.error('Error customer set default address.', item.message)
+        })
+        throw new UnknownError()
+      }
+
+      if (customerUserErrors.length > 0) {
+        reject(customerUserErrors)
+      }
+
+      return resolve()
+    })
+  }
+
+  /**
+   * @param {string} customerAccessToken
+   * @param {string} id
+   * @param {Object} address
+   * @throws UnknownError upon unknown API errors.
+   * @returns {Promise<Object>}
+   */
+  async customerAddressUpdate (customerAccessToken, id, address) {
+    const query = 'mutation customerAddressUpdate($customerAccessToken: String!, $id: ID!, $address: MailingAddressInput!) ' +
+      '{customerAddressUpdate(customerAccessToken: $customerAccessToken, id: $id, address: $address) ' +
+      '{userErrors {field message} customerAddress {id} customerUserErrors { field message }}}'
+
+    const variables = { customerAccessToken, id, address }
+    const operationName = 'customerAddressUpdate'
+
+    let response
+    try {
+      response = await this.request(query, variables, operationName)
+    } catch (err) {
+      this.logger.error('Error update customer address.', err)
+      throw new UnknownError()
+    }
+
+    return new Promise((resolve, reject) => {
+      const { body: { errors, data: { customerAddressUpdate: { customerUserErrors } } } } = response
+      if (Array.isArray(errors)) {
+        errors.forEach(item => {
+          this.logger.error('Error update customer address.', item.message)
+        })
+        throw new UnknownError()
+      }
+
+      if (customerUserErrors.length > 0) {
+        reject(customerUserErrors)
+      }
+
+      return resolve()
+    })
+  }
+
+  /**
    * @param {string} query
    * @param {Object} variables
    * @param {string} operationName
