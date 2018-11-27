@@ -7,9 +7,13 @@ import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl
 import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
 import { getCurrentRoute } from '@shopgate/pwa-common/helpers/router';
 import { userDidLogin$ } from '@shopgate/pwa-common/streams/user';
-import { historyPop } from '@shopgate/pwa-common/actions/router';
+import { historyPop, historyPush } from '@shopgate/pwa-common/actions/router'
 import { registerRedirect } from '@shopgate/pwa-webcheckout-shopify/action-creators/register';
 import { webCheckoutRegisterRedirect$ } from '@shopgate/pwa-webcheckout-shopify/streams';
+import closeInAppBrowser from '@shopgate/pwa-core/commands/closeInAppBrowser';
+import broadcastEvent from '@shopgate/pwa-core/commands/broadcastEvent';
+import { routeDidEnter$ } from '@shopgate/pwa-common/streams/router';
+import { isAndroid } from '@shopgate/pwa-common/selectors/client';
 
 export default (subscribe) => {
   /**
@@ -43,12 +47,32 @@ export default (subscribe) => {
     redirects.set(REGISTER_PATH, redirectHandler, true);
   });
 
-  const popHistory$ = webCheckoutRegisterRedirect$
-    .switchMap(ignore => userDidLogin$.first());
+  const loginAfterRegisterRedirect$ = webCheckoutRegisterRedirect$.switchMap(() => userDidLogin$.first());
+  const nextRouterAfterLoginRegister$ = loginAfterRegisterRedirect$.switchMap(() => routeDidEnter$.first());
+
   /**
-   * Pop history (back 1) after success web registration
+   * Pop a login page after web registration / and redirect to checkout
    */
-  subscribe(popHistory$, ({ dispatch }) => {
+  subscribe(loginAfterRegisterRedirect$, ({ dispatch, getState }) => {
+    const { state: {redirect: {location = ''} = {}} } = getCurrentRoute();
     dispatch(historyPop());
+
+    closeInAppBrowser(isAndroid(getState()));
+
+    if (location) {
+      dispatch(historyPush({
+        pathname: location
+      }));
+    }
+  });
+
+  /**
+   * Close loading spinner on next after login route
+   */
+  subscribe(nextRouterAfterLoginRegister$, () => {
+    // Close loading view
+    broadcastEvent({
+      event: 'closeNotification'
+    });
   });
 };
