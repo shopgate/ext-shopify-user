@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { RouteContext } from '@virtuous/react-conductor/Router';
 import I18n from '@shopgate/pwa-common/components/I18n';
-import Link from '@shopgate/pwa-common/components/Router/components/Link';
-import { CHECKOUT_GUEST_PATH } from './route';
+import Link from '@shopgate/pwa-common/components/Link';
+import { CHECKOUT_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
 import styles from './style';
+import {CHECKOUT_GUEST_PATH} from './../../constants/RoutePaths';
 import config from '../../config';
-import connect from './connector';
 
 /**
  * Check whether the guest checkout is disabled
@@ -19,10 +20,10 @@ const disableGuestCheckout = () => !config.getUserAccountSettings;
  * @param {Object} redirect The redirect object.
  * @return {JSX}
  */
-const GuestCheckoutLink = ({ redirect }) => {
-  const isCheckoutLogin = redirect === '/checkout';
+const GuestCheckoutLink = ({ visible, redirectLocation }) => {
+  const isCheckoutLogin = redirectLocation === CHECKOUT_PATH;
 
-  if (disableGuestCheckout() || !isCheckoutLogin) {
+  if (disableGuestCheckout() || !visible || !isCheckoutLogin) {
     return null;
   }
   return (
@@ -36,7 +37,17 @@ const GuestCheckoutLink = ({ redirect }) => {
 };
 
 GuestCheckoutLink.propTypes = {
-  redirect: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
+  redirectLocation: PropTypes.string.isRequired,
 };
 
-export default connect(GuestCheckoutLink);
+export default () => (
+  <RouteContext.Consumer>
+    {({ state: {redirect: {location: redirectLocation = ''} = {}}, visible }) => (
+      <GuestCheckoutLink
+        redirectLocation={redirectLocation}
+        visible={visible}
+      />
+    )}
+  </RouteContext.Consumer>
+);
