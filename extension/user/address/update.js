@@ -1,10 +1,10 @@
-const Tools = require('../lib/tools')
-const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const FieldValidationError = require('../models/Errors/FieldValidationError')
-const AddressValidationError = require('../models/Errors/AddressValidationError')
-const { mapCustomAttributes } = require('../lib/mapper')
+const Tools = require('../../lib/tools')
+const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
+const FieldValidationError = require('../../models/Errors/FieldValidationError')
+const AddressValidationError = require('../../models/Errors/AddressValidationError')
+const { mapCustomAttributes } = require('../../lib/mapper')
 const _ = require('lodash')
-const ApiFactory = require('../lib/shopify.api.factory')
+const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context

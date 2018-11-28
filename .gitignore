@@ -1,9 +1,10 @@
 .DS_Store
 build
-extension/coverage
 **/node_modules
 **/extension/config.json
 .idea/
 npm-debug.log
 extension/package-lock.json
+extension/test/newman/environment.json
+extension/coverage
 package-lock.json
