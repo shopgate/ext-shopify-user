@@ -473,7 +473,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "612cbbbf-5a9e-4cc7-b701-b4fd66544411",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -491,10 +491,13 @@
 									"    pm.expect(response.firstName).to.not.be.empty;",
 									"    pm.expect(response.lastName).to.not.be.empty;",
 									"    pm.expect(response.mail).to.not.be.empty;",
+									"    pm.expect(response.customAttributes).to.be.a('object');",
+									"    pm.expect(response.userGroups).to.be.a('array')",
 									"    pm.response.to.not.have.jsonBody(\"addresses\");",
 									"})",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
