@@ -291,14 +291,16 @@ module.exports = class {
     }
 
     return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerAddressUpdate: { customerUserErrors } } } } = response
+      const { body: { errors } } = response
+
       if (Array.isArray(errors)) {
         errors.forEach(item => {
           this.logger.error('Error update customer address.', item.message)
         })
-        throw new UnknownError()
+        reject(errors)
       }
 
+      const { body: { data: { customerAddressUpdate: { customerUserErrors } } } } = response
       if (customerUserErrors.length > 0) {
         reject(customerUserErrors)
       }

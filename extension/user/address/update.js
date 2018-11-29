@@ -23,23 +23,21 @@ module.exports = async function (context, input) {
     return { success: true }
   }).catch(errors => {
     const validationError = new FieldValidationError()
-    const addressValidationError = new AddressValidationError()
     if (Array.isArray(errors)) {
       errors.forEach(error => {
-        const { field, message } = error
+        const { message } = error
+        if (Tools.propertyExists(error, 'problems')) {
+          throw new AddressValidationError(message)
+        }
+        const { field } = error
         if (field[1]) {
           validationError.addStorefrontValidationMessage(field[1], message)
-        } else {
-          addressValidationError.addValidationMessage(message)
         }
       })
     }
-
     if (validationError.validationErrors.length > 0) {
       throw validationError
     }
-
-    throw addressValidationError
   })
 
   /**

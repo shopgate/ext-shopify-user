@@ -1,19 +1,13 @@
 const ECONFLICT = 'ECONFLICT'
 
 class AddressValidationError extends Error {
-  constructor () {
-    super('An internal error occurred.')
-
+  constructor (displayMessage) {
+    super()
     this.code = ECONFLICT
-    this.displayMessage = null
-  }
-
-  /**
-   * @param {string} message
-   */
-  addValidationMessage (message) {
-    this.displayMessage = message
-    this.message = message
+    if (displayMessage !== null) {
+      this.message = displayMessage
+      this.displayMessage = displayMessage
+    }
   }
 }
 

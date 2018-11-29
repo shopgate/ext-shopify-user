@@ -27,11 +27,9 @@ module.exports = async function (context, input) {
   return result.then(result => {
     return { success: true }
   }).catch(errors => {
-    let addressValidationError = new AddressValidationError()
     errors.forEach(error => {
-      addressValidationError.addValidationMessage(error.message)
+      throw new AddressValidationError(error.message)
     })
-    throw addressValidationError
   })
 
   /**
@@ -41,8 +39,7 @@ module.exports = async function (context, input) {
     if (!Array.isArray(ids) || ids.length === 0) {
       throw new InvalidCallError()
     }
-
-    ids.forEach(id => {
+    ids.find(id => {
       if (id === '') {
         throw new InvalidCallError()
       }

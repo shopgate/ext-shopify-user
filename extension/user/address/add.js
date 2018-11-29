@@ -34,20 +34,17 @@ module.exports = async function (context, input) {
     return { id: customerAddress.id }
   }).catch(errors => {
     const validationError = new FieldValidationError()
-    const addressValidationError = new AddressValidationError()
     errors.forEach(error => {
       const { field, message } = error
       if (field[1]) {
         validationError.addStorefrontValidationMessage(field[1], message)
       } else {
-        addressValidationError.addValidationMessage(message)
+        throw new AddressValidationError(message)
       }
     })
 
     if (validationError.validationErrors.length > 0) {
       throw validationError
     }
-
-    throw addressValidationError
   })
 }

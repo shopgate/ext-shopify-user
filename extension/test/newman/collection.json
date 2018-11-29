@@ -2679,7 +2679,7 @@
 													"",
 													"pm.test(\"Correct country error is shown\", function () {",
 													"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('country');",
-													"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Country\" Country is not a valid country');",
+													"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('Country is not a valid country');",
 													"});"
 												],
 												"type": "text/javascript"
@@ -2730,7 +2730,7 @@
 													"",
 													"pm.test(\"Correct province error is shown\", function () {",
 													"    pm.expect(jsonData.error.validationErrors[0].path).to.be.eq('province');",
-													"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('\"Province\" Province is not valid');",
+													"    pm.expect(jsonData.error.validationErrors[0].message).to.be.eq('Province is not valid');",
 													"});"
 												],
 												"type": "text/javascript"
@@ -2858,7 +2858,7 @@
 								"id": "41b3ef08-f179-4b2c-94f9-66b7b77ffa42",
 								"exec": [
 									"const response = pm.response.json();",
-									"const address = response.addresses.pop();",
+									"const address = response.addresses.slice(-1).pop();",
 									"",
 									"if (address.id) {",
 									"    pm.environment.set(\"address-id\", address.id);",
@@ -2956,7 +2956,9 @@
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses[5];",
+									"    const address = response.addresses.find(function(el) {",
+									"        return el.street1 == pm.environment.get(\"seed\") + '-street1';",
+									"    })",
 									"    pm.expect(address.firstName).to.be.eq(pm.environment.get(\"seed\") + '-firstname');",
 									"    pm.expect(address.lastName).to.be.eq(pm.environment.get(\"seed\") + '-lastname');",
 									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
@@ -3058,7 +3060,9 @@
 								"exec": [
 									"pm.test(\"Make sure all address data was properly changed\", function() {",
 									"    const response = pm.response.json();",
-									"    const address = response.addresses[5];",
+									"    const address = response.addresses.find(function(el) {",
+									"        return el.street1 == pm.environment.get(\"seed\") + '-street1';",
+									"    })",
 									"    pm.expect(address.firstName).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.lastName).to.be.a(\"string\").to.be.empty;",
 									"    pm.expect(address.street1).to.be.eq(pm.environment.get(\"seed\") + '-street1');",
