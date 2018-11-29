@@ -28,7 +28,7 @@ module.exports = async function (context, input) {
       errors.forEach(error => {
         const { field, message } = error
         if (field[1]) {
-          validationError.addValidationMessage(field[1], message)
+          validationError.addStorefrontValidationMessage(field[1], message)
         } else {
           addressValidationError.addValidationMessage(message)
         }
