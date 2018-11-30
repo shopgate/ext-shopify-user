@@ -3,6 +3,7 @@ const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
 
 module.exports = class {
   /**
@@ -19,14 +20,14 @@ module.exports = class {
   }
 
   /**
-   * @param {string} login
-   * @param {string} password
-   * @return {Promise<ShopifyCustomerAccessToken>}
-   */
+  * @param {string} login
+  * @param {string} password
+  * @return {Promise<ShopifyCustomerAccessToken>}
+  */
   async getCustomerAccessToken (login, password) {
     const query = 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
-      '{customerAccessTokenCreate(input: $input) ' +
-      '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}'
+     '{customerAccessTokenCreate(input: $input) ' +
+     '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}'
 
     const variables = {
       input: {
@@ -51,8 +52,8 @@ module.exports = class {
     }
 
     if (Tools.propertyExists(response.body.data, 'customerAccessTokenCreate.userErrors') &&
-      !Tools.isEmpty(response.body.data.customerAccessTokenCreate.userErrors)) {
-      throw new Error(response.body.data.customerAccessTokenCreate.userErrors[0].message)
+     !Tools.isEmpty(response.body.data.customerAccessTokenCreate.userErrors)) {
+      throw new InvalidCredentialsError(response.body.data.customerAccessTokenCreate.userErrors[0].message)
     }
 
     return response.body.data.customerAccessTokenCreate.customerAccessToken
