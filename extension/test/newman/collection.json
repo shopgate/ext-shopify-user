@@ -774,23 +774,23 @@
 							"listen": "test",
 							"script": {
 								"id": "7f1dbd16-cd35-46ad-8414-547ac9c5141a",
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
 								"id": "372abd2d-4751-42fa-9d2d-fedabb295bef",
-								"type": "text/javascript",
 								"exec": [
 									"// Create a seed to have a randomized data set",
 									"pm.environment.set(\"seed\", \"user-\" + Math.floor(Math.random() * Math.floor(1000)));"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -887,7 +887,7 @@
 							"script": {
 								"id": "2a043704-a011-4b22-a58c-3bb80a05ae54",
 								"exec": [
-									""
+									"pm.environment.set(\"phone-seed\", \"+4912345\" + Math.floor(Math.random(1000) * Math.floor(9999)));"
 								],
 								"type": "text/javascript"
 							}
@@ -903,7 +903,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"customAttributes\": {\n\t\t\"phone\": \"+49123456789\"\n\t}\n}"
+							"raw": "{\n\t\"customAttributes\": {\n\t\t\"phone\": \"{{phone-seed}}\"\n\t}\n}"
 						},
 						"url": {
 							"raw": "{{domain}}{{endpoint_user_update}}",
@@ -921,7 +921,6 @@
 							"listen": "test",
 							"script": {
 								"id": "80ef02b0-cb5d-41f6-8ed5-cc89299aa474",
-								"type": "text/javascript",
 								"exec": [
 									"var response = pm.response.json()",
 									"",
@@ -936,7 +935,7 @@
 									"});",
 									"",
 									"pm.test(\"Data was updated\", function() {",
-									"    pm.expect(response.customAttributes.phone).to.eql(\"+49123456789\");",
+									"    pm.expect(response.customAttributes.phone).to.eql(pm.environment.get(\"phone-seed\"));",
 									"})",
 									"",
 									"pm.test(\"Firstname and lastname has NOT been updated\", function() {",
@@ -947,7 +946,8 @@
 									"pm.environment.unset(\"updated-firstname\");",
 									"pm.environment.unset(\"updated-lastname\");",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
