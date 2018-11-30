@@ -36,13 +36,8 @@ module.exports = async function (context, input) {
    * @param {Array} ids
    */
   function validateIds (ids) {
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!Array.isArray(ids) || ids.length === 0 || ids.includes('')) {
       throw new InvalidCallError()
     }
-    ids.find(id => {
-      if (id === '') {
-        throw new InvalidCallError()
-      }
-    })
   }
 }
