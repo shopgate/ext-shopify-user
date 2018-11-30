@@ -13,12 +13,21 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
+  /**
+   * @param {Array} ids
+   */
+  function validateIds (ids) {
+    if (!Array.isArray(ids) || ids.length === 0 || ids.includes('')) {
+      throw new InvalidCallError()
+    }
+  }
+
+  const { ids } = input
+  validateIds(ids)
+
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
-  const { ids } = input
-
-  validateIds(ids)
 
   let result = Promise.all(ids.map(id => {
     return storefrontApi.customerAddressDelete(customerAccessToken.accessToken, id)
@@ -31,13 +40,4 @@ module.exports = async function (context, input) {
       throw new AddressValidationError(error.message)
     })
   })
-
-  /**
-   * @param {Array} ids
-   */
-  function validateIds (ids) {
-    if (!Array.isArray(ids) || ids.length === 0 || ids.includes('')) {
-      throw new InvalidCallError()
-    }
-  }
 }
