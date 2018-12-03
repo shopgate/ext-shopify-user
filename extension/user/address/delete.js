@@ -23,7 +23,7 @@ module.exports = async function (context, input) {
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  let result = Promise.all(ids.map(id => {
+  const result = Promise.all(ids.map(id => {
     return storefrontApi.customerAddressDelete(customerAccessToken.accessToken, id)
   }))
 
