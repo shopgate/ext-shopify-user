@@ -1,7 +1,6 @@
 const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const ApiFactory = require('../../lib/shopify.api.factory')
-const orderBy = require('lodash/orderBy')
 
 /**
  * @param {SDKContext} context
@@ -11,26 +10,35 @@ module.exports = async function (context) {
     throw new UnauthorizedError('Unauthorized user')
   }
 
-  const shopifyAddressesOrderedByDefaultFirst = orderBy(
-    await ApiFactory.buildAdminApi(context).getAddresses(context.meta.userId), ['default'], ['desc']
-  )
+  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+  const customerAccessToken = await context.storage.user.get('customerAccessToken')
+  return storefrontApi.customerGetAddresses(customerAccessToken.accessToken).then(result => {
+    const { customer: { addresses: { edges: addressesItems } } } = result
+    if (addressesItems.length === 0) {
+      return { addresses: [] }
+    }
+    const { customer: { defaultAddress: { id: defaultAddressId } } } = result
+    const customerAddresses = addressesItems.map(item => {
+      const address = item.node
+      return {
+        id: `${address.id}`,
+        street1: address.address1,
+        street2: address.address2,
+        city: address.city,
+        firstName: address.firstName,
+        lastName: address.lastName,
+        province: address.provinceCode,
+        zipCode: address.zip,
+        country: address.countryCodeV2,
+        customAttributes: {
+          company: address.company,
+          phone: address.phone
+        },
+        tags: address.id === defaultAddressId ? ['default'] : []
+      }
+    })
 
-  return {
-    addresses: shopifyAddressesOrderedByDefaultFirst.map(address => ({
-      id: `${address.id}`,
-      street1: address.address1,
-      street2: address.address2,
-      city: address.city,
-      firstName: address.first_name,
-      lastName: address.last_name,
-      province: address.province_code,
-      zipCode: address.zip,
-      country: address.country_code,
-      customAttributes: {
-        company: address.company,
-        phone: address.phone
-      },
-      tags: address.default === true ? ['default'] : []
-    }))
-  }
+    return { addresses: customerAddresses }
+  })
 }
