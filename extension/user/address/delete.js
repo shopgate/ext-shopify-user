@@ -13,17 +13,11 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  /**
-   * @param {Array} ids
-   */
-  function validateIds (ids) {
-    if (!Array.isArray(ids) || ids.length === 0 || ids.includes('')) {
-      throw new InvalidCallError()
-    }
-  }
-
   const { ids } = input
-  validateIds(ids)
+
+  if (!Array.isArray(ids) || ids.length === 0 || ids.includes('')) {
+    throw new InvalidCallError()
+  }
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
