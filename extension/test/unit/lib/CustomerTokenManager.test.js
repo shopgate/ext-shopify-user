@@ -18,6 +18,7 @@ describe('CustomerTokenManager', () => {
       userStorageStub.set = async () => {}
       extensionStorageStub.get = async () => {}
       extensionStorageStub.map = async () => {}
+      extensionStorageStub.map.setItem = async () => {}
     })
 
     it('should throw an unauthorized error when no token is available', async () => {
