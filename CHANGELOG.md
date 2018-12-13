@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.4.0] - 2018-12-07
 ### Added
 - pipeline for updating a customer
 
@@ -42,7 +43,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in webcheckout
 
-[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv1.3.2
+[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv1.4.0
+[1.4.0]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.3.2&sourceBranch=refs%2Ftags%2Fv1.4.0
 [1.3.2]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.3.1&sourceBranch=refs%2Ftags%2Fv1.3.2
 [1.3.1]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.2.3&sourceBranch=refs%2Ftags%2Fv1.3.1
 [1.2.3]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.1.5&sourceBranch=refs%2Ftags%2Fv1.2.3
