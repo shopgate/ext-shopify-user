@@ -1,7 +1,9 @@
 const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
+const FieldValidationError = require('../../models/Errors/FieldValidationError')
+const AddressValidationError = require('../../models/Errors/AddressValidationError')
 const ApiFactory = require('../../lib/shopify.api.factory')
-const { mapCountry, mapCustomAttributes } = require('../../lib/mapper')
+const { mapCustomAttributes } = require('../../lib/mapper')
 
 /**
  * @param {SDKContext} context
@@ -12,20 +14,37 @@ module.exports = async function (context, input) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  // Map the input address values to fit the Shopify specifications for the admin api endpoint
-  /** @var {ShopifyAddress} newAddress */
   const newAddress = {
     address1: input.street1,
     address2: input.street2,
     city: input.city,
-    first_name: input.firstName,
-    last_name: input.lastName,
-    province_code: input.province,
+    firstName: input.firstName,
+    lastName: input.lastName,
+    province: input.province,
     zip: input.zipCode,
-    name: input.firstName + ' ' + input.lastName,
-    ...mapCountry(input.country),
+    country: input.country,
     ...mapCustomAttributes(input.customAttributes)
   }
 
-  return ApiFactory.buildAdminApi(context).addAddress(context.meta.userId, newAddress)
+  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+  const customerAccessToken = await context.storage.user.get('customerAccessToken')
+
+  return storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress).then(customerAddress => {
+    return { id: customerAddress.id }
+  }).catch(errors => {
+    const validationError = new FieldValidationError()
+    errors.forEach(error => {
+      const { field, message } = error
+      if (field[1]) {
+        validationError.addStorefrontValidationMessage(field[1], message)
+      } else {
+        throw new AddressValidationError(message)
+      }
+    })
+
+    if (validationError.validationErrors.length > 0) {
+      throw validationError
+    }
+  })
 }
