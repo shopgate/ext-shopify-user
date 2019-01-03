@@ -1,9 +1,7 @@
 {
-  "version": "1.3.2",
+  "version": "1.4.0",
   "id": "@shopgate/shopify-user",
   "trusted": true,
-  "steps": [
-  ],
   "configuration": {
     "shopifyShopAlias": {
       "type": "bigApi",
@@ -34,7 +32,7 @@
       "params": {
         "method": "GET",
         "service": "config",
-        "path": "/v1/shop/%(shopId)s/gui_sg_connect_user_account?parsed=true",
+        "path": "/v1/shop/%(shopId)s/guest_login_mode?parsed=true",
         "key": "value"
       }
     },
@@ -70,6 +68,114 @@
         "value": {
           "bigApi": 15000,
           "token": 2000
+        }
+      }
+    },
+    "addressForm": {
+      "type": "admin",
+      "destination": "backend",
+      "default": {
+        "fields": {
+          "firstName": {
+            "type": "text",
+            "label": "First Name",
+            "sortOrder": 1
+          },
+          "lastName": {
+            "type": "text",
+            "label": "Last Name",
+            "sortOrder": 2
+          },
+          "street1": {
+            "type": "text",
+            "label": "Address1",
+            "sortOrder": 4
+          },
+          "street2": {
+            "type": "text",
+            "label": "Address2",
+            "sortOrder": 5
+          },
+          "city": {
+            "type": "text",
+            "label": "City",
+            "sortOrder": 6
+          },
+          "country": {
+            "type": "country",
+            "label": "Country",
+            "countries": ["DE", "US", "AT", "FR", "GB"],
+            "sortOrder": 7
+          },
+          "province": {
+            "type": "province",
+            "label": "Province",
+            "actions": [
+              {
+                "type": "setVisibility",
+                "rules": [
+                  {
+                    "data": ["US"],
+                    "type": "oneOf",
+                    "context": "country"
+                  }
+                ]
+              }
+            ],
+            "required": true,
+            "sortOrder": 8
+          },
+          "zipCode": {
+            "type": "text",
+            "label": "Postal/Zip Code",
+            "sortOrder": 9
+          },
+          "custom": {
+            "company": {
+              "type": "text",
+              "label": "Company",
+              "sortOrder": 3
+            },
+            "phone": {
+              "type": "phone",
+              "label": "Phone",
+              "sortOrder": 10
+            }
+          }
+        }
+      },
+      "params": {
+        "type": "json",
+        "label": "Address fields",
+        "required": true
+      }
+    },
+    "addressDefaultGroups": {
+      "type": "admin",
+      "destination": "backend",
+      "default": ["default"],
+      "params": {
+        "type": "json",
+        "label": "Address default groups",
+        "required": true,
+        "options": {
+          "placeholder": "[\"shipping\", \"billing\"]"
+        }
+      }
+    },
+    "userMenuEntries": {
+      "type": "admin",
+      "destination": "backend",
+      "default": {
+        "accountProfile": true,
+        "addressBook": true
+      },
+      "params": {
+        "type": "json",
+        "label": "User menu entries",
+        "required": true,
+        "options": {
+          "placeholder": "{\"accountProfile\": true, \"addressBook\": true}"
         }
       }
     }
@@ -121,6 +227,19 @@
       "id": "locale/nl-NL",
       "type": "translations",
       "path": "frontend/locale/nl-NL.json"
+    }
+  ],
+  "steps": [
+    {
+      "path": "extension/config/getConfig.js",
+      "description": "Replace config by shopify extension",
+      "hooks" : ["shopgate.user.getConfig.v1:after"],
+      "input" : [],
+      "output" : [
+        {"key": "addressDefaultGroups", "optional": true},
+        {"key": "userMenuEntries", "optional": true},
+        {"key": "addressForm", "optional": true}
+      ]
     }
   ]
 }

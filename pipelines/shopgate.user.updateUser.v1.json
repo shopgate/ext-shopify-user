@@ -1,0 +1,35 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.updateUser.v1",
+    "public": true,
+    "input": [
+      {"key": "firstName", "id": "110", "optional": true},
+      {"key": "lastName", "id": "120", "optional": true},
+      {"key": "customAttributes", "id": "130", "optional": true}
+    ],
+    "output": [
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/update.js",
+        "input": [
+          {"key": "firstName", "id": "110", "optional": true},
+          {"key": "lastName", "id": "120", "optional": true},
+          {"key": "customAttributes", "id": "130", "optional": true}
+        ],
+        "output": [
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/clearCache.js",
+        "input": [],
+        "output": []
+      }
+    ]
+  }
+}

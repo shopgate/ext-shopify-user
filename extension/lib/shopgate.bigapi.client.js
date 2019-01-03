@@ -1,17 +1,11 @@
-const requestp = require('request-promise-native')
 const errors = require('request-promise-native/errors')
 
 module.exports = class {
   /**
-   * @param {string} baseDomain
-   * @param {Object} tokenHandler
-   * @param {number} timeout
+   * @param {ExternalBigAPI} bigapiRequester
    */
-  constructor (baseDomain, tokenHandler, timeout) {
-    this.baseDomain = baseDomain
-    this.tokenHandler = tokenHandler
-    this.timeout = timeout
-    this.token = null
+  constructor (bigapiRequester) {
+    this.bigapiRequester = bigapiRequester
   }
 
   /**
@@ -22,11 +16,12 @@ module.exports = class {
    * @throws Error when requesting the Big API fails.
    */
   async scheduleCustomerTokenRenew (stage, applicationId, pipelineApiKey) {
+    stage = stage === 'production' ? 'prod' : stage
     await this.request(
       'task-scheduler',
+      'v1',
+      `/schedules/shopifyRenewCustomerAccessToken-${applicationId}`,
       'PUT',
-      `/v1/schedules/shopifyRenewCustomerAccessToken-${applicationId}`,
-      '',
       {
         target: {
           type: 'http',
@@ -52,47 +47,27 @@ module.exports = class {
 
   /**
    * @param {string} serviceName
+   * @param {string} version
+   * @param {string} path
    * @param {string} method
-   * @param {string} endpoint
-   * @param {string} query
    * @param {Object} body
-   * @param {boolean} retry
    * @returns {Promise<Object>}
    * @throws Error when requesting the Big API fails.
    */
-  async request (serviceName, method, endpoint, query = '', body = {}, retry = true) {
-    const uri = `https://${serviceName}.${this.baseDomain}${endpoint}${!query ? '' : `?${query}`}`
-    this.token = await this.tokenHandler.getToken()
-
+  async request (serviceName, version, path, method, body = {}) {
     try {
-      return requestp({
+      return await this.bigapiRequester.request({
+        service: serviceName.toLowerCase(),
+        version: '/' + version.replace(/^\/*/, ''),
+        path,
         method,
-        uri,
-        headers: { authorization: `Bearer ${this.token.token}` },
-        body,
-        json: true,
-        timeout: this.timeout,
-        resolveWithFullResponse: true
+        body
       })
     } catch (err) {
-      if (err.code === 'ETIMEDOUT' || err.code === 'ESOCKETTIMEDOUT') {
-        const error = new Error(`Timeout on BigAPI request ${method} ${uri}.`)
-        error.code = 'ETIMEOUT'
-        throw error
-      }
-
       if (err instanceof errors.StatusCodeError) {
-        if (err.statusCode === 403 && retry) {
-          try {
-            await this.tokenHandler.invalidateCurrentToken()
-            return await this.request(serviceName, method, endpoint, query, body, false)
-          } catch (retryError) {
-            throw new Error(`Error on BigAPI request ${method} ${uri} after retry due to invalid authorization. Original message: ${retryError.message}`)
-          }
-        }
-        throw new Error(`Error on BigAPI request ${method} ${uri}. HTTP-Code: ${err.statusCode}`)
+        throw new Error(`Error in BigAPI requesting service ${serviceName} ${method} ${version + path}. HTTP-Code: ${err.statusCode}`)
       }
-      throw new Error(`Unknown error on BigAPI request ${method} ${uri}. Original message: ${err.message}`)
+      throw err
     }
   }
 }
