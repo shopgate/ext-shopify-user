@@ -4,6 +4,9 @@
 
 An extension for the Shopgate Connect platform that synchronizes user interactions with a Shopify store.
 
+## Dependencies
+* [auth-facebook](https://github.com/shopgate/ext-auth-facebook) - Needs to be installed alongside as it provides auth validation
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) file for more information.

@@ -13,6 +13,7 @@
  * @property {string} shopifyAccessToken
  * @property {string} userRegistrationUrl
  * @property {string} userDataCacheTtl
+ * @property {boolean} shouldSendWelcomeEmail
  * @property {string} stage
  * @property {Object} credentials
  * @property {string} credentials.baseDomain

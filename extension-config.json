@@ -25,6 +25,17 @@
         "key": "value.backend.shopifyAccessToken"
       }
     },
+    "shouldSendWelcomeEmail": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": false,
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.backend.shouldSendWelcomeEmail"
+      }
+    },
     "getUserAccountSettings": {
       "type": "bigApi",
       "destination": "frontend",
@@ -239,6 +250,45 @@
         {"key": "addressDefaultGroups", "optional": true},
         {"key": "userMenuEntries", "optional": true},
         {"key": "addressForm", "optional": true}
+      ]
+    },
+    {
+      "path": "extension/user/auth-strategy/facebook.js",
+      "description": "Auth with facebook strategy",
+      "hooks" : ["shopgate.user.loginUser.v1:loginToService"],
+      "input" : [
+        {"key": "strategy"},
+        {"key": "parameters"}
+      ],
+      "output" : [
+        {"key": "userId", "optional": true},
+        {"key": "customerAccessToken", "optional": true}
+      ]
+    },
+    {
+      "path": "extension/user/auth-strategy/basic.js",
+      "description": "Auth with basic strategy",
+      "hooks" : ["shopgate.user.loginUser.v1:loginToService"],
+      "input" : [
+        {"key": "strategy"},
+        {"key": "parameters"}
+      ],
+      "output" : [
+        {"key": "userId", "optional": true},
+        {"key": "customerAccessToken", "optional": true}
+      ]
+    },
+    {
+      "path": "extension/user/auth-strategy/web.js",
+      "description": "Auth with web strategy",
+      "hooks" : ["shopgate.user.loginUser.v1:loginToService"],
+      "input" : [
+        {"key": "strategy"},
+        {"key": "parameters"}
+      ],
+      "output" : [
+        {"key": "userId", "optional": true},
+        {"key": "customerAccessToken", "optional": true}
       ]
     }
   ]

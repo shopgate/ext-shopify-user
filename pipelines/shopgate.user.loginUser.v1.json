@@ -12,6 +12,18 @@
     ],
     "steps": [
       {
+        "type": "staticValue",
+        "input": [],
+        "values": [
+          {"key": "userId", "value": null},
+          {"key": "customerAccessToken", "value": null}
+        ],
+        "output": [
+          {"key": "userId", "id": "1050"},
+          {"key": "customerAccessToken", "id": "1060"}
+        ]
+      },
+      {
         "type": "extension",
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/initTaskScheduler.js",
@@ -28,32 +40,26 @@
         ]
       },
       {
-        "type": "extension",
-        "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/login.js",
+        "id": "loginToService",
+        "type": "hook",
         "input": [
-          {"key": "strategy", "id": "1010"},
+          {"key": "strategy",  "id": "1010"},
           {"key": "parameters", "id": "1020"}
         ],
         "output": [
-          {"key": "customerAccessToken", "id": "1060"},
-          {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "customerId", "id": "1090", "optional": true}
+          {"key": "userId", "id": "1050", "optional": true},
+          {"key": "customerAccessToken", "id": "1060", "optional": true}
         ]
       },
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/requestShopifyUserId.js",
+        "path": "@shopgate/shopify-user/user/auth-strategy/unknown.js",
         "input": [
           {"key": "strategy", "id": "1010"},
-          {"key": "customerAccessToken", "id": "1060"},
-          {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "customerId", "id": "1090", "optional": true}
-        ],
-        "output": [
           {"key": "userId", "id": "1050"}
-        ]
+        ],
+        "output": []
       },
       {
         "type": "auth",
@@ -82,6 +88,13 @@
           {"key": "userId", "id": "1050"},
           {"key": "customerAccessToken", "id": "1060"}
         ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/get.js",
+        "input": [],
         "output": []
       },
       {
