@@ -44,7 +44,7 @@ module.exports = async (context, input) => {
     throw new InvalidCredentialsError()
   }
 
-  // we're taking as given that the token received is valid
+  // we're taking as given that the token received is valid (validation is done by ext-auth-facebook)
 
   const { profile } = parameters
 
@@ -52,14 +52,28 @@ module.exports = async (context, input) => {
     throw new Error()
   }
 
-  const password = passwordGenerator.generate({
-    length: 16,
-    numbers: true
-  })
-
-  const adminApi =/**@type {AdminApi} */ ApiFactory.buildAdminApi(context)
-  let result
+  let result, customerAccessToken
   try {
+
+    const adminApi =/**@type {AdminApi} */ ApiFactory.buildAdminApi(context)
+    const storefrontAccessToken = await ShopifyStorefront.create(context).getAccessToken()
+    const shopifyCustomer = new ShopifyCustomer(ApiFactory.buildStorefrontApi(context, storefrontAccessToken), adminApi)
+
+    const customer = await shopifyCustomer.findByEmail(profile.email)
+    // here within another story we need to reset the password for the user in order to log the user in later on
+    // so there will be some additional refactoring needed as the following call fails in this case
+    if (customer) {
+      return {
+        userId: customer.id.toString(),
+        customerAccessToken: 'password needs to be reset'
+      }
+    }
+
+    const password = passwordGenerator.generate({
+      length: 16,
+      numbers: true
+    })
+
     result = await adminApi.post('/admin/customers.json', {
       customer: {
         first_name: profile.first_name,
@@ -68,22 +82,28 @@ module.exports = async (context, input) => {
         verified_email: true,
         password: password,
         password_confirmation: password,
-        send_email_welcome: context.config.shouldSendWelcomeEmail
+        send_email_welcome: context.config.shouldSendWelcomeEmail,
+        metafields: [
+          {
+            key: "fb_id",
+            value: profile.id,
+            value_type: 'string',
+            namespace: 'global'
+          }
+        ]
       }
     })
+    customerAccessToken = await shopifyCustomer.getAccessToken(profile.email, password)
+
   } catch (err) {
     context.log.error(err)
     throw new Error()
   }
 
-  if (!result.customer.id) {
-    context.log.error('Invalid shopify response')
+  if (!result.customer || !result.customer.id) {
+    context.log.error('Invalid shopify get customer response')
     throw new Error()
   }
-
-  const storefrontAccessToken = await ShopifyStorefront.create(context).getAccessToken()
-  const shopifyCustomer = new ShopifyCustomer(ApiFactory.buildStorefrontApi(context, storefrontAccessToken))
-  const customerAccessToken = await shopifyCustomer.getAccessToken(profile.email, password)
 
   return {
     userId: result.customer.id.toString(),
