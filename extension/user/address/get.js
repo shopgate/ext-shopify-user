@@ -1,4 +1,3 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 
@@ -6,7 +5,7 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  * @param {SDKContext} context
  */
 module.exports = async function (context) {
-  if (Tools.isEmpty(context.meta.userId)) {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('Unauthorized user')
   }
 

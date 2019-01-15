@@ -6,9 +6,7 @@
     "input": [
       {"key": "ids", "id": "10"}
     ],
-    "output": [
-      {"key": "success", "id": "20", "optional": true}
-    ],
+    "output": [],
     "steps": [
       {
         "type": "extension",
@@ -17,9 +15,7 @@
         "input": [
           {"key": "ids", "id": "10"}
         ],
-        "output": [
-          {"key": "success", "id": "20",  "optional": true}
-        ]
+        "output": []
       }
     ]
   }

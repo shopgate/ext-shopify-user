@@ -1,4 +1,3 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const FieldValidationError = require('../../models/Errors/FieldValidationError')
 const AddressValidationError = require('../../models/Errors/AddressValidationError')
@@ -9,8 +8,8 @@ const { mapCustomAttributes } = require('../../lib/mapper')
  * @param {SDKContext} context
  * @param {Object} input
  */
-module.exports = async function (context, input) {
-  if (Tools.isEmpty(context.meta.userId)) {
+module.exports = async (context, input) => {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
