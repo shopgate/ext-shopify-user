@@ -3,6 +3,8 @@ const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
  * @param {SDKContext} context
+ *
+ * @return {Promise<{addresses: ShopgateAddress[]}>}
  */
 module.exports = async function (context) {
   if (!context.meta.userId) {
@@ -12,7 +14,7 @@ module.exports = async function (context) {
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
-  return storefrontApi.customerGetAddresses(customerAccessToken.accessToken).then(result => {
+  return storefrontApi.customerAddressesGet(customerAccessToken.accessToken).then(result => {
     const { customer: { addresses: { edges: addressesItems } } } = result
     if (addressesItems.length === 0) {
       return { addresses: [] }

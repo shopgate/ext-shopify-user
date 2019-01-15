@@ -116,16 +116,16 @@ module.exports = class {
   /**
    * @param {string} customerAccessToken
    * @throws UnknownError upon unknown API errors.
-   * @returns {Promise[<Object>]}
+   * @returns {Promise<Object>}
    */
-  async customerGetAddresses (customerAccessToken) {
-    const query = 'query getCustomerAddesses ($customerAccessToken: String!) ' +
+  async customerAddressesGet (customerAccessToken) {
+    const query = 'query customerAddressesGet($customerAccessToken: String!) ' +
       '{ customer (customerAccessToken: $customerAccessToken) ' +
       '{ defaultAddress { id}, addresses(first: 250) { edges ' +
       '{ node { id, address1, address2, city, company, countryCodeV2, firstName, lastName, phone, provinceCode, zip }}}}}'
 
     const variables = { customerAccessToken }
-    const operationName = 'getCustomerAddesses'
+    const operationName = 'customerAddressesGet'
 
     let response
     try {
