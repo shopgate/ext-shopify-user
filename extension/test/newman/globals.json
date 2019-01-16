@@ -2,18 +2,6 @@
   "id": "dc6854ef-d2f0-41a7-8686-a5dc29cd1fb1",
   "values": [
     {
-      "enabled": true,
-      "key": "username",
-      "value": "***",
-      "type": "text"
-    },
-    {
-      "enabled": true,
-      "key": "password",
-      "value": "***",
-      "type": "text"
-    },
-    {
       "key": "port",
       "value": "8090",
       "enabled": true
