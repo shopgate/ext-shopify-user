@@ -2,6 +2,7 @@ const assert = require('assert')
 const expect = require('chai').expect
 const step = require('../../../user/checkAuthSuccess')
 
+/** @var {SDKContext} */
 const context = {
   log: {
     error: () => {}
