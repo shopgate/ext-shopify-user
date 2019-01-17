@@ -41,9 +41,9 @@
 
 /**
  * @typedef {Object} SDKContextEntityStorage
- * @property {Function} get - (string key, Function cb)
- * @property {Function} set - (string key, mixed value, Function cb)
- * @property {Function} del - (string key, Function cb)
+ * @property {Function} get - (string key)
+ * @property {Function} set - (string key, mixed value)
+ * @property {Function} del - (string key)
  * @property {Object} map
  * @property {Function} map.get - (string mapName)
  * @property {Function} map.set - (string mapName, Object map)
