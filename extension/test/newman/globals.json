@@ -65,6 +65,11 @@
       "key": "endpoint_user_registration_url_get",
       "value": "/trustedPipelines/shopgate.user.getRegistrationUrl.v1",
       "enabled": true
+    },
+    {
+      "key": "endpoint_user_web_login_init",
+      "value": "/trustedPipelines/shopgate.user.initWebLogin.v1",
+      "enabled": true
     }
   ],
   "name": "Shopify User Connect Extension Globals",
