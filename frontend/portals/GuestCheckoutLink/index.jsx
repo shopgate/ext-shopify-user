@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RouteContext } from '@virtuous/react-conductor/Router';
+import { RouteContext } from '@shopgate/pwa-common/context';
 import I18n from '@shopgate/pwa-common/components/I18n';
 import Link from '@shopgate/pwa-common/components/Link';
 import { CHECKOUT_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
