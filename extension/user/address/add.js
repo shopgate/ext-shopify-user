@@ -29,9 +29,9 @@ module.exports = async (context, input) => {
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  return storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress).then(customerAddress => {
-    return { id: customerAddress.id }
-  }).catch(errors => {
+  try {
+    return await storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress)
+  } catch (errors) {
     const validationError = new FieldValidationError()
     errors.forEach(error => {
       const { field, message } = error
@@ -45,5 +45,5 @@ module.exports = async (context, input) => {
     if (validationError.validationErrors.length > 0) {
       throw validationError
     }
-  })
+  }
 }

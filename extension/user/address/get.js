@@ -6,7 +6,7 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  *
  * @return {Promise<{addresses: ShopgateAddress[]}>}
  */
-module.exports = async function (context) {
+module.exports = async (context) => {
   if (!context.meta.userId) {
     throw new UnauthorizedError('Unauthorized user')
   }
@@ -14,32 +14,34 @@ module.exports = async function (context) {
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
-  return storefrontApi.customerAddressesGet(customerAccessToken.accessToken).then(result => {
-    const { customer: { addresses: { edges: addressesItems } } } = result
-    if (addressesItems.length === 0) {
-      return { addresses: [] }
-    }
-    const { customer: { defaultAddress: { id: defaultAddressId } } } = result
-    const customerAddresses = addressesItems.map(item => {
-      const address = item.node
-      return {
-        id: `${address.id}`,
-        street1: address.address1,
-        street2: address.address2,
-        city: address.city,
-        firstName: address.firstName,
-        lastName: address.lastName,
-        province: address.provinceCode,
-        zipCode: address.zip,
-        country: address.countryCodeV2,
-        customAttributes: {
-          company: address.company,
-          phone: address.phone
-        },
-        tags: address.id === defaultAddressId ? ['default'] : []
-      }
-    })
 
-    return { addresses: customerAddresses }
-  })
+  const result = await storefrontApi.customerAddressesGet(customerAccessToken.accessToken)
+  const { customer: { addresses: { edges: addressesItems } } } = result
+  if (addressesItems.length === 0) {
+    return { addresses: [] }
+  }
+  const { customer: { defaultAddress: { id: defaultAddressId } } } = result
+
+  return {
+    addresses: await addressesItems.map(item => structureAddress(item.node))
+  }
+
+  function structureAddress (address) {
+    return {
+      id: `${address.id}`,
+      street1: address.address1,
+      street2: address.address2,
+      city: address.city,
+      firstName: address.firstName,
+      lastName: address.lastName,
+      province: address.provinceCode,
+      zipCode: address.zip,
+      country: address.countryCodeV2,
+      customAttributes: {
+        company: address.company,
+        phone: address.phone
+      },
+      tags: address.id === defaultAddressId ? ['default'] : []
+    }
+  }
 }
