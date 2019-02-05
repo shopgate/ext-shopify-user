@@ -9,7 +9,7 @@
   "scripts": {
     "standard": "./node_modules/.bin/standard",
     "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive",
-    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json --globals ./test/newman/globals.json",
+    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json -g ./test/newman/globals.json -e ./test/newman/environment.json",
     "init-newman": "node ./test/newman/setup.js",
     "unit": "./node_modules/.bin/mocha --ui bdd ./test/unit --recursive",
     "integration": "./node_modules/.bin/mocha --ui bdd ./test/integration --recursive",
