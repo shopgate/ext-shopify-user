@@ -8,10 +8,11 @@
   },
   "scripts": {
     "standard": "./node_modules/.bin/standard",
-    "cover": "./node_modules/.bin/istanbul cover _mocha -- --recursive",
-    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json --globals ./test/newman/globals.json",
-    "unit": "mocha --ui bdd ./test/unit --recursive",
-    "integration": "mocha --ui bdd ./test/integration --recursive",
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive",
+    "newman": "./node_modules/.bin/newman run ./test/newman/collection.json -g ./test/newman/globals.json -e ./test/newman/environment.json",
+    "init-newman": "node ./test/newman/setup.js",
+    "unit": "./node_modules/.bin/mocha --ui bdd ./test/unit --recursive",
+    "integration": "./node_modules/.bin/mocha --ui bdd ./test/integration --recursive",
     "test": "npm run newman && npm run unit && npm run integration"
   },
   "author": "",
@@ -23,8 +24,7 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "request": "2.87.0",
-    "request-promise-native": "^1.0.5",
-    "underscore": "1.8.3"
+    "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
     "assert": "^1.4.1",
@@ -37,7 +37,7 @@
     "eslint-plugin-standard": "^3.1.0",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^5.2.0",
-    "newman": "^4.0.2",
+    "newman": "^4.3.1",
     "nock": "^9.6.1",
     "npm-run-all": "^4.1.2",
     "sinon": "^6.1.4",

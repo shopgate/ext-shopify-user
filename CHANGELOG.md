@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- callbacks to use async instead
+### Removed
+- dependencies with Tools.js file
+- unused admin api functions
+
 ## [1.4.0] - 2018-12-07
 ### Added
 - pipeline for updating a customer

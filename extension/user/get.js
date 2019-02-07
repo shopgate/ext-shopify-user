@@ -1,4 +1,3 @@
-const Tools = require('../lib/tools')
 const ApiFactory = require('../lib/shopify.api.factory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const ShopgateCustomer = require('../models/user/ShopgateCustomer')
@@ -9,7 +8,7 @@ const ShopgateCustomer = require('../models/user/ShopgateCustomer')
  */
 module.exports = async function (context) {
   // Check if there is a userId within the context.meta-data, if not the user is not logged
-  if (Tools.isEmpty(context.meta.userId)) {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('Unauthorized user')
   }
 

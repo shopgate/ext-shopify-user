@@ -16,9 +16,7 @@
       {"key": "customAttributes", "id": "100", "optional": true},
       {"key": "tags", "id": "110", "optional": true}
     ],
-    "output": [
-      {"key": "success", "id": "2"}
-    ],
+    "output": [],
     "steps": [
       {
         "type": "extension",
@@ -36,9 +34,7 @@
           {"key": "country", "id": "90", "optional": true},
           {"key": "customAttributes", "id": "100", "optional": true}
         ],
-        "output": [
-          {"key": "success", "id": "2"}
-        ]
+        "output": []
       },
       {
         "type": "extension",
@@ -48,9 +44,7 @@
           {"key": "id", "id": "10"},
           {"key": "tags", "id": "110", "optional": true}
         ],
-        "output": [
-          {"key": "success", "id": "2"}
-        ]
+        "output": []
       }
     ]
   }
