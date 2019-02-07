@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [2.0.0] - 2019-02-07
 ### Changed
-Updated Web Checkout to be compatible with Shopgate PWA version 6.1 and higher
+- Updated Web Checkout to be compatible with Shopgate PWA version 6.1 and higher
 
 ## [1.4.0] - 2018-12-07
 ### Added
