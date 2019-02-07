@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/shopify-user",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -12,10 +12,10 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@shopgate/eslint-config": "6.0.0-rc.4",
-    "@shopgate/pwa-common": "6.0.0-rc.4",
-    "@shopgate/pwa-common-commerce": "6.0.0-rc.4",
-    "@shopgate/tracking-core": "6.0.0-rc.4",
+    "@shopgate/eslint-config": "6.1.0",
+    "@shopgate/pwa-common": "6.1.0",
+    "@shopgate/pwa-common-commerce": "6.1.0",
+    "@shopgate/tracking-core": "6.1.0",
     "eslint": "^4.17.0"
   },
   "peerDependencies": {
