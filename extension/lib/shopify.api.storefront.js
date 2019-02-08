@@ -1,15 +1,17 @@
-const Tools = require('./tools')
 const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
+const _ = {
+  get: require('lodash/get')
+}
 
 module.exports = class {
   /**
    * @param {string} shopAlias
    * @param {string} storefrontAccessToken
-   * @param {Object} logger A generic logger instance, e.g. current step context's .log property.
+   * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    */
   constructor (shopAlias, storefrontAccessToken, logger, requestLog) {
@@ -20,14 +22,14 @@ module.exports = class {
   }
 
   /**
-  * @param {string} login
-  * @param {string} password
-  * @return {Promise<ShopifyCustomerAccessToken>}
-  */
+   * @param {string} login
+   * @param {string} password
+   * @return {Promise<ShopifyCustomerAccessToken>}
+   */
   async getCustomerAccessToken (login, password) {
     const query = 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
-     '{customerAccessTokenCreate(input: $input) ' +
-     '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}'
+      '{customerAccessTokenCreate(input: $input) ' +
+      '{userErrors {field message} customerAccessToken {accessToken expiresAt}}}'
 
     const variables = {
       input: {
@@ -51,9 +53,9 @@ module.exports = class {
       throw new UnknownError()
     }
 
-    if (Tools.propertyExists(response.body.data, 'customerAccessTokenCreate.userErrors') &&
-     !Tools.isEmpty(response.body.data.customerAccessTokenCreate.userErrors)) {
-      throw new InvalidCredentialsError(response.body.data.customerAccessTokenCreate.userErrors[0].message)
+    const errorMessage = _.get(response, `body.data.${operationName}.userErrors[0].message`)
+    if (errorMessage) {
+      throw new InvalidCredentialsError(errorMessage)
     }
 
     return response.body.data.customerAccessTokenCreate.customerAccessToken
@@ -85,9 +87,9 @@ module.exports = class {
       throw new UnknownError()
     }
 
-    if (Tools.propertyExists(response.body.data, 'customerAccessTokenRenew.userErrors') &&
-      !Tools.isEmpty(response.body.data.customerAccessTokenRenew.userErrors)) {
-      throw new Error(response.body.data.customerAccessTokenRenew.userErrors[0].message)
+    const errorMessage = _.get(response, `body.data.${operationName}.userErrors[0].message`)
+    if (errorMessage) {
+      throw new Error(errorMessage)
     }
 
     return response.body.data.customerAccessTokenRenew.customerAccessToken
@@ -116,16 +118,16 @@ module.exports = class {
   /**
    * @param {string} customerAccessToken
    * @throws UnknownError upon unknown API errors.
-   * @returns {Promise[<Object>]}
+   * @returns {Promise<Object>}
    */
-  async customerGetAddresses (customerAccessToken) {
-    const query = 'query getCustomerAddesses ($customerAccessToken: String!) ' +
+  async customerAddressesGet (customerAccessToken) {
+    const query = 'query customerAddressesGet($customerAccessToken: String!) ' +
       '{ customer (customerAccessToken: $customerAccessToken) ' +
       '{ defaultAddress { id}, addresses(first: 250) { edges ' +
       '{ node { id, address1, address2, city, company, countryCodeV2, firstName, lastName, phone, provinceCode, zip }}}}}'
 
     const variables = { customerAccessToken }
-    const operationName = 'getCustomerAddesses'
+    const operationName = 'customerAddressesGet'
 
     let response
     try {
@@ -338,11 +340,11 @@ module.exports = class {
       throw new UnknownError('Unknown error fetching updating customer data.')
     }
 
-    if (Tools.propertyExists(response.body.data, 'customerUpdate.userErrors') &&
-      !Tools.isEmpty(response.body.data.customerUpdate.userErrors)
-    ) {
+    /** @type {Object[]} */
+    const errorMessages = _.get(response, `body.data.${operationName}.userErrors`)
+    if (Array.isArray(errorMessages) && errorMessages.length > 0) {
       const validationError = new FieldValidationError()
-      response.body.data.customerUpdate.userErrors.forEach(responseError => {
+      errorMessages.forEach(responseError => {
         validationError.addStorefrontValidationMessage(responseError.field.pop(), responseError.message)
       })
       throw validationError

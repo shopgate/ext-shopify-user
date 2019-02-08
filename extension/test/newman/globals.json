@@ -2,18 +2,6 @@
   "id": "dc6854ef-d2f0-41a7-8686-a5dc29cd1fb1",
   "values": [
     {
-      "enabled": true,
-      "key": "username",
-      "value": "***",
-      "type": "text"
-    },
-    {
-      "enabled": true,
-      "key": "password",
-      "value": "***",
-      "type": "text"
-    },
-    {
       "key": "port",
       "value": "8090",
       "enabled": true
@@ -72,9 +60,19 @@
       "key": "endpoint_user_addresses_delete",
       "value": "/trustedPipelines/shopgate.user.deleteAddresses.v1",
       "enabled": true
+    },
+    {
+      "key": "endpoint_user_registration_url_get",
+      "value": "/trustedPipelines/shopgate.user.getRegistrationUrl.v1",
+      "enabled": true
+    },
+    {
+      "key": "endpoint_user_web_login_init",
+      "value": "/trustedPipelines/shopgate.user.initWebLogin.v1",
+      "enabled": true
     }
   ],
-  "name": "SG Connect Extension Globals",
+  "name": "Shopify User Connect Extension Globals",
   "_postman_variable_scope": "globals",
   "_postman_exported_at": "2018-08-20T08:55:01.613Z",
   "_postman_exported_using": "Postman/6.2.3"

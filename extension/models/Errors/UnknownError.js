@@ -1,11 +1,17 @@
 const EUNKNOWN = 'EUNKNOWN'
 
+/**
+ * Use this class for errors that happen in the pipeline
+ * or passing information around the extension and between steps
+ *
+ * @param {string} [message=An internal error occurred.]
+ * @default An internal error occurred.
+ */
 class UnknownError extends Error {
-  constructor () {
-    super('An internal error occurred.')
-
+  constructor (message) {
+    super()
     this.code = EUNKNOWN
-    this.displayMessage = null
+    this.message = message || 'An internal error occurred.'
   }
 }
 

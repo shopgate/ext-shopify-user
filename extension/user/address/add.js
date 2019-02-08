@@ -1,4 +1,3 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const FieldValidationError = require('../../models/Errors/FieldValidationError')
 const AddressValidationError = require('../../models/Errors/AddressValidationError')
@@ -9,8 +8,8 @@ const { mapCustomAttributes } = require('../../lib/mapper')
  * @param {SDKContext} context
  * @param {Object} input
  */
-module.exports = async function (context, input) {
-  if (Tools.isEmpty(context.meta.userId)) {
+module.exports = async (context, input) => {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
@@ -30,9 +29,9 @@ module.exports = async function (context, input) {
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  return storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress).then(customerAddress => {
-    return { id: customerAddress.id }
-  }).catch(errors => {
+  try {
+    return await storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress)
+  } catch (errors) {
     const validationError = new FieldValidationError()
     errors.forEach(error => {
       const { field, message } = error
@@ -46,5 +45,5 @@ module.exports = async function (context, input) {
     if (validationError.validationErrors.length > 0) {
       throw validationError
     }
-  })
+  }
 }

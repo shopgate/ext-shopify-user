@@ -1,15 +1,17 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../../models/Errors/InvalidCallError')
 const AddressValidationError = require('../../models/Errors/AddressValidationError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
+ * @typedef {Object} input
+ * @property {string[]} ids
+ *
  * @param {SDKContext} context
- * @param {Object} input
+ * @param input
  */
 module.exports = async function (context, input) {
-  if (Tools.isEmpty(context.meta.userId)) {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
@@ -27,9 +29,7 @@ module.exports = async function (context, input) {
     return storefrontApi.customerAddressDelete(customerAccessToken.accessToken, id)
   }))
 
-  return result.then(result => {
-    return { success: true }
-  }).catch(errors => {
+  return result.catch(errors => {
     errors.forEach(error => {
       throw new AddressValidationError(error.message)
     })

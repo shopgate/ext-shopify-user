@@ -15,9 +15,7 @@
       {"key": "tags", "id": "114", "optional": true},
       {"key": "customAttributes", "id": "115", "optional": true}
     ],
-    "output": [
-      {"key": "success", "id": "2"}
-    ],
+    "output": [],
     "steps": [
       {
         "type": "extension",
@@ -46,9 +44,7 @@
           {"key": "id", "id": "3"},
           {"key": "tags", "id": "114", "optional": true}
         ],
-        "output": [
-          {"key": "success", "id": "2"}
-        ]
+        "output": []
       }
     ]
   }
