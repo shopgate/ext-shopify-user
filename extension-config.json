@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "2.0.0",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "configuration": {
@@ -195,12 +195,6 @@
       "id": "GuestCheckoutLink",
       "path": "frontend/portals/GuestCheckoutLink/index.jsx",
       "target": "page.login.register-link.after",
-      "type": "portals"
-    },
-    {
-      "id": "GuestCheckoutLinkRoute",
-      "path": "frontend/portals/GuestCheckoutLink/route.jsx",
-      "target": "app.routes",
       "type": "portals"
     },
     {

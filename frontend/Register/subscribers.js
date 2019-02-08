@@ -1,28 +1,78 @@
-import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl';
-import goBackHistory from '@shopgate/pwa-common/actions/history/goBackHistory';
-import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
-import ParsedLink from '@shopgate/pwa-common/components/Router/helpers/parsed-link';
-import { openedRegisterLink$ } from '@shopgate/pwa-common/streams/history';
-import openRegisterUrl from '@shopgate/pwa-common/subscriptions/helpers/openRegisterUrl';
+import { appWillStart$ } from '@shopgate/pwa-common/streams/app';
+import { redirects } from '@shopgate/pwa-common/collections';
 import { LEGACY_URL } from '@shopgate/pwa-common/constants/Registration';
+import { REGISTER_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
+import buildRegisterUrl from '@shopgate/pwa-common/subscriptions/helpers/buildRegisterUrl';
+import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl';
+import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
+import { getCurrentRoute } from '@shopgate/pwa-common/helpers/router';
+import { userDidLogin$ } from '@shopgate/pwa-common/streams/user';
+import { historyPop, historyPush } from '@shopgate/pwa-common/actions/router'
+import { registerRedirect } from '@shopgate/pwa-webcheckout-shopify/action-creators/register';
+import { webCheckoutRegisterRedirect$ } from '@shopgate/pwa-webcheckout-shopify/streams';
+import closeInAppBrowser from '@shopgate/pwa-core/commands/closeInAppBrowser';
+import broadcastEvent from '@shopgate/pwa-core/commands/broadcastEvent';
+import { routeDidEnter$ } from '@shopgate/pwa-common/streams/router';
+import { isAndroid } from '@shopgate/pwa-common/selectors/client';
 
 export default (subscribe) => {
-  // Open register link subscription
-  subscribe(openedRegisterLink$, async ({ dispatch, getState }) => {
-    const state = getState();
+  /**
+   * @param {Object} params The handler parameters.
+   * @param {Function} params.dispatch The Redux dispatch function.
+   * @param {Function} params.getState The Redux getState function.
+   * @return {Promise<string>}
+   */
+  const redirectHandler = async ({ dispatch, getState }) => {
+    /**
+     * When the register url was opened from a login page, a redirect to the original target
+     * page needs to happen after a successful registration. It's added by buildRegisterUrl.
+     */
+    const { state: {redirect: {location = ''} = {}} } = getCurrentRoute();
 
-    const hasRegistrationUrl = !!getRegisterUrl(state);
-
-    // Open the registration url if one is found.
-    if (hasRegistrationUrl) {
-      await dispatch(fetchRegisterUrl())
-        .then(url => openRegisterUrl(url, state))
-        .catch(e => e);
-    } else {
-      const link = new ParsedLink(LEGACY_URL);
-      link.open();
+    let url = getRegisterUrl(getState());
+    if (!url) {
+      // Fetch a fresh url if none was found within the store.
+      url = await dispatch(fetchRegisterUrl());
     }
 
-    dispatch(goBackHistory(1));
+    url = buildRegisterUrl(url || LEGACY_URL, location);
+
+    // Dispatch redirect
+    dispatch(registerRedirect(url));
+
+    return url;
+  };
+
+  subscribe(appWillStart$, () => {
+    redirects.set(REGISTER_PATH, redirectHandler, true);
+  });
+
+  const loginAfterRegisterRedirect$ = webCheckoutRegisterRedirect$.switchMap(() => userDidLogin$.first());
+  const nextRouterAfterLoginRegister$ = loginAfterRegisterRedirect$.switchMap(() => routeDidEnter$.first());
+
+  /**
+   * Pop a login page after web registration / and redirect to checkout
+   */
+  subscribe(loginAfterRegisterRedirect$, ({ dispatch, getState }) => {
+    const { state: {redirect: {location = ''} = {}} } = getCurrentRoute();
+    dispatch(historyPop());
+
+    closeInAppBrowser(isAndroid(getState()));
+
+    if (location) {
+      dispatch(historyPush({
+        pathname: location
+      }));
+    }
+  });
+
+  /**
+   * Close loading spinner on next after login route
+   */
+  subscribe(nextRouterAfterLoginRegister$, () => {
+    // Close loading view
+    broadcastEvent({
+      event: 'closeNotification'
+    });
   });
 };
