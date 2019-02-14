@@ -16,7 +16,7 @@ matrix:
     - cd extension
     - npm run cover
     - npm run lint
-    - npm run audit
+    - npm audit
     - cd ../frontend
     - npm audit
 
