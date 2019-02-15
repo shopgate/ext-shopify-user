@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/shopgate/ext-shopify-user/badge.svg?branch=master)](https://coveralls.io/github/shopgate/ext-shopify-user?branch=master)
 
 
-This Shopify extension will sync the user from Shopgate to BigCommerce.
+This Shopify extension will sync the user from Shopgate to Shopify.
 
 ## Changelog
 
