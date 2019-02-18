@@ -18,7 +18,6 @@ describe('extension / user / requestShopifyUserId', () => {
   beforeEach(() => {
     input.strategy = null
     input.customerId = null
-
   })
 
   it('should throw a customer not found error if there is no customerId for strategy web', async () => {

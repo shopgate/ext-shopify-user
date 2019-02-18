@@ -5,7 +5,7 @@ import I18n from '@shopgate/pwa-common/components/I18n';
 import Link from '@shopgate/pwa-common/components/Link';
 import { CHECKOUT_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
 import styles from './style';
-import {CHECKOUT_GUEST_PATH} from './../../constants/RoutePaths';
+import { CHECKOUT_GUEST_PATH } from './../../constants/RoutePaths';
 import config from '../../config';
 
 /**
@@ -37,13 +37,13 @@ const GuestCheckoutLink = ({ visible, redirectLocation }) => {
 };
 
 GuestCheckoutLink.propTypes = {
-  visible: PropTypes.bool.isRequired,
   redirectLocation: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
 };
 
 export default () => (
   <RouteContext.Consumer>
-    {({ state: {redirect: {location: redirectLocation = ''} = {}}, visible }) => (
+    {({ state: { redirect: { location: redirectLocation = '' } = {} }, visible }) => (
       <GuestCheckoutLink
         redirectLocation={redirectLocation}
         visible={visible}

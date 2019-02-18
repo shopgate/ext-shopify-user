@@ -17,7 +17,6 @@ describe('extension / user / requestShopifyUserId', () => {
     input.customAttributes = null
     input.firstName = null
     input.lastName = null
-
   })
 
   it('should throw an unauthorized error if no user is logged in', async () => {

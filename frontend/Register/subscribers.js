@@ -7,7 +7,7 @@ import fetchRegisterUrl from '@shopgate/pwa-common/actions/user/fetchRegisterUrl
 import { getRegisterUrl } from '@shopgate/pwa-common/selectors/user';
 import { getCurrentRoute } from '@shopgate/pwa-common/helpers/router';
 import { userDidLogin$ } from '@shopgate/pwa-common/streams/user';
-import { historyPop, historyPush } from '@shopgate/pwa-common/actions/router'
+import { historyPop, historyPush } from '@shopgate/pwa-common/actions/router';
 import { registerRedirect } from '@shopgate/pwa-webcheckout-shopify/action-creators/register';
 import { webCheckoutRegisterRedirect$ } from '@shopgate/pwa-webcheckout-shopify/streams';
 import closeInAppBrowser from '@shopgate/pwa-core/commands/closeInAppBrowser';
@@ -27,7 +27,7 @@ export default (subscribe) => {
      * When the register url was opened from a login page, a redirect to the original target
      * page needs to happen after a successful registration. It's added by buildRegisterUrl.
      */
-    const { state: {redirect: {location = ''} = {}} } = getCurrentRoute();
+    const { state: { redirect: { location = '' } = {} } } = getCurrentRoute();
 
     let url = getRegisterUrl(getState());
     if (!url) {
@@ -47,21 +47,23 @@ export default (subscribe) => {
     redirects.set(REGISTER_PATH, redirectHandler, true);
   });
 
-  const loginAfterRegisterRedirect$ = webCheckoutRegisterRedirect$.switchMap(() => userDidLogin$.first());
-  const nextRouterAfterLoginRegister$ = loginAfterRegisterRedirect$.switchMap(() => routeDidEnter$.first());
+  const loginAfterRegisterRedirect$ = webCheckoutRegisterRedirect$
+    .switchMap(() => userDidLogin$.first());
+  const nextRouterAfterLoginRegister$ = loginAfterRegisterRedirect$
+    .switchMap(() => routeDidEnter$.first());
 
   /**
    * Pop a login page after web registration / and redirect to checkout
    */
   subscribe(loginAfterRegisterRedirect$, ({ dispatch, getState }) => {
-    const { state: {redirect: {location = ''} = {}} } = getCurrentRoute();
+    const { state: { redirect: { location = '' } = {} } } = getCurrentRoute();
     dispatch(historyPop());
 
     closeInAppBrowser(isAndroid(getState()));
 
     if (location) {
       dispatch(historyPush({
-        pathname: location
+        pathname: location,
       }));
     }
   });
@@ -72,7 +74,7 @@ export default (subscribe) => {
   subscribe(nextRouterAfterLoginRegister$, () => {
     // Close loading view
     broadcastEvent({
-      event: 'closeNotification'
+      event: 'closeNotification',
     });
   });
 };
