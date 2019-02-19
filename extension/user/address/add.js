@@ -1,6 +1,4 @@
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
-const FieldValidationError = require('../../models/Errors/FieldValidationError')
-const AddressValidationError = require('../../models/Errors/AddressValidationError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 const { mapCustomAttributes } = require('../../lib/mapper')
 
@@ -29,21 +27,5 @@ module.exports = async (context, input) => {
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  try {
-    return await storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress)
-  } catch (errors) {
-    const validationError = new FieldValidationError()
-    errors.forEach(error => {
-      const { field, message } = error
-      if (field[1]) {
-        validationError.addStorefrontValidationMessage(field[1], message)
-      } else {
-        throw new AddressValidationError(message)
-      }
-    })
-
-    if (validationError.validationErrors.length > 0) {
-      throw validationError
-    }
-  }
+  return storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress)
 }

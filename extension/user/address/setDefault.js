@@ -1,5 +1,4 @@
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
-const AddressValidationError = require('../../models/Errors/AddressValidationError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
@@ -19,12 +18,7 @@ module.exports = async (context, input) => {
     const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
     const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
     const customerAccessToken = await context.storage.user.get('customerAccessToken')
-    try {
-      return await storefrontApi.customerDefaultAddressUpdate(customerAccessToken.accessToken, input.id)
-    } catch (errors) {
-      errors.forEach(error => {
-        throw new AddressValidationError(error.message)
-      })
-    }
+
+    return storefrontApi.customerDefaultAddressUpdate(customerAccessToken.accessToken, input.id)
   }
 }
