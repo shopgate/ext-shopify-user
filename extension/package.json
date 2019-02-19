@@ -13,8 +13,7 @@
     "init-newman": "node ./test/newman/setup.js",
     "unit": "./node_modules/.bin/mocha --ui bdd ./test/unit --recursive",
     "integration": "./node_modules/.bin/mocha --ui bdd ./test/integration --recursive",
-    "test": "npm run unit && npm run integration",
-    "checkVulnerabilities": "check-audit"
+    "test": "npm run unit && npm run integration"
   },
   "author": "",
   "license": "ISC",
@@ -41,7 +40,6 @@
     "mocha": "^5.2.0",
     "newman": "^4.3.1",
     "nock": "^9.6.1",
-    "npm-audit-resolver": "^1.4.0",
     "npm-run-all": "^4.1.2",
     "nyc": "^13.3.0",
     "sinon": "^6.1.4"
