@@ -7,11 +7,7 @@ describe('extension / user / requestShopifyUserId', () => {
       userId: null
     }
   }
-  const input = {
-    customAttributes: null,
-    firstName: null,
-    lastName: null
-  }
+  const input = {}
 
   beforeEach(() => {
     input.customAttributes = null

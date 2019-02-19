@@ -10,10 +10,7 @@ describe('extension / user / requestShopifyUserId', () => {
       error: () => {}
     }
   }
-  const input = {
-    strategy: null,
-    customerId: null
-  }
+  const input = {}
 
   beforeEach(() => {
     input.strategy = null

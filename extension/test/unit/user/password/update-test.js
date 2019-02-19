@@ -3,13 +3,9 @@ const updatePassword = require('../../../../user/password/update')
 
 describe('user / password / update', () => {
   const context = {
-    meta: {
-      userId: null
-    }
+    meta: {}
   }
-  const input = {
-    password: null
-  }
+  const input = {}
 
   beforeEach(() => {
     input.password = null

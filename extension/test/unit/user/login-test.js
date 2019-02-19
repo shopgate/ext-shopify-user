@@ -7,9 +7,7 @@ describe('extension / user / login', () => {
       userId: null
     }
   }
-  const input = {
-    strategy: null
-  }
+  const input = {}
 
   beforeEach(() => {
     input.strategy = null

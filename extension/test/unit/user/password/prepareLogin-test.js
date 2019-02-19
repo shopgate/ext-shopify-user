@@ -3,9 +3,7 @@ const prepareLogin = require('../../../../user/password/prepareLogin')
 
 describe('user / password / prepareLogin', () => {
   const context = {}
-  const input = {
-    username: null
-  }
+  const input = {}
 
   beforeEach(() => {
     input.username = null
