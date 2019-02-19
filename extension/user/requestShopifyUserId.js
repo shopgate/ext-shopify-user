@@ -10,7 +10,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @param {string} input.customerId
  * @return {Promise<{userId: string}>}
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   if (input.strategy === 'web') {
     if (!input.customerId) {
       context.log.error('No userId given on input strategy web')

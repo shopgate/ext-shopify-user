@@ -1,6 +1,5 @@
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../../models/Errors/InvalidCallError')
-const AddressValidationError = require('../../models/Errors/AddressValidationError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
@@ -10,7 +9,7 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  * @param {SDKContext} context
  * @param input
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
@@ -25,13 +24,7 @@ module.exports = async function (context, input) {
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  const result = Promise.all(ids.map(id => {
+  await Promise.all(ids.map(id => {
     return storefrontApi.customerAddressDelete(customerAccessToken.accessToken, id)
   }))
-
-  return result.catch(errors => {
-    errors.forEach(error => {
-      throw new AddressValidationError(error.message)
-    })
-  })
 }

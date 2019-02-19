@@ -14,7 +14,7 @@ const InvalidCallError = require('../models/Errors/InvalidCallError')
  * @param {string} input.parameters.payload Encrypted login data sent by app when using strategy "web".
  * @returns {Promise<{customerAccessToken: string, storefrontAccessToken: string, [customerId]: string}>}
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   // strategy is not supported
   if (!['basic', 'web', 'facebook', 'twitter'].includes(input.strategy)) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)

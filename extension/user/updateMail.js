@@ -6,7 +6,7 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
  * @param {UpdateMailInput} input
  * @return {Promise<ShopifyCustomerUpdateResponse>}
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   if (!context.meta.userId) {
     throw new UnauthorizedError('Unauthorized user')
   }
