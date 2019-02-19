@@ -169,22 +169,29 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error create customer address.', err)
+      this.logger.error('Error creating a customer\'s address', err)
       throw new UnknownError()
     }
 
     return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerAddressCreate: { customerUserErrors, customerAddress } } } } = response
-
-      if (Array.isArray(errors)) {
+      const errors = _.get(response, 'body.errors')
+      if (errors && Array.isArray(errors)) {
         errors.forEach(item => {
-          this.logger.error('Error create customer address.', item.message)
+          this.logger.error('Error creating a customer\'s address', item.message)
         })
         throw new UnknownError()
       }
 
+      const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
       if (customerUserErrors.length > 0) {
         reject(customerUserErrors)
+        return
+      }
+
+      const customerAddress = _.get(response, `body.data.${operationName}.customerAddress`)
+      if (!customerAddress) {
+        this.logger.error('No address ID returned in the request')
+        throw new UnknownError()
       }
 
       return resolve(customerAddress)
@@ -209,22 +216,23 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error delete customer address.', err)
+      this.logger.error('Error deleting a customer\'s address', err)
       throw new UnknownError()
     }
 
     return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerAddressDelete: { customerUserErrors } } } } = response
-
-      if (Array.isArray(errors)) {
+      const errors = _.get(response, 'body.errors')
+      if (errors && Array.isArray(errors)) {
         errors.forEach(item => {
-          this.logger.error('Error create customer address.', item.message)
+          this.logger.error('Error deleting a customer\'s address', item.message)
         })
         throw new UnknownError()
       }
 
+      const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
       if (customerUserErrors.length > 0) {
         reject(customerUserErrors)
+        return
       }
 
       return resolve(true)
@@ -249,21 +257,23 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error customer set default address.', err)
+      this.logger.error('Error setting the default customer address', err)
       throw new UnknownError()
     }
 
     return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerDefaultAddressUpdate: { customerUserErrors } } } } = response
-      if (Array.isArray(errors)) {
+      const errors = _.get(response, 'body.errors')
+      if (errors && Array.isArray(errors)) {
         errors.forEach(item => {
-          this.logger.error('Error customer set default address.', item.message)
+          this.logger.error('Error setting the default customer address', item.message)
         })
         throw new UnknownError()
       }
 
+      const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
       if (customerUserErrors.length > 0) {
         reject(customerUserErrors)
+        return
       }
 
       return resolve()
@@ -289,23 +299,24 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error update customer address.', err)
+      this.logger.error('Error updating customer\'s address.', err)
       throw new UnknownError()
     }
 
     return new Promise((resolve, reject) => {
-      const { body: { errors } } = response
-
-      if (Array.isArray(errors)) {
+      const errors = _.get(response, 'body.errors')
+      if (errors && Array.isArray(errors)) {
         errors.forEach(item => {
-          this.logger.error('Error update customer address.', item.message)
+          this.logger.error('Error updating customer\'s address.', item.message)
         })
         reject(errors)
+        return
       }
 
-      const { body: { data: { customerAddressUpdate: { customerUserErrors } } } } = response
+      const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
       if (customerUserErrors.length > 0) {
         reject(customerUserErrors)
+        return
       }
 
       return resolve()
@@ -341,11 +352,11 @@ module.exports = class {
     }
 
     /** @type {Object[]} */
-    const errorMessages = _.get(response, `body.data.${operationName}.userErrors`)
-    if (Array.isArray(errorMessages) && errorMessages.length > 0) {
+    const errorMessages = _.get(response, `body.data.${operationName}.userErrors`, [])
+    if (errorMessages.length > 0) {
       const validationError = new FieldValidationError()
-      errorMessages.forEach(responseError => {
-        validationError.addStorefrontValidationMessage(responseError.field.pop(), responseError.message)
+      errorMessages.forEach(({ field, message }) => {
+        validationError.addStorefrontValidationMessage(field.pop(), message)
       })
       throw validationError
     }

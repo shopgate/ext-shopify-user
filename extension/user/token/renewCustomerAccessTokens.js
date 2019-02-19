@@ -8,7 +8,7 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  * @param {string} input.pipelineApiKey
  * @return {Promise<void>}
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   if (!input.pipelineApiKey || input.pipelineApiKey !== await context.storage.extension.get('renewCustomerAccessTokenPipelineApiKey')) {
     throw new UnauthorizedError('Invalid pipeline API key provided.')
   }

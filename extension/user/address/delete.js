@@ -10,7 +10,7 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  * @param {SDKContext} context
  * @param input
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
