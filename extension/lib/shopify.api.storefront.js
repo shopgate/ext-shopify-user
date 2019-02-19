@@ -2,6 +2,7 @@ const requestp = require('request-promise-native')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
+const AddressValidationError = require('../models/Errors/AddressValidationError')
 const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
 const _ = {
   get: require('lodash/get')
@@ -155,6 +156,8 @@ module.exports = class {
    * @param {string} customerAccessToken
    * @param {Object} address
    * @throws UnknownError upon unknown API errors.
+   * @throws FieldValidationError when provided fields have issues
+   * @throws AddressValidationError when there is an unknown issue with Address validation
    * @returns {Promise<Object>}
    */
   async customerAddressCreate (customerAccessToken, address) {
@@ -169,33 +172,35 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error create customer address.', err)
+      this.logger.error('Error creating a customer\'s address', err)
       throw new UnknownError()
     }
 
-    return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerAddressCreate: { customerUserErrors, customerAddress } } } } = response
+    const errors = _.get(response, 'body.errors')
+    if (errors && Array.isArray(errors)) {
+      errors.forEach(item => {
+        this.logger.error('Error creating a customer\'s address', item.message)
+      })
+      throw new UnknownError()
+    }
 
-      if (Array.isArray(errors)) {
-        errors.forEach(item => {
-          this.logger.error('Error create customer address.', item.message)
-        })
-        throw new UnknownError()
-      }
+    const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
+    await this.parseValidationErrors(customerUserErrors)
 
-      if (customerUserErrors.length > 0) {
-        reject(customerUserErrors)
-      }
+    const customerAddress = _.get(response, `body.data.${operationName}.customerAddress`)
+    if (!customerAddress) {
+      this.logger.error('No address ID returned in the request')
+      throw new UnknownError()
+    }
 
-      return resolve(customerAddress)
-    })
+    return customerAddress
   }
 
   /**
    * @param {string} customerAccessToken
    * @param {string} id
    * @throws UnknownError upon unknown API errors.
-   * @returns {boolean}
+   * @return {Promise<void>}
    */
   async customerAddressDelete (customerAccessToken, id) {
     const query = 'mutation customerAddressDelete($id: ID!, $customerAccessToken: String!) ' +
@@ -209,33 +214,29 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error delete customer address.', err)
+      this.logger.error('Error deleting a customer\'s address', err)
       throw new UnknownError()
     }
 
-    return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerAddressDelete: { customerUserErrors } } } } = response
+    const errors = _.get(response, 'body.errors')
+    if (errors && Array.isArray(errors)) {
+      errors.forEach(item => {
+        this.logger.error('Error deleting a customer\'s address', item.message)
+      })
+      throw new UnknownError()
+    }
 
-      if (Array.isArray(errors)) {
-        errors.forEach(item => {
-          this.logger.error('Error create customer address.', item.message)
-        })
-        throw new UnknownError()
-      }
-
-      if (customerUserErrors.length > 0) {
-        reject(customerUserErrors)
-      }
-
-      return resolve(true)
-    })
+    const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
+    await this.parseValidationErrors(customerUserErrors)
   }
 
   /**
    * @param {string} customerAccessToken
    * @param {string} addressId
    * @throws UnknownError upon unknown API errors.
-   * @returns {Promise}
+   * @throws FieldValidationError when provided fields have issues
+   * @throws AddressValidationError when there is an unknown issue with Address validation
+   * @return {Promise<void>}
    */
   async customerDefaultAddressUpdate (customerAccessToken, addressId) {
     const query = 'mutation customerDefaultAddressUpdate($customerAccessToken: String!, $addressId: ID!) ' +
@@ -249,25 +250,20 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error customer set default address.', err)
+      this.logger.error('Error setting the default customer address', err)
       throw new UnknownError()
     }
 
-    return new Promise((resolve, reject) => {
-      const { body: { errors, data: { customerDefaultAddressUpdate: { customerUserErrors } } } } = response
-      if (Array.isArray(errors)) {
-        errors.forEach(item => {
-          this.logger.error('Error customer set default address.', item.message)
-        })
-        throw new UnknownError()
-      }
+    const errors = _.get(response, 'body.errors')
+    if (errors && Array.isArray(errors)) {
+      errors.forEach(item => {
+        this.logger.error('Error setting the default customer address', item.message)
+      })
+      throw new UnknownError()
+    }
 
-      if (customerUserErrors.length > 0) {
-        reject(customerUserErrors)
-      }
-
-      return resolve()
-    })
+    const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
+    await this.parseValidationErrors(customerUserErrors)
   }
 
   /**
@@ -275,7 +271,9 @@ module.exports = class {
    * @param {string} id
    * @param {Object} address
    * @throws UnknownError upon unknown API errors.
-   * @returns {Promise<Object>}
+   * @throws FieldValidationError when provided fields have issues
+   * @throws AddressValidationError when there is an unknown issue with Address validation
+   * @returns {Promise<void>}
    */
   async customerAddressUpdate (customerAccessToken, id, address) {
     const query = 'mutation customerAddressUpdate($customerAccessToken: String!, $id: ID!, $address: MailingAddressInput!) ' +
@@ -289,27 +287,20 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error update customer address.', err)
+      this.logger.error('Error updating customer\'s address.', err)
       throw new UnknownError()
     }
 
-    return new Promise((resolve, reject) => {
-      const { body: { errors } } = response
+    const errors = _.get(response, 'body.errors')
+    if (errors && Array.isArray(errors)) {
+      errors.forEach(item => {
+        this.logger.error('Error updating customer\'s address.', item.message)
+      })
+      throw new UnknownError()
+    }
 
-      if (Array.isArray(errors)) {
-        errors.forEach(item => {
-          this.logger.error('Error update customer address.', item.message)
-        })
-        reject(errors)
-      }
-
-      const { body: { data: { customerAddressUpdate: { customerUserErrors } } } } = response
-      if (customerUserErrors.length > 0) {
-        reject(customerUserErrors)
-      }
-
-      return resolve()
-    })
+    const customerUserErrors = _.get(response, `body.data.${operationName}.customerUserErrors`, [])
+    await this.parseValidationErrors(customerUserErrors)
   }
 
   /**
@@ -341,14 +332,8 @@ module.exports = class {
     }
 
     /** @type {Object[]} */
-    const errorMessages = _.get(response, `body.data.${operationName}.userErrors`)
-    if (Array.isArray(errorMessages) && errorMessages.length > 0) {
-      const validationError = new FieldValidationError()
-      errorMessages.forEach(responseError => {
-        validationError.addStorefrontValidationMessage(responseError.field.pop(), responseError.message)
-      })
-      throw validationError
-    }
+    const errorMessages = _.get(response, `body.data.${operationName}.userErrors`, [])
+    await this.parseValidationErrors(errorMessages)
 
     return response.body.data.customerUpdate
   }
@@ -396,5 +381,35 @@ module.exports = class {
     this.requestLog(logOptions, response)
 
     return response
+  }
+
+  /**
+   * Helper for throwing validation errors
+   *
+   * @param {{field:string[], message:string}[]} errors
+   * @throws FieldValidationError when provided fields have issues
+   * @throws AddressValidationError when there is an unknown issue with Address validation
+   * @return {Promise<void>}
+   */
+  async parseValidationErrors (errors) {
+    if (errors.length > 0) {
+      const validationError = new FieldValidationError()
+      errors.forEach(error => {
+        const { field, message } = error
+        if (error.hasOwnProperty('problems')) {
+          throw new AddressValidationError(message)
+        }
+
+        if (Array.isArray(field) && field.length > 0) {
+          validationError.addStorefrontValidationMessage(field[1] ? field[1] : field[0], message)
+        } else {
+          throw new AddressValidationError(message)
+        }
+      })
+
+      if (validationError.validationErrors.length > 0) {
+        throw validationError
+      }
+    }
   }
 }

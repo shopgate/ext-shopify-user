@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.1.0] - 2019-02-18
 ### Changed
 - callbacks to use async instead
 ### Removed
@@ -53,7 +55,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in webcheckout
 
-[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv2.0.0
+[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv2.1.0
+[2.1.0]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv2.0.0&sourceBranch=refs%2Ftags%2Fv2.1.0
 [2.0.0]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.4.0&sourceBranch=refs%2Ftags%2Fv2.0.0
 [1.4.0]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.3.2&sourceBranch=refs%2Ftags%2Fv1.4.0
 [1.3.2]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.3.1&sourceBranch=refs%2Ftags%2Fv1.3.2

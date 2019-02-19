@@ -1,8 +1,9 @@
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
-const FieldValidationError = require('../../models/Errors/FieldValidationError')
-const AddressValidationError = require('../../models/Errors/AddressValidationError')
 const { mapCustomAttributes } = require('../../lib/mapper')
-const _ = require('lodash')
+const _ = {
+  omitBy: require('lodash/omitBy'),
+  isNil: require('lodash/isNil')
+}
 const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
@@ -12,7 +13,7 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  * @param {SDKContext} context
  * @param input
  */
-module.exports = async function (context, input) {
+module.exports = async (context, input) => {
   if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
@@ -22,24 +23,6 @@ module.exports = async function (context, input) {
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
   return storefrontApi.customerAddressUpdate(customerAccessToken.accessToken, input.id, createAddressUpdate(input))
-    .catch(errors => {
-      const validationError = new FieldValidationError()
-      if (Array.isArray(errors)) {
-        errors.forEach(error => {
-          const { message } = error
-          if (error.hasOwnProperty('problems')) {
-            throw new AddressValidationError(message)
-          }
-          const { field } = error
-          if (field[1]) {
-            validationError.addStorefrontValidationMessage(field[1], message)
-          }
-        })
-      }
-      if (validationError.validationErrors.length > 0) {
-        throw validationError
-      }
-    })
 
   /**
    * Map the input address values to fit the Shopify specifications for the api endpoint
