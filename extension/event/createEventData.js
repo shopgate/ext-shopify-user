@@ -1,11 +1,13 @@
 /**
- * @param {object} context
- * @param {object} input
+ * @typedef {Object} input
+ * @property {string} mail
  *
- * @param {function} cb
+ * @param {SDKContext} context
+ * @param input
+ * @return {{eventData: input}}
  */
-module.exports = function (context, input, cb) {
-  cb(null, {
+module.exports = async (context, input) => {
+  return {
     eventData: input
-  })
+  }
 }

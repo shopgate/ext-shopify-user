@@ -12,12 +12,12 @@
       "enabled": true
     },
     {
-      "key": "endpoint_login",
+      "key": "endpoint_user_login",
       "value": "/trustedPipelines/shopgate.user.loginUser.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_logout",
+      "key": "endpoint_user_logout",
       "value": "/trustedPipelines/shopgate.user.logoutUser.v1",
       "enabled": true
     },
@@ -27,32 +27,52 @@
       "enabled": true
     },
     {
-      "enabled": true,
-      "key": "endpoint_address_get",
-      "value": "/trustedPipelines/shopgate.user.getAddresses.v1"
+      "key": "endpoint_user_update",
+      "value": "/trustedPipelines/shopgate.user.updateUser.v1",
+      "enabled": true
     },
     {
-      "key": "endpoint_addresses_get",
+      "key": "endpoint_user_email_update",
+      "value": "/trustedPipelines/shopgate.user.updateMail.v1",
+      "enabled": true
+    },
+    {
+      "key": "endpoint_user_password_update",
+      "value": "/trustedPipelines/shopgate.user.updatePassword.v1",
+      "enabled": true
+    },
+    {
+      "key": "endpoint_user_addresses_get",
       "value": "/trustedPipelines/shopgate.user.getAddresses.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_address_add",
+      "key": "endpoint_user_address_add",
       "value": "/trustedPipelines/shopgate.user.addAddress.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_address_update",
+      "key": "endpoint_user_address_update",
       "value": "/trustedPipelines/shopgate.user.updateAddress.v1",
       "enabled": true
     },
     {
-      "key": "endpoint_addresses_delete",
+      "key": "endpoint_user_addresses_delete",
       "value": "/trustedPipelines/shopgate.user.deleteAddresses.v1",
+      "enabled": true
+    },
+    {
+      "key": "endpoint_user_registration_url_get",
+      "value": "/trustedPipelines/shopgate.user.getRegistrationUrl.v1",
+      "enabled": true
+    },
+    {
+      "key": "endpoint_user_web_login_init",
+      "value": "/trustedPipelines/shopgate.user.initWebLogin.v1",
       "enabled": true
     }
   ],
-  "name": "SG Connect Extension Globals",
+  "name": "Shopify User Connect Extension Globals",
   "_postman_variable_scope": "globals",
   "_postman_exported_at": "2018-08-20T08:55:01.613Z",
   "_postman_exported_using": "Postman/6.2.3"

@@ -13,16 +13,15 @@
       {"key": "province", "id": "70", "optional": true},
       {"key": "zipCode", "id": "80", "optional": true},
       {"key": "country", "id": "90", "optional": true},
-      {"key": "customAttributes", "id": "100", "optional": true}
+      {"key": "customAttributes", "id": "100", "optional": true},
+      {"key": "tags", "id": "110", "optional": true}
     ],
-    "output": [
-      {"key": "success", "id": "2", "optional": true}
-    ],
+    "output": [],
     "steps": [
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/updateAddress_v1.js",
+        "path": "@shopgate/shopify-user/user/address/update.js",
         "input": [
           {"key": "id", "id": "10"},
           {"key": "street1", "id": "20", "optional": true},
@@ -35,9 +34,17 @@
           {"key": "country", "id": "90", "optional": true},
           {"key": "customAttributes", "id": "100", "optional": true}
         ],
-        "output": [
-          {"key": "success", "id": "2",  "optional": true}
-        ]
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/address/setDefault.js",
+        "input": [
+          {"key": "id", "id": "10"},
+          {"key": "tags", "id": "110", "optional": true}
+        ],
+        "output": []
       }
     ]
   }

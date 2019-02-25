@@ -1,0 +1,6 @@
+{
+  "checkout": {
+    "or": "Or",
+    "continue_as_guest": "continue as guest"
+  }
+}

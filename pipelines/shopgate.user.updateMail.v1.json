@@ -1,0 +1,35 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.updateMail.v1",
+    "public": true,
+    "input": [
+      {
+        "key": "mail",
+        "id": "10"
+      }
+    ],
+    "output": [],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/updateMail.js",
+        "input": [
+          {
+            "key": "mail",
+            "id": "10"
+          }
+        ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/clearCache.js",
+        "input": [],
+        "output": []
+      }
+    ]
+  }
+}

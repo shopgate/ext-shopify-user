@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+build
+npm-debug.log
+package-lock.json
+node_modules
+config.json
+coverage
+extension/.nyc_output
+extension/test/newman/environment.json

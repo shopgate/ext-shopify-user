@@ -12,6 +12,13 @@
     ],
     "steps": [
       {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/initTaskScheduler.js",
+        "input": [],
+        "output": []
+      },
+      {
         "type": "pipeline",
         "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
@@ -23,7 +30,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/login_v1.js",
+        "path": "@shopgate/shopify-user/user/login.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "parameters", "id": "1020"}
@@ -31,18 +38,18 @@
         "output": [
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "login", "id": "1080"}
+          {"key": "customerId", "id": "1090", "optional": true}
         ]
       },
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/requestShopifyUserId_v1.js",
+        "path": "@shopgate/shopify-user/user/requestShopifyUserId.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "customerAccessToken", "id": "1060"},
           {"key": "storefrontAccessToken", "id": "1070"},
-          {"key": "login", "id": "1080"}
+          {"key": "customerId", "id": "1090", "optional": true}
         ],
         "output": [
           {"key": "userId", "id": "1050"}
@@ -60,10 +67,20 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/checkAuthSuccess_v1.js",
+        "path": "@shopgate/shopify-user/user/checkAuthSuccess.js",
         "input": [
           {"key": "authSuccess", "id": "1030"},
           {"key": "authType", "id": "1010"}
+        ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/token/saveCustomerAccessToken.js",
+        "input": [
+          {"key": "userId", "id": "1050"},
+          {"key": "customerAccessToken", "id": "1060"}
         ],
         "output": []
       },
