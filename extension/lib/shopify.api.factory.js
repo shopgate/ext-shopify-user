@@ -36,11 +36,10 @@ module.exports = class {
    * @returns {CustomerTokenManager}
    */
   static buildCustomerTokenManager (context) {
-    const requestLogger = new ShopifyLogger(context.log)
     return new CustomerTokenManager(
       context.storage.user,
       context.storage.extension,
-      requestLogger,
+      context.log,
       context.meta.userId
     )
   }

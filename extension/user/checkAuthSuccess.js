@@ -1,21 +1,22 @@
 const UnknownError = require('../models/Errors/UnknownError')
 
 /**
- * @typedef {object} input
+ * @typedef {Object} input
  * @property {string} authSuccess
  * @property {string} authType
  * @property {string} login
  *
- * @param context
+ * @param {SDKContext} context
  * @param input
- * @param cb
- * @returns {*}
+ *
+ * @returns {Object}
+ * @throws UnknownError
  */
-module.exports = function (context, input, cb) {
+module.exports = async (context, input) => {
   if (input.authSuccess !== true) {
     context.log.error(input.authType + ': Auth step finished unsuccessfully.')
-    return cb(new UnknownError())
+    throw new UnknownError()
   }
 
-  return cb(null, {})
+  return {}
 }

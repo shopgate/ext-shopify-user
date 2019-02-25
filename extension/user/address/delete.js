@@ -1,24 +1,30 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../../models/Errors/InvalidCallError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
+ * @typedef {Object} input
+ * @property {string[]} ids
+ *
  * @param {SDKContext} context
- * @param {Object} input
+ * @param input
  */
-module.exports = async function (context, input) {
-  if (Tools.isEmpty(context.meta.userId)) {
+module.exports = async (context, input) => {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  if (Tools.isEmpty(input.ids)) {
-    throw new InvalidCallError('No address ids given.')
+  const { ids } = input
+
+  if (!Array.isArray(ids) || ids.length === 0 || ids.includes('')) {
+    throw new InvalidCallError()
   }
 
-  if (input.ids.includes('')) {
-    throw new InvalidCallError('Empty string address id passed.')
-  }
+  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+  const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  return ApiFactory.buildAdminApi(context).deleteAddresses(context.meta.userId, input.ids)
+  await Promise.all(ids.map(id => {
+    return storefrontApi.customerAddressDelete(customerAccessToken.accessToken, id)
+  }))
 }

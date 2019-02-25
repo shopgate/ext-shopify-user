@@ -1,31 +1,31 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const ApiFactory = require('../../lib/shopify.api.factory')
-const { mapCountry, mapCustomAttributes } = require('../../lib/mapper')
+const { mapCustomAttributes } = require('../../lib/mapper')
 
 /**
  * @param {SDKContext} context
  * @param {Object} input
  */
-module.exports = async function (context, input) {
-  if (Tools.isEmpty(context.meta.userId)) {
+module.exports = async (context, input) => {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  // Map the input address values to fit the Shopify specifications for the admin api endpoint
-  /** @var {ShopifyAddress} newAddress */
   const newAddress = {
     address1: input.street1,
     address2: input.street2,
     city: input.city,
-    first_name: input.firstName,
-    last_name: input.lastName,
-    province_code: input.province,
+    firstName: input.firstName,
+    lastName: input.lastName,
+    province: input.province,
     zip: input.zipCode,
-    name: input.firstName + ' ' + input.lastName,
-    ...mapCountry(input.country),
+    country: input.country,
     ...mapCustomAttributes(input.customAttributes)
   }
 
-  return ApiFactory.buildAdminApi(context).addAddress(context.meta.userId, newAddress)
+  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+  const customerAccessToken = await context.storage.user.get('customerAccessToken')
+
+  return storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress)
 }

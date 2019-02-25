@@ -58,7 +58,7 @@ module.exports = class {
     try {
       return await this.bigapiRequester.request({
         service: serviceName.toLowerCase(),
-        version: '/' + version.replace(/^\/*/, ''),
+        version: version.replace(/^\/*/, ''),
         path,
         method,
         body

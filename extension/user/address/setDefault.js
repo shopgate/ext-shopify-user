@@ -1,22 +1,24 @@
-const Tools = require('../../lib/tools')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const ApiFactory = require('../../lib/shopify.api.factory')
 
 /**
  * @typedef {Object} input
- * @property {string[]} tags
+ * @property {string[]} tags - address tag list, e.g if the address is 'default'
+ * @property {string} id - id of Shopify address to update
  *
  * @param {SDKContext} context
- * @param {ShopgateAddress} input
+ * @param input
  */
-module.exports = async function (context, input) {
-  if (Tools.isEmpty(context.meta.userId)) {
+module.exports = async (context, input) => {
+  if (!context.meta.userId) {
     throw new UnauthorizedError('User is not logged in.')
   }
 
-  if (!Tools.isEmpty(input.tags) && input.tags.includes('default')) {
-    return ApiFactory.buildAdminApi(context).setDefaultAddress(context.meta.userId, input.id)
-  }
+  if (input.tags && input.tags.includes('default')) {
+    const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
+    const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
+    const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
-  return { success: true }
+    return storefrontApi.customerDefaultAddressUpdate(customerAccessToken.accessToken, input.id)
+  }
 }
