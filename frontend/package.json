@@ -4,10 +4,10 @@
   "description": "",
   "repository": {
     "type": "git",
-    "url": "ssh://git@stash.localdev.cc:7999/sgx/shopify-user.git"
+    "url": "https://github.com/shopgate/ext-shopify-user"
   },
   "scripts": {
-    "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
+    "lint": "./node_modules/.bin/eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
     "jest-update": "jest --updateSnapshot"
   },
   "license": "Apache-2.0",
@@ -15,12 +15,16 @@
     "@shopgate/eslint-config": "6.1.0",
     "@shopgate/pwa-common": "6.1.0",
     "@shopgate/pwa-common-commerce": "6.1.0",
+    "@shopgate/pwa-unit-test": "^6.1.1",
     "@shopgate/tracking-core": "6.1.0",
-    "eslint": "^4.17.0"
+    "eslint": "^4.19.1"
   },
   "peerDependencies": {
     "@shopgate/pwa-common": "6.x"
+  },
+  "dependencies": {
+    "@shopgate/pwa-core": "^6.1.1",
+    "@shopgate/pwa-webcheckout-shopify": "^6.1.1",
+    "react": "^16.8.2"
   }
 }
-
-

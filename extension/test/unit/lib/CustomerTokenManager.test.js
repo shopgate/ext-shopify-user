@@ -36,7 +36,7 @@ describe('CustomerTokenManager', () => {
       try {
         await TokenManager.getToken()
       } catch (err) {
-        return assert.equal(err.code, 'EACCESS')
+        return assert.strictEqual(err.code, 'EACCESS')
       }
       assert.fail('Expected an error to be thrown.')
     })
@@ -50,8 +50,8 @@ describe('CustomerTokenManager', () => {
 
       TokenManager = ShopifyApiFactory.buildCustomerTokenManager(context)
       const fetchedToken = await TokenManager.getToken()
-      assert.equal(fetchedToken.accessToken, accessToken)
-      assert.equal(fetchedToken.expiresAt, expiresAt)
+      assert.strictEqual(fetchedToken.accessToken, accessToken)
+      assert.strictEqual(fetchedToken.expiresAt, expiresAt)
     })
 
     it('should renew the token if the token expired and another valid one is already stored in cache', async () => {
@@ -70,8 +70,8 @@ describe('CustomerTokenManager', () => {
       const fetchedToken = await TokenManager.getToken()
 
       sinon.assert.calledWith(storageSetSpy, 'customerAccessToken', newToken)
-      assert.equal(fetchedToken.accessToken, newToken.accessToken)
-      assert.equal(fetchedToken.expiresAt, newToken.expiresAt)
+      assert.strictEqual(fetchedToken.accessToken, newToken.accessToken)
+      assert.strictEqual(fetchedToken.expiresAt, newToken.expiresAt)
     })
 
     it('should throw an unauthorized error when all tokens from cache expired', async () => {
@@ -90,7 +90,7 @@ describe('CustomerTokenManager', () => {
       try {
         await TokenManager.getToken()
       } catch (err) {
-        return assert.equal(err.code, 'EACCESS')
+        return assert.strictEqual(err.code, 'EACCESS')
       }
       assert.fail('Expected an error to be thrown.')
     })

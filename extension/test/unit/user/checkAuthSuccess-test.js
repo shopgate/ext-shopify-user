@@ -8,14 +8,12 @@ const context = {
     error: () => {}
   }
 }
-const input = {
-  authSuccess: null,
-  authType: null
-}
+const input = {}
 
 describe('check authorization success', () => {
   beforeEach(() => {
     input.authSuccess = true
+    input.authType = null
   })
 
   it('authorization succeeds', async () => {

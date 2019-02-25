@@ -2,9 +2,7 @@ const expect = require('chai').expect
 const step = require('../../../event/createEventData')
 
 const context = {}
-const input = {
-  mail: null
-}
+const input = {}
 
 describe('Check if event data is passed', () => {
   beforeEach(() => {
