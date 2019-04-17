@@ -4,6 +4,7 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const AddressValidationError = require('../models/Errors/AddressValidationError')
 const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
+const TokenRenewError = require('../models/Errors/TokenRenewError')
 const _ = {
   get: require('lodash/get')
 }
@@ -90,7 +91,7 @@ module.exports = class {
 
     const errorMessage = _.get(response, `body.data.${operationName}.userErrors[0].message`)
     if (errorMessage) {
-      throw new Error(errorMessage)
+      throw new TokenRenewError(errorMessage)
     }
 
     return response.body.data.customerAccessTokenRenew.customerAccessToken

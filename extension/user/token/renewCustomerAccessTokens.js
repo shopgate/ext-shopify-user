@@ -12,7 +12,7 @@ module.exports = async (context, input) => {
   if (!input.pipelineApiKey || input.pipelineApiKey !== await context.storage.extension.get('renewCustomerAccessTokenPipelineApiKey')) {
     throw new UnauthorizedError('Invalid pipeline API key provided.')
   }
-
+  console.log(await context.storage.extension.get('customerTokensByUserIds'))
   const tokensByUserIds = await context.storage.extension.map.get('customerTokensByUserIds')
   const updateUserIds = Object
     .keys(tokensByUserIds)
@@ -23,7 +23,7 @@ module.exports = async (context, input) => {
     return
   }
 
-  const summary = { successful: 0, failed: 0 }
+  const summary = { successful: 0, failed: 0, removed: 0 }
   const api = ApiFactory.buildStorefrontApi(context, await context.storage.extension.get('storefrontAccessToken'))
 
   // update customer tokens; chunks of 5 in parallel
@@ -34,8 +34,16 @@ module.exports = async (context, input) => {
       try {
         response = await api.renewCustomerAccessToken(tokensByUserIds[userId].accessToken)
       } catch (err) {
-        summary.failed++
-        context.log.error('Error renewing customer access token.', err)
+        console.log(err)
+        if (err.code === 'ETOKENRENEW') {
+          context.log.warn('Error renewing customer access token.', err)
+          summary.removed++
+          delete tokensByUserIds[userId]
+        } else {
+          summary.failed++
+          context.log.error('Error renewing customer access token.', err)
+        }
+
         return
       }
 
@@ -44,7 +52,7 @@ module.exports = async (context, input) => {
     }))
   }
 
-  context.log.info(`Updated a total of ${summary.successful + summary.failed} (${summary.successful} OK / ${summary.failed} failed).`)
+  context.log.info(`Updated a total of ${summary.successful + summary.failed} (${summary.successful} OK / ${summary.failed} failed / ${summary.removed} removed).`)
 
   await context.storage.extension.map.set('customerTokensByUserIds', tokensByUserIds)
 }
