@@ -12,7 +12,6 @@ module.exports = async (context, input) => {
   if (!input.pipelineApiKey || input.pipelineApiKey !== await context.storage.extension.get('renewCustomerAccessTokenPipelineApiKey')) {
     throw new UnauthorizedError('Invalid pipeline API key provided.')
   }
-  console.log(await context.storage.extension.get('customerTokensByUserIds'))
   const tokensByUserIds = await context.storage.extension.map.get('customerTokensByUserIds')
   const updateUserIds = Object
     .keys(tokensByUserIds)
@@ -34,7 +33,6 @@ module.exports = async (context, input) => {
       try {
         response = await api.renewCustomerAccessToken(tokensByUserIds[userId].accessToken)
       } catch (err) {
-        console.log(err)
         if (err.code === 'ETOKENRENEW') {
           context.log.warn('Error renewing customer access token.', err)
           summary.removed++
