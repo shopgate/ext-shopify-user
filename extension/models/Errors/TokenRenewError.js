@@ -1,14 +1,9 @@
 const ETOKENRENEW = 'ETOKENRENEW'
 
 class TokenRenewError extends Error {
-  constructor (displayMessage) {
+  constructor () {
     super('Error renewing customer access token.')
     this.code = ETOKENRENEW
-
-    this.displayMessage = null
-    if (displayMessage !== null && displayMessage !== undefined) {
-      this.displayMessage = displayMessage
-    }
   }
 }
 
