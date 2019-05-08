@@ -4,6 +4,7 @@ const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
 const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
+const TokenRenewError = require('../models/Errors/TokenRenewError')
 
 module.exports = class {
   /**
@@ -87,7 +88,7 @@ module.exports = class {
 
     if (Tools.propertyExists(response.body.data, 'customerAccessTokenRenew.userErrors') &&
       !Tools.isEmpty(response.body.data.customerAccessTokenRenew.userErrors)) {
-      throw new Error(response.body.data.customerAccessTokenRenew.userErrors[0].message)
+      throw new TokenRenewError(response.body.data.customerAccessTokenRenew.userErrors[0].message)
     }
 
     return response.body.data.customerAccessTokenRenew.customerAccessToken
@@ -141,8 +142,8 @@ module.exports = class {
       throw new UnknownError('Unknown error fetching updating customer data.')
     }
 
-    if (Tools.propertyExists(response.body.data, 'customerUpdate.userErrors')
-      && !Tools.isEmpty(response.body.data.customerUpdate.userErrors)
+    if (Tools.propertyExists(response.body.data, 'customerUpdate.userErrors') &&
+      !Tools.isEmpty(response.body.data.customerUpdate.userErrors)
     ) {
       const validationError = new FieldValidationError()
       response.body.data.customerUpdate.userErrors.forEach(responseError => {

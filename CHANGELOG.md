@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.4.1] - 2019-05-08
+### Fixed
+- handling of expired tokens
+
 ## [1.4.0] - 2018-12-07
 ### Added
 - pipeline for updating a customer
