@@ -7,7 +7,7 @@ describe('Shopgate BigAPI', () => {
   let bigApiRequester
   const tokenHandlerStub = {}
 
-  const baseUrl = 'shopgate.services'
+  const baseUrl = 'shopgate.services/'
   const serviceName = 'task-scheduler'
   const version = 'v1'
   const path = '/schedules/shopifyRenewCustomerAccessToken-'
