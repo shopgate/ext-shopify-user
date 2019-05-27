@@ -2,32 +2,30 @@ const sinon = require('sinon')
 const assert = require('assert')
 const moment = require('moment')
 const TokenManagerClass = require('../../../lib/CustomerTokenManager')
-const UnauthorizedError = require('../../../models/Errors/UnauthorizedError')
 
 describe('CustomerTokenManager', () => {
   let TokenManager
   let userStorageStub = {}
   let extensionStorageStub = {}
   const loggerStub = {
-    error: () => {}
+    error: () => { }
   }
 
   describe('getToken()', () => {
     beforeEach(() => {
-      userStorageStub.get = async () => {}
-      userStorageStub.set = async () => {}
-      extensionStorageStub.get = async () => {}
-      extensionStorageStub.map = async () => {}
-      extensionStorageStub.map.setItem = async () => {}
+      userStorageStub.get = async () => { }
+      userStorageStub.set = async () => { }
+      extensionStorageStub.get = async () => { }
+      extensionStorageStub.map = async () => { }
+      extensionStorageStub.map.setItem = async () => { }
     })
 
     it('should throw an unauthorized error when no token is available', async () => {
-
-      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub,loggerStub, 1)
+      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub, loggerStub, 1)
       try {
         await TokenManager.getToken()
       } catch (err) {
-        return assert.equal(err.code, 'EACCESS')
+        return assert.strict.equal(err.code, 'EACCESS')
       }
       assert.fail('Expected an error to be thrown.')
     })
@@ -39,10 +37,10 @@ describe('CustomerTokenManager', () => {
         return { accessToken, expiresAt }
       }
 
-      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub,loggerStub, 1)
+      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub, loggerStub, 1)
       const fetchedToken = await TokenManager.getToken()
-      assert.equal(fetchedToken.accessToken, accessToken)
-      assert.equal(fetchedToken.expiresAt, expiresAt)
+      assert.strict.equal(fetchedToken.accessToken, accessToken)
+      assert.strict.equal(fetchedToken.expiresAt, expiresAt)
     })
 
     it('should renew the token if the token expired and another valid one is already stored in cache', async () => {
@@ -57,12 +55,12 @@ describe('CustomerTokenManager', () => {
       }
 
       const storageSetSpy = sinon.spy(userStorageStub, 'set')
-      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub,loggerStub, 1)
+      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub, loggerStub, 1)
       const fetchedToken = await TokenManager.getToken()
 
       sinon.assert.calledWith(storageSetSpy, 'customerAccessToken', newToken)
-      assert.equal(fetchedToken.accessToken, newToken.accessToken)
-      assert.equal(fetchedToken.expiresAt, newToken.expiresAt)
+      assert.strict.equal(fetchedToken.accessToken, newToken.accessToken)
+      assert.strict.equal(fetchedToken.expiresAt, newToken.expiresAt)
     })
 
     it('should throw an unauthorized error when all tokens from cache expired', async () => {
@@ -76,12 +74,12 @@ describe('CustomerTokenManager', () => {
         return secondToken
       }
 
-      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub,loggerStub, 1)
+      TokenManager = new TokenManagerClass(userStorageStub, extensionStorageStub, loggerStub, 1)
 
       try {
         await TokenManager.getToken()
       } catch (err) {
-        return assert.equal(err.code, 'EACCESS')
+        return assert.strict.equal(err.code, 'EACCESS')
       }
       assert.fail('Expected an error to be thrown.')
     })
