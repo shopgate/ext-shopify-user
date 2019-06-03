@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.4.2] - 2019-06-04
+### Fixed
+- stage identifier in Big API request
+
 ## [1.4.1] - 2019-05-08
 ### Fixed
 - handling of expired tokens
@@ -47,10 +51,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in webcheckout
 
-[Unreleased]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Ftags%2Fv1.4.0
-[1.4.0]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.3.2&sourceBranch=refs%2Ftags%2Fv1.4.0
-[1.3.2]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.3.1&sourceBranch=refs%2Ftags%2Fv1.3.2
-[1.3.1]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.2.3&sourceBranch=refs%2Ftags%2Fv1.3.1
-[1.2.3]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.1.5&sourceBranch=refs%2Ftags%2Fv1.2.3
-[1.2.2]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/compare/commits?targetBranch=refs%2Ftags%2Fv1.1.5&sourceBranch=refs%2Ftags%2Fv1.2.2
-[1.1.5]: https://stash.localdev.cc/projects/SGX/repos/shopify-user/browse?at=refs%2Ftags%2Fv1.1.5
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v1.4.2...HEAD
+[1.4.2]: https://github.com/shopgate/ext-shopify-user/compare/v1.4.2...v1.4.1
+[1.4.1]: https://github.com/shopgate/ext-shopify-user/compare/v1.4.1...v1.4.0
+[1.4.0]: https://github.com/shopgate/ext-shopify-user/compare/v1.3.2...v1.4.0
+[1.3.2]: https://github.com/shopgate/ext-shopify-user/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/shopgate/ext-shopify-user/compare/v1.2.3...v1.3.1
+[1.2.3]: https://github.com/shopgate/ext-shopify-user/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/shopgate/ext-shopify-user/compare/v1.1.5...v1.2.2

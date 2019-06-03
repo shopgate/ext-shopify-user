@@ -16,6 +16,7 @@ module.exports = class {
    * @throws Error when requesting the Big API fails.
    */
   async scheduleCustomerTokenRenew (stage, applicationId, pipelineApiKey) {
+    stage = stage === 'production' ? 'prod' : stage
     await this.request(
       'task-scheduler',
       'v1',

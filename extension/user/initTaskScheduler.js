@@ -13,7 +13,7 @@ module.exports = async function (context) {
   // look up DB setting if local variable not initialized, yet
   let storageTaskSchedulerUpdateRequired
   try {
-    storageTaskSchedulerUpdateRequired = await context.storage.extension.get('taskSchedulerUpdateRequired')
+    storageTaskSchedulerUpdateRequired = await context.storage.extension.get('taskSchedulerUpdateRequired_2')
   } catch (err) {
     context.log.error(err)
     return
@@ -35,7 +35,7 @@ module.exports = async function (context) {
   }
 
   try {
-    await context.storage.extension.set('taskSchedulerUpdateRequired', false)
+    await context.storage.extension.set('taskSchedulerUpdateRequired_2', false)
   } catch (err) {
     context.log.error(err)
     return
