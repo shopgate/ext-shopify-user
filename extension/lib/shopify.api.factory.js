@@ -2,6 +2,7 @@ const AdminApi = require('./shopify.api.admin')
 const StorefrontApi = require('./shopify.api.storefront')
 const ShopifyLogger = require('./logger')
 const CustomerTokenManager = require('./CustomerTokenManager')
+const ConfigHelper = require('../helper/config')
 
 module.exports = class {
   /**
@@ -11,7 +12,7 @@ module.exports = class {
   static buildAdminApi (context) {
     const requestLogger = new ShopifyLogger(context.log)
     return new AdminApi(
-      context.config.shopifyShopAlias,
+      ConfigHelper.getBaseUrl(context.config),
       context.config.shopifyAccessToken,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
     )
@@ -24,7 +25,7 @@ module.exports = class {
   static buildStorefrontApi (context, storefrontAccessToken) {
     const requestLogger = new ShopifyLogger(context.log)
     return new StorefrontApi(
-      context.config.shopifyShopAlias,
+      ConfigHelper.getBaseUrl(context.config),
       storefrontAccessToken,
       context.log,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
