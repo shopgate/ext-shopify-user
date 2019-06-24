@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/shopify-user",
-  "version": "2.1.3-beta.3",
+  "version": "2.1.2",
   "description": "",
   "repository": {
     "type": "git",
@@ -16,8 +16,7 @@
     "test": "npm run unit && npm run integration",
     "checkVulnerabilities": "check-audit"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@shopgate/bigapi-requester": "^2.1.0",
     "crypto-js": "^3.1.9-1",
