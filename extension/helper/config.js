@@ -1,7 +1,7 @@
 /**
  * @param {ExtensionConfig} config
  */
-function getBaseUrl(config) {
+function getBaseUrl (config) {
   const url = config.shopifyShopDomain || `https://${config.shopifyShopAlias}.myshopify.com`
   return url.replace(/\/$/, '')
 }
@@ -10,7 +10,7 @@ function getBaseUrl(config) {
  * @param {ExtensionConfig} config
  * @returns {string}
  */
-function getHostName(config) {
+function getHostName (config) {
   return getBaseUrl(config).replace(/(^\w+:|^)\/\//, '')
 }
 

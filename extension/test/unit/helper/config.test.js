@@ -31,7 +31,7 @@ describe('Config Helper', () => {
   })
 
   it('should remove trailing slash if configured in the domain', () => {
-    const extectedUrl = config.shopifyShopDomain;
+    const extectedUrl = config.shopifyShopDomain
     config.shopifyShopDomain += '/'
     const url = ConfigHelper.getBaseUrl(config)
     assert.strictEqual(extectedUrl, url)
