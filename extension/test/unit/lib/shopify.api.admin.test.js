@@ -8,7 +8,7 @@ describe('Shopify Admin API', () => {
   let subjectUnderTest
 
   beforeEach(done => {
-    subjectUnderTest = new AdminApi('shopgate', 'accessToken', (requestOptions, response) => {})
+    subjectUnderTest = new AdminApi(baseUrl, 'accessToken', (requestOptions, response) => {})
 
     done()
   })
