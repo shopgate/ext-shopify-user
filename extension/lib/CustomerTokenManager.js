@@ -29,6 +29,11 @@ module.exports = class {
       try {
         const renewedToken = await this.extensionStorage.map.getItem('customerTokensByUserIds', this.userId)
         if (renewedToken && Date.parse(renewedToken.expiresAt) > Date.parse(customerAccessToken.expiresAt)) {
+          this.log.debug({
+            customerAccessTokenExpiresAt: customerAccessToken.expiresAt,
+            renewedTokenAccessTokenExpiresAt: renewedToken.expiresAt
+          }, 'Comparing token expiration dates')
+
           customerAccessToken = renewedToken
           await this.userStorage.set('customerAccessToken', renewedToken)
         }
@@ -37,6 +42,11 @@ module.exports = class {
       }
 
       if (Date.parse(customerAccessToken.expiresAt) <= now) {
+        this.log.debug({
+          expiresAt: customerAccessToken.expiresAt,
+          now: now.toString()
+        }, 'Customer access token expired')
+
         throw new UnauthorizedError('Please log in again.')
       }
     }
