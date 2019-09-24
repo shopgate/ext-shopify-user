@@ -24,6 +24,11 @@ module.exports = class {
       throw new UnauthorizedError('Please log in again.')
     }
 
+    this.log.debug({
+      customerAccessToken: JSON.stringify(customerAccessToken),
+      userId: this.userId
+    }, 'Getting user token')
+
     const now = Date.now()
     if (customerAccessToken.expiresAt) {
       try {
