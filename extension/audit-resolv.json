@@ -3,7 +3,7 @@
 		"ignore": 1
 	},
 	"1164|nyc>istanbul-reports>handlebars": {
-		"fix": 1
+		"ignore": 1
 	},
 	"1171|newman>csv-parse": {
 		"ignore": 1
