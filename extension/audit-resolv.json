@@ -2,6 +2,9 @@
 	"1164|newman>postman-runtime>handlebars": {
 		"ignore": 1
 	},
+	"1164|nyc>istanbul-reports>handlebars": {
+		"fix": 1
+	},
 	"1171|newman>csv-parse": {
 		"ignore": 1
 	}
