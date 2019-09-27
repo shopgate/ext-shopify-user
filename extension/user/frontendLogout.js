@@ -1,5 +1,5 @@
-const Unauthorized = require('../models/Errors/UnauthorizedError')
+const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 module.exports = async () => {
-  throw new Unauthorized()
+  throw new UnauthorizedError()
 }
