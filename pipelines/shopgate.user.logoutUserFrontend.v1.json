@@ -1,0 +1,25 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.logoutUserFrontend.v1",
+    "public": true,
+    "input": [],
+    "output": [],
+    "steps": [
+      {
+        "type": "pipeline",
+        "id": "shopgate.user.logoutUser.v1",
+        "trusted": true,
+        "input": [],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/frontendLogout.js",
+        "input": [],
+        "output": []
+      }
+    ]
+  }
+}

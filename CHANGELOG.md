@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- handling of expired sessions
+
 ## [2.1.3] - 2019-07-01
 ### Fixed
 - autologin if a custom shopify domain is used

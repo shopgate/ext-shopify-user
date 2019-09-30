@@ -37,6 +37,11 @@ module.exports = class {
       }
 
       if (Date.parse(customerAccessToken.expiresAt) <= now) {
+        this.log.error({
+          expiresAt: customerAccessToken.expiresAt,
+          userId: this.userId
+        }, 'Customer access token expired')
+
         throw new UnauthorizedError('Please log in again.')
       }
     }
