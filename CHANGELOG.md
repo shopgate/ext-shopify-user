@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.1.4] - 2019-10-01
 ### Fixed
 - handling of expired sessions
 
@@ -69,7 +70,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in webcheckout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.3...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.4...HEAD
+[2.1.4]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.0...v2.1.1
