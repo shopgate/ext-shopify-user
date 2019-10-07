@@ -15,7 +15,7 @@ describe('Shopify Storefront API', () => {
       error: () => {}
     }
 
-    subjectUnderTest = new StorefrontApi('shopgate', 'accessToken', contextLogDummy, (requestOptions, response) => {})
+    subjectUnderTest = new StorefrontApi(baseUrl, 'accessToken', contextLogDummy, (requestOptions, response) => {})
 
     done()
   })

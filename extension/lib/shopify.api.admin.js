@@ -3,12 +3,12 @@ const requestp = require('request-promise-native')
 
 module.exports = class {
   /**
-   * @param {string} shopAlias
+   * @param {string} shopUrl
    * @param {string} accessToken
    * @param {Function} requestLog
    */
-  constructor (shopAlias, accessToken, requestLog) {
-    this.shop = shopAlias + '.myshopify.com'
+  constructor (shopUrl, accessToken, requestLog) {
+    this.shop = shopUrl
     this.accessToken = accessToken
     this.requestLog = requestLog
   }
@@ -83,7 +83,7 @@ module.exports = class {
    */
   async request (method, endpoint, query = '', data = {}) {
     const options = {
-      uri: `https://${this.shop.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
+      uri: `${this.shop.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
       method: method.toLowerCase() || 'get',
       headers: {
         'Content-Type': 'application/json',

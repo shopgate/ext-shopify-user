@@ -11,13 +11,13 @@ const _ = {
 
 module.exports = class {
   /**
-   * @param {string} shopAlias
+   * @param {string} shopUrl
    * @param {string} storefrontAccessToken
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    */
-  constructor (shopAlias, storefrontAccessToken, logger, requestLog) {
-    this.apiUrl = `https://${shopAlias}.myshopify.com/api/graphql`
+  constructor (shopUrl, storefrontAccessToken, logger, requestLog) {
+    this.apiUrl = `${shopUrl}/api/graphql`
     this.storefrontAccessToken = storefrontAccessToken
     this.logger = logger
     this.requestLog = requestLog

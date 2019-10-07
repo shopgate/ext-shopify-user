@@ -28,6 +28,18 @@
           {"key": "customAttributes", "id": "1060", "optional": true},
           {"key": "messages", "id": "1070", "optional": true}
         ]
+      },
+      {
+        "type": "conditional",
+        "input": [{"key": "id", "id": "1010"}],
+        "expression": {"null": [{"name":"id"}]},
+        "then": {
+          "type": "pipeline",
+          "id": "shopgate.user.logoutUserFrontend.v1",
+          "trusted": true,
+          "input": [],
+          "output": []
+        }
       }
     ]
   }
