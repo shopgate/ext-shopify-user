@@ -19,7 +19,7 @@ export default (subscribe) => {
     }
 
     const started = Date.now();
-    const url = await dispatch(fetchCheckoutUrl());
+    const { url } = await dispatch(fetchCheckoutUrl());
 
     // Check if it took more than PWA allows. User is already back.
     if (Date.now() - started > FETCH_CHECKOUT_URL_TIMEOUT) {
@@ -38,4 +38,3 @@ export default (subscribe) => {
     redirects.set(CHECKOUT_PATH, redirectHandler, true);
   });
 };
-
