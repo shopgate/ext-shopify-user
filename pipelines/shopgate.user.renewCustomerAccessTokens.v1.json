@@ -7,16 +7,6 @@
       {"key": "pipelineApiKey", "id": "1"}
     ],
     "output": [],
-    "steps": [
-      {
-        "type": "extension",
-        "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/token/renewCustomerAccessTokens.js",
-        "input": [
-          {"key": "pipelineApiKey", "id": "1"}
-        ],
-        "output": []
-      }
-    ]
+    "steps": []
   }
 }

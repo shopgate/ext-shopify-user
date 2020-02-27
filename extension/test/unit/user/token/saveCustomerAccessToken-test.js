@@ -3,10 +3,7 @@ const saveCustomerAccessToken = require('../../../../user/token/saveCustomerAcce
 
 describe('user / token / saveCustomerAccessToken', () => {
   const storage = {
-    set: async () => {},
-    map: {
-      setItem: async () => {}
-    }
+    set: async () => {}
   }
   const context = {
     storage: {
@@ -22,11 +19,9 @@ describe('user / token / saveCustomerAccessToken', () => {
 
   it('should store the login phrase in the device storage', async () => {
     const storageSetSpy = sinon.spy(context.storage.user, 'set')
-    const storageSetItemSpy = sinon.spy(context.storage.extension.map, 'setItem')
 
     await saveCustomerAccessToken(context, input)
 
     sinon.assert.calledWith(storageSetSpy, 'customerAccessToken', input.customerAccessToken)
-    sinon.assert.calledWith(storageSetItemSpy, 'customerTokensByUserIds', input.userId, input.customerAccessToken)
   })
 })

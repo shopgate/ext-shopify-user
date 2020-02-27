@@ -15,10 +15,7 @@ describe('CustomerTokenManager', () => {
     beforeEach(() => {
       storage = {
         get: async () => {},
-        set: async () => {},
-        map: {
-          setItem: async () => {}
-        }
+        set: async () => {}
       }
       context = {
         storage: {
@@ -54,35 +51,11 @@ describe('CustomerTokenManager', () => {
       assert.strictEqual(fetchedToken.expiresAt, expiresAt)
     })
 
-    it('should renew the token if the token expired and another valid one is already stored in cache', async () => {
-      const oldToken = { accessToken: 'token-old', expiresAt: moment(Date.now()).subtract(1, 'day') }
-      const newToken = { accessToken: 'token-new', expiresAt: moment(Date.now()).add(1, 'week') }
-
-      context.storage.user.get = async () => {
-        return oldToken
-      }
-      context.storage.extension.map.getItem = async () => {
-        return newToken
-      }
-
-      const storageSetSpy = sinon.spy(context.storage.user, 'set')
-      TokenManager = ShopifyApiFactory.buildCustomerTokenManager(context)
-      const fetchedToken = await TokenManager.getToken()
-
-      sinon.assert.calledWith(storageSetSpy, 'customerAccessToken', newToken)
-      assert.strictEqual(fetchedToken.accessToken, newToken.accessToken)
-      assert.strictEqual(fetchedToken.expiresAt, newToken.expiresAt)
-    })
-
     it('should throw an unauthorized error when all tokens from cache expired', async () => {
       const firstToken = { accessToken: 'token-old', expiresAt: moment(Date.now()).subtract(2, 'day') }
-      const secondToken = { accessToken: 'token-new', expiresAt: moment(Date.now()).subtract(1, 'day') }
 
       context.storage.user.get = async () => {
         return firstToken
-      }
-      context.storage.extension.map.getItem = async () => {
-        return secondToken
       }
 
       TokenManager = ShopifyApiFactory.buildCustomerTokenManager(context)

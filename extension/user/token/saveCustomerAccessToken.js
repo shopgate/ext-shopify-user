@@ -8,5 +8,4 @@
  */
 module.exports = async (context, input) => {
   await context.storage.user.set('customerAccessToken', input.customerAccessToken)
-  await context.storage.extension.map.setItem('customerTokensByUserIds', input.userId, input.customerAccessToken)
 }
