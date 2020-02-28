@@ -16,6 +16,8 @@ module.exports = async (context) => {
   const customerAccessToken = await context.storage.user.get('customerAccessToken')
 
   const result = await storefrontApi.customerAddressesGet(customerAccessToken.accessToken)
+  if (!result || !result.customer || !result.customer.addresses) throw new UnauthorizedError('Unauthorized user')
+
   const { customer: { addresses: { edges: addressesItems } } } = result
   if (addressesItems.length === 0) {
     return { addresses: [] }
