@@ -7,7 +7,9 @@
     "url": "https://github.com/shopgate/ext-shopify-user"
   },
   "scripts": {
-    "lint": "./node_modules/.bin/eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
+    "lint": "./node_modules/.bin/eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -23,6 +25,8 @@
   "dependencies": {
     "@shopgate/pwa-core": "^6.1.1",
     "@shopgate/pwa-webcheckout-shopify": "^6.1.1",
-    "react": "^16.8.2"
-  }
+    "react": "^16.8.2",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
