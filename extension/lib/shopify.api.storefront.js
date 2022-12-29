@@ -5,6 +5,7 @@ const FieldValidationError = require('../models/Errors/FieldValidationError')
 const AddressValidationError = require('../models/Errors/AddressValidationError')
 const InvalidCredentialsError = require('../models/Errors/InvalidCredentialsError')
 const TokenRenewError = require('../models/Errors/TokenRenewError')
+const ApiFactory = require('./shopify.api.factory')
 const _ = {
   get: require('lodash/get')
 }
@@ -15,12 +16,14 @@ module.exports = class {
    * @param {string} storefrontAccessToken
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
+   * @param {SDKContext} context The step context in order to access storage
    */
-  constructor (shopUrl, storefrontAccessToken, logger, requestLog) {
+  constructor (shopUrl, storefrontAccessToken, logger, requestLog, context) {
     this.apiUrl = `${shopUrl}/api/2022-07/graphql`
     this.storefrontAccessToken = storefrontAccessToken
     this.logger = logger
     this.requestLog = requestLog
+    this.context = context
   }
 
   /**
@@ -50,7 +53,7 @@ module.exports = class {
       throw new UnknownError()
     }
 
-    if (!response.body.data) {
+    if (!response.body && !response.body.data) {
       this.logger.error(`No token received for login credentials: ${variables.input.login} / XXXXXXXX`)
       throw new UnknownError()
     }
@@ -343,9 +346,10 @@ module.exports = class {
    * @param {string} query
    * @param {Object} variables
    * @param {string} operationName
+   * @param {number} recursiveCalls
    * @returns {Promise<Object>}
    */
-  async request (query, variables = undefined, operationName = undefined) {
+  async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
     const options = {
       method: 'POST',
       uri: this.apiUrl,
@@ -380,6 +384,14 @@ module.exports = class {
     }
 
     this.requestLog(logOptions, response)
+
+    if ((response.statusCode === 401 || response.statusCode === 403) && recursiveCalls < 2) {
+      const adminApi = ApiFactory.buildAdminApi(this.context)
+      this.storefrontAccessToken = (await adminApi.getStoreFrontAccessToken()).access_token
+      this.context.storage.extension.set('storefrontAccessToken', this.storefrontAccessToken)
+
+      return this.request(query, variables, operationName, recursiveCalls + 1)
+    }
 
     return response
   }

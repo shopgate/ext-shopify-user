@@ -28,7 +28,8 @@ module.exports = class {
       ConfigHelper.getBaseUrl(context.config),
       storefrontAccessToken,
       context.log,
-      (requestOptions, response) => requestLogger.log(requestOptions, response)
+      (requestOptions, response) => requestLogger.log(requestOptions, response),
+      context
     )
   }
 
