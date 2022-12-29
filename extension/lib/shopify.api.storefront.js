@@ -397,7 +397,7 @@ module.exports = class {
       const validationError = new FieldValidationError()
       errors.forEach(error => {
         const { field, message } = error
-        if (error.hasOwnProperty('problems')) {
+        if (Object.hasOwnProperty.call(error, 'problems')) {
           throw new AddressValidationError(message)
         }
 

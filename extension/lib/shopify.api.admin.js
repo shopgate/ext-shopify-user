@@ -22,7 +22,7 @@ module.exports = class {
     const response = await this.get(endpoint)
     const storefrontAccessTokenTitle = 'Web Checkout Storefront Access Token'
 
-    if (!response.hasOwnProperty('storefront_access_tokens')) {
+    if (!Object.hasOwnProperty.call(response, 'storefront_access_tokens')) {
       throw new Error('Invalid response from Shopify API.')
     }
 

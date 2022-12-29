@@ -41,10 +41,10 @@ module.exports.mapCustomAttributes = function (customAttributes) {
   if (!customAttributes) {
     return map
   }
-  if (customAttributes.hasOwnProperty('company')) {
+  if (Object.hasOwnProperty.call(customAttributes, 'company')) {
     map.company = customAttributes.company
   }
-  if (customAttributes.hasOwnProperty('phone')) {
+  if (Object.hasOwnProperty.call(customAttributes, 'phone')) {
     map.phone = customAttributes.phone
   }
 
