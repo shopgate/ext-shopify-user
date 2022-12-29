@@ -17,7 +17,7 @@ module.exports = class {
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    */
   constructor (shopUrl, storefrontAccessToken, logger, requestLog) {
-    this.apiUrl = `${shopUrl}/api/graphql`
+    this.apiUrl = `${shopUrl}/api/2022-07/graphql`
     this.storefrontAccessToken = storefrontAccessToken
     this.logger = logger
     this.requestLog = requestLog
