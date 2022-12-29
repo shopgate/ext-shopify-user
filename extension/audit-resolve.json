@@ -1,0 +1,23 @@
+{
+  "decisions": {
+    "1164|newman>postman-runtime>handlebars": {
+      "madeAt": 0,
+      "decision": "ignore"
+    },
+    "1164|nyc>istanbul-reports>handlebars": {
+      "madeAt": 0,
+      "decision": "ignore"
+    },
+    "1171|newman>csv-parse": {
+      "madeAt": 0,
+      "decision": "ignore"
+    },
+    "1085271|eslint-plugin-import>tsconfig-paths>json5": {
+      "decision": "ignore",
+      "madeAt": 1672326762523,
+      "expiresAt": 1672931539868
+    }
+  },
+  "rules": {},
+  "version": 1
+}
