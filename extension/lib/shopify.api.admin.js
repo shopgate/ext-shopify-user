@@ -14,19 +14,19 @@ module.exports = class {
   }
 
   /**
+   * @param {string} title The title that identifies the token at Shopify.
    * @returns {Promise<string>} The storefront access token.
    * @throws {Error} If the API returns an invalid response or an error occurs on the request.
    */
-  async getStoreFrontAccessToken () {
+  async getStoreFrontAccessToken (title = 'Web Checkout Storefront Access Token') {
     const endpoint = '/admin/api/2022-07/storefront_access_tokens.json'
     const response = await this.get(endpoint)
-    const storefrontAccessTokenTitle = 'Web Checkout Storefront Access Token'
 
     if (!Object.hasOwnProperty.call(response, 'storefront_access_tokens')) {
       throw new Error('Invalid response from Shopify API.')
     }
 
-    const token = response.storefront_access_tokens.find(token => token.title === storefrontAccessTokenTitle)
+    const token = response.storefront_access_tokens.find(token => token.title === title)
     if (typeof token !== 'undefined') {
       return token
     }
@@ -34,7 +34,7 @@ module.exports = class {
     // create a new access token, because no valid token was found at this point
     return this.post(endpoint, {
       storefront_access_token: {
-        title: storefrontAccessTokenTitle
+        title
       }
     })
   }

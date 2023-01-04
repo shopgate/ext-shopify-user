@@ -24,10 +24,10 @@ module.exports = async (context, input) => {
     throw validationError
   }
 
-  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
-  const shopifyApiTokenManager = ApiFactory.buildShopifyApiTokenManager(context)
-  const customerAccessToken = await shopifyApiTokenManager.getCustomerAccessToken()
+  const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const customerAccessToken = tokenManager.getCustomerAccessToken()
+
   const options = { password: input.password }
 
   const result = await storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, options)

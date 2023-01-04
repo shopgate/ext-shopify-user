@@ -20,9 +20,9 @@ module.exports = async (context, input) => {
     throw new InvalidCallError()
   }
 
-  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
-  const customerAccessToken = await context.storage.user.get('customerAccessToken')
+  const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const customerAccessToken = tokenManager.getCustomerAccessToken()
 
   await Promise.all(ids.map(id => {
     return storefrontApi.customerAddressDelete(customerAccessToken.accessToken, id)

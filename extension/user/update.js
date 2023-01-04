@@ -20,15 +20,15 @@ module.exports = async (context, input) => {
     throw new InvalidCallError()
   }
 
-  const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
-  const shopifyApiTokenManager = ApiFactory.buildShopifyApiTokenManager(context)
-  const customerAccessToken = await shopifyApiTokenManager.getCustomerAccessToken()
   const customer = {
     firstName: input.firstName,
     lastName: input.lastName,
     ...input.customAttributes
   }
+
+  const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const customerAccessToken = tokenManager.getCustomerAccessToken()
 
   return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, _.omitBy(customer, _.isNil))
 }

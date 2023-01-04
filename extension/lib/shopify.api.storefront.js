@@ -1,4 +1,5 @@
 const request = require('request-promise-native')
+const ShopifyApiTokenManager = require('./ShopifyApiTokenManager')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')
@@ -12,13 +13,13 @@ const _ = {
 module.exports = class {
   /**
    * @param {string} shopUrl
-   * @param {string} storefrontAccessToken
+   * @param {ShopifyApiTokenManager} shopifyApiTokenManager
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    */
-  constructor (shopUrl, storefrontAccessToken, logger, requestLog) {
+  constructor (shopUrl, shopifyApiTokenManager, logger, requestLog) {
     this.apiUrl = `${shopUrl}/api/2022-07/graphql`
-    this.storefrontAccessToken = storefrontAccessToken
+    this.tokenManager = shopifyApiTokenManager
     this.logger = logger
     this.requestLog = requestLog
   }
@@ -347,12 +348,14 @@ module.exports = class {
    * @returns {Promise<Object>}
    */
   async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
+    const currentAccessToken = await this.tokenManager.getStorefrontAccessToken()
+
     const options = {
       method: 'POST',
       uri: this.apiUrl,
       headers: {
         'cache-control': 'no-cache',
-        'x-shopify-storefront-access-token': this.storefrontAccessToken,
+        'x-shopify-storefront-access-token': currentAccessToken,
         accept: 'application/json',
         'content-type': 'application/json'
       },
@@ -378,6 +381,17 @@ module.exports = class {
     } catch (err) {
       this.requestLog(logOptions, null)
       throw err
+    }
+
+    if ((response.statusCode === 401 || response.statusCode === 403) && recursiveCalls < 2) {
+      const newToken = await this.tokenManager.fetchStorefrontAccessToken()
+      if (currentAccessToken === newToken) {
+        throw new UnknownError('Error accessing the storefront with given storefront access token.')
+      }
+
+      await this.tokenManager.setStorefrontAccessToken(newToken)
+
+      return this.request(query, variables, operationName, recursiveCalls + 1)
     }
 
     this.requestLog(logOptions, response)

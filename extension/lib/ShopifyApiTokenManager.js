@@ -1,17 +1,49 @@
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
+const AdminApi = require('./shopify.api.admin')
 
 module.exports = class {
   /**
    * @param {SDKContextEntityStorage} userStorage
    * @param {SDKContextEntityStorage} extensionStorage
+   * @param {AdminApi} adminApi
    * @param {SDKContextLog} logger
    * @param {string} userId
    */
-  constructor (userStorage, extensionStorage, logger, userId) {
+  constructor (userStorage, extensionStorage, adminApi, logger, userId) {
     this.userStorage = userStorage
     this.extensionStorage = extensionStorage
+    this.adminApi = adminApi
     this.log = logger
     this.userId = userId
+  }
+
+  /**
+   * @returns {Promise<string>}
+   */
+  async getStorefrontAccessToken () {
+    let token = await this.extensionStorage.get('storefrontAccessToken')
+
+    if (!token) {
+      token = await this.adminApi.getStoreFrontAccessToken()
+      await this.setStorefrontAccessToken(token)
+    }
+
+    return token
+  }
+
+  /**
+   * @returns {Promise<string>}
+   */
+  async fetchStorefrontAccessToken () {
+    return (await this.adminApi.getStoreFrontAccessToken()).access_token
+  }
+
+  /**
+   * @param {string} storefrontAccessToken
+   * @returns {Promise<void>}
+   */
+  async setStorefrontAccessToken (storefrontAccessToken) {
+    await this.extensionStorage.set('storefrontAccessToken', storefrontAccessToken)
   }
 
   /**
