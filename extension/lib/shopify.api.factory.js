@@ -1,7 +1,7 @@
 const AdminApi = require('./shopify.api.admin')
 const StorefrontApi = require('./shopify.api.storefront')
 const ShopifyLogger = require('./logger')
-const CustomerTokenManager = require('./CustomerTokenManager')
+const ShopifyApiTokenManager = require('./ShopifyApiTokenManager')
 const ConfigHelper = require('../helper/config')
 
 module.exports = class {
@@ -35,10 +35,10 @@ module.exports = class {
 
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
-   * @returns {CustomerTokenManager}
+   * @returns {ShopifyApiTokenManager}
    */
-  static buildCustomerTokenManager (context) {
-    return new CustomerTokenManager(
+  static buildShopifyApiTokenManager (context) {
+    return new ShopifyApiTokenManager(
       context.storage.user,
       context.storage.extension,
       context.log,

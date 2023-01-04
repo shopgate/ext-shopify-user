@@ -18,7 +18,7 @@ module.exports = class {
    * @returns {Promise<string>}
    * @throws UnauthorizedError
    */
-  async getToken () {
+  async getCustomerAccessToken () {
     let customerAccessToken = await this.userStorage.get('customerAccessToken')
     if (!customerAccessToken || !customerAccessToken.accessToken) {
       throw new UnauthorizedError('Please log in again.')
@@ -40,7 +40,7 @@ module.exports = class {
   /**
    * @param {ShopifyCustomerAccessToken} token
    */
-  async setToken (token) {
+  async setCustomerAccessToken (token) {
     await this.userStorage.set('customerAccessToken', token)
   }
 }

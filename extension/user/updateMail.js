@@ -13,8 +13,8 @@ module.exports = async (context, input) => {
 
   const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
   const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
-  const customerAccessTokenManager = ApiFactory.buildCustomerTokenManager(context)
-  const customerAccessToken = await customerAccessTokenManager.getToken()
+  const shopifyApiTokenManager = ApiFactory.buildShopifyApiTokenManager(context)
+  const customerAccessToken = await shopifyApiTokenManager.getCustomerAccessToken()
 
   return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, { email: input.mail })
 }

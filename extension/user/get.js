@@ -20,8 +20,8 @@ module.exports = async function (context) {
 
   let customerData = { id: null, mail: null }
   try {
-    const customerAccessTokenManager = ApiFactory.buildCustomerTokenManager(context)
-    const customerAccessToken = await customerAccessTokenManager.getToken()
+    const shopifyApiTokenManager = ApiFactory.buildShopifyApiTokenManager(context)
+    const customerAccessToken = await shopifyApiTokenManager.getCustomerAccessToken()
     const storeFrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
     const storefrontApi = ApiFactory.buildStorefrontApi(context, storeFrontAccessToken)
     customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
