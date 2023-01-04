@@ -13,7 +13,7 @@ module.exports = async (context) => {
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
   const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
-  const customerAccessToken = tokenManager.getCustomerAccessToken()
+  const customerAccessToken = await tokenManager.getCustomerAccessToken()
 
   const result = await storefrontApi.customerAddressesGet(customerAccessToken.accessToken)
   if (!result || !result.customer || !result.customer.addresses) throw new UnauthorizedError('Unauthorized user')

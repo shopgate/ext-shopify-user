@@ -20,15 +20,7 @@ module.exports = async (context, input) => {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
-  // TODO move to some kind of token manager class or function (SHOPIFY-563)
-  let storefrontAccessToken = await context.storage.extension.get('storefrontAccessToken')
-  if (!storefrontAccessToken) {
-    const adminApi = ApiFactory.buildAdminApi(context)
-    storefrontAccessToken = (await adminApi.getStoreFrontAccessToken()).access_token
-    context.storage.extension.set('storefrontAccessToken', storefrontAccessToken)
-  }
-
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, storefrontAccessToken)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context)
 
   let customerAccessToken
   switch (input.strategy) {
@@ -50,7 +42,6 @@ module.exports = async (context, input) => {
 
   return {
     customerAccessToken,
-    storefrontAccessToken,
     customerId: input.parameters.customerId
   }
 }

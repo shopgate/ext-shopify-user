@@ -37,7 +37,6 @@
         ],
         "output": [
           {"key": "customerAccessToken", "id": "1060"},
-          {"key": "storefrontAccessToken", "id": "1070"},
           {"key": "customerId", "id": "1090", "optional": true}
         ]
       },
@@ -48,7 +47,6 @@
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "customerAccessToken", "id": "1060"},
-          {"key": "storefrontAccessToken", "id": "1070"},
           {"key": "customerId", "id": "1090", "optional": true}
         ],
         "output": [

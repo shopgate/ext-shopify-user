@@ -6,7 +6,6 @@ const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
  * @param {Object} input
  * @param {string} input.strategy
  * @param {ShopifyCustomerAccessToken} input.customerAccessToken
- * @param {string} input.storefrontAccessToken
  * @param {string} input.customerId
  * @return {Promise<{userId: string}>}
  */
@@ -20,7 +19,7 @@ module.exports = async (context, input) => {
     }
   }
 
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.storefrontAccessToken)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context)
   const userId = Buffer.from(
     (await storefrontApi.getCustomerByAccessToken(input.customerAccessToken.accessToken)).id,
     'base64')

@@ -22,7 +22,7 @@ module.exports = async function (context) {
   try {
     const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
     const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
-    const customerAccessToken = tokenManager.getCustomerAccessToken()
+    const customerAccessToken = await tokenManager.getCustomerAccessToken()
 
     customerData = ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
   } catch (err) {
