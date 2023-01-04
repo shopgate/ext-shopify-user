@@ -7,6 +7,7 @@ describe('ShopifyApiTokenManager', () => {
   let TokenManager
   let context = {}
   let storage = {}
+  let adminApi = {}
   const loggerStub = {
     error: () => {}
   }
@@ -26,10 +27,11 @@ describe('ShopifyApiTokenManager', () => {
         meta: { userId: 1 },
         log: loggerStub
       }
+      adminApi = {}
     })
 
     it('should throw an unauthorized error when no token is available', async () => {
-      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context)
+      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context, adminApi)
       try {
         await TokenManager.getCustomerAccessToken()
       } catch (err) {
@@ -45,7 +47,7 @@ describe('ShopifyApiTokenManager', () => {
         return { accessToken, expiresAt }
       }
 
-      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context)
+      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context, adminApi)
       const fetchedToken = await TokenManager.getCustomerAccessToken()
       assert.strictEqual(fetchedToken.accessToken, accessToken)
       assert.strictEqual(fetchedToken.expiresAt, expiresAt)
@@ -58,7 +60,7 @@ describe('ShopifyApiTokenManager', () => {
         return firstToken
       }
 
-      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context)
+      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context, adminApi)
 
       try {
         await TokenManager.getCustomerAccessToken()
@@ -72,7 +74,7 @@ describe('ShopifyApiTokenManager', () => {
       const storageSetSpy = sinon.spy(context.storage.user, 'set')
       const newToken = { accessToken: 'token-new', expiresAt: moment(Date.now()).add(1, 'week') }
 
-      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context)
+      TokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context, adminApi)
       await TokenManager.setCustomerAccessToken(newToken)
       sinon.assert.calledWith(storageSetSpy, 'customerAccessToken', newToken)
     })

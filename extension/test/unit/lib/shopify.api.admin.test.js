@@ -35,12 +35,12 @@ describe('Shopify Admin API', () => {
   describe('getStoreFrontAccessToken()', () => {
     const expectedToken = {
       title: 'Web Checkout Storefront Access Token',
-      access_token: '12345'
+      access_token: '9223372036854775807'
     }
 
     it('should fetch the storefront access token from the Admin API', async () => {
       nock(baseUrl)
-        .get('/admin/storefront_access_tokens.json')
+        .get('/admin/api/2022-07/storefront_access_tokens.json')
         .reply(200, {
           storefront_access_tokens: [
             {
@@ -50,12 +50,14 @@ describe('Shopify Admin API', () => {
           ]
         })
 
-      assert.deepStrictEqual(await subjectUnderTest.getStoreFrontAccessToken(), expectedToken)
+      const actualToken = await subjectUnderTest.getStoreFrontAccessToken()
+
+      assert.deepStrictEqual(actualToken, expectedToken)
     })
 
     it('should create a new storefront access token via Admin API if none is found', async () => {
       nock(baseUrl)
-        .get('/admin/storefront_access_tokens.json')
+        .get('/admin/api/2022-07/storefront_access_tokens.json')
         .reply(200, {
           storefront_access_tokens: [
             {
@@ -65,7 +67,7 @@ describe('Shopify Admin API', () => {
         })
 
       nock(baseUrl)
-        .post('/admin/storefront_access_tokens.json')
+        .post('/admin/api/2022-07/storefront_access_tokens.json')
         .reply(200, expectedToken)
 
       const response = await subjectUnderTest.getStoreFrontAccessToken()

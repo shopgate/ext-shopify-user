@@ -2,11 +2,12 @@ const nock = require('nock')
 const assert = require('assert')
 const StorefrontApi = require('../../../lib/shopify.api.storefront')
 const baseUrl = 'https://shopgate.myshopify.com'
-const apiEndpoint = '/api/graphql'
+const apiEndpoint = '/api/2022-07/graphql'
 
 describe('Shopify Storefront API', () => {
   let subjectUnderTest
   let contextLogDummy
+  let tokenManager
 
   beforeEach(done => {
     contextLogDummy = {
@@ -15,7 +16,12 @@ describe('Shopify Storefront API', () => {
       error: () => {}
     }
 
-    subjectUnderTest = new StorefrontApi(baseUrl, 'accessToken', contextLogDummy, (requestOptions, response) => {})
+    tokenManager = {
+      getStorefrontAccessToken: () => '12345'
+    }
+
+
+    subjectUnderTest = new StorefrontApi(baseUrl, tokenManager, contextLogDummy, (requestOptions, response) => {})
 
     done()
   })

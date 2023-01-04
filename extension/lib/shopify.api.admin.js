@@ -1,4 +1,4 @@
-const jsonb = require('json-bigint')
+const jsonb = require('json-bigint-native')
 const requestp = require('request-promise-native')
 
 module.exports = class {
@@ -113,6 +113,7 @@ module.exports = class {
     if (response.body.trim() === '') throw new Error('Empty response body.')
 
     const body = jsonb.parse(response.body)
+
     if (response.statusCode >= 400) {
       const error = new Error('Received non-2xx or -3xx HTTP status code.')
       error.code = response.statusCode
