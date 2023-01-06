@@ -91,7 +91,7 @@
 
 /**
  * @typedef {Object} ShopifyCustomer
- * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and base64 encoded
+ * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and since API version 2022-04 not base64 encoded anymore
  * @property {string} email
  * @property {string} firstName
  * @property {string} lastName

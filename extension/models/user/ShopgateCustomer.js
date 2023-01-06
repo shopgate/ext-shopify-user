@@ -22,7 +22,7 @@ class ShopgateCustomer {
    */
   static fromShopifyCustomer (shopifyCustomer) {
     return new ShopgateCustomer(
-      Buffer.from(shopifyCustomer.id, 'base64').toString().substring(23),
+      shopifyCustomer.id.substring(23),
       shopifyCustomer.email,
       shopifyCustomer.firstName,
       shopifyCustomer.lastName,

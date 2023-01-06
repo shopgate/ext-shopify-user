@@ -20,11 +20,8 @@ module.exports = async (context, input) => {
   }
 
   const storefrontApi = ApiFactory.buildStorefrontApi(context)
-  const userId = Buffer.from(
-    (await storefrontApi.getCustomerByAccessToken(input.customerAccessToken.accessToken)).id,
-    'base64')
-    .toString()
-    .substring(23) // strip 'gid://shopify/Customer/'
+  const userId = (await storefrontApi.getCustomerByAccessToken(input.customerAccessToken.accessToken))
+    .id.substring(23) // strip 'gid://shopify/Customer/'
 
   return { userId }
 }
