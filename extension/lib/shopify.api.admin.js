@@ -19,7 +19,7 @@ module.exports = class {
    * @throws {Error} If the API returns an invalid response or an error occurs on the request.
    */
   async getStoreFrontAccessToken (title = 'Web Checkout Storefront Access Token') {
-    const endpoint = '/admin/api/2022-07/storefront_access_tokens.json'
+    const endpoint = '/admin/api/2022-10/storefront_access_tokens.json'
     const response = await this.get(endpoint)
 
     if (!Object.hasOwnProperty.call(response, 'storefront_access_tokens')) {

@@ -40,7 +40,7 @@ describe('Shopify Admin API', () => {
 
     it('should fetch the storefront access token from the Admin API', async () => {
       nock(baseUrl)
-        .get('/admin/api/2022-07/storefront_access_tokens.json')
+        .get('/admin/api/2022-10/storefront_access_tokens.json')
         .reply(200, {
           storefront_access_tokens: [
             {
@@ -57,7 +57,7 @@ describe('Shopify Admin API', () => {
 
     it('should create a new storefront access token via Admin API if none is found', async () => {
       nock(baseUrl)
-        .get('/admin/api/2022-07/storefront_access_tokens.json')
+        .get('/admin/api/2022-10/storefront_access_tokens.json')
         .reply(200, {
           storefront_access_tokens: [
             {
@@ -67,7 +67,7 @@ describe('Shopify Admin API', () => {
         })
 
       nock(baseUrl)
-        .post('/admin/api/2022-07/storefront_access_tokens.json')
+        .post('/admin/api/2022-10/storefront_access_tokens.json')
         .reply(200, expectedToken)
 
       const response = await subjectUnderTest.getStoreFrontAccessToken()

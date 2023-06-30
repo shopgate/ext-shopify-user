@@ -2,7 +2,7 @@ const nock = require('nock')
 const assert = require('assert')
 const StorefrontApi = require('../../../lib/shopify.api.storefront')
 const baseUrl = 'https://shopgate.myshopify.com'
-const apiEndpoint = '/api/2022-07/graphql'
+const apiEndpoint = '/api/2022-10/graphql'
 
 describe('Shopify Storefront API', () => {
   let subjectUnderTest
