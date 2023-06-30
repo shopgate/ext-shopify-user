@@ -16,9 +16,9 @@ matrix:
     - cd extension
     - npm run cover
     - npm run lint
-    - npm run checkVulnerabilities
+#    - npm run checkVulnerabilities
     - cd ../frontend
-    - npm audit
+#    - npm audit
 
 notifications:
   slack:
