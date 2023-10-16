@@ -5,10 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- uses Shopify API version 2023-10 on all endpoints
+
+## [2.1.11] - 2023-06-30
+### Changed
+- uses Shopify API version 2022-10 on all endpoints
+
+## [2.1.10] - 2023-01-06
+### Fixed
+- errors when logging in to the app due to how the Shopify returns data in newer API versions
+
+## [2.1.9] - 2023-01-06
+### Fixed
+- randomly occurring errors when logging in
+
+## [2.1.8] - 2022-12-29
+### Fixed
+- outdated storefront API tokens would not be properly renewed leading to login errors
+
+## [2.1.7] - 2022-12-29
+### Fixed
+- errors when logging in due to wrong usage of updated dependencies from 2.6.1
+
+## [2.1.6] - 2022-12-29
+### Changed
+- updated vulnerable dependencies
+
+### Fixed
+- explicitly call Shopify API via versioned URL because otherwise the oldest version applies (internal fix)
 
 ## [2.1.5] - 2020-02-28
 ### Fixed
-- Remove auto renewing of tokens 
+- removed auto-renewal of tokens (internal fix)
 
 ## [2.1.4] - 2019-10-01
 ### Fixed
@@ -73,9 +102,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [1.1.5] - 2018-07-30
 ### Fixed
-- user not logged in after registration in webcheckout
+- user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.4...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.11...HEAD
+[2.1.11]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.10...v2.1.11
+[2.1.10]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.9...v2.1.10
+[2.1.9]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.8...v2.1.9
+[2.1.8]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.7...v2.1.8
+[2.1.7]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.6...v2.1.7
+[2.1.6]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.5...v2.1.6
+[2.1.5]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.4...v2.1.5
 [2.1.4]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.1...v2.1.2
@@ -87,3 +123,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [1.3.1]: https://github.com/shopgate/ext-shopify-user/compare/v1.2.3...v1.3.1
 [1.2.3]: https://github.com/shopgate/ext-shopify-user/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/shopgate/ext-shopify-user/compare/v1.1.5...v1.2.2
+[1.1.5]: https://github.com/shopgate/ext-shopify-user/compare/v1.1.4...v1.1.5
