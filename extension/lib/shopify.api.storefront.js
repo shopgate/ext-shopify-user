@@ -1,5 +1,4 @@
 const request = require('request-promise-native')
-const ShopifyApiTokenManager = require('./ShopifyApiTokenManager')
 const UnknownError = require('../models/Errors/UnknownError')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 const FieldValidationError = require('../models/Errors/FieldValidationError')

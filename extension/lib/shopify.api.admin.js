@@ -1,7 +1,7 @@
 const jsonb = require('json-bigint-native')
 const requestp = require('request-promise-native')
 
-module.exports = class {
+module.exports = class ShopifyAdminApi {
   /**
    * @param {string} shopUrl
    * @param {string} accessToken
@@ -87,7 +87,7 @@ module.exports = class {
       method: method.toLowerCase() || 'get',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        Accept: 'application/json'
       },
       simple: false,
       resolveWithFullResponse: true

@@ -1,11 +1,10 @@
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-const AdminApi = require('./shopify.api.admin')
 
-module.exports = class {
+module.exports = class ShopifyApiTokenManager {
   /**
    * @param {SDKContextEntityStorage} userStorage
    * @param {SDKContextEntityStorage} extensionStorage
-   * @param {AdminApi} adminApi
+   * @param {ShopifyAdminApi} adminApi
    * @param {SDKContextLog} logger
    * @param {string} userId
    */
@@ -51,7 +50,7 @@ module.exports = class {
    * @throws UnauthorizedError
    */
   async getCustomerAccessToken () {
-    let customerAccessToken = await this.userStorage.get('customerAccessToken')
+    const customerAccessToken = await this.userStorage.get('customerAccessToken')
     if (!customerAccessToken || !customerAccessToken.accessToken) {
       throw new UnauthorizedError('Please log in again.')
     }
