@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [2.1.8] - 2022-12-29
 ### Fixed
-- outdated storefront API tokens would not be properly renewed leading to login errors
+- outdated storefront API tokens would not be properly renewed leading to log in errors
 
 ## [2.1.7] - 2022-12-29
 ### Fixed
