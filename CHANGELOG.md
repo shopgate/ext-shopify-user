@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.1.12] - 2023-10-30
 ### Changed
 - uses Shopify API version 2023-10 on all endpoints
 
@@ -104,7 +106,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.11...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.12...HEAD
+[2.1.12]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.11...v2.1.12
 [2.1.11]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.10...v2.1.11
 [2.1.10]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.9...v2.1.10
 [2.1.9]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.8...v2.1.9
