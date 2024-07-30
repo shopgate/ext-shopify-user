@@ -12,13 +12,6 @@
     ],
     "steps": [
       {
-        "type": "extension",
-        "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/initTaskScheduler.js",
-        "input": [],
-        "output": []
-      },
-      {
         "type": "pipeline",
         "id": "shopgate.cart.fetchShopifyCheckout.v1",
         "trusted": false,
