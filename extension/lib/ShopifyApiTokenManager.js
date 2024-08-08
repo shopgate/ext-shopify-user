@@ -17,10 +17,13 @@ module.exports = class ShopifyApiTokenManager {
   }
 
   /**
+   * @param {boolean} useCache
    * @returns {Promise<string>}
    */
-  async getStorefrontAccessToken () {
-    let token = await this.extensionStorage.get('storefrontAccessToken')
+  async getStorefrontAccessToken (useCache = true) {
+    let token
+
+    if (useCache) token = await this.extensionStorage.get('storefrontAccessToken')
 
     if (!token) {
       token = await this.adminApi.getStoreFrontAccessToken()
@@ -28,13 +31,6 @@ module.exports = class ShopifyApiTokenManager {
     }
 
     return token
-  }
-
-  /**
-   * @returns {Promise<string>}
-   */
-  async fetchStorefrontAccessToken () {
-    return (await this.adminApi.getStoreFrontAccessToken()).access_token
   }
 
   /**

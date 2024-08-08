@@ -15,9 +15,10 @@ module.exports = class {
    * @param {ShopifyApiTokenManager} shopifyApiTokenManager
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
+   * @param {string?} apiVersion
    */
-  constructor (shopUrl, shopifyApiTokenManager, logger, requestLog) {
-    this.apiUrl = `${shopUrl}/api/2023-10/graphql`
+  constructor (shopUrl, shopifyApiTokenManager, logger, requestLog, apiVersion = '2023-10') {
+    this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/api/${apiVersion}/graphql`
     this.tokenManager = shopifyApiTokenManager
     this.logger = logger
     this.requestLog = requestLog
@@ -383,12 +384,10 @@ module.exports = class {
     }
 
     if ((response.statusCode === 401 || response.statusCode === 403) && recursiveCalls < 2) {
-      const newToken = await this.tokenManager.fetchStorefrontAccessToken()
+      const newToken = await this.tokenManager.getStorefrontAccessToken(false)
       if (currentAccessToken === newToken) {
         throw new UnknownError('Error accessing the storefront with given storefront access token.')
       }
-
-      await this.tokenManager.setStorefrontAccessToken(newToken)
 
       return this.request(query, variables, operationName, recursiveCalls + 1)
     }

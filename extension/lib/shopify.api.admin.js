@@ -6,9 +6,10 @@ module.exports = class ShopifyAdminApi {
    * @param {string} shopUrl
    * @param {string} accessToken
    * @param {Function} requestLog
+   * @param {string?} apiVersion
    */
-  constructor (shopUrl, accessToken, requestLog) {
-    this.shop = shopUrl
+  constructor (shopUrl, accessToken, requestLog, apiVersion = '2023-10') {
+    this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/admin/api/${apiVersion}/`
     this.accessToken = accessToken
     this.requestLog = requestLog
   }
@@ -19,8 +20,8 @@ module.exports = class ShopifyAdminApi {
    * @throws {Error} If the API returns an invalid response or an error occurs on the request.
    */
   async getStoreFrontAccessToken (title = 'Web Checkout Storefront Access Token') {
-    const endpoint = '/admin/api/2023-10/storefront_access_tokens.json'
-    const response = await this.get(endpoint)
+    const endpoint = 'storefront_access_tokens.json'
+    const response = await this.request('get', endpoint)
 
     if (!Object.hasOwnProperty.call(response, 'storefront_access_tokens')) {
       throw new Error('Invalid response from Shopify API.')
@@ -32,45 +33,7 @@ module.exports = class ShopifyAdminApi {
     }
 
     // create a new access token, because no valid token was found at this point
-    return this.post(endpoint, {
-      storefront_access_token: {
-        title
-      }
-    })
-  }
-
-  /**
-   * @param {string} endpoint
-   * @param {string} query
-   */
-  async get (endpoint, query = '') {
-    return this.request('GET', endpoint, query)
-  }
-
-  /**
-   * @param {string} endpoint
-   * @param {Object} data
-   * @param {string} query
-   */
-  async post (endpoint, data = {}, query = '') {
-    return this.request('POST', endpoint, query, data)
-  }
-
-  /**
-   * @param {string} endpoint
-   * @param {Object} data
-   * @param {string} query
-   */
-  async put (endpoint, data = {}, query = '') {
-    return this.request('PUT', endpoint, query, data)
-  }
-
-  /**
-   * @param {string} endpoint
-   * @param {string} query
-   */
-  async delete (endpoint, query) {
-    return this.request('DELETE', endpoint, query)
+    return this.request('post', endpoint, '', { storefront_access_token: { title } })
   }
 
   /**
@@ -83,7 +46,7 @@ module.exports = class ShopifyAdminApi {
    */
   async request (method, endpoint, query = '', data = {}) {
     const options = {
-      uri: `${this.shop.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
+      uri: `${this.apiUrl}${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
       method: method.toLowerCase() || 'get',
       headers: {
         'Content-Type': 'application/json',
