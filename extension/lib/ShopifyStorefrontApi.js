@@ -9,7 +9,7 @@ const _ = {
   get: require('lodash/get')
 }
 
-module.exports = class {
+class ShopifyStorefrontApi {
   /**
    * @param {string} shopUrl
    * @param {ShopifyApiTokenManager} shopifyApiTokenManager
@@ -348,7 +348,7 @@ module.exports = class {
    * @returns {Promise<Object>}
    */
   async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
-    const currentAccessToken = await this.tokenManager.getStorefrontAccessToken()
+    const currentAccessToken = await this.tokenManager.getStorefrontApiAccessToken()
 
     const options = {
       method: 'POST',
@@ -384,7 +384,7 @@ module.exports = class {
     }
 
     if ((response.statusCode === 401 || response.statusCode === 403) && recursiveCalls < 2) {
-      const newToken = await this.tokenManager.getStorefrontAccessToken(false)
+      const newToken = await this.tokenManager.getStorefrontApiAccessToken(false)
       if (currentAccessToken === newToken) {
         throw new UnknownError('Error accessing the storefront with given storefront access token.')
       }
@@ -427,3 +427,5 @@ module.exports = class {
     }
   }
 }
+
+module.exports = ShopifyStorefrontApi

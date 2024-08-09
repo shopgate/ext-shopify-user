@@ -1,4 +1,4 @@
-const ApiFactory = require('../../lib/shopify.api.factory')
+const ApiFactory = require('../../lib/ShopifyApiFactory')
 const FieldValidationError = require('../../models/Errors/FieldValidationError')
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 

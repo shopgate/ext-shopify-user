@@ -1,5 +1,5 @@
 const CryptoJS = require('crypto-js')
-const ApiFactory = require('../lib/shopify.api.factory')
+const ApiFactory = require('../lib/ShopifyApiFactory')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 
 /**
@@ -16,7 +16,7 @@ const InvalidCallError = require('../models/Errors/InvalidCallError')
  */
 module.exports = async (context, input) => {
   // strategy is not supported
-  if (!['basic', 'web', 'facebook', 'twitter'].includes(input.strategy)) {
+  if (!['basic', 'web', 'facebook', 'twitter', 'shopifyNewCustomerAccounts'].includes(input.strategy)) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
@@ -27,7 +27,20 @@ module.exports = async (context, input) => {
     case 'basic':
       customerAccessToken = await storefrontApi.getCustomerAccessToken(input.parameters.login, input.parameters.password)
       break
-    case 'web':
+
+    case 'shopifyNewCustomerAccounts': {
+      const authorization = JSON.parse(await context.storage.device.get('headlessAuthorizationPayload'))
+      // todo: check "state" and "nonce"
+      const headlessAuthApi = ApiFactory.buildHeadlessAuthApi(context)
+      const accessToken = await headlessAuthApi.getAccessToken(authorization.code)
+      const customerAccountAccessToken = await headlessAuthApi.exchangeAccessToken(accessToken.access_token)
+
+      const customerAccountsApi = ApiFactory.buildCustomerAccountApi(context)
+      customerAccessToken = await customerAccountsApi.getCustomerAccessToken(customerAccountAccessToken)
+      break
+    }
+
+    case 'web': {
       const phrase = await context.storage.device.get('webLoginPhrase')
 
       /** @type {Buffer} */
@@ -38,6 +51,7 @@ module.exports = async (context, input) => {
       const userData = JSON.parse(decodedPayload)
       customerAccessToken = await storefrontApi.getCustomerAccessToken(userData.u, userData.p)
       break
+    }
   }
 
   return {

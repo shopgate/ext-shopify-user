@@ -17,16 +17,17 @@ module.exports = class ShopifyApiTokenManager {
   }
 
   /**
-   * @param {boolean} useCache
+   * @param {boolean?} useCache
+   * @param {string?} accessTokenTitle The title of the access token to be fetched from the Admin REST API.
    * @returns {Promise<string>}
    */
-  async getStorefrontAccessToken (useCache = true) {
+  async getStorefrontApiAccessToken (useCache = true, accessTokenTitle = 'Web Checkout Storefront Access Token') {
     let token
 
     if (useCache) token = await this.extensionStorage.get('storefrontAccessToken')
 
     if (!token) {
-      token = await this.adminApi.getStoreFrontAccessToken()
+      token = await this.adminApi.getStoreFrontAccessToken(accessTokenTitle)
       await this.setStorefrontAccessToken(token)
     }
 

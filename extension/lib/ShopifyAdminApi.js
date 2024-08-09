@@ -1,7 +1,7 @@
 const jsonb = require('json-bigint-native')
-const requestp = require('request-promise-native')
+const request = require('request-promise-native')
 
-module.exports = class ShopifyAdminApi {
+class ShopifyAdminApi {
   /**
    * @param {string} shopUrl
    * @param {string} accessToken
@@ -19,7 +19,7 @@ module.exports = class ShopifyAdminApi {
    * @returns {Promise<string>} The storefront access token.
    * @throws {Error} If the API returns an invalid response or an error occurs on the request.
    */
-  async getStoreFrontAccessToken (title = 'Web Checkout Storefront Access Token') {
+  async getStoreFrontAccessToken (title) {
     const endpoint = 'storefront_access_tokens.json'
     const response = await this.request('get', endpoint)
 
@@ -66,7 +66,7 @@ module.exports = class ShopifyAdminApi {
 
     let response
     try {
-      response = await requestp({ ...options, time: true })
+      response = await request({ ...options, time: true })
     } catch (err) {
       this.requestLog(options, {})
       throw err
@@ -87,3 +87,5 @@ module.exports = class ShopifyAdminApi {
     return body
   }
 }
+
+module.exports = ShopifyAdminApi

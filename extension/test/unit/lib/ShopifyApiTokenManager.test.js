@@ -1,7 +1,7 @@
 const sinon = require('sinon')
 const assert = require('assert')
 const moment = require('moment')
-const ShopifyApiFactory = require('../../../lib/shopify.api.factory')
+const ShopifyApiFactory = require('../../../lib/ShopifyApiFactory')
 
 describe('ShopifyApiTokenManager', () => {
   let TokenManager

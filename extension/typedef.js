@@ -11,6 +11,10 @@
  * @typedef {Object} ExtensionConfig
  * @property {string} shopifyShopAlias
  * @property {string} shopifyAccessToken
+ * @property {string} shopifyShopId
+ * @property {string} shopifyHeadlessApiClientId
+ * @property {string} shopifyHeadlessApiClientSecret
+ * @property {string} shopifyHeadlessApiLoginRedirectUrl
  * @property {string} userRegistrationUrl
  * @property {string} userDataCacheTtl
  * @property {string} stage

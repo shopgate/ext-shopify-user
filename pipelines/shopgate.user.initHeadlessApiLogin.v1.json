@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.initHeadlessApiLogin.v1",
+    "public": true,
+    "input": [
+      {"key": "authPayload", "id": "1"}
+    ],
+    "output": [],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/token/saveHeadlessApiAuthorizationPayload.js",
+        "input": [
+          {"key": "authPayload", "id": "1"}
+        ],
+        "output": []
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-const ApiFactory = require('../lib/shopify.api.factory')
+const ApiFactory = require('../lib/ShopifyApiFactory')
 const CustomerNotFoundError = require('../models/Errors/CustomerNotFoundError')
 
 /**

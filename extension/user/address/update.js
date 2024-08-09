@@ -4,7 +4,7 @@ const _ = {
   omitBy: require('lodash/omitBy'),
   isNil: require('lodash/isNil')
 }
-const ApiFactory = require('../../lib/shopify.api.factory')
+const ApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
  * @typedef {Object} input

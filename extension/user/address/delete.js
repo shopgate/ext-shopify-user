@@ -1,6 +1,6 @@
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../../models/Errors/InvalidCallError')
-const ApiFactory = require('../../lib/shopify.api.factory')
+const ApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
  * @typedef {Object} input

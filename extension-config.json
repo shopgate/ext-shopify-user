@@ -36,6 +36,69 @@
         "key": "value.backend.shopifyAccessToken"
       }
     },
+    "shopifyShopId": {
+      "shopifyAccessToken": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyShopId"
+        }
+      }
+    },
+    "shopifyHeadlessApiClientId": {
+      "shopifyAccessToken": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyHeadlessApi.clientId"
+        }
+      }
+    },
+    "shopifyHeadlessApiClientSecret": {
+      "shopifyAccessToken": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyHeadlessApi.clientSecret"
+        }
+      }
+    },
+    "shopifyHeadlessApiLoginRedirectUrl": {
+      "shopifyAccessToken": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyHeadlessApi.loginRedirectUrl"
+        }
+      }
+    },
+    "shopifyLoginStrategy": {
+      "type": "bigApi",
+      "destination": "frontend",
+      "default": "basic",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.shopifyLoginStrategy"
+      }
+    },
     "getUserAccountSettings": {
       "type": "bigApi",
       "destination": "frontend",

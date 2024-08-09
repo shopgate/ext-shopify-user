@@ -1,5 +1,7 @@
-const AdminApi = require('./shopify.api.admin')
-const StorefrontApi = require('./shopify.api.storefront')
+const ShopifyAdminApi = require('./ShopifyAdminApi')
+const ShopifyStorefrontApi = require('./ShopifyStorefrontApi')
+const ShopifyCustomerAccountsApi = require('./ShopifyCustomerAccountsApi')
+const ShopifyHeadlessAuthApi = require('./ShopifyHeadlessAuthApi')
 const ShopifyLogger = require('./logger')
 const ShopifyApiTokenManager = require('./ShopifyApiTokenManager')
 const ConfigHelper = require('../helper/config')
@@ -7,11 +9,11 @@ const ConfigHelper = require('../helper/config')
 module.exports = class {
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
-   * @returns {AdminApi}
+   * @returns {ShopifyAdminApi}
    */
   static buildAdminApi (context) {
     const requestLogger = new ShopifyLogger(context.log)
-    return new AdminApi(
+    return new ShopifyAdminApi(
       ConfigHelper.getBaseUrl(context.config),
       context.config.shopifyAccessToken,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
@@ -21,14 +23,14 @@ module.exports = class {
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
    * @param {ShopifyApiTokenManager?} tokenManager
-   * @param {AdminApi?} adminApi
-   * @returns {StorefrontApi}
+   * @param {ShopifyAdminApi?} adminApi
+   * @returns {ShopifyStorefrontApi}
    */
   static buildStorefrontApi (context, tokenManager = null, adminApi = null) {
     const requestLogger = new ShopifyLogger(context.log)
     if (!tokenManager) tokenManager = this.buildShopifyApiTokenManager(context, adminApi)
 
-    return new StorefrontApi(
+    return new ShopifyStorefrontApi(
       ConfigHelper.getBaseUrl(context.config),
       tokenManager,
       context.log,
@@ -36,9 +38,20 @@ module.exports = class {
     )
   }
 
+  static buildHeadlessAuthApi (context, userAgent = undefined) {
+    const clientId = context.config.shopifyHeadlessApiClientId
+    const clientSecret = context.config.shopifyHeadlessApiClientSecret
+
+    return new ShopifyHeadlessAuthApi(context.config.shopifyShopId, clientId, clientSecret, userAgent)
+  }
+
+  static buildCustomerAccountApi (context) {
+    return new ShopifyCustomerAccountsApi()
+  }
+
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
-   * @param {AdminApi?} adminApi
+   * @param {ShopifyAdminApi?} adminApi
    * @returns {ShopifyApiTokenManager}
    */
   static buildShopifyApiTokenManager (context, adminApi = null) {

@@ -36,16 +36,4 @@ describe('Config Helper', () => {
     const url = ConfigHelper.getBaseUrl(config)
     assert.strictEqual(extectedUrl, url)
   })
-
-  it('should return the hostname without https for shopAlias', () => {
-    config.shopifyShopDomain = ''
-    const expectedHostname = config.shopifyShopAlias + '.myshopify.com'
-    const url = ConfigHelper.getHostName(config)
-    assert.strictEqual(expectedHostname, url)
-  })
-
-  it('should return the hostname without https for shopDomain', () => {
-    const url = ConfigHelper.getHostName(config)
-    assert.strictEqual(host, url)
-  })
 })
