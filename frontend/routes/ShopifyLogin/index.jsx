@@ -8,6 +8,7 @@ import {
   PipelineRequest,
   historyPush as historyPushAction,
   historyPop as historyPopAction,
+  historyRedirect as historyRedirectAction,
   useTheme,
   event,
   useRoute,
@@ -29,6 +30,7 @@ const classes = {
 const mapDispatchToProps = {
   historyPush: historyPushAction,
   historyPop: historyPopAction,
+  historyRedirect: historyRedirectAction,
   login: loginAction,
 };
 
@@ -37,8 +39,10 @@ const mapDispatchToProps = {
  * @param {Object} props Component props
  * @returns {JSX.Element}
  */
-const ShopifyLogin = ({ historyPush, historyPop, login }) => {
-  const { state: { redirect } = {} } = useRoute();
+const ShopifyLogin = ({
+  historyPush, historyPop, historyRedirect, login,
+}) => {
+  const { state: { redirect: redirectObj } = {} } = useRoute();
   const { View, AppBar } = useTheme();
 
   useTabBarToggle();
@@ -78,7 +82,8 @@ const ShopifyLogin = ({ historyPush, historyPop, login }) => {
 
   const handleLogin = useCallback(async (data) => {
     try {
-      await login(data, redirect, 'shopifyHeadlessLogin');
+      await login(data, redirectObj, 'shopifyHeadlessLogin');
+      historyRedirect(redirectObj);
     } catch (e) {
       logger.error('Failed to login Shopify customer', e);
       // TODO Error handling required?!
@@ -86,7 +91,7 @@ const ShopifyLogin = ({ historyPush, historyPop, login }) => {
     }
 
     closeInAppBrowser();
-  }, [historyPop, login, redirect]);
+  }, [historyPop, historyRedirect, login, redirectObj]);
 
   useEffect(() => {
     event.addCallback(SHOPIFY_HEADLESS_LOGIN_EVENT, handleLogin);
@@ -109,6 +114,7 @@ const ShopifyLogin = ({ historyPush, historyPop, login }) => {
 ShopifyLogin.propTypes = {
   historyPop: PropTypes.func.isRequired,
   historyPush: PropTypes.func.isRequired,
+  historyRedirect: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
 };
 
