@@ -37,7 +37,6 @@
       }
     },
     "shopifyShopId": {
-      "shopifyAccessToken": {
         "type": "bigApi",
         "destination": "backend",
         "default": null,
@@ -47,10 +46,8 @@
           "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
           "key": "value.backend.shopifyShopId"
         }
-      }
     },
     "shopifyHeadlessApiClientId": {
-      "shopifyAccessToken": {
         "type": "bigApi",
         "destination": "backend",
         "default": null,
@@ -59,11 +56,9 @@
           "service": "config",
           "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
           "key": "value.backend.shopifyHeadlessApi.clientId"
-        }
       }
     },
     "shopifyHeadlessApiClientSecret": {
-      "shopifyAccessToken": {
         "type": "bigApi",
         "destination": "backend",
         "default": null,
@@ -73,10 +68,8 @@
           "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
           "key": "value.backend.shopifyHeadlessApi.clientSecret"
         }
-      }
     },
     "shopifyHeadlessApiLoginRedirectUrl": {
-      "shopifyAccessToken": {
         "type": "bigApi",
         "destination": "backend",
         "default": null,
@@ -85,7 +78,6 @@
           "service": "config",
           "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
           "key": "value.backend.shopifyHeadlessApi.loginRedirectUrl"
-        }
       }
     },
     "shopifyLoginStrategy": {
@@ -255,6 +247,17 @@
     }
   },
   "components": [
+    {
+      "id": "ShopifyLogin",
+      "target": "app.routes",
+      "type": "portals",
+      "path": "frontend/routes/ShopifyLogin/index.jsx"
+    },
+    {
+      "id": "LoginSubscriptions",
+      "path": "frontend/Login/subscribers.js",
+      "type": "subscribers"
+    },
     {
       "id": "RegisterSubscription",
       "path": "frontend/Register/subscribers.js",
