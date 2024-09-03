@@ -1,6 +1,7 @@
 const CryptoJS = require('crypto-js')
 const ApiFactory = require('../lib/ShopifyApiFactory')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
+const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
  * @param {SDKContext} context
@@ -12,6 +13,7 @@ const InvalidCallError = require('../models/Errors/InvalidCallError')
  * @param {Object} input.parameters.login.password The customer's password when using strategy "basic".
  * @param {string} input.parameters.customerId The customer's ID sent by app when using strategy "web".
  * @param {string} input.parameters.payload Encrypted login data sent by app when using strategy "web".
+ * @param {string} input.parameters.code The auth code provided by Shopify after successful log in (shopifyHeadlessLogin).
  * @returns {Promise<{customerAccessToken: string, storefrontAccessToken: string, [customerId]: string}>}
  */
 module.exports = async (context, input) => {
@@ -28,11 +30,16 @@ module.exports = async (context, input) => {
       customerAccessToken = await storefrontApi.getCustomerAccessToken(input.parameters.login, input.parameters.password)
       break
 
-    case 'shopifyNewCustomerAccounts': {
-      const authorization = JSON.parse(await context.storage.device.get('headlessAuthorizationPayload'))
-      // todo: check "state" and "nonce"
+    case 'shopifyHeadlessLogin': {
+      const logObject = { ...input.parameters, code: 'xxxxx' }
+
+      if (!input.parameters.code) {
+        context.log.error(logObject, 'Shopify Headless Login did not receive authCode')
+        throw new UnauthorizedError()
+      }
+
       const headlessAuthApi = ApiFactory.buildHeadlessAuthApi(context)
-      const accessToken = await headlessAuthApi.getAccessToken(authorization.code)
+      const accessToken = await headlessAuthApi.getAccessToken(input.parameters.code)
       const customerAccountAccessToken = await headlessAuthApi.exchangeAccessToken(accessToken.access_token)
 
       const customerAccountsApi = ApiFactory.buildCustomerAccountApi(context)

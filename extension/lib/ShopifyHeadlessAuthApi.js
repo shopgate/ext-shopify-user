@@ -11,10 +11,12 @@ class ShopifyHeadlessApi {
    * @param {string} shopId
    * @param {string} clientId
    * @param {string} clientSecret
+   * @param {string} redirectUri
    * @param {string?} userAgent
    */
-  constructor (shopId, clientId, clientSecret, userAgent = USER_AGENT) {
+  constructor (shopId, clientId, clientSecret, redirectUri, userAgent = USER_AGENT) {
     this.clientId = clientId
+    this.redirectUri = redirectUri
     this.userAgent = userAgent || USER_AGENT
 
     this.apiUrl = `https://shopify.com/${shopId}/auth/oauth`
@@ -22,20 +24,20 @@ class ShopifyHeadlessApi {
   }
 
   /**
-   * @param {string} state
    * @param {string} nonce
-   * @param {string?} redirectUri
+   * @param {string|null?} state
    * @param {string?} scopes
    * @returns {string}
    */
-  buildCustomerAuthorizationRedirectUrl (state, nonce, redirectUri = REDIRECT_URI_SUCCESSFUL_LOGIN, scopes = CUSTOMER_ACCOUNT_API_SCOPES) {
+  buildCustomerAuthorizationRedirectUrl (nonce, state = null, scopes = CUSTOMER_ACCOUNT_API_SCOPES) {
     const url = new URL(`${this.apiUrl}/authorize`)
     url.searchParams.append('scope', `openid email ${scopes}`)
     url.searchParams.append('client_id', this.clientId)
     url.searchParams.append('response_type', 'code')
-    url.searchParams.append('redirect_uri', redirectUri)
-    url.searchParams.append('state', state)
+    url.searchParams.append('redirect_uri', this.redirectUri)
     url.searchParams.append('nonce', nonce)
+
+    if (state) url.searchParams.append('state', state)
 
     return url.toString()
   }
