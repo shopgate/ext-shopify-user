@@ -3,47 +3,74 @@ const ApiFactory = require('../lib/ShopifyApiFactory')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
+let lastUsedNonce
+
 /**
  * @param {SDKContext} context
  * @param {Object} input
  * @param {string} input.strategy
  * @param {Object} input.parameters
- * @param {Object} input.parameters.login
- * @param {string} input.parameters.login.login The customer's login (i.e. email address) when using strategy "basic".
- * @param {Object} input.parameters.login.password The customer's password when using strategy "basic".
+ * @param {string} input.parameters.login The customer's login (i.e. email address) when using strategy "basic".
+ * @param {string} input.parameters.password The customer's password when using strategy "basic".
  * @param {string} input.parameters.customerId The customer's ID sent by app when using strategy "web".
  * @param {string} input.parameters.payload Encrypted login data sent by app when using strategy "web".
  * @param {string} input.parameters.code The auth code provided by Shopify after successful log in (shopifyHeadlessLogin).
- * @returns {Promise<{customerAccessToken: string, storefrontAccessToken: string, [customerId]: string}>}
+ * @returns {Promise<{storefrontApiCustomerAccessToken: StorefrontApiCustomerAccessToken, customerAccountsApiAccessToken?: CustomerAccountApiAccessToken, customerId?: string}>}
  */
 module.exports = async (context, input) => {
-  // strategy is not supported
-  if (!['basic', 'web', 'facebook', 'twitter', 'shopifyNewCustomerAccounts'].includes(input.strategy)) {
+  if (!['basic', 'web', 'facebook', 'twitter', 'shopifyHeadlessLogin', 'shopifyNewCustomerAccounts'].includes(input.strategy)) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
   const storefrontApi = ApiFactory.buildStorefrontApi(context)
 
-  let customerAccessToken
+  let storefrontApiCustomerAccessToken
+  let customerAccountApiAccessToken
   switch (input.strategy) {
     case 'basic':
-      customerAccessToken = await storefrontApi.getCustomerAccessToken(input.parameters.login, input.parameters.password)
+      storefrontApiCustomerAccessToken = await storefrontApi.getCustomerAccessToken(input.parameters.login, input.parameters.password)
       break
 
     case 'shopifyHeadlessLogin': {
       const logObject = { ...input.parameters, code: 'xxxxx' }
 
       if (!input.parameters.code) {
-        context.log.error(logObject, 'Shopify Headless Login did not receive authCode')
+        context.log.error(logObject, 'Shopify Headless Login did not receive auth code')
         throw new UnauthorizedError()
       }
 
       const headlessAuthApi = ApiFactory.buildHeadlessAuthApi(context)
-      const accessToken = await headlessAuthApi.getAccessToken(input.parameters.code)
-      const customerAccountAccessToken = await headlessAuthApi.exchangeAccessToken(accessToken.access_token)
+      let accessToken
 
+      // get access token using the incoming auth code
+      try {
+        accessToken = await headlessAuthApi.getAccessTokenByAuthCode(input.parameters.code, await context.storage.device.get('loginNonce'))
+      } catch (err) {
+        context.log.error(err, 'Error fetching login access token')
+        throw new UnauthorizedError('access token')
+      }
+
+      // exchange access token for a personalized customer account API access token
+      try {
+        const customerAccountApiAccessTokenResponse = await headlessAuthApi.exchangeAccessToken(accessToken.access_token)
+        customerAccountApiAccessToken = {
+          accessToken: customerAccountApiAccessTokenResponse.access_token,
+          expiresAt: new Date(Date.now() + customerAccountApiAccessTokenResponse.expires_in * 1000).toISOString()
+        }
+      } catch (err) {
+        context.log.error(err, 'Error exchanging login access token for Customer Account API access token')
+        throw new UnauthorizedError('exchange')
+      }
+
+      // get the Storefront API customer access token via the Customer Accounts API
       const customerAccountsApi = ApiFactory.buildCustomerAccountApi(context)
-      customerAccessToken = await customerAccountsApi.getCustomerAccessToken(customerAccountAccessToken)
+      try {
+        const customerAccessTokenResponse = await customerAccountsApi.getCustomerAccessToken(customerAccountApiAccessToken.accessToken)
+        storefrontApiCustomerAccessToken = { accessToken: customerAccessTokenResponse.data.storefrontCustomerAccessTokenCreate.customerAccessToken }
+      } catch (err) {
+        context.log.error(err, 'Error fetching Storefront API customer access token using Customer Account API')
+        throw new UnauthorizedError('storefront access token')
+      }
       break
     }
 
@@ -56,13 +83,14 @@ module.exports = async (context, input) => {
 
       /** @type {{u: string, p: string}} */
       const userData = JSON.parse(decodedPayload)
-      customerAccessToken = await storefrontApi.getCustomerAccessToken(userData.u, userData.p)
+      storefrontApiCustomerAccessToken = await storefrontApi.getCustomerAccessToken(userData.u, userData.p)
       break
     }
   }
 
   return {
-    customerAccessToken,
+    storefrontApiCustomerAccessToken,
+    customerAccountApiAccessToken,
     customerId: input.parameters.customerId
   }
 }

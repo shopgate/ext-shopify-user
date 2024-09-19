@@ -44,18 +44,19 @@ class ShopifyHeadlessApi {
 
   /**
    * @param {string} authorizationCode
-   * @param {string?} redirectUri
-   * @returns {Promise<{ access_token: string }>}
+   * @param {string} nonce
+   * @returns {Promise<{ token_type: string, access_token: string, expires_in: number, refresh_token: string, scope: string }>}
    */
-  async getAccessToken (authorizationCode, redirectUri = REDIRECT_URI_SUCCESSFUL_LOGIN) {
+  async getAccessTokenByAuthCode (authorizationCode, nonce) {
     return request({
       method: 'POST',
       url: `${this.apiUrl}/token`,
       headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': USER_AGENT },
       form: {
         grant_type: 'authorization_code',
-        redirect_uri: redirectUri,
-        code: authorizationCode
+        redirect_uri: this.redirectUri,
+        code: authorizationCode,
+        nonce
       },
       json: true
     })

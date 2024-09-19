@@ -59,7 +59,7 @@ module.exports = class {
   }
 
   static buildCustomerAccountApi (context) {
-    return new ShopifyCustomerAccountsApi()
+    return new ShopifyCustomerAccountsApi(context.config.shopifyShopId)
   }
 
   /**

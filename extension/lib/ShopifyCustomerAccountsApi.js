@@ -19,6 +19,19 @@ class ShopifyCustomerAccountsApi {
       json: true
     })
   }
+
+  async getCustomer (customerAccountAccessToken) {
+    return request({
+      method: 'post',
+      url: this.apiUrl,
+      headers: { Authorization: customerAccountAccessToken, 'User-Agent': USER_AGENT },
+      body: {
+        query: '{ customer { id firstName lastName phoneNumber { phoneNumber } emailAddress { emailAddress } } }',
+        variables: {}
+      },
+      json: true
+    })
+  }
 }
 
 module.exports = ShopifyCustomerAccountsApi

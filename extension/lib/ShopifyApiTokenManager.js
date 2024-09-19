@@ -17,6 +17,8 @@ module.exports = class ShopifyApiTokenManager {
   }
 
   /**
+   * Gets the COMMON Storefront API access token for app access from either extension storage or Admin REST API.
+   *
    * @param {boolean?} useCache
    * @param {string?} accessTokenTitle The title of the access token to be fetched from the Admin REST API.
    * @returns {Promise<string>}
@@ -28,25 +30,29 @@ module.exports = class ShopifyApiTokenManager {
 
     if (!token) {
       token = await this.adminApi.getStoreFrontAccessToken(accessTokenTitle)
-      await this.setStorefrontAccessToken(token)
+      await this.setStorefrontApiAccessToken(token)
     }
 
     return token
   }
 
   /**
+   * Saves the COMMON Storefront API access token for app access to the extension storage
+   *
    * @param {string} storefrontAccessToken
    * @returns {Promise<void>}
    */
-  async setStorefrontAccessToken (storefrontAccessToken) {
+  async setStorefrontApiAccessToken (storefrontAccessToken) {
     await this.extensionStorage.set('storefrontAccessToken', storefrontAccessToken)
   }
 
   /**
-   * @returns {Promise<string>}
+   * Gets a CUSTOMER scoped Storefront API access token from the user storage unless expired.
+   *
+   * @returns {Promise<StorefrontApiCustomerAccessToken>}
    * @throws UnauthorizedError
    */
-  async getCustomerAccessToken () {
+  async getStorefrontApiCustomerAccessToken () {
     const customerAccessToken = await this.userStorage.get('customerAccessToken')
     if (!customerAccessToken || !customerAccessToken.accessToken) {
       throw new UnauthorizedError('Please log in again.')
@@ -66,9 +72,11 @@ module.exports = class ShopifyApiTokenManager {
   }
 
   /**
-   * @param {ShopifyCustomerAccessToken} token
+   * Saves a CUSTOMER scoped Storefront API access token to the user storage.
+   *
+   * @param {StorefrontApiCustomerAccessToken} token
    */
-  async setCustomerAccessToken (token) {
+  async setStorefrontApiCustomerAccessToken (token) {
     await this.userStorage.set('customerAccessToken', token)
   }
 }

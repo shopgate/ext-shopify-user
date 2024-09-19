@@ -103,9 +103,15 @@
  */
 
 /**
- * @typedef {Object} ShopifyCustomerAccessToken
+ * @typedef {Object} StorefrontApiCustomerAccessToken
  * @property {string} accessToken
- * @property {string} expiresAt
+ * @property {string?} expiresAt Only set when fetching via Storefront API, not on Customer Account API
+ */
+
+/**
+ * @typedef {Object} CustomerAccountApiAccessToken
+ * @property {string} accessToken
+ * @property {string?} expiresAt
  */
 
 /**

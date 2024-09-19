@@ -29,7 +29,8 @@
           {"key": "parameters", "id": "1020"}
         ],
         "output": [
-          {"key": "customerAccessToken", "id": "1060"},
+          {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true},
           {"key": "customerId", "id": "1090", "optional": true}
         ]
       },
@@ -39,7 +40,8 @@
         "path": "@shopgate/shopify-user/user/requestShopifyUserId.js",
         "input": [
           {"key": "strategy", "id": "1010"},
-          {"key": "customerAccessToken", "id": "1060"},
+          {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true},
           {"key": "customerId", "id": "1090", "optional": true}
         ],
         "output": [
@@ -68,10 +70,11 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/token/saveCustomerAccessToken.js",
+        "path": "@shopgate/shopify-user/user/token/saveCustomerAccessTokens.js",
         "input": [
           {"key": "userId", "id": "1050"},
-          {"key": "customerAccessToken", "id": "1060"}
+          {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true}
         ],
         "output": []
       },

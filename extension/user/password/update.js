@@ -26,12 +26,12 @@ module.exports = async (context, input) => {
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
   const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
-  const customerAccessToken = await tokenManager.getCustomerAccessToken()
+  const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   const options = { password: input.password }
 
   const result = await storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, options)
-  await tokenManager.setCustomerAccessToken(result.customerAccessToken)
+  await tokenManager.setStorefrontApiCustomerAccessToken(result.customerAccessToken)
 
   return result
 }

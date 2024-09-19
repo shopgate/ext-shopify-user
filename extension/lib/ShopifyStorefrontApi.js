@@ -27,7 +27,7 @@ class ShopifyStorefrontApi {
   /**
    * @param {string} login
    * @param {string} password
-   * @return {Promise<ShopifyCustomerAccessToken>}
+   * @return {Promise<StorefrontApiCustomerAccessToken>}
    */
   async getCustomerAccessToken (login, password) {
     const query = 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
@@ -66,7 +66,7 @@ class ShopifyStorefrontApi {
 
   /**
    * @param {string} customerAccessToken
-   * @returns {Promise<ShopifyCustomerAccessToken>}
+   * @returns {Promise<StorefrontApiCustomerAccessToken>}
    */
   async renewCustomerAccessToken (customerAccessToken) {
     const query = 'mutation customerAccessTokenRenew($customerAccessToken: String!) {' +
