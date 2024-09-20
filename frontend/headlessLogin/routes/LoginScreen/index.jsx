@@ -18,7 +18,7 @@ import {
   login as loginAction,
 } from '@shopgate/engage/user';
 import { useTabBarToggle } from './hooks';
-import { SHOPIFY_LOGIN_ROUTE, SHOPIFY_HEADLESS_LOGIN_EVENT } from '../../constants';
+import { SHOPIFY_HEADLESS_LOGIN_ROUTE, SHOPIFY_HEADLESS_LOGIN_EVENT } from '../../../constants';
 
 const classes = {
   root: css({
@@ -35,16 +35,18 @@ const mapDispatchToProps = {
 };
 
 /**
- * The ShopifyLogin component
+ * The ShopifyHeadlessLogin component replaces the core login screen. It doesn't show a regular
+ * login form, but opens the In-App-Browser and initializes the headless login process.
  * @param {Object} props Component props
  * @returns {JSX.Element}
  */
-const ShopifyLogin = ({
+const ShopifyHeadlessLogin = ({
   historyPush, historyPop, historyRedirect, login,
 }) => {
   const { state: { redirect: redirectObj } = {} } = useRoute();
   const { View, AppBar } = useTheme();
 
+  // Hide TabBar when login screen is visible
   useTabBarToggle();
 
   /**
@@ -68,25 +70,24 @@ const ShopifyLogin = ({
     /**
      * Goto Shopify login page when component renders
      */
-    const gotoLogin = async () => {
+    (async () => {
       const loginUrl = await getLoginUrl();
 
       if (loginUrl) {
-        // TODO Error handling required?!
         historyPush({ pathname: loginUrl });
       }
-    };
-
-    gotoLogin();
+    })();
   }, [getLoginUrl, historyPush]);
 
   const handleLogin = useCallback(async (data) => {
+    logger.warn('Shopify headless login event received', data);
+
     try {
       await login(data, redirectObj, 'shopifyHeadlessLogin');
       historyRedirect(redirectObj);
     } catch (e) {
+      // TODO we should log out the user at the Shopify website when login in our system didn't work
       logger.error('Failed to login Shopify customer', e);
-      // TODO Error handling required?!
       historyPop();
     }
 
@@ -111,18 +112,18 @@ const ShopifyLogin = ({
   );
 };
 
-ShopifyLogin.propTypes = {
+ShopifyHeadlessLogin.propTypes = {
   historyPop: PropTypes.func.isRequired,
   historyPush: PropTypes.func.isRequired,
   historyRedirect: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
 };
 
-const ConnectedLogin = connect(null, mapDispatchToProps)(ShopifyLogin);
+const ConnectedLogin = connect(null, mapDispatchToProps)(ShopifyHeadlessLogin);
 
 export default () => (
   <Route
-    pattern={SHOPIFY_LOGIN_ROUTE}
+    pattern={SHOPIFY_HEADLESS_LOGIN_ROUTE}
     component={ConnectedLogin}
   />
 );

@@ -14,8 +14,15 @@ import closeInAppBrowser from '@shopgate/pwa-core/commands/closeInAppBrowser';
 import broadcastEvent from '@shopgate/pwa-core/commands/broadcastEvent';
 import { routeDidEnter$ } from '@shopgate/pwa-common/streams/router';
 import { isAndroid } from '@shopgate/pwa-common/selectors/client';
+import {
+  SHOPIFY_HEADLESS_LOGIN_STRATEGY,
+} from '../constants';
+import { shopifyLoginStrategy } from '../config';
 
 export default (subscribe) => {
+  // No registration logic necessary when Shopify headless login is used
+  if (shopifyLoginStrategy === SHOPIFY_HEADLESS_LOGIN_STRATEGY) return;
+
   /**
    * @param {Object} params The handler parameters.
    * @param {Function} params.dispatch The Redux dispatch function.
