@@ -27,7 +27,7 @@ export default (subscribe) => {
     display: 'none',
   });
   // Hide register button on iOS more page via CSS
-  css.global('.theme-ios11__more-login-button__container', {
+  css.global('.theme__more-page-register-button__container', {
     display: 'none',
   });
 
@@ -44,13 +44,13 @@ export default (subscribe) => {
       // The core implementation of the Shopify WebCheckout performs additional steps after PWA
       // login and logout. Those are implemented as dedicated WebCheckout actions.
       // This shouldn't cause issues, but let's try to deactivate this. When current PWA version
-      // implements them as "mutable actions", we replace them with empty logic.
+      // implements them as "mutable actions", we replace them with empty thunks.
       if (typeof webCheckoutLogin.replace === 'function') {
-        webCheckoutLogin.replace(() => ({ type: '' }));
+        webCheckoutLogin.replace(() => () => undefined);
       }
 
       if (typeof webCheckoutLogout.replace === 'function') {
-        webCheckoutLogout.replace(() => ({ type: '' }));
+        webCheckoutLogout.replace(() => () => undefined);
       }
     } catch {
       // Nothing to do here
@@ -64,4 +64,3 @@ export default (subscribe) => {
     }
   });
 };
-
