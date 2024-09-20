@@ -16,7 +16,7 @@ import { routeDidEnter$ } from '@shopgate/pwa-common/streams/router';
 import { isAndroid } from '@shopgate/pwa-common/selectors/client';
 import {
   SHOPIFY_HEADLESS_LOGIN_STRATEGY,
-} from '../constants';
+} from '../constants/headlessLogin';
 import { shopifyLoginStrategy } from '../config';
 
 export default (subscribe) => {

@@ -2,14 +2,16 @@ import { css } from 'glamor';
 import {
   appWillStart$, pwaDidAppear$, redirects, registerEvents, historyPop,
 } from '@shopgate/engage/core';
-import { LOGIN_PATH, REGISTER_PATH } from '@shopgate/engage/user';
+import { userWillLogout$, LOGIN_PATH, REGISTER_PATH } from '@shopgate/engage/user';
 import webCheckoutLogin from '@shopgate/pwa-webcheckout-shopify/actions/login';
 import webCheckoutLogout from '@shopgate/pwa-webcheckout-shopify/actions/logout';
 import {
   SHOPIFY_HEADLESS_LOGIN_EVENT,
   SHOPIFY_HEADLESS_LOGIN_ROUTE,
   SHOPIFY_HEADLESS_LOGIN_STRATEGY,
-} from '../constants';
+} from '../constants/headlessLogin';
+import { headlessLogout } from './actions';
+
 import { shopifyLoginStrategy } from '../config';
 
 /**
@@ -62,5 +64,10 @@ export default (subscribe) => {
       // Remove login page when the InAppBrowser was closed manually by the user
       dispatch(historyPop());
     }
+  });
+
+  subscribe(userWillLogout$, ({ dispatch }) => {
+    // Log out user at Shopify when user logs out in PWA
+    dispatch(headlessLogout());
   });
 };

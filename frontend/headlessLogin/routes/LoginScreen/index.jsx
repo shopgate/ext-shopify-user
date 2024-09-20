@@ -5,7 +5,6 @@ import { css } from 'glamor';
 import { Route, LoadingIndicator } from '@shopgate/engage/components';
 import {
   logger,
-  PipelineRequest,
   historyPush as historyPushAction,
   historyPop as historyPopAction,
   historyRedirect as historyRedirectAction,
@@ -18,7 +17,8 @@ import {
   login as loginAction,
 } from '@shopgate/engage/user';
 import { useTabBarToggle } from './hooks';
-import { SHOPIFY_HEADLESS_LOGIN_ROUTE, SHOPIFY_HEADLESS_LOGIN_EVENT } from '../../../constants';
+import { fetchHeadlessLoginUrl } from '../../actions';
+import { SHOPIFY_HEADLESS_LOGIN_ROUTE, SHOPIFY_HEADLESS_LOGIN_EVENT } from '../../../constants/headlessLogin';
 
 const classes = {
   root: css({
@@ -32,6 +32,7 @@ const mapDispatchToProps = {
   historyPop: historyPopAction,
   historyRedirect: historyRedirectAction,
   login: loginAction,
+  fetchLoginUrl: fetchHeadlessLoginUrl,
 };
 
 /**
@@ -41,7 +42,7 @@ const mapDispatchToProps = {
  * @returns {JSX.Element}
  */
 const ShopifyHeadlessLogin = ({
-  historyPush, historyPop, historyRedirect, login,
+  historyPush, historyPop, historyRedirect, login, fetchLoginUrl,
 }) => {
   const { state: { redirect: redirectObj } = {} } = useRoute();
   const { View, AppBar } = useTheme();
@@ -49,35 +50,18 @@ const ShopifyHeadlessLogin = ({
   // Hide TabBar when login screen is visible
   useTabBarToggle();
 
-  /**
-   * Retrieves the Shopify login url
-   */
-  const getLoginUrl = useCallback(async () => {
-    try {
-      const { loginUrl } = await new PipelineRequest('shopgate.user.getLoginUrl')
-        .setTrusted()
-        .dispatch();
-
-      return loginUrl;
-    } catch (e) {
-      logger.error('Failed to fetch Shopify login url', e);
-    }
-
-    return null;
-  }, []);
-
   useEffect(() => {
     /**
      * Goto Shopify login page when component renders
      */
     (async () => {
-      const loginUrl = await getLoginUrl();
+      const loginUrl = await fetchLoginUrl();
 
       if (loginUrl) {
         historyPush({ pathname: loginUrl });
       }
     })();
-  }, [getLoginUrl, historyPush]);
+  }, [fetchLoginUrl, historyPush]);
 
   const handleLogin = useCallback(async (data) => {
     logger.warn('Shopify headless login event received', data);
@@ -86,7 +70,6 @@ const ShopifyHeadlessLogin = ({
       await login(data, redirectObj, 'shopifyHeadlessLogin');
       historyRedirect(redirectObj);
     } catch (e) {
-      // TODO we should log out the user at the Shopify website when login in our system didn't work
       logger.error('Failed to login Shopify customer', e);
       historyPop();
     }
@@ -113,6 +96,7 @@ const ShopifyHeadlessLogin = ({
 };
 
 ShopifyHeadlessLogin.propTypes = {
+  fetchLoginUrl: PropTypes.func.isRequired,
   historyPop: PropTypes.func.isRequired,
   historyPush: PropTypes.func.isRequired,
   historyRedirect: PropTypes.func.isRequired,
