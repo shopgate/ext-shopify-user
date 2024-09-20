@@ -1,5 +1,5 @@
 {
-  "version": "2.2.0-alpha.1",
+  "version": "2.2.0-alpha.2",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "configuration": {
@@ -248,14 +248,14 @@
   },
   "components": [
     {
-      "id": "ShopifyLogin",
+      "id": "ShopifyHeadlessLogin",
       "target": "app.routes",
       "type": "portals",
-      "path": "frontend/routes/ShopifyLogin/index.jsx"
+      "path": "frontend/headlessLogin/routes/LoginScreen/index.jsx"
     },
     {
-      "id": "LoginSubscriptions",
-      "path": "frontend/Login/subscribers.js",
+      "id": "HeadlessLoginSubscriptions",
+      "path": "frontend/headlessLogin/subscribers.js",
       "type": "subscribers"
     },
     {
