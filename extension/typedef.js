@@ -109,6 +109,14 @@
  */
 
 /**
+ * @typedef {object} HeadlessAuthApiAccessToken
+ * @property {string} accessToken
+ * @property {string} refreshToken
+ * @property {string} expiresAt
+ * @property {string?} idToken
+ */
+
+/**
  * @typedef {Object} CustomerAccountApiAccessToken
  * @property {string} accessToken
  * @property {string?} expiresAt

@@ -65,17 +65,18 @@ module.exports = class {
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
    * @param {ShopifyAdminApi?} adminApi
+   * @param {ShopifyHeadlessAuthApi?} headlessAuthApi
    * @returns {ShopifyApiTokenManager}
    */
-  static buildShopifyApiTokenManager (context, adminApi = null) {
+  static buildShopifyApiTokenManager (context, adminApi = null, headlessAuthApi = null) {
     if (!adminApi) adminApi = this.buildAdminApi(context)
 
     return new ShopifyApiTokenManager(
-      context.storage.user,
       context.storage.extension,
+      context.storage.user,
       adminApi,
-      context.log,
-      context.meta.userId
+      headlessAuthApi,
+      context.log
     )
   }
 }

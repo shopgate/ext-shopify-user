@@ -25,6 +25,7 @@ module.exports = async (context, input) => {
   const storefrontApi = ApiFactory.buildStorefrontApi(context)
 
   let storefrontApiCustomerAccessToken
+  let headlessAuthApiAccessToken
   let customerAccountApiAccessToken
   switch (input.strategy) {
     case 'basic':
@@ -40,11 +41,10 @@ module.exports = async (context, input) => {
       }
 
       const headlessAuthApi = ApiFactory.buildHeadlessAuthApi(context)
-      let accessToken
 
       // get access token using the incoming auth code
       try {
-        accessToken = await headlessAuthApi.getAccessTokenByAuthCode(input.parameters.code, await context.storage.device.get('loginNonce'))
+        headlessAuthApiAccessToken = await headlessAuthApi.getAccessTokenByAuthCode(input.parameters.code, await context.storage.device.get('loginNonce'))
       } catch (err) {
         context.log.error(err, 'Error fetching login access token')
         throw new UnauthorizedError('access token')
@@ -52,11 +52,7 @@ module.exports = async (context, input) => {
 
       // exchange access token for a personalized customer account API access token
       try {
-        const customerAccountApiAccessTokenResponse = await headlessAuthApi.exchangeAccessToken(accessToken.access_token)
-        customerAccountApiAccessToken = {
-          accessToken: customerAccountApiAccessTokenResponse.access_token,
-          expiresAt: new Date(Date.now() + customerAccountApiAccessTokenResponse.expires_in * 1000).toISOString()
-        }
+        customerAccountApiAccessToken = await headlessAuthApi.exchangeAccessToken(headlessAuthApiAccessToken.accessToken)
       } catch (err) {
         context.log.error(err, 'Error exchanging login access token for Customer Account API access token')
         throw new UnauthorizedError('exchange')
@@ -90,6 +86,7 @@ module.exports = async (context, input) => {
 
   return {
     storefrontApiCustomerAccessToken,
+    headlessAuthApiAccessToken,
     customerAccountApiAccessToken,
     customerId: input.parameters.customerId
   }

@@ -18,7 +18,9 @@ module.exports = async function (context) {
     return userData.user
   }
 
-  const customerAccountApiAccessToken = await context.storage.user.get('customerAccountApiAccessToken')
+  const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
+
+  const customerAccountApiAccessToken = await tokenManager.getCustomerAccountApiAccessToken()
   const customerData = customerAccountApiAccessToken
     ? await _getCustomerFromCustomerAccountApi(context, customerAccountApiAccessToken)
     : await _getCustomerFromStorefrontApi(context)
@@ -33,9 +35,8 @@ module.exports = async function (context) {
   return customerData
 }
 
-async function _getCustomerFromStorefrontApi (context) {
+async function _getCustomerFromStorefrontApi (context, tokenManager) {
   try {
-    const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
     const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
     const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 

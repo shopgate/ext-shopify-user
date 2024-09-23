@@ -2,18 +2,18 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 module.exports = class ShopifyApiTokenManager {
   /**
-   * @param {SDKContextEntityStorage} userStorage
    * @param {SDKContextEntityStorage} extensionStorage
+   * @param {SDKContextEntityStorage} userStorage
    * @param {ShopifyAdminApi} adminApi
+   * @param {ShopifyHeadlessAuthApi} headlessAuthApi
    * @param {SDKContextLog} logger
-   * @param {string} userId
    */
-  constructor (userStorage, extensionStorage, adminApi, logger, userId) {
-    this.userStorage = userStorage
+  constructor (extensionStorage, userStorage, adminApi, headlessAuthApi, logger) {
     this.extensionStorage = extensionStorage
+    this.userStorage = userStorage
     this.adminApi = adminApi
+    this.headlessAuthApi = headlessAuthApi
     this.log = logger
-    this.userId = userId
   }
 
   /**
@@ -60,10 +60,7 @@ module.exports = class ShopifyApiTokenManager {
 
     const now = Date.now()
     if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
-      this.log.error({
-        expiresAt: customerAccessToken.expiresAt,
-        userId: this.userId
-      }, 'Customer access token expired')
+      this.log.error({ expiresAt: customerAccessToken.expiresAt }, 'Customer access token expired')
 
       throw new UnauthorizedError('Please log in again.')
     }
@@ -78,5 +75,99 @@ module.exports = class ShopifyApiTokenManager {
    */
   async setStorefrontApiCustomerAccessToken (token) {
     await this.userStorage.set('customerAccessToken', token)
+  }
+
+  /**
+   * Gets the Headless Auth API access token from the user storage or API if expired.
+   *
+   * This will use the refresh token internally to get a new access token if the current access token has expired.
+   *
+   * @returns {Promise<string|null>}
+   */
+  async getHeadlessAuthApiAccessToken () {
+    const tokenData = await this.userStorage.get('headlessAuthApiAccessToken')
+
+    if (!tokenData || !tokenData.accessToken) {
+      throw new UnauthorizedError('Please log in again.')
+    }
+
+    if (tokenData.expiresAt && Date.parse(tokenData.expiresAt) > Date.now()) {
+      return tokenData
+    }
+
+    const newAccessToken = await this.headlessAuthApi.getAccessTokenByRefreshToken(tokenData.refreshToken)
+
+    const headlessAuthApiAccessToken = {
+      ...newAccessToken,
+      idToken: tokenData.idToken // not returned when fetching access token via refresh token, so keep the existing one
+    }
+
+    await this.setHeadlessAuthApiAccessToken(headlessAuthApiAccessToken)
+
+    return headlessAuthApiAccessToken.accessToken
+  }
+
+  /**
+   * Gets the Headless Auth API refresh token if present.
+   *
+   * @returns {Promise<string|null>}
+   */
+  async getHeadlessAuthApiRefreshToken () {
+    const tokenData = await this.userStorage.get('headlessAuthApiAccessToken')
+
+    return (tokenData || {}).refreshToken || null
+  }
+
+  /**
+   * Gets the Headless Auth API ID token if present.
+   *
+   * @returns {Promise<string|null>}
+   */
+  async getHeadlessAuthApiIdToken () {
+    const tokenData = await this.userStorage.get('headlessAuthApiAccessToken')
+
+    return (tokenData || {}).idToken || null
+  }
+
+  /**
+   * Saves the Headless Auth API access token, including a refresh and an ID token to the user storage.
+   *
+   * @param {HeadlessAuthApiAccessToken} token
+   */
+  async setHeadlessAuthApiAccessToken (token) {
+    await this.userStorage.set('headlessAuthApiAccessToken', token)
+  }
+
+  /**
+   * Gets the Customer Account API access token from user storage or Headless Auth API if it has expired.
+   *
+   * @returns {Promise<{accessToken: string, expiresAt: string}|{expiresAt}|{accessToken}|*>}
+   */
+  async getCustomerAccountApiAccessToken () {
+    const tokenData = await this.userStorage.get('customerAccountApiAccessToken')
+
+    if (!tokenData || !tokenData.accessToken) {
+      throw new UnauthorizedError('Please log in again.')
+    }
+
+    if (tokenData.expiresAt && Date.parse(tokenData.expiresAt) > Date.now()) {
+      return tokenData
+    }
+
+    const authAccessToken = await this.getHeadlessAuthApiAccessToken()
+    const newToken = await this.headlessAuthApi.exchangeAccessToken(authAccessToken)
+
+    await this.setCustomerAccountApiAccessToken(newToken)
+
+    return newToken
+  }
+
+  /**
+   * Saves the Customer Account API access token to the user storage.
+   *
+   * @param {CustomerAccountApiAccessToken} token
+   */
+  async setCustomerAccountApiAccessToken (token) {
+    await this.userStorage.set('customerAccountApiAccessToken', token)
   }
 }

@@ -30,6 +30,7 @@
         ],
         "output": [
           {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "headlessAuthApiAccessToken", "id": "1065", "optional": true},
           {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true},
           {"key": "customerId", "id": "1090", "optional": true}
         ]
@@ -74,6 +75,7 @@
         "input": [
           {"key": "userId", "id": "1050"},
           {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "headlessAuthApiAccessToken", "id": "1065", "optional": true},
           {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true}
         ],
         "output": []

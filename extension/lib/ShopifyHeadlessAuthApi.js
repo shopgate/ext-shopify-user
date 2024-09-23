@@ -1,12 +1,11 @@
 const request = require('request-promise-native')
 const EXTENSION_VERSION = require('../package.json').version
 
-const REDIRECT_URI_SUCCESSFUL_LOGIN = '.../loggedIn'
 const USER_AGENT = `@shopgate/shopify-user/${EXTENSION_VERSION}`
 const CUSTOMER_ACCOUNT_API_AUDIENCE = '30243aa5-17c1-465a-8493-944bcc4e88aa'
 const CUSTOMER_ACCOUNT_API_SCOPES = 'https://api.customers.com/auth/customer.graphql'
 
-class ShopifyHeadlessApi {
+class ShopifyHeadlessAuthApi {
   /**
    * @param {string} shopId
    * @param {string} clientId
@@ -45,10 +44,10 @@ class ShopifyHeadlessApi {
   /**
    * @param {string} authorizationCode
    * @param {string} nonce
-   * @returns {Promise<{ token_type: string, access_token: string, expires_in: number, refresh_token: string, scope: string }>}
+   * @returns {Promise<HeadlessAuthApiAccessToken>}
    */
   async getAccessTokenByAuthCode (authorizationCode, nonce) {
-    return request({
+    const accessTokenResult = await request({
       method: 'POST',
       url: `${this.apiUrl}/token`,
       headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': USER_AGENT },
@@ -60,16 +59,47 @@ class ShopifyHeadlessApi {
       },
       json: true
     })
+
+    return {
+      accessToken: accessTokenResult.access_token,
+      expiresAt: new Date(Date.now() - accessTokenResult.expires_in * 1000).toISOString(),
+      refreshToken: accessTokenResult.refresh_token,
+      idToken: accessTokenResult.id_token
+    }
+  }
+
+  /**
+   * @param {string} refreshToken
+   * @returns {Promise<HeadlessAuthApiAccessToken>}
+   */
+  async getAccessTokenByRefreshToken (refreshToken) {
+    const accessTokenResult = await request({
+      method: 'POST',
+      url: `${this.apiUrl}/token`,
+      headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': USER_AGENT },
+      form: {
+        grant_type: 'refresh_token',
+        redirect_uri: this.redirectUri,
+        refresh_token: refreshToken
+      },
+      json: true
+    })
+
+    return {
+      accessToken: accessTokenResult.access_token,
+      refreshToken: accessTokenResult.refresh_token,
+      expiresAt: new Date(Date.now() - accessTokenResult.expires_in * 1000).toISOString()
+    }
   }
 
   /**
    * @param {string} accessToken
    * @param {string?} audience
    * @param {string?} scopes
-   * @returns {Promise<{ access_token: string }>}
+   * @returns {Promise<{ accessToken: string, expiresAt: string }>}
    */
   async exchangeAccessToken (accessToken, audience = CUSTOMER_ACCOUNT_API_AUDIENCE, scopes = CUSTOMER_ACCOUNT_API_SCOPES) {
-    return request({
+    const tokenData = await request({
       method: 'post',
       url: `${this.apiUrl}/token`,
       headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': this.userAgent },
@@ -82,7 +112,12 @@ class ShopifyHeadlessApi {
       },
       json: true
     })
+
+    return {
+      accessToken: tokenData.access_token,
+      expiresAt: new Date(Date.now() + tokenData.expires_in * 1000).toISOString()
+    }
   }
 }
 
-module.exports = ShopifyHeadlessApi
+module.exports = ShopifyHeadlessAuthApi
