@@ -18,7 +18,7 @@ class ShopifyHeadlessAuthApi {
     this.redirectUri = redirectUri
     this.userAgent = userAgent || USER_AGENT
 
-    this.apiUrl = `https://shopify.com/${shopId}/auth/oauth`
+    this.apiUrl = `https://shopify.com/${shopId}/auth`
     this.basicAuthCredentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
   }
 
@@ -29,7 +29,7 @@ class ShopifyHeadlessAuthApi {
    * @returns {string}
    */
   buildCustomerAuthorizationRedirectUrl (nonce, state = null, scopes = CUSTOMER_ACCOUNT_API_SCOPES) {
-    const url = new URL(`${this.apiUrl}/authorize`)
+    const url = new URL(`${this.apiUrl}/oauth/authorize`)
     url.searchParams.append('scope', `openid email ${scopes}`)
     url.searchParams.append('client_id', this.clientId)
     url.searchParams.append('response_type', 'code')
@@ -42,6 +42,17 @@ class ShopifyHeadlessAuthApi {
   }
 
   /**
+   * @param {string} idToken The ID token (JWT) that was passed along with the Headless Auth API access token.
+   * @returns {string}
+   */
+  buildCustomerLogoutUrl (idToken) {
+    const url = new URL(`${this.apiUrl}/logout`)
+    url.searchParams.append('id_token_hint', idToken)
+
+    return url.toString()
+  }
+
+  /**
    * @param {string} authorizationCode
    * @param {string} nonce
    * @returns {Promise<HeadlessAuthApiAccessToken>}
@@ -49,7 +60,7 @@ class ShopifyHeadlessAuthApi {
   async getAccessTokenByAuthCode (authorizationCode, nonce) {
     const accessTokenResult = await request({
       method: 'POST',
-      url: `${this.apiUrl}/token`,
+      url: `${this.apiUrl}/oauth/token`,
       headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': USER_AGENT },
       form: {
         grant_type: 'authorization_code',
@@ -75,7 +86,7 @@ class ShopifyHeadlessAuthApi {
   async getAccessTokenByRefreshToken (refreshToken) {
     const accessTokenResult = await request({
       method: 'POST',
-      url: `${this.apiUrl}/token`,
+      url: `${this.apiUrl}/oauth/token`,
       headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': USER_AGENT },
       form: {
         grant_type: 'refresh_token',
@@ -101,7 +112,7 @@ class ShopifyHeadlessAuthApi {
   async exchangeAccessToken (accessToken, audience = CUSTOMER_ACCOUNT_API_AUDIENCE, scopes = CUSTOMER_ACCOUNT_API_SCOPES) {
     const tokenData = await request({
       method: 'post',
-      url: `${this.apiUrl}/token`,
+      url: `${this.apiUrl}/oauth/token`,
       headers: { Authorization: `Basic ${this.basicAuthCredentials}`, 'User-Agent': this.userAgent },
       form: {
         grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',

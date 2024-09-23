@@ -77,6 +77,10 @@ module.exports = class ShopifyApiTokenManager {
     await this.userStorage.set('customerAccessToken', token)
   }
 
+  async deleteStorefrontApiCustomerAccessToken () {
+    await this.userStorage.del('customerAccessToken')
+  }
+
   /**
    * Gets the Headless Auth API access token from the user storage or API if expired.
    *
@@ -108,17 +112,6 @@ module.exports = class ShopifyApiTokenManager {
   }
 
   /**
-   * Gets the Headless Auth API refresh token if present.
-   *
-   * @returns {Promise<string|null>}
-   */
-  async getHeadlessAuthApiRefreshToken () {
-    const tokenData = await this.userStorage.get('headlessAuthApiAccessToken')
-
-    return (tokenData || {}).refreshToken || null
-  }
-
-  /**
    * Gets the Headless Auth API ID token if present.
    *
    * @returns {Promise<string|null>}
@@ -136,6 +129,10 @@ module.exports = class ShopifyApiTokenManager {
    */
   async setHeadlessAuthApiAccessToken (token) {
     await this.userStorage.set('headlessAuthApiAccessToken', token)
+  }
+
+  async deleteHeadlessAuthApiAccessToken () {
+    await this.userStorage.del('headlessAuthApiAccessToken')
   }
 
   /**
@@ -169,5 +166,9 @@ module.exports = class ShopifyApiTokenManager {
    */
   async setCustomerAccountApiAccessToken (token) {
     await this.userStorage.set('customerAccountApiAccessToken', token)
+  }
+
+  async deleteCustomerAccountApiAccessToken () {
+    await this.userStorage.del('customerAccountApiAccessToken')
   }
 }
