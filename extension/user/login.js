@@ -61,7 +61,7 @@ module.exports = async (context, input) => {
       // get the Storefront API customer access token via the Customer Accounts API
       const customerAccountsApi = ApiFactory.buildCustomerAccountApi(context)
       try {
-        const customerAccessTokenResponse = await customerAccountsApi.getCustomerAccessToken(customerAccountApiAccessToken.accessToken)
+        const customerAccessTokenResponse = await customerAccountsApi.getStorefrontApiCustomerAccessToken(customerAccountApiAccessToken.accessToken)
         storefrontApiCustomerAccessToken = { accessToken: customerAccessTokenResponse.data.storefrontCustomerAccessTokenCreate.customerAccessToken }
       } catch (err) {
         context.log.error(err, 'Error fetching Storefront API customer access token using Customer Account API')
