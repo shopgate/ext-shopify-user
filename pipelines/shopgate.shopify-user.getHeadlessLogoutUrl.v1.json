@@ -11,7 +11,7 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/getLogoutUrl.js",
+        "path": "@shopgate/shopify-user/user/getHeadlessLogoutUrl.js",
         "input": [],
         "output": [
           {"key": "logoutUrl", "id": "1000"}
