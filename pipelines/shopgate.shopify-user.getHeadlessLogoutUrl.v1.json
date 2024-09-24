@@ -1,7 +1,7 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "shopgate.user.getLogoutUrl.v1",
+    "id": "shopgate.shopify-user.getHeadlessLogoutUrl.v1",
     "public": true,
     "input": [],
     "output": [
