@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.getStorefrontApiCustomerAccessToken.v1",
+    "public": true,
+    "input": [],
+    "output": [
+      {"key": "storefrontApiCustomerAccessToken", "id": "1000"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/token/getStorefrontApiAccessToken.js",
+        "input": [],
+        "output": [
+          {"key": "storefrontApiCustomerAccessToken", "id": "1000"}
+        ]
+      }
+    ]
+  }
+}
