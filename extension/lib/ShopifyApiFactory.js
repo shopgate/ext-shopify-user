@@ -7,7 +7,7 @@ const ShopifyApiTokenManager = require('./ShopifyApiTokenManager')
 const ConfigHelper = require('../helper/config')
 
 /* semi-singletons */
-let headlessAuthApi
+let storefrontApi
 
 module.exports = class {
   /**
@@ -30,19 +30,19 @@ module.exports = class {
    * @returns {ShopifyStorefrontApi}
    */
   static buildStorefrontApi (context, tokenManager = null, adminApi = null) {
-    if (headlessAuthApi) return headlessAuthApi
+    if (storefrontApi) return storefrontApi
 
     const requestLogger = new ShopifyLogger(context.log)
     if (!tokenManager) tokenManager = this.buildShopifyApiTokenManager(context, adminApi)
 
-    headlessAuthApi = new ShopifyStorefrontApi(
+    storefrontApi = new ShopifyStorefrontApi(
       ConfigHelper.getBaseUrl(context.config),
       tokenManager,
       context.log,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
     )
 
-    return headlessAuthApi
+    return storefrontApi
   }
 
   static buildHeadlessAuthApi (context, userAgent = undefined) {
@@ -70,6 +70,7 @@ module.exports = class {
    */
   static buildShopifyApiTokenManager (context, adminApi = null, headlessAuthApi = null) {
     if (!adminApi) adminApi = this.buildAdminApi(context)
+    if (!headlessAuthApi) headlessAuthApi = this.buildHeadlessAuthApi(context)
 
     return new ShopifyApiTokenManager(
       context.storage.extension,
