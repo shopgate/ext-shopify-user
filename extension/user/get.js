@@ -42,7 +42,7 @@ async function _getCustomerFromStorefrontApi (context, tokenManager) {
 
     return ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
   } catch (err) {
-    context.log.error({ message: err.message }, 'Error getting customer data from Storefront API.')
+    context.log.error({ errorMessage: err.message }, 'Error getting customer data from Storefront API.')
   }
 }
 
@@ -67,6 +67,6 @@ async function _getCustomerFromCustomerAccountApi (context, customerAccountApiAc
       },
     )
   } catch (err) {
-    context.log.error({ message: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting customer data from Customer Account API.')
+    context.log.error({ errorMessage: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting customer data from Customer Account API.')
   }
 }

@@ -10,7 +10,5 @@ module.exports = async (context) => {
 
   const idToken = await tokenManager.getHeadlessAuthApiIdToken()
 
-  console.log(headlessAuthApi.buildCustomerLogoutUrl(idToken), '##############################################')
-
   return { logoutUrl: headlessAuthApi.buildCustomerLogoutUrl(idToken) }
 }

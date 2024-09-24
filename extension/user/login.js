@@ -46,7 +46,7 @@ module.exports = async (context, input) => {
       try {
         headlessAuthApiAccessToken = await headlessAuthApi.getAccessTokenByAuthCode(input.parameters.code, await context.storage.device.get('loginNonce'))
       } catch (err) {
-        context.log.error(err, 'Error fetching login access token')
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error fetching login access token')
         throw new UnauthorizedError('access token')
       }
 
@@ -54,7 +54,7 @@ module.exports = async (context, input) => {
       try {
         customerAccountApiAccessToken = await headlessAuthApi.exchangeAccessToken(headlessAuthApiAccessToken.accessToken)
       } catch (err) {
-        context.log.error(err, 'Error exchanging login access token for Customer Account API access token')
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error exchanging login access token for Customer Account API access token')
         throw new UnauthorizedError('exchange')
       }
 
@@ -64,7 +64,7 @@ module.exports = async (context, input) => {
         const customerAccessTokenResponse = await customerAccountsApi.getStorefrontApiCustomerAccessToken(customerAccountApiAccessToken.accessToken)
         storefrontApiCustomerAccessToken = { accessToken: customerAccessTokenResponse.data.storefrontCustomerAccessTokenCreate.customerAccessToken }
       } catch (err) {
-        context.log.error(err, 'Error fetching Storefront API customer access token using Customer Account API')
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error fetching Storefront API customer access token using Customer Account API')
         throw new UnauthorizedError('storefront access token')
       }
       break

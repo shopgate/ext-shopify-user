@@ -37,7 +37,7 @@ module.exports = async (context, input) => {
         const userData = ((userDataResult || {}).data || {}).customer || {}
         userId = userData.id ? userData.id.substring(23) : null // strip 'gid://shopify/Customer/'
       } catch (err) {
-        context.log.error(err, 'Error fetching user ID from Customer Account API: ' + err.message)
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error fetching user ID from Customer Account API')
         throw new UnauthorizedError()
       }
   }
