@@ -1,9 +1,8 @@
 const CryptoJS = require('crypto-js')
+const decodeJwt = require('../lib/decodeJwt')
 const ApiFactory = require('../lib/ShopifyApiFactory')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
-
-let lastUsedNonce
 
 /**
  * @param {SDKContext} context
@@ -40,22 +39,33 @@ module.exports = async (context, input) => {
         throw new UnauthorizedError()
       }
 
-      const headlessAuthApi = ApiFactory.buildHeadlessAuthApi(context)
+      // fetch the nonce from the device storage and delete it from there, so it's not reusable
+      const loginNonce = await context.storage.device.get('loginNonce')
+      await context.storage.device.del('loginNonce')
 
       // get access token using the incoming auth code
+      const headlessAuthApi = ApiFactory.buildHeadlessAuthApi(context)
       try {
-        headlessAuthApiAccessToken = await headlessAuthApi.getAccessTokenByAuthCode(input.parameters.code, await context.storage.device.get('loginNonce'))
+        headlessAuthApiAccessToken = await headlessAuthApi.getAccessTokenByAuthCode(input.parameters.code, loginNonce)
       } catch (err) {
-        context.log.error(err, 'Error fetching login access token')
-        throw new UnauthorizedError('access token')
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error fetching login access token')
+        throw new UnauthorizedError()
+      }
+
+      // verify nonce, which is included in the ID token (JWT)
+      const jwt = decodeJwt(headlessAuthApiAccessToken.idToken)
+      const incomingNonce = ((jwt || {}).payload || {}).nonce || null
+      if (incomingNonce !== loginNonce) {
+        context.log.error({ expectedNonce: loginNonce, incomingNonce }, 'No nonce or invalid nonce received while fetching login access token')
+        throw new UnauthorizedError()
       }
 
       // exchange access token for a personalized customer account API access token
       try {
         customerAccountApiAccessToken = await headlessAuthApi.exchangeAccessToken(headlessAuthApiAccessToken.accessToken)
       } catch (err) {
-        context.log.error(err, 'Error exchanging login access token for Customer Account API access token')
-        throw new UnauthorizedError('exchange')
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error exchanging login access token for Customer Account API access token')
+        throw new UnauthorizedError()
       }
 
       // get the Storefront API customer access token via the Customer Accounts API
@@ -64,8 +74,8 @@ module.exports = async (context, input) => {
         const customerAccessTokenResponse = await customerAccountsApi.getStorefrontApiCustomerAccessToken(customerAccountApiAccessToken.accessToken)
         storefrontApiCustomerAccessToken = { accessToken: customerAccessTokenResponse.data.storefrontCustomerAccessTokenCreate.customerAccessToken }
       } catch (err) {
-        context.log.error(err, 'Error fetching Storefront API customer access token using Customer Account API')
-        throw new UnauthorizedError('storefront access token')
+        context.log.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error fetching Storefront API customer access token using Customer Account API')
+        throw new UnauthorizedError()
       }
       break
     }
