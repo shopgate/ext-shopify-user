@@ -70,6 +70,7 @@ module.exports = class {
    */
   static buildShopifyApiTokenManager (context, adminApi = null, headlessAuthApi = null) {
     if (!adminApi) adminApi = this.buildAdminApi(context)
+    if (!headlessAuthApi) headlessAuthApi = this.buildHeadlessAuthApi(context)
 
     return new ShopifyApiTokenManager(
       context.storage.extension,

@@ -73,7 +73,7 @@ class ShopifyHeadlessAuthApi {
 
     return {
       accessToken: accessTokenResult.access_token,
-      expiresAt: new Date(Date.now() - accessTokenResult.expires_in * 1000).toISOString(),
+      expiresAt: new Date(Date.now() + accessTokenResult.expires_in * 1000).toISOString(),
       refreshToken: accessTokenResult.refresh_token,
       idToken: accessTokenResult.id_token
     }
@@ -99,7 +99,7 @@ class ShopifyHeadlessAuthApi {
     return {
       accessToken: accessTokenResult.access_token,
       refreshToken: accessTokenResult.refresh_token,
-      expiresAt: new Date(Date.now() - accessTokenResult.expires_in * 1000).toISOString()
+      expiresAt: new Date(Date.now() + accessTokenResult.expires_in * 1000).toISOString()
     }
   }
 
