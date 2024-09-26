@@ -5,16 +5,16 @@
     "public": true,
     "input": [],
     "output": [
-      {"key": "storefrontApiCustomerAccessToken", "id": "1000"}
+      {"key": "storefrontApiCustomerAccessToken", "id": "1000", "optional": true}
     ],
     "steps": [
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/token/getStorefrontApiAccessToken.js",
+        "path": "@shopgate/shopify-user/user/token/getStorefrontApiCustomerAccessToken.js",
         "input": [],
         "output": [
-          {"key": "storefrontApiCustomerAccessToken", "id": "1000"}
+          {"key": "storefrontApiCustomerAccessToken", "id": "1000", "optional": true}
         ]
       }
     ]

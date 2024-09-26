@@ -29,11 +29,18 @@ class ShopifyAdminApi {
 
     const token = response.storefront_access_tokens.find(token => token.title === title)
     if (typeof token !== 'undefined') {
-      return token
+      return token.access_token
     }
 
     // create a new access token, because no valid token was found at this point
-    return this.request('post', endpoint, '', { storefront_access_token: { title } })
+    const createTokenResult = await this.request('post', endpoint, '', { storefront_access_token: { title } })
+    const newToken = ((createTokenResult || {}).storefront_access_token || {}).access_token
+
+    if (!newToken) {
+      throw new Error('Invalid response from Shopify API.')
+    }
+
+    return newToken
   }
 
   /**
