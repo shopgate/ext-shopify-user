@@ -23,6 +23,13 @@
         "path": "@shopgate/shopify-user/user/token/deleteCustomerAccessTokens.js",
         "input": [],
         "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/clearCache.js",
+        "input": [],
+        "output": []
       }
     ]
   }
