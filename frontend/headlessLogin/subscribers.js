@@ -33,6 +33,20 @@ export default (subscribe) => {
     display: 'none',
   });
 
+  // Hide "Forgot Password" link in "My Profile" screen of @shopgate/user extensions
+  css.global('.route__user_profile div:has(>[data-test-id="link: /user/password"])', {
+    display: 'none',
+  });
+  // Selector with higher compatibility to hide "Forgot Password" link
+  css.global('.route__user_profile div[data-test-id="link: /user/password"]', {
+    display: 'none',
+  });
+
+  // Hide disabled password filed in "My Profile" screen of @shopgate/user extensions
+  css.global('.route__user_profile .ui-shared__form > div:has([type="password"])', {
+    display: 'none',
+  });
+
   subscribe(appWillStart$, () => {
     // Register for the login event dispatched by the landing page in the In-App-Browser
     registerEvents([SHOPIFY_HEADLESS_LOGIN_EVENT]);
