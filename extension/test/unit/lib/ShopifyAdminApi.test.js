@@ -1,6 +1,6 @@
 const nock = require('nock')
 const assert = require('assert')
-const AdminApi = require('../../../lib/shopify.api.admin')
+const ShopifyAdminApi = require('../../../lib/ShopifyAdminApi')
 const baseUrl = 'https://shopgate.myshopify.com'
 const dummyEndpoint = '/sample/endpoint'
 
@@ -8,7 +8,7 @@ describe('Shopify Admin API', () => {
   let subjectUnderTest
 
   beforeEach(done => {
-    subjectUnderTest = new AdminApi(baseUrl, 'accessToken', (requestOptions, response) => {})
+    subjectUnderTest = new ShopifyAdminApi(baseUrl, 'accessToken', (requestOptions, response) => {})
 
     done()
   })
@@ -50,7 +50,7 @@ describe('Shopify Admin API', () => {
           ]
         })
 
-      const actualToken = await subjectUnderTest.getStoreFrontAccessToken()
+      const actualToken = await subjectUnderTest.getStoreFrontAccessToken('Web Checkout Storefront Access Token')
 
       assert.deepStrictEqual(actualToken, expectedToken)
     })
@@ -70,7 +70,7 @@ describe('Shopify Admin API', () => {
         .post('/admin/api/2023-10/storefront_access_tokens.json')
         .reply(200, expectedToken)
 
-      const response = await subjectUnderTest.getStoreFrontAccessToken()
+      const response = await subjectUnderTest.getStoreFrontAccessToken('Web Checkout Storefront Access Token')
       assert.deepStrictEqual(response, expectedToken)
     })
   })

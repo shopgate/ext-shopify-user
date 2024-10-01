@@ -1,4 +1,4 @@
-const ApiFactory = require('../lib/shopify.api.factory')
+const ApiFactory = require('../lib/ShopifyApiFactory')
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 const InvalidCallError = require('../models/Errors/InvalidCallError')
 const _ = {
@@ -28,7 +28,7 @@ module.exports = async (context, input) => {
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
   const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
-  const customerAccessToken = await tokenManager.getCustomerAccessToken()
+  const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, _.omitBy(customer, _.isNil))
 }

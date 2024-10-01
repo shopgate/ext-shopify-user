@@ -4,7 +4,7 @@ const _ = {
   omitBy: require('lodash/omitBy'),
   isNil: require('lodash/isNil')
 }
-const ApiFactory = require('../../lib/shopify.api.factory')
+const ApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
  * @typedef {Object} input
@@ -20,7 +20,7 @@ module.exports = async (context, input) => {
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
   const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
-  const customerAccessToken = await tokenManager.getCustomerAccessToken()
+  const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   return storefrontApi.customerAddressUpdate(customerAccessToken.accessToken, input.id, createAddressUpdate(input))
 

@@ -6,5 +6,5 @@
  * @param input
  */
 module.exports = async (context, input) => {
-  context.storage.device.set('webLoginPhrase', input.phrase)
+  await context.storage.device.set('webLoginPhrase', input.phrase)
 }

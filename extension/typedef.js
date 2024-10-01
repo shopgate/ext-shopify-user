@@ -11,6 +11,10 @@
  * @typedef {Object} ExtensionConfig
  * @property {string} shopifyShopAlias
  * @property {string} shopifyAccessToken
+ * @property {string} shopifyShopId
+ * @property {string} shopifyHeadlessApiClientId
+ * @property {string} shopifyHeadlessApiClientSecret
+ * @property {string} shopifyHeadlessApiLoginRedirectUrl
  * @property {string} userRegistrationUrl
  * @property {string} userDataCacheTtl
  * @property {string} stage
@@ -99,9 +103,23 @@
  */
 
 /**
- * @typedef {Object} ShopifyCustomerAccessToken
+ * @typedef {Object} StorefrontApiCustomerAccessToken
  * @property {string} accessToken
+ * @property {string?} expiresAt Only set when fetching via Storefront API, not on Customer Account API
+ */
+
+/**
+ * @typedef {object} HeadlessAuthApiAccessToken
+ * @property {string} accessToken
+ * @property {string} refreshToken
  * @property {string} expiresAt
+ * @property {string?} idToken
+ */
+
+/**
+ * @typedef {Object} CustomerAccountApiAccessToken
+ * @property {string} accessToken
+ * @property {string?} expiresAt
  */
 
 /**

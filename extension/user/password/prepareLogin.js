@@ -3,8 +3,8 @@ const FieldValidationError = require('../../models/Errors/FieldValidationError')
 
 /**
  * @typedef {Object} PrepareLoginInput
- * @property {string} username - currently logged in user
- * @property {string} oldPassword - currently acive password
+ * @property {string} username - currently logged-in user
+ * @property {string} oldPassword - currently active password
  */
 /**
  * @param {SDKContext} context
