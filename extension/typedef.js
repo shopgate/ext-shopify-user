@@ -105,7 +105,7 @@
 /**
  * @typedef {Object} StorefrontApiCustomerAccessToken
  * @property {string} accessToken
- * @property {string?} expiresAt Only set when fetching via Storefront API, not on Customer Account API
+ * @property {string} expiresAt
  */
 
 /**

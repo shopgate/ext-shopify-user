@@ -2,7 +2,7 @@ const ShopifyApiFactory = require("../../lib/ShopifyApiFactory");
 
 /**
  * @param {SDKContext} context
- * @returns {Promise<{storefrontApiCustomerAccessToken?: {accessToken: string, expiresAt?: string}}|void>}
+ * @returns {Promise<{storefrontApiCustomerAccessToken?: StorefrontApiCustomerAccessToken}|void>}
  */
 module.exports = async (context) => {
   const tokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context)
@@ -27,7 +27,8 @@ module.exports = async (context) => {
 
     try {
       const customerAccountApi = ShopifyApiFactory.buildCustomerAccountApi(context)
-      storefrontApiCustomerAccessToken = await customerAccountApi.getStorefrontApiCustomerAccessToken(customerAccountApiAccessToken)
+      storefrontApiCustomerAccessToken = await customerAccountApi.getStorefrontApiCustomerAccessToken(customerAccountApiAccessToken.accessToken)
+      await tokenManager.setStorefrontApiCustomerAccessToken(storefrontApiCustomerAccessToken)
     } catch (err) {
       return
     }
