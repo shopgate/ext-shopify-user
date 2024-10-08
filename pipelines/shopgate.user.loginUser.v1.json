@@ -77,6 +77,13 @@
         "trusted": true,
         "input": [],
         "output": []
+      },
+      {
+        "type": "pipeline",
+        "id": "shopgate.cart.userLoggedIn.v1",
+        "trusted": false,
+        "input": [],
+        "output": []
       }
     ]
   }
