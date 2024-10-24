@@ -82,6 +82,7 @@ class ShopifyHeadlessAuthApi {
   /**
    * @param {string} refreshToken
    * @returns {Promise<HeadlessAuthApiAccessToken>}
+   * @throws Error on any request error
    */
   async getAccessTokenByRefreshToken (refreshToken) {
     const accessTokenResult = await request({

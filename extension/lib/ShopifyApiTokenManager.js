@@ -1,4 +1,5 @@
 const UnauthorizedError = require('../models/Errors/UnauthorizedError')
+const UnknownError = require('../models/Errors/UnknownError')
 
 module.exports = class ShopifyApiTokenManager {
   /**
@@ -14,6 +15,7 @@ module.exports = class ShopifyApiTokenManager {
     this.adminApi = adminApi
     this.headlessAuthApi = headlessAuthApi
     this.log = logger
+    this.userStorageNames = ['shopifyCartId', 'customerAccessToken', 'customerAccountApiAccessToken', 'headlessAuthApiAccessToken', 'userData']
   }
 
   /**
@@ -99,7 +101,23 @@ module.exports = class ShopifyApiTokenManager {
       return tokenData
     }
 
-    const newAccessToken = await this.headlessAuthApi.getAccessTokenByRefreshToken(tokenData.refreshToken)
+    let newAccessToken
+    try {
+      newAccessToken = await this.headlessAuthApi.getAccessTokenByRefreshToken(tokenData.refreshToken)
+    } catch (err) {
+      // refresh token invalid/expired:
+      if (err.statusCode === 400 && (err.error || {}).error === 'invalid_grant') {
+        await Promise.all(this.userStorageNames.map(setting => this.userStorage.del(setting)))
+        throw new UnauthorizedError('Please log in again')
+      }
+
+      this.log.error(
+        { errorMessage: err.message, code: err.code, statusCode: err.statusCode },
+        'Error getting a new Customer Account API access token using a refresh token'
+      )
+
+      throw new UnknownError()
+    }
 
     const headlessAuthApiAccessToken = {
       ...newAccessToken,
