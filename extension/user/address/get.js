@@ -8,6 +8,7 @@ const ApiFactory = require('../../lib/ShopifyApiFactory')
  */
 module.exports = async (context) => {
   if (!context.meta.userId) {
+    context.log.debug('No user ID set in meta data')
     throw new UnauthorizedError('Unauthorized user')
   }
 

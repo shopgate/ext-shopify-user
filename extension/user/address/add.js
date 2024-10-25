@@ -8,6 +8,7 @@ const { mapCustomAttributes } = require('../../lib/mapper')
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
+    context.log.debug('No user ID set in meta data')
     throw new UnauthorizedError('User is not logged in.')
   }
 

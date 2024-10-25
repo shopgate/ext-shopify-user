@@ -31,10 +31,10 @@ class ShopifyCustomerAccountsApi {
     })
 
     const accessToken = (((response || {}).data || {}).storefrontCustomerAccessTokenCreate || {}).customerAccessToken
-    if (!accessToken) throw new Error('Invalid response from Shopify when fetching Storefront API customer access token')
+    if (!accessToken) throw new Error('Invalid response from Shopify Customer Account API when fetching Storefront API customer access token')
 
     const { exp } = (decodeJwt(accessToken).payload || {})
-    if (!exp) throw new Error('Invalid iat/exp from Shopify Storefront API customer JWT')
+    if (!exp) throw new Error('Invalid iat/exp from Shopify Customer Account API when fetching Shopify Storefront API customer JWT')
 
     const expiresAt = new Date(exp * 1000).toISOString()
 

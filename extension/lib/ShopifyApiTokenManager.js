@@ -57,13 +57,13 @@ module.exports = class ShopifyApiTokenManager {
   async getStorefrontApiCustomerAccessToken () {
     const customerAccessToken = await this.userStorage.get('customerAccessToken')
     if (!customerAccessToken || !customerAccessToken.accessToken) {
+      this.log.debug('No Storefront API customer access token found in user storage')
       throw new UnauthorizedError('Please log in again.')
     }
 
     const now = Date.now()
     if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
-      this.log.info({ expiresAt: customerAccessToken.expiresAt }, 'Customer access token expired')
-
+      this.log.info({ expiresAt: customerAccessToken.expiresAt }, 'Storefront API customer access token expired')
       throw new UnauthorizedError('Please log in again.')
     }
 
@@ -94,6 +94,7 @@ module.exports = class ShopifyApiTokenManager {
     const tokenData = await this.userStorage.get('headlessAuthApiAccessToken')
 
     if (!tokenData || !tokenData.accessToken) {
+      this.log.debug('No Headless Auth API access token found in user storage')
       throw new UnauthorizedError('Please log in again.')
     }
 
@@ -107,6 +108,8 @@ module.exports = class ShopifyApiTokenManager {
     } catch (err) {
       // refresh token invalid/expired:
       if (err.statusCode === 400 && (err.error || {}).error === 'invalid_grant') {
+        this.log.debug('Error getting a new Customer Account API access token due to an invalid/expired refresh token')
+
         await Promise.all(this.userStorageNames.map(setting => this.userStorage.del(setting)))
         throw new UnauthorizedError('Please log in again')
       }
@@ -162,6 +165,7 @@ module.exports = class ShopifyApiTokenManager {
     const tokenData = await this.userStorage.get('customerAccountApiAccessToken')
 
     if (!tokenData || !tokenData.accessToken) {
+      this.log.debug('No Customer Account API access token found in user storage')
       throw new UnauthorizedError('Please log in again.')
     }
 

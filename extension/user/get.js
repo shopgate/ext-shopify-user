@@ -7,8 +7,8 @@ const ShopgateCustomer = require('../models/user/ShopgateCustomer')
  * @return {ShopgateCustomer}
  */
 module.exports = async function (context) {
-  // Check if there is a userId within the context.meta-data, if not the user is not logged
   if (!context.meta.userId) {
+    context.log.debug('No user ID set in meta data')
     throw new UnauthorizedError('Unauthorized user')
   }
 
@@ -20,15 +20,21 @@ module.exports = async function (context) {
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
 
-  const customerAccountApiAccessToken = await tokenManager.getCustomerAccountApiAccessToken()
-  const customerData = customerAccountApiAccessToken
-    ? await _getCustomerFromCustomerAccountApi(context, customerAccountApiAccessToken)
-    : await _getCustomerFromStorefrontApi(context)
+  let customerData
+  try {
+    const customerAccountApiAccessToken = await tokenManager.getCustomerAccountApiAccessToken()
+    customerData = customerAccountApiAccessToken
+      ? await _getCustomerFromCustomerAccountApi(context, customerAccountApiAccessToken)
+      : await _getCustomerFromStorefrontApi(context)
+  } catch (err) {
+    context.log.error({ errorMessage: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting Customer Account API access token')
+    throw err
+  }
 
   if (!customerData) return { id: null, mail: null }
 
   await context.storage.user.set('userData', {
-    ttl: (new Date()).getTime() + context.config.userDataCacheTtl, // cache for N microseconds
+    ttl: (new Date()).getTime() + context.config.userDataCacheTtl,
     user: customerData
   })
 
