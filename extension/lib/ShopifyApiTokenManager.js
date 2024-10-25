@@ -159,14 +159,14 @@ module.exports = class ShopifyApiTokenManager {
   /**
    * Gets the Customer Account API access token from user storage or Headless Auth API if it has expired.
    *
-   * @returns {Promise<{accessToken: string, expiresAt: string}|{expiresAt}|{accessToken}|*>}
+   * @returns {Promise<{accessToken: string, expiresAt: string}|void>}
    */
   async getCustomerAccountApiAccessToken () {
     const tokenData = await this.userStorage.get('customerAccountApiAccessToken')
 
     if (!tokenData || !tokenData.accessToken) {
       this.log.debug('No Customer Account API access token found in user storage')
-      throw new UnauthorizedError('Please log in again.')
+      return
     }
 
     if (tokenData.expiresAt && Date.parse(tokenData.expiresAt) > Date.now()) {

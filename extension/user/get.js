@@ -27,7 +27,7 @@ module.exports = async function (context) {
       ? await _getCustomerFromCustomerAccountApi(context, customerAccountApiAccessToken)
       : await _getCustomerFromStorefrontApi(context)
   } catch (err) {
-    context.log.error({ errorMessage: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting Customer Account API access token')
+    context.log.error({ errorMessage: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting customer data')
     throw err
   }
 
