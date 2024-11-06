@@ -17,7 +17,7 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
  * @returns {Promise<{storefrontApiCustomerAccessToken: StorefrontApiCustomerAccessToken, customerAccountsApiAccessToken?: CustomerAccountApiAccessToken, customerId?: string}>}
  */
 module.exports = async (context, input) => {
-  if (!['basic', 'web', 'facebook', 'twitter', 'shopifyHeadlessLogin', 'shopifyNewCustomerAccounts'].includes(input.strategy)) {
+  if (!['basic', 'web', 'shopifyHeadlessLogin', 'shopifyNewCustomerAccounts'].includes(input.strategy)) {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
