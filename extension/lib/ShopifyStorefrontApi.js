@@ -66,7 +66,7 @@ class ShopifyStorefrontApi {
 
   /**
    * @param {string} customerAccessToken
-   * @returns {Promise<ShopifyCustomer>}
+   * @returns {Promise<ShopifyStorefrontApiCustomer>}
    * @throws UnknownError upon unknown API errors.
    * @throws CustomerNotFoundError if a user with this token wasn't found.
    */

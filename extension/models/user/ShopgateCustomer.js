@@ -17,12 +17,12 @@ class ShopgateCustomer {
   }
 
   /**
-   * @param {ShopifyCustomer} shopifyCustomer
+   * @param {ShopifyStorefrontApiCustomer} shopifyCustomer
    * @return {ShopgateCustomer}
    */
-  static fromShopifyCustomer (shopifyCustomer) {
+  static fromShopifyStorefrontApiCustomer (shopifyCustomer) {
     return new ShopgateCustomer(
-      shopifyCustomer.id.substring(23),
+      ShopgateCustomer._extractNumericCustomerId(shopifyCustomer.id),
       shopifyCustomer.email,
       shopifyCustomer.firstName,
       shopifyCustomer.lastName,
@@ -30,6 +30,34 @@ class ShopgateCustomer {
         phone: shopifyCustomer.phone
       }
     )
+  }
+
+  /**
+   *
+   * @param {ShopifyCustomerAccountApiCustomer} shopifyCustomer
+   * @return ShopgateCustomer
+   */
+  static fromShopifyCustomerAccountApiCustomer (shopifyCustomer) {
+    return new ShopgateCustomer(
+      ShopgateCustomer._extractNumericCustomerId(shopifyCustomer.id),
+      (shopifyCustomer.emailAddress || {}).emailAddress,
+      shopifyCustomer.firstName,
+      shopifyCustomer.lastName,
+      {
+        phone: shopifyCustomer.phoneNumber
+      }
+    )
+  }
+
+  /**
+   * Cut off the prefix of "gid://shopify/Customer/" that is returned with every customer ID from Shopify GraphQL API.
+   *
+   * @param shopifyCustomerId
+   * @returns {string}
+   * @private
+   */
+  static _extractNumericCustomerId (shopifyCustomerId) {
+    return shopifyCustomerId.substring(23)
   }
 }
 

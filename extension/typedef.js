@@ -94,12 +94,21 @@
  */
 
 /**
- * @typedef {Object} ShopifyCustomer
+ * @typedef {Object} ShopifyStorefrontApiCustomer
  * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and since API version 2022-04 not base64 encoded anymore
  * @property {string} email
  * @property {string} firstName
  * @property {string} lastName
  * @property {string|null} phone
+ */
+
+/**
+ * @typedef {Object} ShopifyCustomerAccountApiCustomer
+ * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and since API version 2022-04 not base64 encoded anymore
+ * @property {{ emailAddress: string }?} emailAddress
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {string|null} phoneNumber
  */
 
 /**

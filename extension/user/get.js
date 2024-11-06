@@ -46,7 +46,7 @@ async function _getCustomerFromStorefrontApi (context, tokenManager) {
     const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
     const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
-    return ShopgateCustomer.fromShopifyCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
+    return ShopgateCustomer.fromShopifyStorefrontApiCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
   } catch (err) {
     context.log.error({ errorMessage: err.message }, 'Error getting customer data from Storefront API.')
   }
@@ -63,15 +63,7 @@ async function _getCustomerFromCustomerAccountApi (context, customerAccountApiAc
       return
     }
 
-    return new ShopgateCustomer(
-      customerData.id.substring(23),
-      (customerData.emailAddress || {}).emailAddress,
-      customerData.firstName,
-      customerData.lastName,
-      {
-        phone: customerData.phoneNumber
-      },
-    )
+    return ShopgateCustomer.fromShopifyCustomerAccountApiCustomer(customerData)
   } catch (err) {
     context.log.error({ errorMessage: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting customer data from Customer Account API.')
   }
