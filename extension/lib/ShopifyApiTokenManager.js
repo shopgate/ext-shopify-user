@@ -53,6 +53,7 @@ module.exports = class ShopifyApiTokenManager {
 
     const now = Date.now()
     if (customerAccessToken.expiresAt && Date.parse(customerAccessToken.expiresAt) <= now) {
+      await this.userStorage.del('customerAccessToken')
       this.log.info({ expiresAt: customerAccessToken.expiresAt }, 'Storefront API customer access token expired')
       throw new UnauthorizedError('Please log in again.')
     }
