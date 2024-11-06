@@ -10,7 +10,7 @@ class ShopifyCustomerAccountsApi {
    * @param {string} shopId
    * @param apiVersion
    */
-  constructor (shopId, apiVersion = '2024-07') {
+  constructor (shopId, apiVersion = '2024-10') {
     this.apiUrl = `https://shopify.com/${shopId}/account/customer/api/${apiVersion}/graphql`
   }
 
