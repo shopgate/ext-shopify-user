@@ -5,7 +5,8 @@ describe('extension / user / updateMail', () => {
   const context = {
     meta: {
       userId: null
-    }
+    },
+    log: { debug: () => {} }
   }
 
   it('should throw an unauthorized error if no user is logged in', async () => {

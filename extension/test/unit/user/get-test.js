@@ -5,7 +5,8 @@ describe('extension / user / get', () => {
   const context = {
     meta: {
       userId: null
-    }
+    },
+    log: { debug: () => {}, error: () => {} }
   }
 
   it('should throw an unauthorized error if no user is logged in', async () => {

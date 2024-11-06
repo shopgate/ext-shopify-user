@@ -5,7 +5,8 @@ describe('extension / user / requestShopifyUserId', () => {
   const context = {
     meta: {
       userId: null
-    }
+    },
+    log: { debug: () => {} }
   }
   const input = {}
 
