@@ -27,7 +27,7 @@ export const fetchHeadlessLoginUrl = () => async () => {
 };
 
 /**
- * Redux thunk to fetch  the logout url for the headless login strategy
+ * Redux thunk to fetch the logout url for the headless login strategy
  * @returns {Promise<string|null>}
  */
 export const fetchHeadlessLogoutUrl = () => async () => {
