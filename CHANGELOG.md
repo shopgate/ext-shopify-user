@@ -5,8 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.2.0] - 2024-11-07
 ### Added
 - password-less login via Shopify Auth API and Customer Account API ("new customer accounts")
+- enables usage of @shopgate/shopify-cart v3.0.0, utilizing Shopify Cart API over the deprecated Checkout API
+
+### Changed
+- uses Shopify API version 2024-10 on all endpoints
+
+### Removed
+- support for profile & address book features when using "new customer accounts" / password-less login
 
 ## [2.1.12] - 2023-10-30
 ### Changed
@@ -108,7 +117,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.12...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.0...HEAD
+[2.1.12]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.12...v2.2.0
 [2.1.12]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.11...v2.1.12
 [2.1.11]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.10...v2.1.11
 [2.1.10]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.9...v2.1.10
