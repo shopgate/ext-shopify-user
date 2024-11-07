@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- password-less login via Shopify Auth API and Customer Account API ("new customer accounts")
 
 ## [2.1.12] - 2023-10-30
 ### Changed

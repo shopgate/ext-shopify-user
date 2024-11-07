@@ -1,6 +1,6 @@
 module.exports = class {
   /**
-   * @param {context.log} logger The extension's context.log object.
+   * @param {SDKContextLog} logger The extension's context.log object.
    */
   constructor (logger) {
     this.logger = logger

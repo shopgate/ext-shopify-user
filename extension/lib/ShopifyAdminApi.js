@@ -1,14 +1,14 @@
-const jsonb = require('json-bigint-native')
-const requestp = require('request-promise-native')
+const request = require('request-promise-native')
 
-module.exports = class ShopifyAdminApi {
+class ShopifyAdminApi {
   /**
    * @param {string} shopUrl
    * @param {string} accessToken
    * @param {Function} requestLog
+   * @param {string?} apiVersion
    */
-  constructor (shopUrl, accessToken, requestLog) {
-    this.shop = shopUrl
+  constructor (shopUrl, accessToken, requestLog, apiVersion = '2024-10') {
+    this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/admin/api/${apiVersion}/`
     this.accessToken = accessToken
     this.requestLog = requestLog
   }
@@ -18,9 +18,9 @@ module.exports = class ShopifyAdminApi {
    * @returns {Promise<string>} The storefront access token.
    * @throws {Error} If the API returns an invalid response or an error occurs on the request.
    */
-  async getStoreFrontAccessToken (title = 'Web Checkout Storefront Access Token') {
-    const endpoint = '/admin/api/2023-10/storefront_access_tokens.json'
-    const response = await this.get(endpoint)
+  async getStoreFrontAccessToken (title) {
+    const endpoint = 'storefront_access_tokens.json'
+    const response = await this.request('get', endpoint)
 
     if (!Object.hasOwnProperty.call(response, 'storefront_access_tokens')) {
       throw new Error('Invalid response from Shopify API.')
@@ -28,49 +28,18 @@ module.exports = class ShopifyAdminApi {
 
     const token = response.storefront_access_tokens.find(token => token.title === title)
     if (typeof token !== 'undefined') {
-      return token
+      return token.access_token
     }
 
     // create a new access token, because no valid token was found at this point
-    return this.post(endpoint, {
-      storefront_access_token: {
-        title
-      }
-    })
-  }
+    const createTokenResult = await this.request('post', endpoint, '', { storefront_access_token: { title } })
+    const newToken = ((createTokenResult || {}).storefront_access_token || {}).access_token
 
-  /**
-   * @param {string} endpoint
-   * @param {string} query
-   */
-  async get (endpoint, query = '') {
-    return this.request('GET', endpoint, query)
-  }
+    if (!newToken) {
+      throw new Error('Invalid response from Shopify API.')
+    }
 
-  /**
-   * @param {string} endpoint
-   * @param {Object} data
-   * @param {string} query
-   */
-  async post (endpoint, data = {}, query = '') {
-    return this.request('POST', endpoint, query, data)
-  }
-
-  /**
-   * @param {string} endpoint
-   * @param {Object} data
-   * @param {string} query
-   */
-  async put (endpoint, data = {}, query = '') {
-    return this.request('PUT', endpoint, query, data)
-  }
-
-  /**
-   * @param {string} endpoint
-   * @param {string} query
-   */
-  async delete (endpoint, query) {
-    return this.request('DELETE', endpoint, query)
+    return newToken
   }
 
   /**
@@ -83,7 +52,7 @@ module.exports = class ShopifyAdminApi {
    */
   async request (method, endpoint, query = '', data = {}) {
     const options = {
-      uri: `${this.shop.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
+      uri: `${this.apiUrl}${endpoint.replace(/^\/+/, '')}${!query ? '' : '?' + query}`,
       method: method.toLowerCase() || 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -94,7 +63,7 @@ module.exports = class ShopifyAdminApi {
     }
 
     if (data && Object.keys(data).length) {
-      options.body = jsonb.stringify(data)
+      options.body = JSON.stringify(data)
     }
 
     if (this.accessToken) {
@@ -103,7 +72,7 @@ module.exports = class ShopifyAdminApi {
 
     let response
     try {
-      response = await requestp({ ...options, time: true })
+      response = await request({ ...options, time: true })
     } catch (err) {
       this.requestLog(options, {})
       throw err
@@ -112,7 +81,7 @@ module.exports = class ShopifyAdminApi {
 
     if (response.body.trim() === '') throw new Error('Empty response body.')
 
-    const body = jsonb.parse(response.body)
+    const body = JSON.parse(response.body)
 
     if (response.statusCode >= 400) {
       const error = new Error('Received non-2xx or -3xx HTTP status code.')
@@ -124,3 +93,5 @@ module.exports = class ShopifyAdminApi {
     return body
   }
 }
+
+module.exports = ShopifyAdminApi

@@ -11,6 +11,10 @@
  * @typedef {Object} ExtensionConfig
  * @property {string} shopifyShopAlias
  * @property {string} shopifyAccessToken
+ * @property {string} shopifyShopId
+ * @property {string} shopifyHeadlessApiClientId
+ * @property {string} shopifyHeadlessApiClientSecret
+ * @property {string} shopifyHeadlessApiLoginRedirectUrl
  * @property {string} userRegistrationUrl
  * @property {string} userDataCacheTtl
  * @property {string} stage
@@ -90,7 +94,7 @@
  */
 
 /**
- * @typedef {Object} ShopifyCustomer
+ * @typedef {Object} ShopifyStorefrontApiCustomer
  * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and since API version 2022-04 not base64 encoded anymore
  * @property {string} email
  * @property {string} firstName
@@ -99,9 +103,32 @@
  */
 
 /**
- * @typedef {Object} ShopifyCustomerAccessToken
+ * @typedef {Object} ShopifyCustomerAccountApiCustomer
+ * @property {string} id The user ID in the format "gid://shopify/Customer/<id>" and since API version 2022-04 not base64 encoded anymore
+ * @property {{ emailAddress: string }?} emailAddress
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {string|null} phoneNumber
+ */
+
+/**
+ * @typedef {Object} StorefrontApiCustomerAccessToken
  * @property {string} accessToken
  * @property {string} expiresAt
+ */
+
+/**
+ * @typedef {object} HeadlessAuthApiAccessToken
+ * @property {string} accessToken
+ * @property {string} refreshToken
+ * @property {string} expiresAt
+ * @property {string?} idToken
+ */
+
+/**
+ * @typedef {Object} CustomerAccountApiAccessToken
+ * @property {string} accessToken
+ * @property {string?} expiresAt
  */
 
 /**

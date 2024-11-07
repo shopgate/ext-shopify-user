@@ -1,0 +1,36 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.shopify-user.getHeadlessLogoutUrl.v1",
+    "public": true,
+    "input": [],
+    "output": [
+      { "key": "logoutUrl", "id": "1000" }
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/getHeadlessLogoutUrl.js",
+        "input": [],
+        "output": [
+          {"key": "logoutUrl", "id": "1000"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/token/deleteCustomerAccessTokens.js",
+        "input": [],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/clearCache.js",
+        "input": [],
+        "output": []
+      }
+    ]
+  }
+}

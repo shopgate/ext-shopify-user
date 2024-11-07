@@ -14,29 +14,15 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/initTaskScheduler.js",
-        "input": [],
-        "output": []
-      },
-      {
-        "type": "pipeline",
-        "id": "shopgate.cart.fetchShopifyCheckout.v1",
-        "trusted": false,
-        "input": [],
-        "output": [
-          {"key": "checkout", "id": "1"}
-        ]
-      },
-      {
-        "type": "extension",
-        "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/login.js",
         "input": [
           {"key": "strategy", "id": "1010"},
           {"key": "parameters", "id": "1020"}
         ],
         "output": [
-          {"key": "customerAccessToken", "id": "1060"},
+          {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "headlessAuthApiAccessToken", "id": "1065", "optional": true},
+          {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true},
           {"key": "customerId", "id": "1090", "optional": true}
         ]
       },
@@ -46,7 +32,8 @@
         "path": "@shopgate/shopify-user/user/requestShopifyUserId.js",
         "input": [
           {"key": "strategy", "id": "1010"},
-          {"key": "customerAccessToken", "id": "1060"},
+          {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true},
           {"key": "customerId", "id": "1090", "optional": true}
         ],
         "output": [
@@ -75,21 +62,14 @@
       {
         "type": "extension",
         "id": "@shopgate/shopify-user",
-        "path": "@shopgate/shopify-user/user/token/saveCustomerAccessToken.js",
+        "path": "@shopgate/shopify-user/user/token/saveCustomerAccessTokens.js",
         "input": [
           {"key": "userId", "id": "1050"},
-          {"key": "customerAccessToken", "id": "1060"}
+          {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
+          {"key": "headlessAuthApiAccessToken", "id": "1065", "optional": true},
+          {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true}
         ],
         "output": []
-      },
-      {
-        "type": "pipeline",
-        "id": "shopgate.cart.fetchShopifyCheckout.v1",
-        "trusted": false,
-        "input": [],
-        "output": [
-          {"key": "checkout", "id": "2"}
-        ]
       },
       {
         "type": "pipeline",
@@ -100,12 +80,9 @@
       },
       {
         "type": "pipeline",
-        "id": "shopgate.cart.migrateCartContents.v1",
+        "id": "shopgate.cart.userLoggedIn.v1",
         "trusted": false,
-        "input": [
-          {"key": "sourceCart", "id": "1"},
-          {"key": "targetCart", "id": "2"}
-        ],
+        "input": [],
         "output": []
       }
     ]

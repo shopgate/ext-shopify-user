@@ -1,5 +1,5 @@
 {
-  "version": "2.1.12",
+  "version": "2.2.0-beta.6",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "configuration": {
@@ -34,6 +34,61 @@
         "service": "config",
         "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
         "key": "value.backend.shopifyAccessToken"
+      }
+    },
+    "shopifyShopId": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyShopId"
+        }
+    },
+    "shopifyHeadlessApiClientId": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyHeadlessApi.clientId"
+      }
+    },
+    "shopifyHeadlessApiClientSecret": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyHeadlessApi.clientSecret"
+        }
+    },
+    "shopifyHeadlessApiLoginRedirectUrl": {
+        "type": "bigApi",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "method": "GET",
+          "service": "config",
+          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+          "key": "value.backend.shopifyHeadlessApi.loginRedirectUrl"
+      }
+    },
+    "shopifyLoginStrategy": {
+      "type": "bigApi",
+      "destination": "frontend",
+      "default": "basic",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.shopifyLoginStrategy"
       }
     },
     "getUserAccountSettings": {
@@ -192,6 +247,17 @@
     }
   },
   "components": [
+    {
+      "id": "ShopifyHeadlessLogin",
+      "target": "app.routes",
+      "type": "portals",
+      "path": "frontend/headlessLogin/routes/LoginScreen/index.jsx"
+    },
+    {
+      "id": "HeadlessLoginSubscriptions",
+      "path": "frontend/headlessLogin/subscribers.js",
+      "type": "subscribers"
+    },
     {
       "id": "RegisterSubscription",
       "path": "frontend/Register/subscribers.js",

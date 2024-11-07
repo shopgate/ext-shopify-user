@@ -3,7 +3,8 @@ const updatePassword = require('../../../../user/password/update')
 
 describe('user / password / update', () => {
   const context = {
-    meta: {}
+    meta: {},
+    log: { debug: () => {} }
   }
   const input = {}
 

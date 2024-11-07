@@ -1,5 +1,5 @@
 const UnauthorizedError = require('../../models/Errors/UnauthorizedError')
-const ApiFactory = require('../../lib/shopify.api.factory')
+const ApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
  * @typedef {Object} input
@@ -11,13 +11,14 @@ const ApiFactory = require('../../lib/shopify.api.factory')
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
+    context.log.debug('No user ID set in meta data')
     throw new UnauthorizedError('User is not logged in.')
   }
 
   if (input.tags && input.tags.includes('default')) {
     const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
     const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
-    const customerAccessToken = await tokenManager.getCustomerAccessToken()
+    const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
     return storefrontApi.customerDefaultAddressUpdate(customerAccessToken.accessToken, input.id)
   }

@@ -9,15 +9,16 @@ const _ = {
   get: require('lodash/get')
 }
 
-module.exports = class {
+class ShopifyStorefrontApi {
   /**
    * @param {string} shopUrl
    * @param {ShopifyApiTokenManager} shopifyApiTokenManager
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
+   * @param {string?} apiVersion
    */
-  constructor (shopUrl, shopifyApiTokenManager, logger, requestLog) {
-    this.apiUrl = `${shopUrl}/api/2023-10/graphql`
+  constructor (shopUrl, shopifyApiTokenManager, logger, requestLog, apiVersion = '2024-10') {
+    this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/api/${apiVersion}/graphql`
     this.tokenManager = shopifyApiTokenManager
     this.logger = logger
     this.requestLog = requestLog
@@ -26,7 +27,7 @@ module.exports = class {
   /**
    * @param {string} login
    * @param {string} password
-   * @return {Promise<ShopifyCustomerAccessToken>}
+   * @return {Promise<StorefrontApiCustomerAccessToken>}
    */
   async getCustomerAccessToken (login, password) {
     const query = 'mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) ' +
@@ -46,12 +47,12 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error creating customer access token.', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error creating customer access token.')
       throw new UnknownError()
     }
 
     if (!response.body && !response.body.data) {
-      this.logger.error(`No token received for login credentials: ${variables.input.login} / XXXXXXXX`)
+      this.logger.error({ login, password: 'XXXXXXXX' }, 'No token received for login credentials.')
       throw new UnknownError()
     }
 
@@ -65,41 +66,7 @@ module.exports = class {
 
   /**
    * @param {string} customerAccessToken
-   * @returns {Promise<ShopifyCustomerAccessToken>}
-   */
-  async renewCustomerAccessToken (customerAccessToken) {
-    const query = 'mutation customerAccessTokenRenew($customerAccessToken: String!) {' +
-      'customerAccessTokenRenew(customerAccessToken: $customerAccessToken) {' +
-      'userErrors {field message} customerAccessToken {accessToken expiresAt}' +
-      '}},'
-
-    const variables = { customerAccessToken }
-    const operationName = 'customerAccessTokenRenew'
-
-    let response
-    try {
-      response = await this.request(query, variables, operationName)
-    } catch (err) {
-      this.logger.error('Error renewing customer access token.', err)
-      throw new UnknownError()
-    }
-
-    if (!response.body.data) {
-      this.logger.error(`No token received for login credentials: ${variables.input.login} / XXXXXXXX`)
-      throw new UnknownError()
-    }
-
-    const errorMessage = _.get(response, `body.data.${operationName}.userErrors[0].message`)
-    if (errorMessage) {
-      throw new TokenRenewError(errorMessage)
-    }
-
-    return response.body.data.customerAccessTokenRenew.customerAccessToken
-  }
-
-  /**
-   * @param {string} customerAccessToken
-   * @returns {Promise<ShopifyCustomer>}
+   * @returns {Promise<ShopifyStorefrontApiCustomer>}
    * @throws UnknownError upon unknown API errors.
    * @throws CustomerNotFoundError if a user with this token wasn't found.
    */
@@ -135,7 +102,7 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error customer get addresses.', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error customer get addresses.')
       throw new UnknownError()
     }
 
@@ -143,9 +110,7 @@ module.exports = class {
       const { body: { errors, data } } = response
 
       if (Array.isArray(errors)) {
-        errors.forEach(item => {
-          this.logger.error('Error get customer address.', item.message)
-        })
+        this.logger.error({ errorMessages: errors.map(error => error.message || 'n/a') }, 'Error get customer address.')
         throw new UnknownError()
       }
 
@@ -173,15 +138,13 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error creating a customer\'s address', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error creating a customer address')
       throw new UnknownError()
     }
 
     const errors = _.get(response, 'body.errors')
     if (errors && Array.isArray(errors)) {
-      errors.forEach(item => {
-        this.logger.error('Error creating a customer\'s address', item.message)
-      })
+      this.logger.error({ errorMessages: errors.map(error => error.message || '') }, 'Error creating a customer address')
       throw new UnknownError()
     }
 
@@ -190,7 +153,7 @@ module.exports = class {
 
     const customerAddress = _.get(response, `body.data.${operationName}.customerAddress`)
     if (!customerAddress) {
-      this.logger.error('No address ID returned in the request')
+      this.logger.error('No address ID returned when trying to create customer address')
       throw new UnknownError()
     }
 
@@ -215,15 +178,13 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error deleting a customer\'s address', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error deleting a customer address')
       throw new UnknownError()
     }
 
     const errors = _.get(response, 'body.errors')
     if (errors && Array.isArray(errors)) {
-      errors.forEach(item => {
-        this.logger.error('Error deleting a customer\'s address', item.message)
-      })
+      this.logger.error({ errorMessages: errors.map(error => error.message || '')}, 'Error deleting a customer address')
       throw new UnknownError()
     }
 
@@ -251,15 +212,13 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error setting the default customer address', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error setting the default customer address')
       throw new UnknownError()
     }
 
     const errors = _.get(response, 'body.errors')
     if (errors && Array.isArray(errors)) {
-      errors.forEach(item => {
-        this.logger.error('Error setting the default customer address', item.message)
-      })
+      this.logger.error({ errorMessages: errors.map(error => error.message || '') }, 'Error setting the default customer address')
       throw new UnknownError()
     }
 
@@ -288,15 +247,13 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error updating customer\'s address.', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error updating customer address.')
       throw new UnknownError()
     }
 
     const errors = _.get(response, 'body.errors')
     if (errors && Array.isArray(errors)) {
-      errors.forEach(item => {
-        this.logger.error('Error updating customer\'s address.', item.message)
-      })
+      this.logger.error({ errorMessages: errors.map(error => error.message || '') }, 'Error updating customer address.')
       throw new UnknownError()
     }
 
@@ -324,7 +281,7 @@ module.exports = class {
     try {
       response = await this.request(query, variables, operationName)
     } catch (err) {
-      this.logger.error('Error updating customer data.', err)
+      this.logger.error({ errorMessage: err.message, statusCode: err.statusCode, code: err.code }, 'Error updating customer data.')
       throw new UnknownError()
     }
 
@@ -347,7 +304,7 @@ module.exports = class {
    * @returns {Promise<Object>}
    */
   async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
-    const currentAccessToken = await this.tokenManager.getStorefrontAccessToken()
+    const currentAccessToken = await this.tokenManager.getStorefrontApiAccessToken()
 
     const options = {
       method: 'POST',
@@ -383,12 +340,10 @@ module.exports = class {
     }
 
     if ((response.statusCode === 401 || response.statusCode === 403) && recursiveCalls < 2) {
-      const newToken = await this.tokenManager.fetchStorefrontAccessToken()
+      const newToken = await this.tokenManager.getStorefrontApiAccessToken(false)
       if (currentAccessToken === newToken) {
         throw new UnknownError('Error accessing the storefront with given storefront access token.')
       }
-
-      await this.tokenManager.setStorefrontAccessToken(newToken)
 
       return this.request(query, variables, operationName, recursiveCalls + 1)
     }
@@ -428,3 +383,5 @@ module.exports = class {
     }
   }
 }
+
+module.exports = ShopifyStorefrontApi
