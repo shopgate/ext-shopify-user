@@ -31,6 +31,8 @@ module.exports = class {
    * @returns {ShopifyStorefrontApi}
    */
   static buildStorefrontApi (context, sgxsMeta, tokenManager = null, adminApi = null) {
+    const { deviceIp } = sgxsMeta || {}
+
     if (storefrontApi) return storefrontApi
 
     const requestLogger = new ShopifyLogger(context.log)
@@ -39,7 +41,7 @@ module.exports = class {
     storefrontApi = new ShopifyStorefrontApi(
       ConfigHelper.getBaseUrl(context.config),
       tokenManager,
-      sgxsMeta.deviceIp,
+      deviceIp,
       context.log,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
     )

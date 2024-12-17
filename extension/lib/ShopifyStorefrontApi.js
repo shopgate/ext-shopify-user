@@ -23,6 +23,8 @@ class ShopifyStorefrontApi {
     this.buyerIp = buyerIp
     this.logger = logger
     this.requestLog = requestLog
+
+    if (!buyerIp) logger.warn('No buyer IP passed')
   }
 
   /**
