@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- sending the buyer IP along with Storefront API requests as per requirement by Shopify to maintain a consistent checkout experience
 
 ## [2.2.0] - 2024-11-07
 ### Added
