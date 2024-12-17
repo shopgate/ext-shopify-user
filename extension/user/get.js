@@ -4,9 +4,10 @@ const ShopgateCustomer = require('../models/user/ShopgateCustomer')
 
 /**
  * @param {SDKContext} context
+ * @param {{ sgxsMeta: SgxsMeta }} input
  * @return {ShopgateCustomer}
  */
-module.exports = async function (context) {
+module.exports = async function (context, { sgxsMeta }) {
   if (!context.meta.userId) {
     context.log.debug('No user ID set in meta data')
     throw new UnauthorizedError('Unauthorized user')
@@ -25,7 +26,7 @@ module.exports = async function (context) {
     const customerAccountApiAccessToken = await tokenManager.getCustomerAccountApiAccessToken()
     customerData = customerAccountApiAccessToken
       ? await _getCustomerFromCustomerAccountApi(context, customerAccountApiAccessToken)
-      : await _getCustomerFromStorefrontApi(context, tokenManager)
+      : await _getCustomerFromStorefrontApi(context, sgxsMeta, tokenManager)
   } catch (err) {
     context.log.error({ errorMessage: err.message, code: err.code, statusCode: err.statusCode }, 'Error getting customer data')
     throw err
@@ -41,9 +42,9 @@ module.exports = async function (context) {
   return customerData
 }
 
-async function _getCustomerFromStorefrontApi (context, tokenManager) {
+async function _getCustomerFromStorefrontApi (context, sgxsMeta, tokenManager) {
   try {
-    const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+    const storefrontApi = ApiFactory.buildStorefrontApi(context, sgxsMeta, tokenManager)
     const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
     return ShopgateCustomer.fromShopifyStorefrontApiCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))

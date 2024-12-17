@@ -4,6 +4,7 @@
     "id": "shopgate.user.deleteAddresses.v1",
     "public": true,
     "input": [
+      {"key": "sgxsMeta", "id": "100", "optional": true},
       {"key": "ids", "id": "10"}
     ],
     "output": [],
@@ -13,6 +14,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/address/delete.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {"key": "ids", "id": "10"}
         ],
         "output": []

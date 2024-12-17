@@ -70,11 +70,12 @@
 /**
  * @typedef {Object} SgxsMeta
  * @property {string} sessionId
+ * @property {string} deviceIp
  */
 
 // ========= Shopify Specifics ==========
 /**
- * @typedef {Object} ShopifyAddress
+ * @typedef {Object} ShopifyStorefrontApiCustomerAddress
  * @property {Object} address
  * @property {number} [id]
  * @property {string} [address1]
@@ -132,14 +133,14 @@
  */
 
 /**
- * @typedef {Object} ShopifyCustomerUpdateResponse
+ * @typedef {Object} ShopifyStorefrontApiCustomerUpdateResponse
  * @property {Object} ShopifyCustomerAccessToken
  * @property {Object} ShopifyCustomer
  */
 
 // ========= Shopgate Specifics ==========
 /**
- * @typedef {Object} ShopgateAddress
+ * @typedef {Object} ShopgateUserAddress
  * @property {Object} address
  * @property {number} [id]
  * @property {string} [street1]

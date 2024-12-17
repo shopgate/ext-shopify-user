@@ -17,9 +17,10 @@ class ShopifyStorefrontApi {
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    * @param {string?} apiVersion
    */
-  constructor (shopUrl, shopifyApiTokenManager, logger, requestLog, apiVersion = '2024-10') {
+  constructor (shopUrl, shopifyApiTokenManager, buyerIp, logger, requestLog, apiVersion = '2024-10') {
     this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/api/${apiVersion}/graphql`
     this.tokenManager = shopifyApiTokenManager
+    this.buyerIp = buyerIp
     this.logger = logger
     this.requestLog = requestLog
   }
@@ -264,7 +265,7 @@ class ShopifyStorefrontApi {
   /**
    * @param {string} customerAccessToken
    * @param {Object} customer
-   * @returns {Promise<ShopifyCustomerUpdateResponse>}
+   * @returns {Promise<ShopifyStorefrontApiCustomerUpdateResponse>}
    * @throws UnknownError upon unknown API errors.
    * @throws FieldValidationError - If data could not be updated, because of validation errors from Shopify
    */
@@ -306,15 +307,19 @@ class ShopifyStorefrontApi {
   async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
     const currentAccessToken = await this.tokenManager.getStorefrontApiAccessToken()
 
+    const headers = {
+      'cache-control': 'no-cache',
+      'x-shopify-storefront-access-token': currentAccessToken,
+      accept: 'application/json',
+      'content-type': 'application/json'
+    }
+
+    if (this.buyerIp) headers['Shopify-Storefront-Buyer-IP'] = this.buyerIp
+
     const options = {
       method: 'POST',
       uri: this.apiUrl,
-      headers: {
-        'cache-control': 'no-cache',
-        'x-shopify-storefront-access-token': currentAccessToken,
-        accept: 'application/json',
-        'content-type': 'application/json'
-      },
+      headers,
       body: {
         query,
         variables,

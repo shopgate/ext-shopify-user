@@ -3,7 +3,9 @@
   "pipeline": {
     "id": "shopgate.user.getAddresses.v1",
     "public": true,
-    "input": [],
+    "input": [
+      {"key": "sgxsMeta", "id": "100", "optional": true}
+    ],
     "output": [
       {"key": "addresses", "id": "10"}
     ],
@@ -12,7 +14,9 @@
         "type": "extension",
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/address/get.js",
-        "input": [],
+        "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true}
+        ],
         "output": [
           {"key": "addresses", "id": "10"}
         ]
