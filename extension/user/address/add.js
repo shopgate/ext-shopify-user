@@ -4,7 +4,7 @@ const { mapCustomAttributes } = require('../../lib/mapper')
 
 /**
  * @param {SDKContext} context
- * @param {Object} input
+ * @param {ShopgateUserAddress & { sgxsMeta: SgxsMeta }} input
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
@@ -25,7 +25,7 @@ module.exports = async (context, input) => {
   }
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.sgxsMeta, tokenManager)
   const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   return storefrontApi.customerAddressCreate(customerAccessToken.accessToken, newAddress)

@@ -14,6 +14,7 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
  * @param {string} input.parameters.customerId The customer's ID sent by app when using strategy "web".
  * @param {string} input.parameters.payload Encrypted login data sent by app when using strategy "web".
  * @param {string} input.parameters.code The auth code provided by Shopify after successful log in (shopifyHeadlessLogin).
+ * @param {SgxsMeta} input.sgxsMeta
  * @returns {Promise<{storefrontApiCustomerAccessToken: StorefrontApiCustomerAccessToken, customerAccountsApiAccessToken?: CustomerAccountApiAccessToken, customerId?: string}>}
  */
 module.exports = async (context, input) => {
@@ -21,7 +22,7 @@ module.exports = async (context, input) => {
     throw new InvalidCallError(`Invalid call: Authentication strategy: '${input.strategy}' not supported`)
   }
 
-  const storefrontApi = ApiFactory.buildStorefrontApi(context)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.sgxsMeta)
 
   let storefrontApiCustomerAccessToken
   let headlessAuthApiAccessToken

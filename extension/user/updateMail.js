@@ -3,8 +3,8 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
 
 /**
  * @param {SDKContext} context
- * @param {UpdateMailInput} input
- * @return {Promise<ShopifyCustomerUpdateResponse>}
+ * @param {{ mail: string, sgxsMeta: SgxsMeta }} input
+ * @return {Promise<ShopifyStorefrontApiCustomerUpdateResponse>}
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
@@ -13,7 +13,7 @@ module.exports = async (context, input) => {
   }
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.sgxsMeta, tokenManager)
   const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   return storefrontApi.updateCustomerByAccessToken(customerAccessToken.accessToken, { email: input.mail })

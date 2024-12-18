@@ -4,6 +4,7 @@
     "id": "shopgate.user.updateUser.v1",
     "public": true,
     "input": [
+      {"key": "sgxsMeta", "id": "100", "optional": true},
       {"key": "firstName", "id": "110", "optional": true},
       {"key": "lastName", "id": "120", "optional": true},
       {"key": "customAttributes", "id": "130", "optional": true}
@@ -16,6 +17,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/update.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {"key": "firstName", "id": "110", "optional": true},
           {"key": "lastName", "id": "120", "optional": true},
           {"key": "customAttributes", "id": "130", "optional": true}

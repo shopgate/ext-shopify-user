@@ -26,10 +26,13 @@ module.exports = class {
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
    * @param {ShopifyApiTokenManager?} tokenManager
+   * @param {{ sessionId: string, deviceIp: string }} sgxsMeta
    * @param {ShopifyAdminApi?} adminApi
    * @returns {ShopifyStorefrontApi}
    */
-  static buildStorefrontApi (context, tokenManager = null, adminApi = null) {
+  static buildStorefrontApi (context, sgxsMeta, tokenManager = null, adminApi = null) {
+    const { deviceIp } = sgxsMeta || {}
+
     if (storefrontApi) return storefrontApi
 
     const requestLogger = new ShopifyLogger(context.log)
@@ -38,6 +41,7 @@ module.exports = class {
     storefrontApi = new ShopifyStorefrontApi(
       ConfigHelper.getBaseUrl(context.config),
       tokenManager,
+      deviceIp,
       context.log,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
     )

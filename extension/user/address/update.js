@@ -7,11 +7,8 @@ const _ = {
 const ApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
- * @typedef {Object} input
- * @property {string} id - id of Shopify address to update
- *
  * @param {SDKContext} context
- * @param input
+ * @param {ShopgateUserAddress & { id: string, sgxsMeta: SgxsMeta }} input
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
@@ -20,15 +17,15 @@ module.exports = async (context, input) => {
   }
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, input.sgxsMeta, tokenManager)
   const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   return storefrontApi.customerAddressUpdate(customerAccessToken.accessToken, input.id, createAddressUpdate(input))
 
   /**
    * Map the input address values to fit the Shopify specifications for the api endpoint
-   * @param {ShopgateAddress} input
-   * @returns {ShopifyAddress}
+   * @param {ShopgateUserAddress} input
+   * @returns {ShopifyStorefrontApiCustomerAddress}
    */
   function createAddressUpdate (input) {
     const newAddress = {

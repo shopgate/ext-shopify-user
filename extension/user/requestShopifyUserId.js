@@ -9,6 +9,7 @@ const UnauthorizedError = require('../models/Errors/UnauthorizedError')
  * @param {StorefrontApiCustomerAccessToken?} input.storefrontApiCustomerAccessToken
  * @param {CustomerAccountApiAccessToken?} input.customerAccountApiAccessToken
  * @param {string?} input.customerId
+ * @param {SgxsMeta} input.sgxsMeta
  * @return {Promise<{userId: string}>}
  */
 module.exports = async (context, input) => {
@@ -25,7 +26,7 @@ module.exports = async (context, input) => {
       break
 
     case 'basic':
-      const storefrontApi = ApiFactory.buildStorefrontApi(context)
+      const storefrontApi = ApiFactory.buildStorefrontApi(context, input.sgxsMeta)
       userId = (await storefrontApi.getCustomerByAccessToken(input.storefrontApiCustomerAccessToken.accessToken))
         .id.substring(23) // strip 'gid://shopify/Customer/'
       break

@@ -4,6 +4,7 @@
     "id": "shopgate.user.addAddress.v1",
     "public": true,
     "input": [
+      {"key": "sgxsMeta", "id": "100", "optional": true},
       {"key": "firstName", "id": "102", "optional": true},
       {"key": "lastName", "id": "104", "optional": true},
       {"key": "street1", "id": "108"},
@@ -22,6 +23,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/address/add.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {"key": "firstName", "id": "102", "optional": true},
           {"key": "lastName", "id": "104", "optional": true},
           {"key": "street1", "id": "108"},
@@ -41,6 +43,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/address/setDefault.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {"key": "id", "id": "3"},
           {"key": "tags", "id": "114", "optional": true}
         ],

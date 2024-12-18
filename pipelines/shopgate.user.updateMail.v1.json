@@ -4,6 +4,7 @@
     "id": "shopgate.user.updateMail.v1",
     "public": true,
     "input": [
+      {"key": "sgxsMeta", "id": "100", "optional": true},
       {
         "key": "mail",
         "id": "10"
@@ -16,6 +17,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/updateMail.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {
             "key": "mail",
             "id": "10"

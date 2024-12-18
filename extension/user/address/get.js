@@ -3,17 +3,18 @@ const ApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
  * @param {SDKContext} context
+ * @param {{ sgxsMeta: SgxsMeta }} input
  *
- * @return {Promise<{addresses: ShopgateAddress[]}>}
+ * @return {Promise<{addresses: ShopgateUserAddress[]}>}
  */
-module.exports = async (context) => {
+module.exports = async (context, { sgxsMeta }) => {
   if (!context.meta.userId) {
     context.log.debug('No user ID set in meta data')
     throw new UnauthorizedError('Unauthorized user')
   }
 
   const tokenManager = ApiFactory.buildShopifyApiTokenManager(context)
-  const storefrontApi = ApiFactory.buildStorefrontApi(context, tokenManager)
+  const storefrontApi = ApiFactory.buildStorefrontApi(context, sgxsMeta, tokenManager)
   const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
   const result = await storefrontApi.customerAddressesGet(customerAccessToken.accessToken)

@@ -4,6 +4,7 @@
     "id": "shopgate.user.loginUser.v1",
     "public": true,
     "input": [
+      {"key": "sgxsMeta", "id": "100", "optional": true},
       {"key": "strategy", "id": "1010"},
       {"key": "parameters", "id": "1020"}
     ],
@@ -16,6 +17,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/login.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {"key": "strategy", "id": "1010"},
           {"key": "parameters", "id": "1020"}
         ],
@@ -31,6 +33,7 @@
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/requestShopifyUserId.js",
         "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true},
           {"key": "strategy", "id": "1010"},
           {"key": "storefrontApiCustomerAccessToken", "id": "1060"},
           {"key": "customerAccountApiAccessToken", "id": "1070", "optional": true},

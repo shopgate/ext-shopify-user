@@ -3,7 +3,9 @@
   "pipeline": {
     "id": "shopgate.user.getUser.v1",
     "public": true,
-    "input": [],
+    "input": [
+      {"key":  "sgxsMeta", "id": "100", "optional": true}
+    ],
     "output": [
       {"key": "id", "id": "1010"},
       {"key": "mail", "id": "1020"},
@@ -18,7 +20,9 @@
         "type": "extension",
         "id": "@shopgate/shopify-user",
         "path": "@shopgate/shopify-user/user/get.js",
-        "input": [],
+        "input": [
+          {"key":  "sgxsMeta", "id": "100", "optional": true}
+        ],
         "output": [
           {"key": "id", "id": "1010"},
           {"key": "mail", "id": "1020"},
