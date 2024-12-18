@@ -85,7 +85,9 @@
         "type": "pipeline",
         "id": "shopgate.cart.userLoggedIn.v1",
         "trusted": false,
-        "input": [],
+        "input": [
+          {"key": "sgxsMeta", "id": "100", "optional": true}
+        ],
         "output": []
       }
     ]
