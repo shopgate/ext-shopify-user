@@ -6,9 +6,6 @@ const ShopifyLogger = require('./logger')
 const ShopifyApiTokenManager = require('./ShopifyApiTokenManager')
 const ConfigHelper = require('../helper/config')
 
-/* semi-singletons */
-let storefrontApi
-
 module.exports = class {
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
@@ -33,20 +30,16 @@ module.exports = class {
   static buildStorefrontApi (context, sgxsMeta, tokenManager = null, adminApi = null) {
     const { deviceIp } = sgxsMeta || {}
 
-    if (storefrontApi) return storefrontApi
-
     const requestLogger = new ShopifyLogger(context.log)
     if (!tokenManager) tokenManager = this.buildShopifyApiTokenManager(context, adminApi)
 
-    storefrontApi = new ShopifyStorefrontApi(
+    return new ShopifyStorefrontApi(
       ConfigHelper.getBaseUrl(context.config),
       tokenManager,
       deviceIp,
       context.log,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
     )
-
-    return storefrontApi
   }
 
   static buildHeadlessAuthApi (context, userAgent = undefined) {
