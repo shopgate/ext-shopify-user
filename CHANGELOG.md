@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [2.2.3] - 2024-12-19
+### Fixed
+- mixed up buyer IPs sent to Shopify
+
 ## [2.2.2] - 2024-12-18
 ### Fixed
 - buyer IP not sent to Shopify on some login-related requests from the `@shopgate/shopify-cart` extension
@@ -125,7 +129,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.2...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.3...HEAD
+[2.2.3]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/shopgate/ext-shopify-user/compare/v2.1.12...v2.2.0
