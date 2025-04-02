@@ -7,7 +7,7 @@ class ShopifyAdminApi {
    * @param {Function} requestLog
    * @param {string?} apiVersion
    */
-  constructor (shopUrl, accessToken, requestLog, apiVersion = '2024-10') {
+  constructor (shopUrl, accessToken, requestLog, apiVersion = '2025-01') {
     this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/admin/api/${apiVersion}/`
     this.accessToken = accessToken
     this.requestLog = requestLog
