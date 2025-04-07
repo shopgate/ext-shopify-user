@@ -6,9 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Changed
-- uses Storefront API 2025-01
-- uses REST Admin API 2025-01
-- uses Customer Accounts API 2025-01
+- uses Shopify Storefront API 2025-01
+- uses Shopify REST Admin API 2025-01
+- uses Shopify Customer Accounts API 2025-01
 
 ## [2.2.3] - 2024-12-19
 ### Fixed
