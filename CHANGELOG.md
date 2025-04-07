@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- uses Storefront API 2025-01
+- uses REST Admin API 2025-01
+- uses Customer Accounts API 2025-01
 
 ## [2.2.3] - 2024-12-19
 ### Fixed

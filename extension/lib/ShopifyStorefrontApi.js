@@ -13,11 +13,12 @@ class ShopifyStorefrontApi {
   /**
    * @param {string} shopUrl
    * @param {ShopifyApiTokenManager} shopifyApiTokenManager
+   * @param {string} buyerIp
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    * @param {string?} apiVersion
    */
-  constructor (shopUrl, shopifyApiTokenManager, buyerIp, logger, requestLog, apiVersion = '2024-10') {
+  constructor (shopUrl, shopifyApiTokenManager, buyerIp, logger, requestLog, apiVersion = '2025-01') {
     this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/api/${apiVersion}/graphql`
     this.tokenManager = shopifyApiTokenManager
     this.buyerIp = buyerIp
