@@ -4,7 +4,7 @@ class ShopgateCustomer {
    * @param {string} mail
    * @param {string} firstName
    * @param {string} lastName
-   * @param {ShopgateUserCustomAttributes} customAttributes
+   * @param {{phone: (string|null), shopifyCompanyContacts: {name, locations, id}[]}} customAttributes
    * @param {ShopgateUserGroups[]} userGroups
    */
   constructor (id, mail, firstName, lastName, customAttributes, userGroups = []) {
@@ -44,7 +44,12 @@ class ShopgateCustomer {
       shopifyCustomer.firstName,
       shopifyCustomer.lastName,
       {
-        phone: shopifyCustomer.phoneNumber
+        phone: shopifyCustomer.phoneNumber,
+        shopifyCompanyContacts: ((shopifyCustomer.companyContacts || {}).edges || []).map(companyContact => ({
+            id: companyContact.node.id,
+            name: companyContact.node.company.name,
+            locations: ((companyContact.node.locations || {}).edges || []).map(location => location.node)
+        }))
       }
     )
   }
