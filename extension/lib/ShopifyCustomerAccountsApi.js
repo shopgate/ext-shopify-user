@@ -1,4 +1,5 @@
 const request = require('request-promise-native')
+const { getCustomer } = require('./queries')
 
 const decodeJwt = require('./decodeJwt')
 
@@ -51,7 +52,7 @@ class ShopifyCustomerAccountsApi {
       url: this.apiUrl,
       headers: { Authorization: customerAccountApiAccessToken, 'User-Agent': USER_AGENT },
       body: {
-        query: '{ customer { id firstName lastName phoneNumber { phoneNumber } emailAddress { emailAddress } } }',
+        query: getCustomer,
         variables: {}
       },
       json: true
