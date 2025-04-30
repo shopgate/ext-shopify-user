@@ -4,7 +4,7 @@ class ShopgateCustomer {
    * @param {string} mail
    * @param {string} firstName
    * @param {string} lastName
-   * @param {{phone: (string|null), shopifyCompanyContacts: {name, locations, id}[]}} customAttributes
+   * @param {ShopgateUserCustomAttributes} customAttributes
    * @param {ShopgateUserGroups[]} userGroups
    */
   constructor (id, mail, firstName, lastName, customAttributes, userGroups = []) {
