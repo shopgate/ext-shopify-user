@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.3.0] - 2025-04-30
 ### Added
-- support for B2B carts using the first company contact and location of a customer if set (requires new customer accounts)
+- support for B2B carts using the first company contact and location of a customer if set (requires new customer
+  accounts and `@shopgate/shopify-cart` v3.1.0 or higher)
 
-### Changed
-- requires `@shopgate/shopify-cart` v3.1.0 or higher
+### Fixed
+- fixed no email / one-time code challenge on login, leading to inability to change to another customer account 
 
 ## [2.2.4] - 2025-04-07
 ### Changed
@@ -140,7 +142,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.4...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.4...v2.3.0
 [2.2.4]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.3...v2.2.4
 [2.2.3]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.1...v2.2.2
