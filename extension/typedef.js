@@ -110,6 +110,20 @@
  * @property {string} firstName
  * @property {string} lastName
  * @property {string|null} phoneNumber
+ * @property {{ edges: { node: ShopifyCustomerCompanyContact }[] }} companyContacts
+ */
+
+/**
+ * @typedef {Object} ShopifyCustomerCompanyContact
+ * @property {string} id
+ * @property {{ name: string }} company
+ * @property {{ edges: { node: ShopifyCustomerCompanyContactLocation }[] }} locations
+ */
+
+/**
+ * @typedef {Object} ShopifyCustomerCompanyContactLocation
+ * @property {string} id
+ * @property {string} name
  */
 
 /**
@@ -174,6 +188,20 @@
 /**
  * @typedef {Object} ShopgateUserCustomAttributes
  * @property {string} [phone]
+ * @property {ShopgateUserCustomAttributeCompanyContact[]} [shopifyCompanyContacts]
+ */
+
+/**
+ * @typedef {Object} ShopgateUserCustomAttributeCompanyContact
+ * @property {string} id
+ * @property {string} name
+ * @property {ShopgateUserCustomAttributeCompanyContactLocation[]} locations
+ */
+
+/**
+ * @typedef {Object} ShopgateUserCustomAttributeCompanyContactLocation
+ * @property {string} id
+ * @property {string} name
  */
 
 /**

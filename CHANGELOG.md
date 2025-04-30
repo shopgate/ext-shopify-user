@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- support for B2B carts using the first company contact and location of a customer if set (requires new customer accounts)
+
+### Changed
+- requires `@shopgate/shopify-cart` v3.1.0 or higher
 
 ## [2.2.4] - 2025-04-07
 ### Changed
