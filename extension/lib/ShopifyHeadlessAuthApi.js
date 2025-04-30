@@ -42,12 +42,12 @@ class ShopifyHeadlessAuthApi {
   }
 
   /**
-   * @param {string} idToken The ID token (JWT) that was passed along with the Headless Auth API access token.
+   * @param {string?} idToken The ID token (JWT) that was passed along with the Headless Auth API access token.
    * @returns {string}
    */
   buildCustomerLogoutUrl (idToken) {
     const url = new URL(`${this.apiUrl}/logout`)
-    url.searchParams.append('id_token_hint', idToken)
+    if (idToken) url.searchParams.append('id_token_hint', idToken)
 
     return url.toString()
   }

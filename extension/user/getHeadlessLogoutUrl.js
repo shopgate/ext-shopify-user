@@ -8,7 +8,12 @@ module.exports = async (context) => {
   const tokenManager = ShopifyApiFactory.buildShopifyApiTokenManager(context)
   const headlessAuthApi = ShopifyApiFactory.buildHeadlessAuthApi(context)
 
-  const idToken = await tokenManager.getHeadlessAuthApiIdToken()
+  let idToken
+  try {
+    idToken = await tokenManager.getHeadlessAuthApiIdToken()
+  } catch (err) {
+    context.log.warn('User trying to log out but apparently not logged in? Generating logout URL without idToken.')
+  }
 
   return { logoutUrl: headlessAuthApi.buildCustomerLogoutUrl(idToken) }
 }
