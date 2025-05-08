@@ -57,7 +57,7 @@ export const headlessLogout = () => async (dispatch) => {
   }
 
   try {
-    const response = await new HttpRequest(logoutUrl).dispatch();
+    const response = await new HttpRequest(logoutUrl).setHeaders({ accept: 'text/html' }).dispatch();
 
     logger.warn('Shopify logout request response', response);
   } catch (e) {

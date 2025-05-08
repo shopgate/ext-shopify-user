@@ -18,8 +18,8 @@
     "@shopgate/engage": ">= 6.19.8"
   },
   "dependencies": {
-    "@shopgate/pwa-core": "^6.19.8",
-    "@shopgate/pwa-webcheckout-shopify": "^6.19.8",
+    "@shopgate/pwa-core": "^7.27.0-beta.2",
+    "@shopgate/pwa-webcheckout-shopify": "^7.27.0-beta.2",
     "react": "^16.8.2"
   }
 }
