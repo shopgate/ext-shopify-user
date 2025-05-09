@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - with new customer accounts, logging out and back in on iOS wouldn't present the login form to a customer but just log
   them back in with the email address they had been logged in before
 
+### Changed
+- BREAKING: requires PWA 7.27.0 or higher
+
 ## [2.3.0] - 2025-04-30
 ### Added
 - support for B2B carts using the first company contact and location of a customer if set (requires new customer
