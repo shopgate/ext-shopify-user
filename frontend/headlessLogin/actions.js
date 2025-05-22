@@ -57,7 +57,8 @@ export const headlessLogout = () => async (dispatch) => {
   }
 
   try {
-    const response = await new HttpRequest(logoutUrl).dispatch();
+    // Shopify declines any other content type and the iOS app will automatically send */* if nothing else was set (yes, that's also gonna be declined)
+    const response = await new HttpRequest(logoutUrl).setHeaders({ accept: 'text/html' }).dispatch();
 
     logger.warn('Shopify logout request response', response);
   } catch (e) {
