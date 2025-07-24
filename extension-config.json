@@ -259,6 +259,11 @@
       "type": "subscribers"
     },
     {
+      "id": "LegacyLoginSubscriptions",
+      "path": "frontend/legacyLogin/subscribers.js",
+      "type": "subscribers"
+    },
+    {
       "id": "RegisterSubscription",
       "path": "frontend/Register/subscribers.js",
       "type": "subscribers"
