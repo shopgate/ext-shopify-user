@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [3.0.0] - 2025-05-26
 ### Fixed
 - with new customer accounts, logging out and back in on iOS wouldn't present the login form to a customer but just log
   them back in with the email address they had been logged in before
@@ -149,7 +151,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v2.3.0...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/shopgate/ext-shopify-user/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.4...v2.3.0
 [2.2.4]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.3...v2.2.4
 [2.2.3]: https://github.com/shopgate/ext-shopify-user/compare/v2.2.2...v2.2.3
