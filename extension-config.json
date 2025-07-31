@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1-alpha.1",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "configuration": {
@@ -256,6 +256,11 @@
     {
       "id": "HeadlessLoginSubscriptions",
       "path": "frontend/headlessLogin/subscribers.js",
+      "type": "subscribers"
+    },
+    {
+      "id": "LegacyLoginSubscriptions",
+      "path": "frontend/legacyLogin/subscribers.js",
       "type": "subscribers"
     },
     {
