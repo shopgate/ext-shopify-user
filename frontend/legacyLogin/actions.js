@@ -1,8 +1,8 @@
 import HttpRequest from '@shopgate/pwa-core/classes/HttpRequest';
-import requestShopifyLogin from './action-creators/requestShopifyLogin';
-import errorShopifyLogin from './action-creators/errorShopifyLogin';
-import successShopifyLogin from './action-creators/successShopifyLogin';
-import { isShopify, getShopifyUrl } from './selectors';
+import { isShopify, getShopifyUrl } from '@shopgate/pwa-webcheckout-shopify/selectors';
+import requestShopifyLogin from '@shopgate/pwa-webcheckout-shopify/action-creators/requestShopifyLogin';
+import errorShopifyLogin from '@shopgate/pwa-webcheckout-shopify/action-creators/errorShopifyLogin';
+import successShopifyLogin from '@shopgate/pwa-webcheckout-shopify/action-creators/successShopifyLogin';
 
 /**
  * @typedef {Object} LoginOptions
@@ -28,7 +28,6 @@ export const legacyLogin = (user, password, options = {}) => (dispatch) => {
   const request = new HttpRequest(`${getShopifyUrl()}/account/login`);
 
   if (options.headers) {
-    console.log({ options }, 'Using headers');
     request.setHeaders(options.headers);
   }
 
