@@ -11,6 +11,7 @@
  * @typedef {Object} ExtensionConfig
  * @property {string} shopifyShopAlias
  * @property {string} shopifyAccessToken
+ * @property {string} shopifyHeadlessStorefrontAccessToken
  * @property {string} shopifyShopId
  * @property {string} shopifyHeadlessApiClientId
  * @property {string} shopifyHeadlessApiClientSecret

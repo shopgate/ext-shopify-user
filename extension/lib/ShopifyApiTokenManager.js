@@ -8,14 +8,16 @@ module.exports = class ShopifyApiTokenManager {
    * @param {ShopifyAdminApi} adminApi
    * @param {ShopifyHeadlessAuthApi} headlessAuthApi
    * @param {SDKContextLog} logger
+   * @param {string} headlessStorefrontAccessToken
    */
-  constructor (extensionStorage, userStorage, adminApi, headlessAuthApi, logger) {
+  constructor (extensionStorage, userStorage, adminApi, headlessAuthApi, logger, headlessStorefrontAccessToken) {
     this.extensionStorage = extensionStorage
     this.userStorage = userStorage
     this.adminApi = adminApi
     this.headlessAuthApi = headlessAuthApi
     this.log = logger
     this.userStorageNames = ['shopifyCartId', 'customerAccessToken', 'customerAccountApiAccessToken', 'headlessAuthApiAccessToken', 'userData']
+    this.headlessStorefrontAccessToken = headlessStorefrontAccessToken
   }
 
   /**
@@ -26,6 +28,9 @@ module.exports = class ShopifyApiTokenManager {
    * @returns {Promise<string>}
    */
   async getStorefrontApiAccessToken (useCache = true, accessTokenTitle = 'Web Checkout Storefront Access Token') {
+    // if a headless Storefront API access token is configured, always use that
+    if (this.headlessStorefrontAccessToken) return this.headlessStorefrontAccessToken
+
     let token
 
     if (useCache) token = await this.extensionStorage.get('storefrontAccessToken')

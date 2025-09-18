@@ -1,5 +1,5 @@
 {
-  "version": "3.0.1",
+  "version": "3.0.2-beta.1",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "configuration": {
@@ -78,6 +78,17 @@
           "service": "config",
           "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
           "key": "value.backend.shopifyHeadlessApi.loginRedirectUrl"
+      }
+    },
+    "shopifyHeadlessStorefrontAccessToken": {
+      "type": "bigApi",
+      "destination" : "backend",
+      "default": null,
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.backend.shopifyHeadlessStorefrontAccessToken"
       }
     },
     "shopifyLoginStrategy": {
