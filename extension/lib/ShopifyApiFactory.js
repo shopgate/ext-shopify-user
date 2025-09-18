@@ -74,7 +74,8 @@ module.exports = class {
       context.storage.user,
       adminApi,
       headlessAuthApi,
-      context.log
+      context.log,
+      context.config.shopifyHeadlessStorefrontAccessToken
     )
   }
 }
