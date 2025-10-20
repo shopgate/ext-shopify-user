@@ -1,0 +1,28 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.shopify-user.buildMultipassUrl.v1",
+    "public": true,
+    "input": [
+      { "key": "sgxsMeta", "id": "100", "optional": true },
+      { "key": "rawUrl", "id": "1000" }
+    ],
+    "output": [
+      { "key": "url", "id": "1010" }
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/shopify-user",
+        "path": "@shopgate/shopify-user/user/buildMultipassUrl.js",
+        "input": [
+          { "key": "sgxsMeta", "id": "100", "optional": true },
+          { "key": "rawUrl", "id": "1000" }
+        ],
+        "output": [
+          { "key": "url", "id": "1010" }
+        ]
+      }
+    ]
+  }
+}
