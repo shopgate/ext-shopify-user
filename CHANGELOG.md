@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- support for Shopify Multipass to log in customers during web checkout (requires: Shopify Plus; legacy customer
+  accounts; `@shopgate/shopify-cart` v3.4.0 for login during web checkout)
+- support for an "account" section that can have customizable links pointing to any page within the Shopify store, e.g.
+  a customer's profile or order overview
+
+### Removed
+- support for API-based user profile & address book management
 
 ## [3.0.2] - 2025-09-18
 ### Fixed
