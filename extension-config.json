@@ -158,6 +158,28 @@
           "token": 2000
         }
       }
+    },
+    "customerLinks": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": {
+        "account": {
+          "show": false,
+          "label": "Account",
+          "target": "/account/profile",
+          "icon": "AccountBoxIcon"
+        },
+        "orders": {
+          "show": false,
+          "label": "Orders",
+          "target": "/account/orders",
+          "icon": "ChartIcon"
+        }
+      },
+      "params": {
+        "type": "json",
+        "label": "Custom link to be displayed when a customer is logged in"
+      }
     }
   },
   "components": [
@@ -197,6 +219,18 @@
       "id": "GuestCheckoutSubscription",
       "path": "frontend/portals/GuestCheckoutLink/subscribers.js",
       "type": "subscribers"
+    },
+    {
+      "id": "AccountSectionAndroid",
+      "path": "frontend/portals/AccountSection",
+      "target": "nav-menu.scanner.after",
+      "type": "portals"
+    },
+    {
+      "id": "AccountSectionIOS",
+      "path": "frontend/portals/AccountSection",
+      "target": "nav-menu.logout.before",
+      "type": "portals"
     },
     {
       "id": "locale/en-US",
