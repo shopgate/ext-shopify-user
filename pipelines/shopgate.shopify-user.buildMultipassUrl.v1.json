@@ -5,7 +5,7 @@
     "public": true,
     "input": [
       { "key": "sgxsMeta", "id": "100", "optional": true },
-      { "key": "rawUrl", "id": "1000" }
+      { "key": "target", "id": "1000" }
     ],
     "output": [
       { "key": "url", "id": "1010" }
@@ -17,7 +17,7 @@
         "path": "@shopgate/shopify-user/user/buildMultipassUrl.js",
         "input": [
           { "key": "sgxsMeta", "id": "100", "optional": true },
-          { "key": "rawUrl", "id": "1000" }
+          { "key": "target", "id": "1000" }
         ],
         "output": [
           { "key": "url", "id": "1010" }
