@@ -16,7 +16,5 @@ module.exports = async (context, input) => {
 
   const url = shopifyMultipass(baseUrl, shopifyMultipassToken, mail, buyerIp, rawUrl)
 
-  console.log(url)
-
   return { url }
 }

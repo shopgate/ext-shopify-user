@@ -91,6 +91,17 @@
         "key": "value.backend.shopifyHeadlessStorefrontAccessToken"
       }
     },
+    "shopifyMultipassToken": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "dc0d28e36827ae42f62c34f5d73cf437",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.backend.multipassToken"
+      }
+    },
     "shopifyLoginStrategy": {
       "type": "bigApi",
       "destination": "frontend",
