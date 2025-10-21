@@ -25,13 +25,13 @@ const allIcons = { AccountBoxIcon, BoxIcon, InfoIcon, BookIcon, ChartIcon };
  * @param {Object} props -components
  * @return {undefined|Array<JSX.Element>}
  */
-const renderCustomLinks = props => Object.entries(customerLinks)
-  .filter(([, link]) => link.show === true)
-  .map(([key, link]) => {
+const renderCustomLinks = props => customerLinks
+  .filter(link => link.show === true)
+  .map(link => {
     const icon = allIcons[link.icon] || InfoIcon;
 
     return <AccountItem
-      key={key}
+      key={link.key}
       {...props}
       target={link.target}
       label={link.label}
