@@ -94,7 +94,7 @@
     "shopifyMultipassToken": {
       "type": "bigApi",
       "destination": "backend",
-      "default": "dc0d28e36827ae42f62c34f5d73cf437",
+      "default": "",
       "params": {
         "method": "GET",
         "service": "config",
