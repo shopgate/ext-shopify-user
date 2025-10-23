@@ -6,7 +6,7 @@ const { getBaseUrl } = require('../helper/config')
  * @param {{ sgxsMeta: SgxsMeta, target: string }} input
  */
 module.exports = async (context, input) => {
-  let target = input.target.match(/https?:\/\//)
+  const target = input.target.match(/https?:\/\//)
     ? input.target
     : getBaseUrl(context.config) + input.target
 
