@@ -9,7 +9,7 @@ import connect from './connector';
 import TitledFragment from '../../components/TitledFragment';
 import { LABEL_ACCOUNT_TITLE } from '../../constants/accountManagement';
 
-const { customerLinks} = getConfig();
+const { customerLinks } = getConfig();
 
 /**
  * Android has both portals for printing, we need to make sure to use only one

@@ -1,6 +1,6 @@
 import { historyPush, logger, PipelineRequest } from '@shopgate/engage/core';
 import { FETCH_CHECKOUT_URL_TIMEOUT } from '@shopgate/engage/checkout';
-import { SHOPIFY_BUILD_MULTIPASS_URL_PIPELINE } from "../../constants/accountManagement";
+import { SHOPIFY_BUILD_MULTIPASS_URL_PIPELINE } from '../../constants/accountManagement';
 
 /**
  * Passes the link target to Shopify Multipass encryption, then redirects to the resulting URL.
@@ -20,7 +20,7 @@ export const openPage = target => dispatch => {
         return;
       }
 
-      dispatch(historyPush({ pathname: url }))
+      dispatch(historyPush({ pathname: url }));
     })
     .catch(error => logger.error('Error fetching Web Account Page URL', error));
 };
