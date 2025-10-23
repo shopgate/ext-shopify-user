@@ -10,16 +10,23 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/eslint-parser": "^7.28.4",
     "@shopgate/engage": "6.19.8",
     "@shopgate/eslint-config": "6.19.8",
-    "eslint": "^7.9.0"
+    "eslint": "^8.57.1",
+    "eslint-import-resolver-babel-module": "^5.3.2",
+    "eslint-plugin-import": "^2.32.0"
   },
   "peerDependencies": {
     "@shopgate/engage": ">= 6.19.8"
   },
   "dependencies": {
-    "@shopgate/pwa-core": "^7.27.0-beta.2",
-    "@shopgate/pwa-webcheckout-shopify": "^7.27.0-beta.2",
-    "react": "^16.8.2"
+    "@shopgate/pwa-common": "7.x",
+    "@shopgate/pwa-core": "7.x",
+    "@shopgate/pwa-ui-shared": "7.x",
+    "@shopgate/pwa-common-commerce": "7.x",
+    "@shopgate/pwa-webcheckout-shopify": "^7.x",
+    "react-dom": "~16.12.0"
   }
 }

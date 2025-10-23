@@ -1,4 +1,4 @@
-const ShopifyApiFactory = require("../../lib/ShopifyApiFactory")
+const ShopifyApiFactory = require('../../lib/ShopifyApiFactory')
 
 /**
  * @param {SDKContext} context

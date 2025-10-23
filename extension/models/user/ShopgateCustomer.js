@@ -46,9 +46,9 @@ class ShopgateCustomer {
       {
         phone: shopifyCustomer.phoneNumber,
         shopifyCompanyContacts: ((shopifyCustomer.companyContacts || {}).edges || []).map(companyContact => ({
-            id: companyContact.node.id,
-            name: companyContact.node.company.name,
-            locations: ((companyContact.node.locations || {}).edges || []).map(location => location.node)
+          id: companyContact.node.id,
+          name: companyContact.node.company.name,
+          locations: ((companyContact.node.locations || {}).edges || []).map(location => location.node)
         }))
       }
     )

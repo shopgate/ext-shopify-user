@@ -25,11 +25,12 @@ module.exports = async (context, input) => {
       userId = input.customerId.toString()
       break
 
-    case 'basic':
+    case 'basic': {
       const storefrontApi = ApiFactory.buildStorefrontApi(context, input.sgxsMeta)
       userId = (await storefrontApi.getCustomerByAccessToken(input.storefrontApiCustomerAccessToken.accessToken))
         .id.substring(23) // strip 'gid://shopify/Customer/'
       break
+    }
 
     case 'shopifyHeadlessLogin':
       try {

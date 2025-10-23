@@ -120,7 +120,7 @@ class ShopifyHeadlessAuthApi {
         audience: CUSTOMER_ACCOUNT_API_AUDIENCE,
         subject_token: accessToken,
         subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
-        scopes: scopes
+        scopes
       },
       json: true
     })
