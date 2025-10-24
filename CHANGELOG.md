@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [3.1.1] - 2025-10-24
+### Fixed
+- changed default value of the "account section" feature to match the expected structure
+
 ## [3.1.0] - 2025-10-23
 ### Added
 - support for Shopify Multipass to log in customers during web checkout (requires: Shopify Plus; legacy customer
@@ -169,7 +173,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.1...HEAD
+[3.1.1]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/shopgate/ext-shopify-user/compare/v3.0.2...v3.1.0
 [3.0.2]: https://github.com/shopgate/ext-shopify-user/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/shopgate/ext-shopify-user/compare/v3.0.0...v3.0.1
