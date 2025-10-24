@@ -68,9 +68,11 @@ Account.propTypes = {
   isUserLoggedIn: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   Section: PropTypes.oneOfType([PropTypes.func, PropTypes.symbol]),
+  customerLinks: PropTypes.array,
 };
 Account.defaultProps = {
   Section: TitledFragment,
+  customerLinks: [],
 };
 
 export default connect(Account);

@@ -162,20 +162,22 @@
     "customerLinks": {
       "type": "admin",
       "destination": "frontend",
-      "default": {
-        "account": {
+      "default": [
+        {
+          "key": "account",
           "show": false,
           "label": "Account",
           "target": "/account/profile",
           "icon": "AccountBoxIcon"
         },
-        "orders": {
+        {
+          "key": "orders",
           "show": false,
           "label": "Orders",
           "target": "/account/orders",
           "icon": "ChartIcon"
         }
-      },
+      ],
       "params": {
         "type": "json",
         "label": "Custom link to be displayed when a customer is logged in"
