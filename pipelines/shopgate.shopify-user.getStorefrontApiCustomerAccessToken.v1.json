@@ -2,7 +2,7 @@
   "version": "1",
   "pipeline": {
     "id": "shopgate.shopify-user.getStorefrontApiCustomerAccessToken.v1",
-    "public": true,
+    "public": false,
     "input": [],
     "output": [
       {"key": "storefrontApiCustomerAccessToken", "id": "1000", "optional": true}
