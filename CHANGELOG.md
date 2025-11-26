@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [3.1.2] - 2025-11-26
+### Changed
+- pipeline `shopgate.shopify-user.getStorefrontApiCustomerAccessToken.v1` is not public anymore (can only be called
+  from other pipelines)
+
+### Removed
+- the backend dependency to not publicly available `@shopgate/bigapi-requester` was unused and has been removed
+
 ## [3.1.1] - 2025-10-24
 ### Fixed
 - changed default value of the "account section" feature to match the expected structure
@@ -173,7 +181,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.1...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.2...HEAD
+[3.1.2]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.1...v3.1.2
 [3.1.1]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/shopgate/ext-shopify-user/compare/v3.0.2...v3.1.0
 [3.0.2]: https://github.com/shopgate/ext-shopify-user/compare/v3.0.1...v3.0.2
