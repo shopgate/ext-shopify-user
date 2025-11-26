@@ -17,7 +17,6 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@shopgate/bigapi-requester": "^2.1.0",
     "crypto-js": "^3.1.9-1",
     "lodash": "^4.17.11",
     "request": "^2.88.2",
