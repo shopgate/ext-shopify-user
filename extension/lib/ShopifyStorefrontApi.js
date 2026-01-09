@@ -17,7 +17,7 @@ class ShopifyStorefrontApi {
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    * @param {string?} apiVersion
    */
-  constructor (shopUrl, shopifyApiTokenManager, buyerIp, logger, requestLog, apiVersion = '2025-01') {
+  constructor (shopUrl, shopifyApiTokenManager, buyerIp, logger, requestLog, apiVersion = '2026-01') {
     this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/api/${apiVersion}/graphql`
     this.tokenManager = shopifyApiTokenManager
     this.buyerIp = buyerIp
