@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- uses Shopify Admin REST API 2026-01
+- uses Shopify Storefront API 2026-01
+- uses Shopify Customer Accounts API 2026-01
 
 ## [3.1.2] - 2025-11-26
 ### Changed
