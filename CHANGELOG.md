@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- portals `page.login.guest-checkout-link.before`, `page.login.guest-checkout-link` (wrapper) and
+  `page.login.guest-checkout-link.after` around the guest checkout link, so it can be extended or hidden
+  (e.g. depending on the cart contents) without overriding the whole login page
 
 ## [3.1.3] - 2026-01-13
 ### Changed

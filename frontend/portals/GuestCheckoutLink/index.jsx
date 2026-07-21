@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { RouteContext } from '@shopgate/pwa-common/context';
 import I18n from '@shopgate/pwa-common/components/I18n';
 import Link from '@shopgate/pwa-common/components/Link';
+import SurroundPortals from '@shopgate/pwa-common/components/SurroundPortals';
 import { CHECKOUT_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
 import styles from './style';
 import { CHECKOUT_GUEST_PATH } from './../../constants/RoutePaths';
+import { GUEST_CHECKOUT_LINK } from '../../constants/portals';
 import config from '../../config';
 
 /**
@@ -27,12 +29,14 @@ const GuestCheckoutLink = ({ visible, redirectLocation }) => {
     return null;
   }
   return (
-    <div className={styles.container}>
-      <I18n.Text string="checkout.or" className={styles.or} />
-      <Link href={CHECKOUT_GUEST_PATH} className={styles.guestCheckout}>
-        <I18n.Text string="checkout.continue_as_guest" />.
-      </Link>
-    </div>
+    <SurroundPortals portalName={GUEST_CHECKOUT_LINK}>
+      <div className={styles.container}>
+        <I18n.Text string="checkout.or" className={styles.or} />
+        <Link href={CHECKOUT_GUEST_PATH} className={styles.guestCheckout}>
+          <I18n.Text string="checkout.continue_as_guest" />.
+        </Link>
+      </div>
+    </SurroundPortals>
   );
 };
 
