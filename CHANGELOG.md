@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-07-21
+### Added
+- portals `page.login.guest-checkout-link.before`, `page.login.guest-checkout-link` (wrapper) and
+  `page.login.guest-checkout-link.after` around the guest checkout link, so it can be extended or hidden
+  (e.g. depending on the cart contents) without overriding the whole login page
+
 ## [3.1.3] - 2026-01-13
 ### Changed
 - uses Shopify Admin REST API 2026-01
@@ -187,7 +193,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.3...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.3...v3.2.0
 [3.1.3]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.2...v3.1.3
 [3.1.2]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.1...v3.1.2
 [3.1.1]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.0...v3.1.1
