@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [3.2.0] - 2026-07-21
 ### Added
 - portals `page.login.guest-checkout-link.before`, `page.login.guest-checkout-link` (wrapper) and
   `page.login.guest-checkout-link.after` around the guest checkout link, so it can be extended or hidden
@@ -191,7 +193,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.3...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.3...v3.2.0
 [3.1.3]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.2...v3.1.3
 [3.1.2]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.1...v3.1.2
 [3.1.1]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.0...v3.1.1
