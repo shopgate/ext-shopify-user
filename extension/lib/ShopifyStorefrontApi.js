@@ -11,15 +11,15 @@ const _ = {
 class ShopifyStorefrontApi {
   /**
    * @param {string} shopUrl
-   * @param {ShopifyApiTokenManager} shopifyApiTokenManager
+   * @param {string} headlessStorefrontAccessToken
    * @param {string} buyerIp
    * @param {SDKContextLog} logger A generic logger instance, e.g. current step context's .log property.
    * @param {Function} requestLog A Shopify request log function as defined in ./logger.js
    * @param {string?} apiVersion
    */
-  constructor (shopUrl, shopifyApiTokenManager, buyerIp, logger, requestLog, apiVersion = '2026-01') {
+  constructor (shopUrl, headlessStorefrontAccessToken, buyerIp, logger, requestLog, apiVersion = '2026-01') {
     this.apiUrl = `${shopUrl.replace(/\/+$/, '')}/api/${apiVersion}/graphql`
-    this.tokenManager = shopifyApiTokenManager
+    this.headlessStorefrontAccessToken = headlessStorefrontAccessToken
     this.buyerIp = buyerIp
     this.logger = logger
     this.requestLog = requestLog
@@ -130,7 +130,7 @@ class ShopifyStorefrontApi {
    * @returns {Promise<Object>}
    */
   async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
-    const currentAccessToken = await this.tokenManager.getStorefrontApiAccessToken()
+    const currentAccessToken = this.headlessStorefrontAccessToken
 
     const headers = {
       'cache-control': 'no-cache',
@@ -167,15 +167,6 @@ class ShopifyStorefrontApi {
     } catch (err) {
       this.requestLog(logOptions, null)
       throw err
-    }
-
-    if ((response.statusCode === 401 || response.statusCode === 403) && recursiveCalls < 2) {
-      const newToken = await this.tokenManager.getStorefrontApiAccessToken(false)
-      if (currentAccessToken === newToken) {
-        throw new UnknownError('Error accessing the storefront with given storefront access token.')
-      }
-
-      return this.request(query, variables, operationName, recursiveCalls + 1)
     }
 
     this.requestLog(logOptions, response)
