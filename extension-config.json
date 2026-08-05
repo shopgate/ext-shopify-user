@@ -70,7 +70,7 @@
         }
     },
     "shopifyHeadlessApiLoginRedirectUrl": {
-        "type": "bigApi",
+        "type": "admin",
         "destination": "backend",
         "default": "https://connect.shopgate.com/trampoline/shopify_v1.html",
         "params": {
