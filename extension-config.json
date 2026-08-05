@@ -98,7 +98,7 @@
       "params": {
         "type": "string",
         "label": "Shopify Login Strategy",
-        "description": "The login strategy. Use 'basic' for username & password logins (like 'legacy' customer accounts). Use 'shopifyHeadlessLogin' for password-less or 3rd party logins (like 'new' customer accounts or any service connected via Shopify Plus SSO).",
+        "description": "The login strategy. Use 'basic' for username & password logins (like 'legacy' customer accounts). Use 'shopifyHeadlessLogin' for password-less or some 3rd party logins (like 'new' customer accounts or any service connected via Shopify Plus SSO).",
         "required": false
       }
     },
