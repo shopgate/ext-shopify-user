@@ -1,4 +1,3 @@
-const ShopifyAdminApi = require('./ShopifyAdminApi')
 const ShopifyStorefrontApi = require('./ShopifyStorefrontApi')
 const ShopifyCustomerAccountsApi = require('./ShopifyCustomerAccountsApi')
 const ShopifyHeadlessAuthApi = require('./ShopifyHeadlessAuthApi')
@@ -45,7 +44,6 @@ module.exports = class {
 
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
-   * @param {ShopifyAdminApi?} adminApi
    * @param {ShopifyHeadlessAuthApi?} headlessAuthApi
    * @returns {ShopifyApiTokenManager}
    */
