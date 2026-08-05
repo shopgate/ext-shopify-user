@@ -141,7 +141,8 @@
       ],
       "params": {
         "type": "json",
-        "label": "Custom link to be displayed when a customer is logged in"
+        "label": "Custom user account links",
+        "description": "Links/menu options to customer related pages that are displayed once a user is logged in. Each link should have a key, show, label, target and icon property."
       }
     }
   },

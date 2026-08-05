@@ -130,11 +130,9 @@ class ShopifyStorefrontApi {
    * @returns {Promise<Object>}
    */
   async request (query, variables = undefined, operationName = undefined, recursiveCalls = 0) {
-    const currentAccessToken = this.headlessStorefrontAccessToken
-
     const headers = {
       'cache-control': 'no-cache',
-      'x-shopify-storefront-access-token': currentAccessToken,
+      'x-shopify-storefront-access-token': this.headlessStorefrontAccessToken,
       accept: 'application/json',
       'content-type': 'application/json'
     }
