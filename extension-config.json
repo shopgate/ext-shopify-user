@@ -1,134 +1,116 @@
 {
-  "version": "3.2.1",
+  "version": "4.0.0-beta.3",
   "id": "@shopgate/shopify-user",
   "trusted": true,
   "configuration": {
     "shopifyShopAlias": {
-      "type": "bigApi",
-      "destination": "backend",
+      "type": "admin",
+      "destination" : "backend",
       "default": null,
       "params": {
-        "method": "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-        "key": "value.frontend.alias"
+        "type":  "text",
+        "label": "Shopify Shop Alias",
+        "description": "The part of your Shopify domain that comes before .myshopify.com; e.g. if your Shopify domain is https://myshop.myshopify.com, your alias is myshop.",
+        "required": true
       }
     },
     "shopifyShopDomain": {
-      "type": "bigApi",
+      "type": "admin",
       "destination" : "backend",
       "default": null,
       "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-        "key": "value.frontend.domain"
-      }
-    },
-    "shopifyAccessToken": {
-      "type": "bigApi",
-      "destination": "backend",
-      "default": null,
-      "params": {
-        "method": "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-        "key": "value.backend.shopifyAccessToken"
-      }
-    },
-    "shopifyShopId": {
-        "type": "bigApi",
-        "destination": "backend",
-        "default": null,
-        "params": {
-          "method": "GET",
-          "service": "config",
-          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-          "key": "value.backend.shopifyShopId"
-        }
-    },
-    "shopifyHeadlessApiClientId": {
-        "type": "bigApi",
-        "destination": "backend",
-        "default": null,
-        "params": {
-          "method": "GET",
-          "service": "config",
-          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-          "key": "value.backend.shopifyHeadlessApi.clientId"
-      }
-    },
-    "shopifyHeadlessApiClientSecret": {
-        "type": "bigApi",
-        "destination": "backend",
-        "default": null,
-        "params": {
-          "method": "GET",
-          "service": "config",
-          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-          "key": "value.backend.shopifyHeadlessApi.clientSecret"
-        }
-    },
-    "shopifyHeadlessApiLoginRedirectUrl": {
-        "type": "bigApi",
-        "destination": "backend",
-        "default": null,
-        "params": {
-          "method": "GET",
-          "service": "config",
-          "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-          "key": "value.backend.shopifyHeadlessApi.loginRedirectUrl"
+        "type":  "text",
+        "label": "Shopify Shop Domain",
+        "description": "The full domain of your Shopify shop; e.g. myshop.com. This is optional and only needed if you have a custom domain for your Shopify shop.",
+        "required": false
       }
     },
     "shopifyHeadlessStorefrontAccessToken": {
-      "type": "bigApi",
+      "type": "admin",
       "destination" : "backend",
       "default": null,
       "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-        "key": "value.backend.shopifyHeadlessStorefrontAccessToken"
+        "type":  "text",
+        "label": "Shopify Headless Storefront Access Token",
+        "description": "The access token for your Shopify headless storefront.",
+        "required": true
       }
     },
+    "shopifyShopId": {
+        "type": "admin",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "type":  "text",
+          "label": "Shopify Shop ID",
+          "description": "The ID of your Shopify shop when using password-less logins ('new' customer accounts).",
+          "required": false
+        }
+    },
+    "shopifyHeadlessApiClientId": {
+        "type": "admin",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "type":  "text",
+          "label": "Shopify Headless API Client ID",
+          "description": "The client ID for your Shopify headless API when using password-less logins ('new' customer accounts).",
+          "required": false
+        }
+    },
+    "shopifyHeadlessApiClientSecret": {
+        "type": "admin",
+        "destination": "backend",
+        "default": null,
+        "params": {
+          "type":  "text",
+          "label": "Shopify Headless API Client Secret",
+          "description": "The client secret for your Shopify headless API when using password-less logins ('new' customer accounts).",
+          "required": false
+        }
+    },
+    "shopifyHeadlessApiLoginRedirectUrl": {
+        "type": "admin",
+        "destination": "backend",
+        "default": "https://connect.shopgate.com/trampoline/shopify_v1.html",
+        "params": {
+          "type":  "text",
+          "label": "Shopify Headless API Login Redirect URL",
+          "description": "The URL to redirect to after a successful login using the Shopify headless API (password-less / 'new' customer accounts).",
+          "required": false
+        }
+    },
     "shopifyMultipassToken": {
-      "type": "bigApi",
+      "type": "admin",
       "destination": "backend",
       "default": "",
       "params": {
-        "method": "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-        "key": "value.backend.multipassToken"
+        "type":  "text",
+        "label": "Shopify Multipass Token",
+        "description": "The multipass token for your Shopify store when using Multipass logins for SSO (only in combination with legacy customer accounts and Shopify Plus).",
+        "required": false
       }
     },
     "shopifyLoginStrategy": {
-      "type": "bigApi",
+      "type": "admin",
       "destination": "frontend",
       "default": "basic",
       "params": {
-        "method": "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
-        "key": "value.shopifyLoginStrategy"
+        "type": "string",
+        "label": "Shopify Login Strategy",
+        "description": "The login strategy. Use 'basic' for username & password logins (like 'legacy' customer accounts). Use 'shopifyHeadlessLogin' for password-less or some 3rd party logins (like 'new' customer accounts or any service connected via Shopify Plus SSO).",
+        "required": false
       }
     },
-    "getUserAccountSettings": {
-      "type": "bigApi",
+    "showGuestCheckout": {
+      "type": "admin",
       "destination": "frontend",
-      "default": "required",
+      "default": true,
       "params": {
-        "method": "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/guest_login_mode?parsed=true",
-        "key": "value"
-      }
-    },
-    "userRegistrationUrl": {
-      "type": "static",
-      "destination": "backend",
-      "params": {
-        "value": ""
+        "type": "boolean",
+        "label": "Show Guest Checkout Link",
+        "description": "Allow customers to check out as guests.",
+        "required": false
       }
     },
     "userDataCacheTtl": {
@@ -136,27 +118,6 @@
       "destination": "backend",
       "params": {
         "value": 600000
-      }
-    },
-    "stage": {
-      "type": "static",
-      "destination": "backend",
-      "params": {
-        "value": "%(targetStage)s"
-      }
-    },
-    "credentials": {
-      "type": "bigApiCredentials",
-      "destination": "backend"
-    },
-    "requestTimeout": {
-      "type": "static",
-      "destination": "backend",
-      "params": {
-        "value": {
-          "bigApi": 15000,
-          "token": 2000
-        }
       }
     },
     "customerLinks": {
@@ -180,7 +141,8 @@
       ],
       "params": {
         "type": "json",
-        "label": "Custom link to be displayed when a customer is logged in"
+        "label": "Custom user account links",
+        "description": "Links/menu options to customer related pages that are displayed once a user is logged in. Each link should have a key, show, label, target and icon property."
       }
     }
   },

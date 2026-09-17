@@ -15,7 +15,7 @@ import config from '../../config';
  * @private
  * @returns {boolean}
  */
-const disableGuestCheckout = () => !config.getUserAccountSettings;
+const showGuestCheckout = () => config.showGuestCheckout;
 
 /**
  * The GuestCheckoutLink component.
@@ -25,7 +25,7 @@ const disableGuestCheckout = () => !config.getUserAccountSettings;
 const GuestCheckoutLink = ({ visible, redirectLocation }) => {
   const isCheckoutLogin = redirectLocation === CHECKOUT_PATH;
 
-  if (disableGuestCheckout() || !visible || !isCheckoutLogin) {
+  if (!showGuestCheckout() || !visible || !isCheckoutLogin) {
     return null;
   }
   return (

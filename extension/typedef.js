@@ -10,23 +10,26 @@
 /**
  * @typedef {Object} ExtensionConfig
  * @property {string} shopifyShopAlias
- * @property {string} shopifyAccessToken
+ * @property {string} shopifyShopDomain
  * @property {string} shopifyHeadlessStorefrontAccessToken
  * @property {string} shopifyShopId
  * @property {string} shopifyHeadlessApiClientId
  * @property {string} shopifyHeadlessApiClientSecret
  * @property {string} shopifyHeadlessApiLoginRedirectUrl
- * @property {string} userRegistrationUrl
+ * @property {string} shopifyMultipassToken
+ * @property {string} shopifyLoginStrategy
+ * @property {boolean} showGuestCheckout
  * @property {string} userDataCacheTtl
- * @property {string} stage
- * @property {Object} credentials
- * @property {string} credentials.baseDomain
- * @property {string} credentials.clientId
- * @property {string} credentials.clientSecret
- * @property {string} credentials.refreshToken
- * @property {Object} requestTimeout
- * @property {number} requestTimeout.token
- * @property {number} requestTimeout.bigApi
+ * @property {ExtensionConfigCustomerLink[]} customerLinks
+ */
+
+/**
+ * @typedef {Object} ExtensionConfigCustomerLink
+ * @property {string} key
+ * @property {boolean} show
+ * @property {string} label
+ * @property {string} target
+ * @property {string} icon
  */
 
 /**

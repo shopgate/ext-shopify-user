@@ -1,4 +1,3 @@
-const ShopifyAdminApi = require('./ShopifyAdminApi')
 const ShopifyStorefrontApi = require('./ShopifyStorefrontApi')
 const ShopifyCustomerAccountsApi = require('./ShopifyCustomerAccountsApi')
 const ShopifyHeadlessAuthApi = require('./ShopifyHeadlessAuthApi')
@@ -9,33 +8,17 @@ const ConfigHelper = require('../helper/config')
 module.exports = class {
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
-   * @returns {ShopifyAdminApi}
-   */
-  static buildAdminApi (context) {
-    const requestLogger = new ShopifyLogger(context.log)
-    return new ShopifyAdminApi(
-      ConfigHelper.getBaseUrl(context.config),
-      context.config.shopifyAccessToken,
-      (requestOptions, response) => requestLogger.log(requestOptions, response)
-    )
-  }
-
-  /**
-   * @param {SDKContext} context The Shopgate Connect step context.
-   * @param {ShopifyApiTokenManager?} tokenManager
    * @param {{ sessionId: string, deviceIp: string }} sgxsMeta
-   * @param {ShopifyAdminApi?} adminApi
    * @returns {ShopifyStorefrontApi}
    */
-  static buildStorefrontApi (context, sgxsMeta, tokenManager = null, adminApi = null) {
+  static buildStorefrontApi (context, sgxsMeta) {
     const { deviceIp } = sgxsMeta || {}
 
     const requestLogger = new ShopifyLogger(context.log)
-    if (!tokenManager) tokenManager = this.buildShopifyApiTokenManager(context, adminApi)
 
     return new ShopifyStorefrontApi(
       ConfigHelper.getBaseUrl(context.config),
-      tokenManager,
+      context.config.shopifyHeadlessStorefrontAccessToken,
       deviceIp,
       context.log,
       (requestOptions, response) => requestLogger.log(requestOptions, response)
@@ -61,21 +44,17 @@ module.exports = class {
 
   /**
    * @param {SDKContext} context The Shopgate Connect step context.
-   * @param {ShopifyAdminApi?} adminApi
    * @param {ShopifyHeadlessAuthApi?} headlessAuthApi
    * @returns {ShopifyApiTokenManager}
    */
-  static buildShopifyApiTokenManager (context, adminApi = null, headlessAuthApi = null) {
-    if (!adminApi) adminApi = this.buildAdminApi(context)
+  static buildShopifyApiTokenManager (context, headlessAuthApi = null) {
     if (!headlessAuthApi) headlessAuthApi = this.buildHeadlessAuthApi(context)
 
     return new ShopifyApiTokenManager(
       context.storage.extension,
       context.storage.user,
-      adminApi,
       headlessAuthApi,
-      context.log,
-      context.config.shopifyHeadlessStorefrontAccessToken
+      context.log
     )
   }
 }
