@@ -5,42 +5,15 @@ module.exports = class ShopifyApiTokenManager {
   /**
    * @param {SDKContextEntityStorage} extensionStorage
    * @param {SDKContextEntityStorage} userStorage
-   * @param {ShopifyAdminApi} adminApi
    * @param {ShopifyHeadlessAuthApi} headlessAuthApi
    * @param {SDKContextLog} logger
-   * @param {string} headlessStorefrontAccessToken
    */
-  constructor (extensionStorage, userStorage, adminApi, headlessAuthApi, logger, headlessStorefrontAccessToken) {
+  constructor (extensionStorage, userStorage, headlessAuthApi, logger) {
     this.extensionStorage = extensionStorage
     this.userStorage = userStorage
-    this.adminApi = adminApi
     this.headlessAuthApi = headlessAuthApi
     this.log = logger
     this.userStorageNames = ['shopifyCartId', 'customerAccessToken', 'customerAccountApiAccessToken', 'headlessAuthApiAccessToken', 'userData']
-    this.headlessStorefrontAccessToken = headlessStorefrontAccessToken
-  }
-
-  /**
-   * Gets the COMMON Storefront API access token for app access from either extension storage or Admin REST API.
-   *
-   * @param {boolean?} useCache
-   * @param {string?} accessTokenTitle The title of the access token to be fetched from the Admin REST API.
-   * @returns {Promise<string>}
-   */
-  async getStorefrontApiAccessToken (useCache = true, accessTokenTitle = 'Web Checkout Storefront Access Token') {
-    // if a headless Storefront API access token is configured, always use that
-    if (this.headlessStorefrontAccessToken) return this.headlessStorefrontAccessToken
-
-    let token
-
-    if (useCache) token = await this.extensionStorage.get('storefrontAccessToken')
-
-    if (!token) {
-      token = await this.adminApi.getStoreFrontAccessToken(accessTokenTitle)
-      await this.extensionStorage.set('storefrontAccessToken', token)
-    }
-
-    return token
   }
 
   /**

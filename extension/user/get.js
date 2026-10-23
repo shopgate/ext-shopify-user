@@ -44,7 +44,7 @@ module.exports = async function (context, { sgxsMeta }) {
 
 async function _getCustomerFromStorefrontApi (context, sgxsMeta, tokenManager) {
   try {
-    const storefrontApi = ApiFactory.buildStorefrontApi(context, sgxsMeta, tokenManager)
+    const storefrontApi = ApiFactory.buildStorefrontApi(context, sgxsMeta)
     const customerAccessToken = await tokenManager.getStorefrontApiCustomerAccessToken()
 
     return ShopgateCustomer.fromShopifyStorefrontApiCustomer(await storefrontApi.getCustomerByAccessToken(customerAccessToken.accessToken))
