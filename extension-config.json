@@ -5,10 +5,10 @@
   "configuration": {
     "shopifyShopAlias": {
       "type": "admin",
-      "destination" : "backend",
+      "destination": "backend",
       "default": null,
       "params": {
-        "type":  "text",
+        "type": "text",
         "label": "Shopify Shop Alias",
         "description": "The part of your Shopify domain that comes before .myshopify.com; e.g. if your Shopify domain is https://myshop.myshopify.com, your alias is myshop.",
         "required": true
@@ -16,10 +16,10 @@
     },
     "shopifyShopDomain": {
       "type": "admin",
-      "destination" : "backend",
+      "destination": "backend",
       "default": null,
       "params": {
-        "type":  "text",
+        "type": "text",
         "label": "Shopify Shop Domain",
         "description": "The full domain of your Shopify shop; e.g. myshop.com. This is optional and only needed if you have a custom domain for your Shopify shop.",
         "required": false
@@ -27,10 +27,10 @@
     },
     "shopifyHeadlessStorefrontAccessToken": {
       "type": "admin",
-      "destination" : "backend",
+      "destination": "backend",
       "default": null,
       "params": {
-        "type":  "text",
+        "type": "text",
         "label": "Shopify Headless Storefront Access Token",
         "description": "The access token for your Shopify headless storefront.",
         "required": true
@@ -41,7 +41,7 @@
         "destination": "backend",
         "default": null,
         "params": {
-          "type":  "text",
+          "type": "text",
           "label": "Shopify Shop ID",
           "description": "The ID of your Shopify shop when using password-less logins ('new' customer accounts).",
           "required": false
@@ -52,7 +52,7 @@
         "destination": "backend",
         "default": null,
         "params": {
-          "type":  "text",
+          "type": "text",
           "label": "Shopify Headless API Client ID",
           "description": "The client ID for your Shopify headless API when using password-less logins ('new' customer accounts).",
           "required": false
@@ -63,7 +63,7 @@
         "destination": "backend",
         "default": null,
         "params": {
-          "type":  "text",
+          "type": "text",
           "label": "Shopify Headless API Client Secret",
           "description": "The client secret for your Shopify headless API when using password-less logins ('new' customer accounts).",
           "required": false
@@ -74,7 +74,7 @@
         "destination": "backend",
         "default": "https://connect.shopgate.com/trampoline/shopify_v1.html",
         "params": {
-          "type":  "text",
+          "type": "text",
           "label": "Shopify Headless API Login Redirect URL",
           "description": "The URL to redirect to after a successful login using the Shopify headless API (password-less / 'new' customer accounts).",
           "required": false
@@ -85,7 +85,7 @@
       "destination": "backend",
       "default": "",
       "params": {
-        "type":  "text",
+        "type": "text",
         "label": "Shopify Multipass Token",
         "description": "The multipass token for your Shopify store when using Multipass logins for SSO (only in combination with legacy customer accounts and Shopify Plus).",
         "required": false
