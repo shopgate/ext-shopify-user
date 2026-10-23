@@ -5,16 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [4.0.0] - 2026-10-23
 
 **THIS RELEASE CONTAINS BREAKING CHANGES**
 
 ### Changed
 - all config settings are now set via Next Admin; Guru settings will be ignored
 - the `shopifyHeadlessStorefrontAccessToken` is required now; Admin API credentials won't be used to fetch a Storefront API access token anymore
-
-## [4.0.0] - 2026-10-23
-### Changed
-- compatibility updates for internal infrastructure changes
 
 ## [3.2.0] - 2026-07-21
 ### Added
