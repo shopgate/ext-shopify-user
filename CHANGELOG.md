@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - all config settings are now set via Next Admin; Guru settings will be ignored
 - the `shopifyHeadlessStorefrontAccessToken` is required now; Admin API credentials won't be used to fetch a Storefront API access token anymore
 
+## [4.0.0] - 2026-10-23
+### Changed
+- compatibility updates for internal infrastructure changes
+
 ## [3.2.0] - 2026-07-21
 ### Added
 - portals `page.login.guest-checkout-link.before`, `page.login.guest-checkout-link` (wrapper) and
@@ -199,7 +203,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - user not logged in after registration in web checkout
 
-[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/shopgate/ext-shopify-user/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/shopgate/ext-shopify-user/compare/v3.2.0...v4.0.0
 [3.2.0]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.3...v3.2.0
 [3.1.3]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.2...v3.1.3
 [3.1.2]: https://github.com/shopgate/ext-shopify-user/compare/v3.1.1...v3.1.2
