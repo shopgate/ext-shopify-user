@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- pipeline `shopgate.shopify-user.getShopUrl.v1` returning the configured shop domain and alias based web shop URL
+
+### Fixed
+- web login and logout (login strategy `basic`) used the legacy web checkout settings (Guru) instead of the shop domain /
+  alias of the extension config; customers weren't logged in on the web shop of custom domain shops, e.g. customer links
+  showed the login page. The shop domain of the extension config takes precedence, followed by the domain of the legacy
+  web checkout settings, then the alias of the extension config and finally the alias of the legacy settings
+- customers are now also logged out of the web shop when the legacy web checkout settings are missing
+
 ## [4.0.0] - 2026-10-23
 
 **THIS RELEASE CONTAINS BREAKING CHANGES**
